@@ -75,7 +75,7 @@ export class SlidesPresentationComponent implements OnInit, AfterViewInit, After
             slide => {
                 this.slides = slide.slides;
                 this.slideNum = this.slides.length;
-                this.slideTitle = slide.title;
+                this.slideTitle = slide.slidesSetting.title;
                 console.log(this.slides);
                 this.slides.forEach(
                     (slide, index) => {

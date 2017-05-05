@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { select } from '@angular-redux/store';
 import {Observable} from 'rxjs/Observable';
 
-import {SlidesListItem} from '../../models/slides-list-item'
+import {Slides} from '../../models/slides'
 @Component({
     selector: 'app-slides-list',
     templateUrl: './slides-list.component.html',
@@ -14,7 +14,7 @@ import {SlidesListItem} from '../../models/slides-list-item'
 })
 export class SlidesListComponent implements OnInit {
     @select(['session', 'token']) loggedIn$: Observable<string>;
-    slides: Array<SlidesListItem> = [];
+    slides: Array<Slides> = [];
     listHeight_style: any = {
         'height': '350px'
     };
@@ -29,7 +29,9 @@ export class SlidesListComponent implements OnInit {
         this.slidesService.getSlidesList()
             .subscribe(
             slide => {
-                slide.forEach(s => this.slides.push(new SlidesListItem(s)))
+                console.log(slide);
+                /*slide.forEach(s => this.slides.push(new SlidesListItem(s.slidesSetting)))*/
+                this.slides=slide;
                 console.log(this.slides);
             },
             error => {
@@ -37,12 +39,14 @@ export class SlidesListComponent implements OnInit {
             });
         console.log(this.slides);
     }
+
     search(text) {
         if (text) {
             this.slidesService.getSlideToSearch(text)
                 .subscribe(slides => {
                     this.slides = [];
-                    slides.forEach(s => this.slides.push(new SlidesListItem(s)))
+                    this.slides=slides;
+                    /*slides.forEach(s => this.slides.push(new SlidesListItem(s)))*/
                 });
         }
     }
@@ -51,26 +55,19 @@ export class SlidesListComponent implements OnInit {
             .subscribe(
             slides => {
                 this.slides = [];
-                slides.forEach(s => this.slides.push(new SlidesListItem(s)));
+                this.slides=slides;
+                console.log("get",this.slides)
+                /*slides.forEach(s => this.slides.push(new SlidesListItem(s)));*/
             },
             error => {
                 console.log('fail to get Slides list');
             });
     }
-    /*open Slide*/
-    openSlides(e) {
-        console.log(e.target.tagName);
-        let target = e.target;
-        if (target.tagName !== 'MD-CARD') {
-            target = target.parentNode;
-        }
-        this.router.navigate(['/slides', target.id]);
-    }
+
     publish(e) {
-        e.public = !e.public;
-        console.log('e', e.public);
-        this.slidesService.updateSlide(e, e.id)
-            .subscribe(elm => console.log(elm.public));
+        e.slidesSetting.public = !e.slidesSetting.public;
+        this.slidesService.updateSlide(e, e._id)
+            .subscribe(elm => console.log(elm.slidesSetting.public));
     }
     test() {
         console.log(this.slides);

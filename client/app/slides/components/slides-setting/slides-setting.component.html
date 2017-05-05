@@ -1,0 +1,41 @@
+<form novalidate [formGroup]="form" #f="ngForm" >
+  <table cellspacing="0" class="slides-setting-table">
+    <tr>
+      <td colspan="2">
+        <md-input-container class="lg slide-name">
+          <input mdInput placeholder="Slides name" formControlName="title" name="title" required class="input" (ngModelChange)="titleChange($event)">
+        </md-input-container>
+        <span class="error" *ngIf=" form.controls.title.invalid">Slides Name is required</span>
+      </td>
+    </tr>
+  </table>
+  <table class=" slides-setting-table secondery-setting">
+    <tr>
+      <td class="tag">
+        <div class="tag-group">
+          <md-chip-list>
+            <md-chip *ngFor="let tag of slidesSetting.tags">{{tag}}</md-chip>
+          </md-chip-list>
+        </div>
+        <md-input-container class="tag-input">
+          <input mdInput placeholder="Input Tag" formControlName="tag" name="tag" class="input ">
+        </md-input-container>
+        <a md-mini-fab (click)="addTag()">
+          <md-icon>add</md-icon>
+        </a>
+      </td>
+    </tr>
+    <tr class="secondery-setting">
+      <td>
+        <app-image-upload [label]="'Choose Image for Banner'" (setImage)="setBanner($event)"></app-image-upload>
+      </td>
+    </tr>
+    <tr class="secondery-setting">
+      <td colspan="2">
+        <md-input-container class="slide-description">
+          <input mdInput placeholder="Slides Description" formControlName="description" name="description" class="input " (ngModelChange)="descriptionChange($event)">
+        </md-input-container>
+      </td>
+    </tr>
+  </table>
+</form>

@@ -58,7 +58,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit {
             type: "Text on Left +  Graph on Right"
         }
     ];
-    dataExample: any;
+    dataExample: string='{}';
     editorOptions: Object = {
         heightMin: 200,
         heightMax: 400,
@@ -70,8 +70,6 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit {
     @ViewChild("graphSelector") graphSelector;
     csvJson: any = [];
     constructor(
-        public dialog: MdDialog,
-        private cdRef: ChangeDetectorRef,
         private _fb: FormBuilder,
     ) {
 
@@ -103,7 +101,8 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit {
     }
     /* toggle the slideSetting*/
     toggleForm() {
-        this.showForm = !this.showForm;
+      console.log("toggle");
+      this.showForm = !this.showForm;
     }
     confirmSlide() {
         /* to decide which data to take from tab*/

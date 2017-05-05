@@ -69,6 +69,7 @@ export class SlidesService {
         return this.http.get(backendURL).map((response: Response) => response.json());
     }
     updateSlide(slide, id): Observable<any> {
+      console.log("ddddddddddddd",slide,id);
         const backendURL = `${this._baseUrl}${environment.backend.endpoints.slides}/${id}`;
         return this.http.put(backendURL, slide).map((response: Response) => response.json());
     }

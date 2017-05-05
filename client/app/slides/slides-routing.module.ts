@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // SLIDES COMPONENTS
-import { SlidesPresentationComponent, SlidesCreatorComponent, SlidesListComponent} from '.';
+import { SlidesPresentationComponent, SlidesCreatorComponent, SlidesListComponent, SlidesEditorComponent} from '.';
 
 import { Auth } from 'app/users';
 
@@ -25,6 +25,14 @@ const slidesRoutes: Routes = [{
         path: 'slidesPresentation/:id',
         component: SlidesPresentationComponent,
         data: { title: 'Presentation' }
+    },
+    {
+        path: 'slides/:id',
+        component: SlidesEditorComponent,
+        data: {
+            roles: ['user'],
+            title: 'Slides Editor'
+        }
     }
 ];
 

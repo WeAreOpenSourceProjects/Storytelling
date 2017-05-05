@@ -1,0 +1,26 @@
+@import 'client/theme.scss';
+
+.slides-setting-table {
+  @include basic-frame-theme($theme);
+  width: 100%;
+    &.secondery-setting {
+        padding: 0 20px;
+    }
+
+    .slide-name {
+        margin-top: 15px;
+    }
+
+    .slide-description {
+        display: block;
+    }
+
+    .tag {
+        .tag-group {
+            display: inline-block;
+            md-chip:last-child{
+              margin-right: 15px;
+            }
+        }
+    }
+}

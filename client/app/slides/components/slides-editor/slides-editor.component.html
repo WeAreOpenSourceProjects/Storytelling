@@ -1,0 +1,19 @@
+<div>
+  <md-card>
+    <form>
+      <md-toolbar color="primary">Edit Slides</md-toolbar>
+      <md-card-content>
+        <app-slides-setting #slidesSetting (onSettingChange)="slidesSettingChange($event)" (onValidated)="validateSubmit()" [setting]="slider.slidesSetting"></app-slides-setting>
+        <section>
+          <div class="slides" #slideBlock>
+            <app-slide-preview *ngFor="let slide of slider.slides;let i=index" [curSlideIndex]="i" [slideSetting]="slide" (submitSlideOpt)="saveSlide($event)"></app-slide-preview>
+          </div>
+        </section>
+      </md-card-content>
+      <md-card-actions align="center">
+        <button md-raised-button color="primary" [disabled]="!isValidated" type="submit" (click)="saveSlides()">SAVE</button>
+        <button md-raised-button class="secondery" [routerLink]="['/slides']">CANCEL</button>
+      </md-card-actions>
+    </form>
+  </md-card>
+</div>
