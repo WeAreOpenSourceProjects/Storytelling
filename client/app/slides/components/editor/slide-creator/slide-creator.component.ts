@@ -15,7 +15,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     @Output() deleteSlideOpt: EventEmitter<number> = new EventEmitter();
     @Input() slideIndex: number;
     @Input() slideSetting: Slide;
-    @Input() showForm: boolean; //indicator for showing slide setting
+    showForm: boolean = true; //indicator for showing slide setting
     @Input() isInShuffle: boolean;
     slide: Slide = new Slide();
     form: FormGroup;
@@ -71,7 +71,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     @ViewChild("dataInput") dataInputTab;
     @ViewChild("graphSelector") graphSelector;
     csvJson: any = [];
-    curTab:number=0;
+    curTab: number = 0;
     constructor(
         private _fb: FormBuilder,
         private validService: ValidService
@@ -88,15 +88,14 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     }
     ngOnChanges() {
         if (this.slideSetting) {
-
             this.slide = this.slideSetting;
+
         }
         if (this.slideIndex) {
 
             this.slide.index = this.slideIndex;
         }
-        this.form = this._buildForm();
-        this.validService.changeSlideValid(this.form.valid, this.slideIndex);
+        this.form = this._buildForm(); this.validService.changeSlideValid(this.form.valid, this.slideIndex);
         this.form.valueChanges.subscribe(data => {
             this.validService.changeSlideValid(this.form.valid, this.slideIndex);
         })
@@ -192,8 +191,11 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     }
     initJson() {
         //change json sample
-        if (this.slide.data.length && this.form.value.slideGraph == this.slide.graph ) {
-            this.curTab=1;
+        console.log("force data:", this.slide.data, this.slide.data == []);
+        if (this.slide.data == undefined) return;
+        if (this.slide.data.length && this.form.value.slideGraph == this.slide.graph) {
+
+            this.curTab = 1;
             let data = { "graphData": this.slide.data };
             console.log(data);
             this.form.controls['graphDataJson'].setValue(JSON.stringify(data));
@@ -235,9 +237,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     setImageHtml(html) {
         this.slide.fullScreenHtml = "<img src='" + html + "' style='width:100%;height:100%'>";
     }
-    upload(inputEl) {
-        console.log('etape 2');
-    }
+
 
 
 }
