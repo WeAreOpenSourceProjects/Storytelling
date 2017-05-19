@@ -65,9 +65,8 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         heightMin: 200,
         heightMax: 400,
         charCounterMax: 1000,
-        imageUploadURL: 'http://127.0.0.1:3000/api/imagesServer',
-        imageManagerLoadURL: 'http://127.0.0.1:3000/api/imagesServer'
-    }
+        imageUploadURL: 'http://127.0.0.1:3000/api/imagesServer'
+    };
     @ViewChild("dataInput") dataInputTab;
     @ViewChild("graphSelector") graphSelector;
     csvJson: any = [];

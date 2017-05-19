@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { SlidesService } from '../../../../services/slides.service';
-import { FileUploader} from 'ng2-file-upload';
-import {Http } from '@angular/http';
-const URL = 'localhost:3000/api/images/';
 
 @Component({
     selector: 'app-image-upload',
@@ -15,10 +12,7 @@ export class ImageUploadComponent implements OnInit {
     @ViewChild('form') form: ElementRef;
     @Output() setImage: EventEmitter<any> = new EventEmitter();
     @Output() uploadImage: EventEmitter<any> = new EventEmitter();
-
     @Input() label = 'Choose Image';
-    public uploader: FileUploader = new FileUploader({url: URL, itemAlias: 'banner'});
-
     image: any = undefined;
     constructor(private el: ElementRef, private slidesService: SlidesService) {
     }
