@@ -77,7 +77,7 @@
                 <app-csv-input (csv2json)="getCsvJson($event)"></app-csv-input>
               </md-tab>
             </md-tab-group>
-            <app-image-upload (uploadImage)="upload($event)" (setImage)="setImageHtml($event)" *ngIf="(slide.hasGraph&&form.controls.slideGraph.value=='image')||(this.form.value.pageLayout=='textInCenterImageBackground')"></app-image-upload>
+            <app-image-upload (setImage)="setImageHtml($event)" *ngIf="(slide.hasGraph&&form.controls.slideGraph.value=='image')||(this.form.value.pageLayout=='textInCenterImageBackground')"></app-image-upload>
 
           </div>
           <div class="margin-ver-frame" *ngIf="slide.hasText">
