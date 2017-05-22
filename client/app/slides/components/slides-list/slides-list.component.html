@@ -6,24 +6,26 @@
   </div>
 -->
   <div class="row" >
-    <div *ngFor="let s of slides" [ngClass]="{'display-div':!(loggedIn$|async)&& !s.slidesSetting.public}"  class="list-item slides-item col-xs-12 col-sm-6  col-md-3">
-      <md-card *ngIf="(loggedIn$|async)||s.slidesSetting.public"  >
+    <div *ngFor="let s of slides" [ngClass]="{'display-div':!(loggedIn$|async)&& !s.slidesSetting.public}"  class="list-item slides-item col-xs-12 col-sm-12  col-md-4 col-lg-3">
+      <md-card class ="slide" *ngIf="(loggedIn$|async)||s.slidesSetting.public"  >
         <md-card-header >
           <md-card-title>{{s.slidesSetting.title}}</md-card-title>
         </md-card-header>
-        <img md-card-image *ngIf="s.slidesSetting.banner && s.slidesSetting.banner.path" [src]="s.slidesSetting.banner.path">
-        <img md-card-image *ngIf="!s.slidesSetting.banner || !s.slidesSetting.banner.path " [src]="'assets/svg.png'" >
+        <img md-card-image *ngIf="s.slidesSetting.banner && s.slidesSetting.banner.path" class="banner" [src]="s.slidesSetting.banner.path">
+        <img md-card-image *ngIf="!s.slidesSetting.banner || !s.slidesSetting.banner.path " class="banner" [src]="'assets/svg.png'" >
         <md-card-content class="description" >
           {{s.slidesSetting.description}}
         </md-card-content>
         <md-chip-list>
-          <md-chip *ngFor="let tag of s.slidesSetting.tags">{{tag}}</md-chip>
+          <md-chip class="tags" *ngFor="let tag of s.slidesSetting.tags" >{{tag}}</md-chip>
         </md-chip-list>
-        <md-card-actions>
+        <md-card-footer class="margin-frame">
+        <md-card-actions class="actions col-xs-4 col-sm-3  col-md-12 col-lg-12">
           <button md-button class="accent"  [routerLink]="['/slides/slidesPresentation', s._id]">DISPLAY</button>
           <button md-button class="accent" *ngIf="(loggedIn$|async) && ((username$|async) === s.slidesSetting.author)&&editable" [routerLink]="['slides', s._id]">EDIT</button>
           <md-checkbox *ngIf="(loggedIn$|async) && ((username$|async) === s.slidesSetting.author)&&editable" (change)="publish(s)" [checked]="s.slidesSetting.public">PUBLIC</md-checkbox>
         </md-card-actions>
+          </md-card-footer>
       </md-card>
     </div>
 

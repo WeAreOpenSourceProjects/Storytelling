@@ -16,19 +16,26 @@
         md-card-title {
             font-weight: bold;
         }
-
-      .description {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            line-height: 16px;
-            /* fallback */
-            max-height: 32px;
-            /* fallback */
-            -webkit-line-clamp: 2;
-            /* number of lines to show */
-            -webkit-box-orient: vertical;
+        @media only screen and (min-width: 768px) {
+          .actions {
+            margin :1%
+          }
         }
+      
+      .description {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        line-height: 16px;
+        /* fallback */
+        height: 32px;
+        /* fallback */
+        -webkit-line-clamp: 2;
+        /* number of lines to show */
+        -webkit-box-orient: vertical;
+        margin : 3%;
+        max-width: 90%;
+      }
     }
   .space {
     margin-left : 0%
@@ -36,4 +43,32 @@
 }
 .display-div{
   display :none;
+}
+
+.list-item {
+  height: 450px;
+  max-height: 100%;
+}
+
+.margin-frame {
+
+}
+
+.slide{
+  height: 97%;
+  width :  100%;
+  padding-right: 0;
+  padding-left: 0;
+}
+.banner {
+  height: 60%;
+  width :  100%;
+  margin:0;
+}
+.row {
+  height:100%;
+}
+.tags {
+  margin-left : 5% !important;
+
 }

@@ -53,7 +53,7 @@ exports.createServer = function(req, res) {
     // No error occured.
     console.log(data);
     path = fs.readFileSync(data.link);
-    let filePath=data.link;
+    var filePath = data.link;
     var image = new Image({
       data: path,
       path: 'data:image/png;base64,' + path.toString('base64')
@@ -63,12 +63,12 @@ exports.createServer = function(req, res) {
       if (err) {
         console.log(err);
       }
-      else{
-        fs.unlinkSync(filePath);//delete the image in server
+      else {
+        fs.unlinkSync(filePath);// delete the image in server
         console.log("deleted");
       }
     });
-    return res.send({link:image.path});
+    return res.send({ link: image.path });
   });
 }
 exports.create = function(req, res) {
@@ -94,24 +94,31 @@ exports.create = function(req, res) {
         console.log(err);
       }
     });
-    return res.send(image._id);
+    return res.send(image);
 
   });
 };
 /**
  * Show the current image
  */
-exports.read = function(req, res) {
+exports.read = function(req, res, next, id) {
   // convert mongoose document to JSON
-  var image = req.image ? req.image : {};
-
-
-  // Add a custom field to the image, for determining if the current User is the "owner".
-  // NOTE: This field is NOT persisted to the database, since it doesn't exist in the image model.
-  image.isCurrentUserOwner = !!(req.user && image.user && image.user._id.toString() === req.user._id.toString());
-  res.contentType(image.contentType);
-  res.sent(image);
-
+  console.log('id', req.params.imageByID);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'slide is invalid'
+    });
+  }
+  mongoose.set('debug', true);
+  Image.findById(id).exec(function (err, image) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.send(image);
+    }
+  });
 };
 
 
@@ -233,6 +240,7 @@ exports.imageByID = function(req, res, next, id) {
   }
 
   Image.findById(id).populate('user', 'displayName').exec(function(err, image) {
+    console.log(id);
     if (err) {
       return next(err);
     } else if (!image) {
@@ -240,7 +248,6 @@ exports.imageByID = function(req, res, next, id) {
         message: 'No image with that identifier has been found'
       });
     }
-    req.image = image;
-    next();
+    res.json(image.path);
   });
 };
