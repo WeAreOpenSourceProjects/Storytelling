@@ -123,10 +123,10 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     }
     confirmSlide() {
         /* to decide which data to take from tab*/
-        console.log()
+
         if (this.slide.hasGraph && !(this.form.value.slideGraph == 'noGraph' || this.form.value.slideGraph == 'image')) {
             switch (this.dataInputTab.selectedIndex) {
-              // default data
+                // default data
                 case 0: {
                     if (this.form.value.slideGraph == 'barChart')
                         this.slide.data = this.form.value.graphData;
@@ -138,7 +138,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
                     let data;
                     try {
                         data = JSON.parse(this.form.value.graphDataJson);
-                        console.log("data here",this.form.value.graphDataJson);
+                        console.log("data here", this.form.value.graphDataJson);
                         this.slide.data = data.graphData;
                     }
                     catch (e) {
@@ -181,7 +181,6 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
 
     }
     deleteSlide(e) {
-        console.log("delete detect");
         this.deleteSlideOpt.emit(this.slideIndex);
     }
     initData() {
@@ -198,23 +197,27 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     }
     initJson() {
         //change json sample
-        console.log("force data:", this.slide.data, this.slide.data == []);
-        if (this.slide.data == undefined) return;
-        if (this.slide.data.length && this.form.value.slideGraph == this.slide.graph) {
+        
+        //the slide data is already set
+        if (this.slide.data != undefined) {
+            if (this.slide.data.length && this.form.value.slideGraph == this.slide.graph) {
 
-            this.curTab = 1;
-            let data = { "graphData": this.slide.data };
-            console.log(data);
-            this.form.controls['graphDataJson'].setValue(JSON.stringify(data));
-        } else {
-            switch (this.form.value.slideGraph) {
-                case "barChart": this.form.controls['graphDataJson'].setValue(barCharDataExample); break;
-                case "forceDirectedGraph": this.form.controls['graphDataJson'].setValue(forceDirectedGraphDataExample); break;
-                case "lineChart": this.form.controls['graphDataJson'].setValue(lineChartExample); break;
-                case "treemapChart": this.form.controls['graphDataJson'].setValue(treemapChartExample); break;
-                default: ;
+                this.curTab = 1;
+                let data = { "graphData": this.slide.data };
+                console.log(data);
+                this.form.controls['graphDataJson'].setValue(JSON.stringify(data));
+                return;
             }
         }
+        // the slide data has not been set
+        switch (this.form.value.slideGraph) {
+            case "barChart": this.form.controls['graphDataJson'].setValue(barCharDataExample); break;
+            case "forceDirectedGraph": this.form.controls['graphDataJson'].setValue(forceDirectedGraphDataExample); break;
+            case "lineChart": this.form.controls['graphDataJson'].setValue(lineChartExample); break;
+            case "treemapChart": this.form.controls['graphDataJson'].setValue(treemapChartExample); break;
+            default: ;
+        }
+
     }
     pageLayoutChange() {
         switch (this.form.value.pageLayout) {
@@ -233,7 +236,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         try {
             let j = JSON.parse(json);
             if (this.form.value.slideGraph == "lineChart") {
-                console.log("json",j);
+                console.log("json", j);
                 this.csvJson.push(j)
             }
             else this.csvJson = j;
@@ -245,7 +248,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     /* image background*/
     setImageHtml(path) {
         console.log("image html");
-        this.slide.fullScreenHtml = "<img src='" + path + "' style='width:100%;height:100%'>";
+        this.slide.fullScreenHtml = "<img src]='" + path + "' style='width:100%;height:100%'>";
     }
 
 
