@@ -58,11 +58,46 @@ export class TreemapChartComponent implements OnInit, Chart {
             .tile(d3.treemapResquarify)
             .size([this.width, this.height])
             .round(true);
+            
+    // TODO: Move the transformation of the csv into a json in the form of silde creation
+    /************************************************************************************ */
+    d3.csv("./client/app/charts/treemap-chart/flare.csv", (error, flatData) => {
+        if (error) throw error;
 
-        this.root = d3.hierarchy(this.data[0])
-            .eachBefore(d => { d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name })
-            .sum(d => d.size)
-            .sort((a, b) =>  b.height - a.height || b.value - a.value);
+        // assign null correctly
+        flatData.forEach(function(d) {
+            if (d.size == "null") { d.size = null};
+        });
+
+        // convert the flat data into a hierarchy (treeData = json to record)
+        let treeData = d3.stratify()
+                        .id(function(d: any) { return d.name; })
+                        .parentId(function(d: any) { 
+                var i = d.name.lastIndexOf("."); 
+                return i >= 0 ? d.name.slice(0, i) : null; 
+            })
+                        (flatData);
+
+        // assign the name to each node
+        treeData.each(function(d: any) {
+            var i = d.id.lastIndexOf("."); 
+             d.name =  i >= 0 ? d.id.slice(i+1, d.id.length) : d.id;
+        });
+        
+    /************************************************************************************ */
+        
+
+    //  assigns the data to a hierarchy using parent-child relationships
+    this.root = d3.hierarchy(treeData
+        .eachBefore(function(d: any) { d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name })
+        .sum(function(d: any) {return d.size})
+        .sort((a, b) =>  b.height - a.height || b.value - a.value));
+
+    // Instead of parsing a csv, we can use json recorded :
+    /*this.root = d3.hierarchy(this.data[0])
+        .eachBefore(d => { d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name })
+        .sum(d => d.size)
+        .sort((a, b) =>  b.height - a.height || b.value - a.value);*/
 
         this.node = this.root;
 
@@ -107,6 +142,10 @@ export class TreemapChartComponent implements OnInit, Chart {
 
         // When we click outside the graph, we reinit it
         d3.select(window).on("click", () => this.zoom(this.root, this.xScale, this.yScale));
+    });
+        
+
+       
     }
     
     
