@@ -8,20 +8,20 @@
 
     <!--full screen :chart -->
     <app-full-screen-graph-slide *ngIf="(slide.pageLayout=='FullScreenGraph'&&slide.graph!='image')"
-       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" >
+       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" [slideease$]="slideease$" >
     </app-full-screen-graph-slide>
-  
+
     <!--left text right grah-->
     <!--left graph right text-->
     <app-graph-text-slide *ngIf="slide.pageLayout=='LeftTextRightGraph'||slide.pageLayout=='LeftGraphRightText'"
-       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" >
+       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" [slideease$]="slideease$">
     </app-graph-text-slide>
 
     <!--full screen :text-->
     <!--full screen :img-->
     <!--full screen :imgback + text-->
     <app-text-slide *ngIf="slide.pageLayout=='textInCenter'||slide.pageLayout=='textInCenterImageBackground'"
-       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" >
+       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" [slideease$]="slideease$">
     </app-text-slide>
 
 

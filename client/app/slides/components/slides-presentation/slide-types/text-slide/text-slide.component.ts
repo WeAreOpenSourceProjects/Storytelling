@@ -17,6 +17,7 @@ export class TextSlideComponent implements OnInit {
   @Input() slide: Slide;
   @Input() pos: number;
   @Input() slideload$: Observable<number>;
+  @Input() slideease$: Observable<number>;
   @ViewChild('chart') chartEle: Chart;
   config: PageConfig;
   loadContentAni: boolean;
@@ -27,8 +28,10 @@ export class TextSlideComponent implements OnInit {
   ngOnInit() {
     this.setConfig();
     this.slideload$.filter(n => n === this.pos).subscribe(() => {
-      this.easeContent();
       this.loadContent();
+    })
+    this.slideease$.filter(n => n === this.pos).subscribe(() => {
+      this.easeContent();
     })
   }
 

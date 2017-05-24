@@ -16,6 +16,7 @@ export class GraphTextSlideComponent implements OnInit, AfterViewInit {
   @Input() slide: Slide;
   @Input() pos: number;
   @Input() slideload$: Observable<number>;
+  @Input() slideease$: Observable<number>;
 
   @ViewChild('parent', {read: ViewContainerRef})
   parent: ViewContainerRef;
@@ -38,10 +39,12 @@ export class GraphTextSlideComponent implements OnInit, AfterViewInit {
     this.setChart(cmpType);
     setTimeout(_ => this.initChart());
     this.slideload$.filter(n => n === this.pos).subscribe(() => {
-      this.easeChart();
       this.loadChart();
-      this.easeContent();
       this.loadContent();
+    })
+    this.slideease$.filter(n => n === this.pos).subscribe(() => {
+      this.easeChart();
+      this.easeContent();
     })
   }
 
