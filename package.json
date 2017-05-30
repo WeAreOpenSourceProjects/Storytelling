@@ -38,6 +38,7 @@
     "@swimlane/ngx-charts": "^5.3.1",
     "@swimlane/ngx-ui": "^16.0.1",
     "@types/d3": "^4.7.0",
+    "@types/lodash": "^4.14.64",
     "@types/redux-localstorage": "1.0.2",
     "acl": "~0.4.9",
     "angular2-font-awesome": "^1.2.0",
