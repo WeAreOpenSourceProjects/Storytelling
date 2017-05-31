@@ -11,7 +11,7 @@ import {Chart} from '../chart.interface';
 })
 export class TreemapChartComponent implements OnInit, Chart {
     @ViewChild('chart') private chartContainer: ElementRef;
-    private data: Array<any> = sample;
+    private data: Array<any>;
     private curtain: any; //for animation
     private margin: any = { top: 20, bottom: 20, left: 20, right: 20 };
     private chart: any;
@@ -29,8 +29,7 @@ export class TreemapChartComponent implements OnInit, Chart {
     }
 
     setData(data) {
-        if (data.length == 0) return;
-        this.data = sample;
+        (data.length == 0) ? this.data = sample[0] : this.data = data; 
     }
     
     init() {
@@ -191,7 +190,7 @@ export class TreemapChartComponent implements OnInit, Chart {
 }
 
 const sample = [
-    {
+    [{
         "name": "flare",
         "children": [{
             "name": "analytics",
@@ -559,5 +558,5 @@ const sample = [
    ]
   }
  ]
-}
+}]
 ]
