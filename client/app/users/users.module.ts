@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 // MATERIAL DESIGN MODULES
 import { MaterialModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {XHRBackend, Http, RequestOptions} from "@angular/http";
 
 // LOGIN COMPONENTS
 import { LoginComponent, RegisterComponent, SettingsComponent, ProfileComponent,
@@ -24,7 +23,7 @@ export function usersFactory(config: UsersConfig) {
 @NgModule({
   imports: [
     USERS_ROUTES,
-    MaterialModule.forRoot(),
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule

@@ -1,0 +1,1 @@
+export * from './graph-text-slide.component';

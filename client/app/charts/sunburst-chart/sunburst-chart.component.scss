@@ -1,0 +1,37 @@
+
+:host {
+  width: 100%;
+
+  .d3-chart {
+    height: 600px;
+    width: 100%;
+  }
+
+  #sequence text {
+    font-weight: 600;
+    fill: #fff;
+  }
+
+  #chart path {
+    stroke: #fff;
+  }
+
+  #explanation {
+    color: #666;
+    height: 100px;
+    line-height: 100px;
+    position: relative;
+    text-align: center;
+    width: 140px;
+
+    div {
+      display: inline-block;
+      line-height: normal;
+      vertical-align: middle;
+    }
+  }
+
+  #percentage {
+    font-size: 2.5em;
+  }
+}

@@ -93,7 +93,7 @@ module.exports.initMiddleware = function(app) {
   // Add the cookie parser and flash middleware
   app.use(cookieParser());
   app.use(flash());
-  app.use(express.static('public'))
+  app.use(express.static('public'));
 
   // Authorize Request
   app.use(authorization.authorize);

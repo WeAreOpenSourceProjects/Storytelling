@@ -24,7 +24,7 @@ export class SlidesManagerComponent implements OnInit {
       this.slidesService.getSlidesList()
           .subscribe(
           slide => {
-              console.log(slide);
+              console.log('toto: ', slide);
               /*slide.forEach(s => this.slides.push(new SlidesListItem(s.slidesSetting)))*/
               this.slides = slide;
               console.log(this.slides);
@@ -42,6 +42,7 @@ export class SlidesManagerComponent implements OnInit {
             .subscribe(slides => {
                 this.slides = [];
                 this.slides = slides;
+                console.log(slides);
             });
     }
 
@@ -52,6 +53,16 @@ export class SlidesManagerComponent implements OnInit {
                 this.slides = [];
                 this.slides = slides;
             });
+    }
+    refreshList() {
+        this.slidesService.getSlidesList()
+            .subscribe(
+                slide => {
+                    this.slides = slide;
+                },
+                error => {
+                    console.log('fail to get Slides list');
+                });
     }
 
 }

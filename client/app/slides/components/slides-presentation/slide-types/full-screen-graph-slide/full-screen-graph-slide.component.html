@@ -1,0 +1,16 @@
+<!--full screen :chart -->
+<!--full screen :text-->
+<!--left graph right text-->
+<md-grid-list cols="{{config.pageCol}}" class="slide">
+  <!--chart || image-->
+  <!--<md-grid-tile [colspan]="1">
+  </md-grid-tile>-->
+
+  <md-grid-tile [colspan]="1" [attr.id]="slide.graph">
+    <div id="parent" #parent></div>
+  </md-grid-tile>
+  <!-- text -->
+  <md-grid-tile [colspan]="1" align="center" *ngIf="config.hasText">
+    <div [innerHTML]="slide.text" align="left" [class.slideLeft]="loadContentAni" [class.slideRightOut]="easeContentAni"></div>
+  </md-grid-tile>
+</md-grid-list>

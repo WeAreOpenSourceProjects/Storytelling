@@ -1,0 +1,11 @@
+<!--full screen :img-->
+<!--full screen :text-->
+<!--full screen :imgback + text-->
+<md-grid-list cols="{{config.pageCol}}" class="secondecase">
+
+  <md-grid-tile [colspan]="1" align="center">
+    <div [innerHTML]="slide.fullScreenHtml" #chart style="height:100%;width:100%"> </div>
+    <div [innerHTML]="slide.text" style="position:absolute" *ngIf="config.hasText" [class.expandUp]="loadContentAni"></div>
+  </md-grid-tile>
+
+</md-grid-list>

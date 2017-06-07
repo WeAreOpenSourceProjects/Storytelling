@@ -65,7 +65,10 @@ build/
 local.properties
 
 # IntelliJ
-# ========
+# ===================
+.sublime-project
+*.sublime-project
+*.sublime-workspace
 *.iml
 
 # Cloud9 IDE
@@ -76,7 +79,9 @@ mongod
 
 # Visual Studio
 # =========
+.vscode/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
+

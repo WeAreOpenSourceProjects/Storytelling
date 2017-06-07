@@ -1,55 +1,28 @@
 <div class="slides" appScroll (mouseWheelUp)="lastSlide()" (mouseWheelDown)="nextSlide()" (stayProcess)="staySlideProcess()" #slider>
+  <!--slide title -->
   <div [ngStyle]="slideHeight_style" class="slide" id="slide-0">
-    <md-grid-list cols="1">
-      <md-grid-tile [colspan]="1">
-        <h1 class="expandUp">{{slideTitle}}</h1>
-      </md-grid-tile>
-    </md-grid-list>
+    <app-title-slide [slideTitle]="slideTitle"> </app-title-slide>
   </div>
+
   <div [ngStyle]="slideHeight_style" class="slide" [attr.id]="'slide-'+slide.index" *ngFor="let slide of slides; let i =index">
+
     <!--full screen :chart -->
-    <!--full screen :text-->
-    <!--left graph right text-->
-    <md-grid-list *ngIf="(slide.pageLayout=='FullScreenGraph'&&slide.graph!='image')||slide.pageLayout=='textInCenter'||slide.pageLayout=='LeftGraphRightText'" cols="{{pageLayoutConfig[i].pageCol}}" class="firstcase">
-      <!--chart || image-->
-      <md-grid-tile [colspan]="1" *ngIf="pageLayoutConfig[i].hasChart||pageLayoutConfig[i].hasImage" [attr.id]="slide.graph" [ngSwitch]="slide.graph">
-        <app-force-directed-graph class="chart" #chart *ngSwitchCase="'forceDirectedGraph'"></app-force-directed-graph>
-        <app-bar-chart class="chart" #chart *ngSwitchCase="'barChart'"></app-bar-chart>
-        <app-line-chart class="chart" #chart *ngSwitchCase="'lineChart'"></app-line-chart>
-        <div class="chart" [innerHTML]="slide.fullScreenHtml" #chart *ngSwitchDefault></div>
-      </md-grid-tile>
-      <!-- text -->
-      <md-grid-tile [colspan]="1" align="center" *ngIf="pageLayoutConfig[i].hasText">
-        <div [innerHTML]="slide.text" align="left" [class.slideLeft]="loadContentAni[i]" [class.slideRightOut]="easeContentAni[i]"></div>
-      </md-grid-tile>
-    </md-grid-list>
+    <app-full-screen-graph-slide *ngIf="(slide.pageLayout=='FullScreenGraph'&&slide.graph!='image')"
+       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" [slideease$]="slideease$" >
+    </app-full-screen-graph-slide>
 
     <!--left text right grah-->
-    <md-grid-list *ngIf="slide.pageLayout=='LeftTextRightGraph'" cols="{{pageLayoutConfig[i].pageCol}}" class="thirdcase">
+    <!--left graph right text-->
+    <app-graph-text-slide *ngIf="slide.pageLayout=='LeftTextRightGraph'||slide.pageLayout=='LeftGraphRightText'"
+       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" [slideease$]="slideease$">
+    </app-graph-text-slide>
 
-      <md-grid-tile [colspan]="1" align="center" *ngIf="pageLayoutConfig[i].hasText">
-        <div [innerHTML]="slide.text" align="left" [class.slideRight]="loadContentAni[i]" [class.slideLeftOut]="easeContentAni[i]"></div>
-      </md-grid-tile>
-      <md-grid-tile [colspan]="1" *ngIf="pageLayoutConfig[i].hasChart||pageLayoutConfig[i].hasImage" [attr.id]="slide.graph" [ngSwitch]="slide.graph">
-        <app-force-directed-graph class="chart" #chart *ngSwitchCase="'forceDirectedGraph'"></app-force-directed-graph>
-        <app-bar-chart class="chart" #chart *ngSwitchCase="'barChart'"></app-bar-chart>
-        <app-line-chart class="chart" #chart *ngSwitchCase="'lineChart'"></app-line-chart>
-        <div class="chart" #chart *ngSwitchDefault></div>
-      </md-grid-tile>
-    </md-grid-list>
+    <!--full screen :text-->
     <!--full screen :img-->
     <!--full screen :imgback + text-->
-    <md-grid-list *ngIf="(pageLayoutConfig[i].isFullScreen&&!pageLayoutConfig[i].hasChart&&!pageLayoutConfig[i].hasText)||slide.pageLayout=='textInCenterImageBackground'" cols="{{pageLayoutConfig[i].pageCol}}" class="secondecase">
-
-      <md-grid-tile [colspan]="1" align="center">
-
-        <div [innerHTML]="slide.fullScreenHtml" #chart style="height:100%;width:100%"> </div>
-        <div [innerHTML]="slide.text" style="position:absolute" *ngIf="pageLayoutConfig[i].hasText" [class.expandUp]="loadContentAni[i]"></div>
-      </md-grid-tile>
-
-
-    </md-grid-list>
-
+    <app-text-slide *ngIf="slide.pageLayout=='textInCenter'||slide.pageLayout=='textInCenterImageBackground'"
+       [slide] = "slide" [pos]="i+1"  [slideload$]="slideload$" [slideease$]="slideease$">
+    </app-text-slide>
 
 
   </div>

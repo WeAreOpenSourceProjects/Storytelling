@@ -1,4 +1,4 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER, ModuleWithProviders } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 
@@ -7,10 +7,10 @@ import { MaterialModule } from '@angular/material';
 import { Angular2FontAwesomeModule } from 'angular2-font-awesome/angular2-font-awesome';
 
 // HTTP PROVIDER
-import { Http, XHRBackend, RequestOptions } from "@angular/http";
+import { HttpModule, Http, XHRBackend, RequestOptions } from "@angular/http";
 
 // CORE COMPONENTS
-import { AppToolbarComponent, AppSidenavComponent, NotFoundPageComponent, BadRequestPageComponent } from ".";
+import { AppToolbarComponent, AppSidenavComponent, NotFoundPageComponent, BadRequestPageComponent } from '.';
 
 // CORE SERVICES
 import { SessionActions, MenuService, ToggleNavService, InterceptedHttp } from '.';
@@ -25,7 +25,8 @@ export function httpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptio
   imports: [
     RouterModule,
     Angular2FontAwesomeModule,
-    MaterialModule.forRoot(),
+    HttpModule,
+    MaterialModule,
     CommonModule
   ],
   declarations: [
@@ -42,9 +43,9 @@ export function httpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptio
   ], 
   exports: [ 
     AppToolbarComponent,
-    AppSidenavComponent, 
-    NotFoundPageComponent, 
-    BadRequestPageComponent 
+    AppSidenavComponent,
+    NotFoundPageComponent,
+    BadRequestPageComponent
   ]
 })
 

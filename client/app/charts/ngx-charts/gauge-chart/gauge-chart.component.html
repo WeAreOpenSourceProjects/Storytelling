@@ -1,0 +1,21 @@
+<ngx-charts-gauge
+    class="chart-container"
+    [view]="view"
+    [legend]="showLegend"
+    [legendTitle]="legendTitle"
+    [results]="data"
+    [textValue]="gaugeTextValue"
+    [scheme]="colorScheme"
+    [min]="gaugeMin"
+    [max]="gaugeMax"
+    [units]="gaugeUnits"
+    [angleSpan]="gaugeAngleSpan"
+    [startAngle]="gaugeStartAngle"
+    [showAxis]="gaugeShowAxis"
+    [bigSegments]="gaugeLargeSegments"
+    [smallSegments]="gaugeSmallSegments"
+    [margin]="margin ? [marginTop, marginRight, marginBottom, marginLeft] : null"
+    [tooltipDisabled]="tooltipDisabled"
+    (select)="select($event)"
+    (legendLabelClick)="onLegendLabelClick($event)">
+</ngx-charts-gauge>

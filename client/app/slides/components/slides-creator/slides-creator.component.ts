@@ -32,7 +32,6 @@ export class SlidesCreatorComponent implements OnInit, AfterViewChecked {
         this.slider = new Slides();
         this.editorValid = this.validService.validAll$.subscribe(
             valid => {
-               console.log('valid', valid);
                if (valid)
                     this.isValidated = true;
                else this.isValidated = false;
@@ -50,9 +49,6 @@ export class SlidesCreatorComponent implements OnInit, AfterViewChecked {
     /*create a new slides*/
     createSlides() {
         this.slider = this._editor.slider;
-        console.log(this.slider);
-        console.log('get slier from editor', this.slider);
-        // console.log(this.router);
         this.editorValid = this.slidesService.submitSlides(this.slider)
             .subscribe(
                 data => {

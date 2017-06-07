@@ -55,13 +55,4 @@ export class SlidesEditorComponent implements OnInit, AfterViewChecked {
             error => console.log(error));
     }
 
-    /*delete the whole slides*/
-    deleteSlides() {
-        this.slidesService.deleteSlides(this.slider._id)
-            .subscribe(res => {
-                console.log("update succesfully");
-                this.router.navigate(['/slides']);
-            },
-            error => console.log(error));
-    }
 }

@@ -9,7 +9,12 @@ import { Angular2FontAwesomeModule } from 'angular2-font-awesome/angular2-font-a
 // MATERIAL DESIGN MODULES
 import { MaterialModule, OverlayContainer } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs';
+
+// NGX-CHARTS MODULE
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 // APP ROUTING
 import { AppRoutingModule } from './app-routing.module';
@@ -19,8 +24,6 @@ import { AppComponent } from ".";
 import { CoreModule, StoreModule } from "app/core";
 // HOME MODULE
 import { HomeModule } from 'app/home';
-// ARTICLES CONFIG
-import { ArticlesConfigModule } from 'app/articles/config';
 // SLIDES CONFIG
 import { SlidesConfigModule } from 'app/slides';
 // USER MODULE
@@ -34,12 +37,13 @@ import { UsersModule } from "app/users";
     ReactiveFormsModule,
     FormsModule,
     Angular2FontAwesomeModule,
-    MaterialModule.forRoot(),
+    MaterialModule,
+    FlexLayoutModule,
     BrowserAnimationsModule,
     StoreModule,
     CoreModule,
+    NgxChartsModule,
     UsersModule.forRoot(),
-    ArticlesConfigModule.forRoot(),
     SlidesConfigModule.forRoot(),
     AppRoutingModule,
     HomeModule,

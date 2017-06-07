@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // SLIDES COMPONENTS
-import { SlidesPresentationComponent, SlidesCreatorComponent, SlidesListComponent, SlidesEditorComponent,SlidesManagerComponent} from '.';
+import { SlidesPresentationComponent, SlidesCreatorComponent, SlidesEditorComponent,SlidesManagerComponent} from '.';
 
 import { Auth } from 'app/users';
 

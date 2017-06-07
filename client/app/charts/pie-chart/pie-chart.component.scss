@@ -1,0 +1,25 @@
+.arc text {
+	font: 10px sans-serif;
+	text-anchor: middle;
+}
+
+.arc path {
+	stroke: #fff;
+}
+
+:host {
+	width: 100%;
+  .d3-chart {
+	width: 100%;
+	height: 400px;
+ }
+
+ .d3-chart .arc path {
+	stroke: #fff;
+ }
+
+ .d3-chart .arc text {
+	font: 10px sans-serif;
+	text-anchor: middle;
+ }
+}

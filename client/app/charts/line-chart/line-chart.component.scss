@@ -1,5 +1,49 @@
+$axisColor: #4c4c4c;
 
-.d3-chart {
-  width: 100%;
-  height: 400px;
+:host {
+    width: 100%;
+
+    .d3-chart {
+        width: 100%;
+        height: 500px;
+    }
+
+    /deep/ .axis {
+        text {
+            fill: $axisColor;
+            font-size: 14px;
+        }
+
+        line,
+        path {
+            stroke: $axisColor;
+        }
+    }
+
+    /deep/ .line {
+        clip-path: url("#clip");
+    }
+    /deep/ .dots {
+        clip-path: url("#clip2");
+    }
+    /*.area {
+        fill: steelblue;
+        clip-path: url("#clip");
+    }*/
+    /deep/ .zoom {
+        cursor: move;
+        fill: none;
+        pointer-events: all;
+    }
+}
+
+:host /deep/ .tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0;
+    border-radius: 8px;
+    pointer-events: none;
 }

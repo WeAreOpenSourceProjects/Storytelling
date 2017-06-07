@@ -19,7 +19,10 @@ export class ImageUploadComponent implements OnInit {
     @Input() label = 'Choose Image';
     public uploader: FileUploader = new FileUploader({url: URL, itemAlias: 'banner'});
 
+    fileUpload: any;
     image: any = undefined;
+    imgPreview  = '';
+    id: any;
     constructor(private el: ElementRef, private slidesService: SlidesService) {
     }
     ngOnInit() {}
@@ -29,8 +32,11 @@ export class ImageUploadComponent implements OnInit {
         const formData = new FormData(inputEl);
         if (fileCount > 0) { // a file was selected
             formData.append('banner', inputEl.files[0]);
-            this.slidesService.uploadImage(formData).subscribe( id => {
-                this.uploadImage.emit(id);
+            this.slidesService.uploadImage(formData).subscribe( image => {
+                this.uploadImage.emit(image._id);
+                this.imgPreview = image.path;
+                console.log("get image");
+                this.setImage.emit(image.path);
             });
         }
     }
