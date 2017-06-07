@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
         this.noResult=false;
         this.noPublish=false;
         this.states = ['All'];
-        this.toSearch = { title: '', filter: 'Public' };
+        this.toSearch = { title: '', filter: 'All' };
     }
 
 
