@@ -1,31 +1,40 @@
-@import 'client/theme.scss';
+// @import 'client/theme.scss';
 
-.chart {
-    padding: 20px;
-    width: 100%;
-}
+// .chart {
+//     padding: 20px;
+//     width: 100%;
+// }
+
 
 .slides {
     .slide {
-        //  background-color: $accent;
-        md-grid-tile {
-            overflow: visible;
-        }
-        md-grid-list,
-        md-grid-tile {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            height: 100%;
-            overflow: visible;
-        }
-        .graph-container{
-          width: 100%;
-          height: 100%;
-        }
-        h2 {
-            color: $accent;
-            font-size: $lg;
-        }
+        width: 100%;
+        height: 100%;
     }
-
 }
+
+
+// .slides {
+//     .slide {
+//          background-color: $accent;
+//         md-grid-tile {
+//             overflow: visible;
+//         }
+//         md-grid-list,
+//         md-grid-tile {
+//             padding-top: 0 !important;
+//             padding-bottom: 0 !important;
+//             height: 100%;
+//             overflow: visible;
+//         }
+//         .graph-container{
+//           width: 100%;
+//           height: 100%;
+//         }
+//         h2 {
+//             color: $accent;
+//             font-size: $lg;
+//         }
+//     }
+
+// }

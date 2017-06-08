@@ -43,7 +43,6 @@ export class ValidService {
               this.unvalidSlideList.forEach((l,i)=>{
                 if(l>index) this.unvalidSlideList[i]--;
               })
-              console.log(this.unvalidSlideList);
             }
 
         }
@@ -60,14 +59,12 @@ export class ValidService {
 
         /* check the valid for all pages*/
         if (this.unvalidSlideList.length) {
-          console.log(this.unvalidSlideList);
             this.validSlideSource.next(false);
         }
         else {
             this.validSlideSource.next(true);
         }
         this.changeValidStatus();
-        //console.log("slide value",  this.unvalidSlideList,this.validSlide);
     }
     changeSettingValid(status) {
         this.validSettingSource.next(status);

@@ -18,6 +18,8 @@ export class CsvInputComponent implements OnInit {
 
     //var csv is the CSV file with headers
     csvJSON(csv) {
+      try{
+        if(csv=="") return null;
         var lines = csv.split("\n");
         lines.forEach((l, i) => {
             if (l == "") lines.splice(i, 1);
@@ -38,24 +40,16 @@ export class CsvInputComponent implements OnInit {
             result.push(obj);
 
         }
-
+        //console.log(JSON.stringify(result));
         //return result; //JavaScript object
-        return JSON.stringify(result); //JSON
+        //return JSON.stringify(result); //JSON
+        return result;
+      }
+      catch(e){
+        console.log(e);
+        return null;
+      }
 
-        /*var array = this.CSVToArray(csv,",");
-        var objArray = [];
-        for (var i = 1; i < array.length; i++) {
-            objArray[i - 1] = {};
-            for (var k = 0; k < array[0].length && k < array[i].length; k++) {
-                var key = array[0][k];
-                objArray[i - 1][key] = array[i][k]
-            }
-        }
-
-        var json = JSON.stringify(objArray);
-        var str = json.replace(/},/g, "},\r\n");
-
-        return str;*/
     }
     CSVToArray(strData, strDelimiter) {
         // Check to see if the delimiter &œis defined. If not,

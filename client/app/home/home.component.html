@@ -1,14 +1,23 @@
 <div class="logo" [class.hide]="showSlidesList">
   <img src="assets/logo.png" width="100%">
 </div>
-<br>
-<div class="container-fluid search-block" [class.center-mode]="!showSlidesList" [class.side-mode]="showSlidesList">  
+<br *ngIf="!showSlidesList">
+<div class="container-fluid search-block" [class.center-mode]="!showSlidesList" [class.side-mode]="showSlidesList">
   <div class="row space search-wrap">
     <app-search (textSearch)="searchSlides($event)" class="search"></app-search>
-    <app-filter class="filter" *ngIf="loggedIn$ | async" (filterState)="filterState($event)" [states]="states"></app-filter>
+    <app-filter class="filter" *ngIf="loggedIn$ | async" (filterState)="filterState($event)" [selectedValue]= "selectedValue" [states]="states"></app-filter>
   </div>
 
-  <p align="center" class="get-all center-mode "  *ngIf="!showSlidesList" (click)="getAllslides()">Discover All</p>
-</div>
+  <p align="center" class="get-all center-mode " *ngIf="!showSlidesList" (click)="getAllslides()">Discover All</p>
+  <div class="row">
+    <div *ngFor="let s of slides" [class.display-div]="!(loggedIn$|async)&& !s.slidesSetting.public" class="list-item slides-item col-xs-12 col-sm-6  col-md-4 col-lg-3">
+      <app-slides-card [slides]="s" [editable]="false"></app-slides-card>
+    </div>
 
-<app-slides-list *ngIf="showSlidesList" [slides]="slides" [editable]="false"></app-slides-list>
+  </div>
+  <div class="no-result" *ngIf="noResult">
+    <p>Opps, no result for these key words</p>
+  </div>
+  <div class="no-publish" *ngIf="noPublish">
+    <p>Sorry, no one publish slides yet! <br>Would you want to be the pioneer?</p>
+  </div>

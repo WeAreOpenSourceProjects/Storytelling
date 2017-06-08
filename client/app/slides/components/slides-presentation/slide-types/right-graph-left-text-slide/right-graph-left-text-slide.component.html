@@ -1,0 +1,8 @@
+<div fxLayout="row" fxFill>
+  <div fxFlex="50%" *ngIf="config.hasText">
+    <div [innerHTML]="slide.text" align="left" [class.slideRight]="loadContentAni" [class.slideLeftOut]="easeContentAni"></div>
+  </div>
+  <div fxFlex="50%" [attr.id]="slide.graph" fxFill>
+    <ng-template #parent></ng-template>
+  </div>
+</div>

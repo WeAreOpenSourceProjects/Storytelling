@@ -13,22 +13,27 @@ import { Slides } from 'app/slides';
 export class HomeComponent implements OnInit {
     @select(['session', 'token']) loggedIn$: Observable<string>;
 
-    private showSlidesList: boolean;
+    slides: Array<Slides> = [];
+    showSlidesList: boolean;
+    noResult: boolean;
+    noPublish: boolean;
     private states: Array<string>;
+    private selectedValue: string;
     private toSearch;
-    private slides: Array<Slides> = [];
-
 
     constructor(private slidesService: SlidesService) { }
 
     ngOnInit() {
         this.showSlidesList = false;
-        this.states = ['All'];
+        this.noResult = false;
+        this.noPublish = false;
+        this.states = ['Public'];
+        this.selectedValue = 'Public';
         this.toSearch = { title: '', filter: 'Public' };
     }
 
 
-    private searchSlides(searchText) {
+    searchSlides(searchText) {
         //show slides and hide logo
         this.showSlidesList = true;
         //get search result
@@ -36,19 +41,28 @@ export class HomeComponent implements OnInit {
         this.slidesService.getSlideToSearch(this.toSearch)
             .subscribe(slides => {
                 this.slides = slides;
+                if (this.slides.length === 0) this.noResult = true;
+                else {
+                    this.noResult = false;
+                }
             });
     }
 
-    
+
     getAllslides() {
         this.showSlidesList = true;
         this.toSearch.title = '';
         this.slidesService.getSlideToSearch(this.toSearch)
             .subscribe(slides => {
                 this.slides = slides;
+                if(this.slides.length === 0) {
+                    this.noPublish = true;
+                } else {
+                    this.noPublish = false;
+                }
             });
     }
-    
+
     filterState(state) {
 
     }

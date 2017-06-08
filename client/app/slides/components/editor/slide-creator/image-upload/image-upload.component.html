@@ -2,5 +2,6 @@
   <label class="label">{{label}}</label><br><br>
   <input id="banner" type="file" [(ngModel)]="fileUpload" name="fileUpload" (change)="onChange()" />
   <!-- button to trigger the file upload when submitted -->
-  <img #fileDisplayArea  class="image-display">
+  <br/>
+  <img *ngIf="imgPreview.length" [src]="imgPreview" class="image-display">
 </form>

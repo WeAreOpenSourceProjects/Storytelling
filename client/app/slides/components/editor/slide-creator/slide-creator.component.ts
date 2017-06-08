@@ -3,6 +3,9 @@ import { FormGroup, FormControl, FormBuilder, Validators, FormArray  } from '@an
 import {ValidService} from '../../../services/valid.service';
 import {JsonValidator } from '../json-validator';
 
+import *  as sampleData from './data';
+
+
 import { Slide } from '../../../models/slide';
 @Component({
     selector: 'app-slide-creator',
@@ -26,15 +29,40 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         }, {
             value: "forceDirectedGraph",
             type: "Force Directed Graph"
+        }, {
+            value: "pieChart",
+            type: "Pie chart"
+        },
+        {
+            value: "HierarchicalEdgeBundling",
+            type: "Hierarchical edge bundling"
         },
         {
             value: "lineChart",
             type: "Line Chart"
         },
         {
-            value: "image",
-            type: "Image"
+            value: "advancedPieChart",
+            type: "Advanced Pie Chart"
         },
+        {
+            value: "gaugeChart",
+            type: "Gauge Chart"
+        },
+        {
+            value: "treemapChart",
+            type: "Treemap Chart"
+        },
+        {
+            value: "sunburstChart",
+            type: "Sunburst Chart"
+        },
+        /* hide image part
+      {
+          value: "image",
+          type: "Image"
+      },
+      */
         {
             value: "noGraph",
             type: "No Graph"
@@ -47,10 +75,12 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
             value: "textInCenter",
             type: "Text in Center"
         },
+        /* hide image part
         {
             value: "textInCenterImageBackground",
             type: "Text in Center + Image Background"
         },
+        */
         {
             value: "LeftGraphRightText",
             type: "Graph on Left +  Text on Right"
@@ -119,20 +149,15 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     }
     confirmSlide() {
         /* to decide which data to take from tab*/
-        console.log()
+
         if (this.slide.hasGraph && !(this.form.value.slideGraph == 'noGraph' || this.form.value.slideGraph == 'image')) {
             switch (this.dataInputTab.selectedIndex) {
+                //json input
                 case 0: {
-                    if (this.form.value.slideGraph == 'barChart')
-                        this.slide.data = this.form.value.graphData;
-                    else this.slide.data = [];
-                    break;
-                }
-                case 1: {
                     let data;
                     try {
                         data = JSON.parse(this.form.value.graphDataJson);
-                        console.log(data);
+                        console.log("data here", this.form.value.graphDataJson);
                         this.slide.data = data.graphData;
                     }
                     catch (e) {
@@ -140,7 +165,8 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
                     }
                     break;
                 }
-                case 2: {
+                //csv input
+                case 1: {
                     let data;
                     try {
                         //data = JSON.parse(this.csvJson);
@@ -166,6 +192,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         if (this.slideIndex) {
             this.slide.index = this.slideIndex;
         }
+        console.log('slide 1 confirme: ', this.slide);
         this.confirmSlideOpt.emit(this.slide);
         this.slide = new Slide();
 
@@ -174,7 +201,6 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
 
     }
     deleteSlide(e) {
-        console.log("delete detect");
         this.deleteSlideOpt.emit(this.slideIndex);
     }
     initData() {
@@ -191,22 +217,33 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     }
     initJson() {
         //change json sample
-        console.log("force data:", this.slide.data, this.slide.data == []);
-        if (this.slide.data == undefined) return;
-        if (this.slide.data.length && this.form.value.slideGraph == this.slide.graph) {
 
-            this.curTab = 1;
-            let data = { "graphData": this.slide.data };
-            console.log(data);
-            this.form.controls['graphDataJson'].setValue(JSON.stringify(data));
-        } else {
-            switch (this.form.value.slideGraph) {
-                case "barChart": this.form.controls['graphDataJson'].setValue(barCharDataExample); break;
-                case "forceDirectedGraph": this.form.controls['graphDataJson'].setValue(forceDirectedGraphDataExample); break;
-                case "lineChart": this.form.controls['graphDataJson'].setValue(lineChartExample); break;
-                default: ;
+        //the slide data is already set
+        if (this.slide.data != undefined) {
+            if (this.slide.data.length && this.form.value.slideGraph == this.slide.graph) {
+              //if has data, set tab to json
+                this.curTab = 0;
+                let data = { "graphData": this.slide.data };
+                console.log(data);
+                this.form.controls['graphDataJson'].setValue(JSON.stringify(data));
+                return;
             }
         }
+        // the slide data has not been set
+        switch (this.form.value.slideGraph) {
+            case "barChart": this.form.controls['graphDataJson'].setValue(barCharDataExample); break;
+            case "gaugeChart": this.form.controls['graphDataJson'].setValue(ngxSingleChartDataExample); break;
+            case "advancedPieChart": this.form.controls['graphDataJson'].setValue(ngxSingleChartDataExample); break;
+            case "forceDirectedGraph": this.form.controls['graphDataJson'].setValue(forceDirectedGraphDataExample); break;
+            case "lineChart": this.form.controls['graphDataJson'].setValue(lineChartExample); break;
+            case "treemapChart": this.form.controls['graphDataJson'].setValue(treemapChartExample); break;
+            case "pieChart": this.form.controls['graphDataJson'].setValue(pieChartExample); break;
+            case "sunburstChart": this.form.controls['graphDataJson'].setValue(sunburstChartExample); break;
+            case "HierarchicalEdgeBundling": this.form.controls['graphDataJson'].setValue(HierarchicalEdgeExample); break;
+
+            default: ;
+        }
+
     }
     pageLayoutChange() {
         switch (this.form.value.pageLayout) {
@@ -223,9 +260,12 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     }
     getCsvJson(json) {
         try {
-            let j = JSON.parse(json);
+            console.log(json);
+            let j = json;
+            //for the chars has many series
             if (this.form.value.slideGraph == "lineChart") {
-                this.csvJson.push(j)
+                this.csvJson = this.sortSeries(json);
+                //this.csvJson.push(j)
             }
             else this.csvJson = j;
         }
@@ -234,14 +274,54 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         }
     }
     /* image background*/
-    setImageHtml(html) {
-        this.slide.fullScreenHtml = "<img src='" + html + "' style='width:100%;height:100%'>";
+    setImageHtml(path) {
+        console.log("image html");
+        this.slide.fullScreenHtml = "<img src='" + path + "' style='width:100%;height:100%'>";
+    }
+    /* sort and group series of json data*/
+    sortSeries(data) {
+        let newJson = [];
+        let series = [];
+        let isInSeries = (name) => {
+            let index = -1;
+            for (let i = 0; i < series.length; i++) {
+
+                if (name == series[i]) {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        };
+        data.forEach(obj => {
+            let seriesIndex = isInSeries(obj["series"]);
+            if (seriesIndex != -1) {
+                newJson[seriesIndex].push(obj)
+                console.log("add to series", obj["series"]);
+            }
+            else {
+                series.push(obj["series"])
+                console.log(series);
+                let newSeries: Array<any> = [];
+                newSeries.push(obj);
+                newJson.push(newSeries);
+                console.log("create new series", obj["series"]);
+            }
+        })
+        console.log(newJson);
+        return newJson;
     }
 
 
 
 }
 
-const barCharDataExample = '{"graphData":[{"index":"index1","value":"21"},{"index":"index2","value":"20"}]}';
-const forceDirectedGraphDataExample = '{"graphData":{ "nodes": [{ "id": "a", "group": 1 },{ "id": "b", "group": 1 },{ "id": "c", "group": 2 },  { "id": "d", "group": 2 } ], "links": [{ "source": "a", "target": "b", "value": 1 },  { "source": "a", "target": "d", "value": 2 },{ "source": "b", "target": "c", "value": 3 },  { "source": "c", "target": "a", "value": 4 }  ]}}';
-const lineChartExample = '{"graphData":[[{"price" : "1394.46","date" : "Jan 2000",  "symbol" : "S&P 500"}, {"price" : "1366.42",  "date" : "Feb 2000","symbol" : "S&P 500"}, {  "price" : "1498.58","date" : "Mar 2000",  "symbol" : "S&P 500"}],[{"price" : "1285.36","date" : "Jan 2000",  "symbol" : "IBM"}, {"price" : "1299.98",  "date" : "Feb 2000","symbol" : "IBM"}, {  "price" : "1322.20","date" : "Mar 2000",  "symbol" : "IBM"}]]}';
+const ngxSingleChartDataExample = JSON.stringify(sampleData.single);
+const barCharDataExample =JSON.stringify(sampleData.barCharData);
+const forceDirectedGraphDataExample = JSON.stringify(sampleData.forceDirectedGraphData);
+const lineChartExample = JSON.stringify(sampleData.lineChartData);
+const pieChartExample =JSON.stringify(sampleData.pieChartData);
+
+const HierarchicalEdgeExample = JSON.stringify(sampleData.HierarchicalEdgeData);
+const treemapChartExample =JSON.stringify(sampleData.treemapChartData);
+const sunburstChartExample = JSON.stringify(sampleData.sunburstChartData);

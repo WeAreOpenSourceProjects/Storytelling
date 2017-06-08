@@ -30,44 +30,7 @@
 
           <div class="margin-ver-frame">
             <md-tab-group *ngIf="slide.hasGraph &&(form.controls.slideGraph.value)&& !(form.controls.slideGraph.value=='image'||form.controls.slideGraph.value=='noGraph')" [selectedIndex]="curTab" #dataInput>
-              <md-tab label="Input">
-                <div [ngSwitch]="form.controls.slideGraph.value">
-                  <div *ngSwitchCase="'barChart'" class="margin-frame">
-
-                    <table cellspacing="0" #dataTable>
-                      <tr>
-                        <th>X Axis</th>
-                        <th>Y Axis</th>
-                      </tr>
-                      <tr *ngFor="let data of form.controls.graphData.controls;let i=index" [formGroup]="data">
-                        <td>
-                          <md-input-container>
-                            <input mdInput placeholder="String/Number" formControlName="index">
-                          </md-input-container>
-                        </td>
-                        <td>
-                          <md-input-container>
-                            <input mdInput placeholder="Number" formControlName="value">
-                          </md-input-container>
-                        </td>
-                      </tr>
-                    </table>
-                    <a md-mini-fab (click)="addData()">
-                      <md-icon>add</md-icon>
-                    </a>
-                  </div>
-
-                  <div *ngSwitchCase="'forceDirectedGraph'" class="margin-frame">
-                    <h2>Use default data</h2>
-
-                  </div>
-                  <div *ngSwitchCase="'lineChart'" class="margin-frame">
-                    <h2>Use default data</h2>
-
-                  </div>
-                  <div *ngSwitchDefault></div>
-                </div>
-              </md-tab>
+            
               <md-tab label="Json">
                 <textarea name="graphDataJson" formControlName="graphDataJson"></textarea>
                 <p class="error" *ngIf=" form.controls.graphDataJson.invalid">Invalidate json format</p>
@@ -77,7 +40,7 @@
                 <app-csv-input (csv2json)="getCsvJson($event)"></app-csv-input>
               </md-tab>
             </md-tab-group>
-            <app-image-upload (uploadImage)="upload($event)" (setImage)="setImageHtml($event)" *ngIf="(slide.hasGraph&&form.controls.slideGraph.value=='image')||(this.form.value.pageLayout=='textInCenterImageBackground')"></app-image-upload>
+            <app-image-upload (setImage)="setImageHtml($event)" *ngIf="(slide.hasGraph&&form.controls.slideGraph.value=='image')||(this.form.value.pageLayout=='textInCenterImageBackground')"></app-image-upload>
 
           </div>
           <div class="margin-ver-frame" *ngIf="slide.hasText">

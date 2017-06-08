@@ -1,14 +1,27 @@
-.d3-chart {
-  width: 100%;
-  height:80vh;
+:host {
+    width: 100%;
 
-}
-.links line {
-  stroke: #999 ;
-  stroke-opacity: 0.6;
+    .d3-chart {
+        width: 100%;
+        height: 80vh;
+    }
 }
 
-.nodes circle {
-  stroke: #fff;
-  stroke-width: 1.5px;
+:host /deep/ .links line {
+    stroke: #999;
+    stroke-opacity: 0.6;
+}
+
+:host /deep/ .nodes circle {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    cursor: pointer;
+}
+
+:host /deep/ .legend-title {
+    font-size: 20px;
+}
+
+:host /deep/ text{
+  fill:#999;
 }

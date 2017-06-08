@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "client",
-      "outDir": "server/dist",
+      "outDir": "server/public",
       "assets": [
         "assets",
         "favicon.ico"
@@ -27,7 +27,7 @@
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
-  "../node_modules/froala-editor/js/froala_editor.pkgd.min.js"
+        "../node_modules/froala-editor/js/froala_editor.pkgd.min.js"
       ],
       "environmentSource": "environments/environment.ts",
 "environments": {

@@ -8,7 +8,8 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 export class FilterComponent implements OnInit {
   @Output() filterState = new EventEmitter();
   @Input() states = new Array<string>();
-  selectedValue = 'All';
+  @Input() selectedValue = '';
+
   constructor() { }
 
   ngOnInit() {

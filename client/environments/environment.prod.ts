@@ -3,7 +3,7 @@ export const environment = {
     backend: {
         protocol: 'http',
         host: 'localhost',
-        port: '3010',
+        port: '3000',
         endpoints: {
           signup: '/api/auth/signup',
           signin: '/api/auth/signin',

@@ -18,7 +18,8 @@ module.exports = function(app) {
   // Single image routes
   app.route('/api/images/:imageId').all(imagePolicy.isAllowed)
     .get(image.read)
-  //.put(image.update)    .delete(image.delete);
+    // .put(image.update)
+    .delete(image.delete);
 
 
 

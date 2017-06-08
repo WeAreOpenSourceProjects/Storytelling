@@ -19,7 +19,7 @@ export function homeFactory(config: HomeConfig) {
 @NgModule({
     imports: [
         FormsModule,
-        MaterialModule.forRoot(),
+        MaterialModule,
         CommonModule,
         SlidesModule
     ],
