@@ -34,6 +34,7 @@ exports.create = function(req, res) {
  * Show the current slide
  */
 exports.read = function(req, res) {
+  console.log("read");
   var slide = req.slide ? req.slide.toJSON() : {};
   slide.isCurrentUserOwner = !!(req.user && slide.user && slide.user._id.toString() === req.user._id.toString());
   res.json(slide);
@@ -108,13 +109,14 @@ exports.myList = function(req, res) {
  * slide middleware
  */
 exports.slideByID = function(req, res, next, id) {
+  console.log("find by id")
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'slide is invalid'
     });
   }
 
-  Slides.findById(id).populate('user', 'displayName').exec(function (err, slide) {
+  Slides.findById(id).exec(function (err, slide) {
     if (err) {
       return next(err);
     } else if (!slide) {

@@ -222,9 +222,9 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         }
     }
     /* image background*/
-    setImageHtml(path) {
-        console.log("image html");
-        this.slide.fullScreenHtml = "<img src='" + path + "' style='width:100%;height:100%'>";
+    setImageHtml(image) {
+      console.log(image);
+        this.slide.slideImage = image;
     }
     /* sort and group series of json data*/
     sortSeries(data) {

@@ -114,6 +114,7 @@ export class EditorComponent implements OnInit, OnChanges {
     slidesSettingChange(setting) {
 
         this.slider.slidesSetting = setting;
+
     }
     /* validate status change*/
     settingValidateChange(status) {

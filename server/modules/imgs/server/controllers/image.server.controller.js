@@ -40,18 +40,17 @@ if (!fs.existsSync(imageDir)) {
  */
 
 exports.createServer = function(req, res) {
-  console.log("created!!!!");
   // Store image.
   FroalaEditor.Image.upload(req, DIR, function(err, data) {
     // Return data.
-    console.log(req);
+    //console.log(req);
     if (err) {
       // An error occurred when uploading
       console.log(err);
       return res.status(422).send("an Error occured");
     }
     // No error occured.
-    console.log(data);
+  //  console.log(data);
     path = fs.readFileSync(data.link);
     var filePath = data.link;
     var image = new Image({
@@ -72,30 +71,34 @@ exports.createServer = function(req, res) {
   });
 }
 exports.create = function(req, res) {
-  console.log("created!!!!");
   // Store image.
-  var path = '';
-  upload(req, res, function(err, data) {
+  FroalaEditor.Image.upload(req, DIR, function(err, data) {
+    // Return data.
+    //console.log(req);
     if (err) {
       // An error occurred when uploading
       console.log(err);
       return res.status(422).send("an Error occured");
     }
-    console.log(req.file);
     // No error occured.
-    path = fs.readFileSync(req.file.path);
+  //  console.log(data);
+    path = fs.readFileSync(data.link);
+    var filePath = data.link;
     var image = new Image({
       data: path,
-      path: 'data:' + req.file.mimetype + ';base64,' + path.toString('base64')
+      path: 'data:image/png;base64,' + path.toString('base64')
     });
 
     image.save(function(err) {
       if (err) {
         console.log(err);
       }
+      else {
+        fs.unlinkSync(filePath);// delete the image in server
+        console.log("deleted");
+      }
     });
     return res.send(image);
-
   });
 };
 /**
