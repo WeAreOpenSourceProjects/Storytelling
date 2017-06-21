@@ -1,8 +1,11 @@
 <div fxLayout="row" fxFill>
   <div fxFlex="50%" *ngIf="config.hasText" class="text-container">
-    <div [innerHTML]="slide.text" align="left"></div>
+    <div [innerHTML]="slide.text" style="width:100%"></div>
   </div>
-  <div fxFlex="50%" [attr.id]="slide.graph" fxFill>
+  <div fxFlex="50%" [attr.id]="slide.graph" fxFill *ngIf="slide.graph!='image'">
     <ng-template #parent></ng-template>
+  </div>
+  <div fxFlex="50%" [attr.id]="slide.graph" fxLayoutAlign="center center" *ngIf="slide.graph=='image'&&slide.slideImage" class="img-container">
+    <img [src]="slide.slideImage.path" class="halfImg">
   </div>
 </div>

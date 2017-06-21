@@ -38,11 +38,11 @@ var SlidesSchema = new Schema({
         defalut: '',
         trim: true
       },
-      bannerPath: {
+    /*  bannerPath: {
         type: String,
         defalut: '',
         trim: true
-      },
+      },*/
       author: {
         type: String,
         default: '',
@@ -77,10 +77,9 @@ var SlidesSchema = new Schema({
         default: 'textInCenter',
         trim: true
       },
-      fullScreenHtml: {
-        type: String,
-        default: '',
-        trim: true
+      slideImage: {
+        type: Schema.ObjectId,
+        ref: 'Image'
       },
       data: {
         type: Array,

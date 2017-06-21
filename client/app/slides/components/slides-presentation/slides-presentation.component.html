@@ -20,7 +20,7 @@
     <div [ngStyle]="contentHeight_style" fxLayout="column" fxLayoutAlign="space-between none" class="content">
       <!--{{currentSlide | json}}-->
       <!--full screen :chart -->
-      <app-full-screen-graph-slide *ngIf="(currentSlide.pageLayout=='FullScreenGraph'&&currentSlide.graph!='image')" [slide]="currentSlide" [pos]="curSlideIndex+1" [slideload$]="slideload$" [slideease$]="slideease$" class="graph-container">
+      <app-full-screen-graph-slide *ngIf="(currentSlide.pageLayout=='FullScreenGraph')" [slide]="currentSlide" [pos]="curSlideIndex+1" [slideload$]="slideload$" [slideease$]="slideease$" class="graph-container">
       </app-full-screen-graph-slide>
 
       <!--left graph right text-->

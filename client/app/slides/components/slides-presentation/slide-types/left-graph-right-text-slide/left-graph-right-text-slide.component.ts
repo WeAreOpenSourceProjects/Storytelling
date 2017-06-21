@@ -11,7 +11,7 @@ import { ChartsService } from "../../../../services";
     templateUrl: './left-graph-right-text-slide.component.html',
     styleUrls: ['./left-graph-right-text-slide.component.scss']
 })
-export class LeftGraphRightTextSlideComponent implements OnInit, AfterContentInit, OnChanges  {
+export class LeftGraphRightTextSlideComponent implements OnInit, AfterContentInit, OnChanges {
 
 
     @Input() slide: Slide;
@@ -39,13 +39,13 @@ export class LeftGraphRightTextSlideComponent implements OnInit, AfterContentIni
     }
 
     ngAfterContentInit() {
-        if (this.slide.graph === 'noGraph') return;
+        if (this.slide.graph === 'noGraph' || this.slide.graph === 'image') return;
         let cmpType = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
         this.setChart(cmpType);
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (this.slide.graph === 'noGraph') return;
+        if (this.slide.graph === 'noGraph' || this.slide.graph === 'image') return;
         let cmpType: string = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
         this.setChart(cmpType);
     }
@@ -67,20 +67,17 @@ export class LeftGraphRightTextSlideComponent implements OnInit, AfterContentIni
         Object.assign(this.config, HALF_HALF_LAYOUT);
 
         if (this.slide.graph == "image") {
-            if (this.slide.fullScreenHtml.length)
-                this.slide.fullScreenHtml = this.sanitizer.bypassSecurityTrustHtml(this.slide.fullScreenHtml) as string;
             this.config.hasImage = true;
         }
         else {
             this.config.hasChart = true;
-
-            if (this.slide.text.length) {
-                this.slide.text = this.sanitizer.bypassSecurityTrustHtml(this.slide.text) as string;
-            }
         };
     }
 
     private loadChart() {
+      if (this.slide.text.length) {
+          this.slide.text = this.sanitizer.bypassSecurityTrustHtml(this.slide.text) as string;
+      }
         if (this.config.hasChart) {
             (<Chart>this.componentRef.instance).load();
         }

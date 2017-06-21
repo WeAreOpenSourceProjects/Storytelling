@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChildren,ViewChild,ViewContainerRef, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, OnInit, Inject, ViewChildren, ViewChild, ViewContainerRef, ViewEncapsulation, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
@@ -32,7 +32,7 @@ export class SlidesPresentationComponent implements OnInit {
     };
     slideHeight: number;
     curSlideIndex: number = 0;
-    direction: number =1;
+    direction: number = 1;
     currentSlide: any;
     slideNum: number;
     charts: Array<any> = [];
@@ -48,7 +48,7 @@ export class SlidesPresentationComponent implements OnInit {
 
     @ViewChildren('chart') chartEle: any;
 
-    @ViewChild('slider', {read: ViewContainerRef})
+    @ViewChild('slider', { read: ViewContainerRef })
     slider: ViewContainerRef;
 
 
@@ -65,8 +65,8 @@ export class SlidesPresentationComponent implements OnInit {
             this.slideHeight_style = {
                 'height': (height - 70) + 'px' //70 is the height of header
             };
-            this.contentHeight_style={
-              'height': (height - 70-50) + 'px'
+            this.contentHeight_style = {
+                'height': (height - 70 - 50) + 'px'
             }
             this.slideHeight = (height - 70);
         })
@@ -79,11 +79,17 @@ export class SlidesPresentationComponent implements OnInit {
             id = params['id'];
         });
         /* generate and initialize slides*/
-        this.slidesService.getSlides(id).subscribe(
+        this.slidesService.getSlidesFix(id).subscribe(
             slide => {
+                console.log(slide);
                 this.slides = slide.slides;
                 this.slideNum = this.slides.length;
                 this.slideTitle = slide.slidesSetting.title;
+                this.slides.forEach(s=>{
+                  if (s.text.length) {
+                    s.text = this.sanitizer.bypassSecurityTrustHtml(s.text) as string;
+                  }
+                })
             },
             error => {
                 console.log("fail to get slides data");
@@ -164,16 +170,16 @@ export class SlidesPresentationComponent implements OnInit {
         this.showFullScreen = false;
     }
 
-    animationDone(event:any){
+    animationDone(event: any) {
         this.direction = 0;
     }
 
-    @HostListener('mouseenter') 
+    @HostListener('mouseenter')
     onMouseEnter() {
         this.showFullScreen = true;
     }
 
-    @HostListener('mouseleave') 
+    @HostListener('mouseleave')
     onMouseLeave() {
         this.showFullScreen = false;
     }
@@ -184,11 +190,11 @@ export class SlidesPresentationComponent implements OnInit {
 
     onClick() {
         console.log('tootot');
-		if (this.screenfull.enabled) {
-			this.screenfull.toggle(this.slider.element.nativeElement);
+        if (this.screenfull.enabled) {
+            this.screenfull.toggle(this.slider.element.nativeElement);
 
-		}
-	}
+        }
+    }
 
     private goToSlide(index: number) {
         let pageScrollInstance: PageScrollInstance = PageScrollInstance.simpleInstance(this.document, '#slide-' + index);

@@ -38,6 +38,12 @@ exports.read = function(req, res) {
   slide.isCurrentUserOwner = !!(req.user && slide.user && slide.user._id.toString() === req.user._id.toString());
   res.json(slide);
 };
+exports.readFix = function(req, res) {
+  console.log("read fix")
+  var slide = req.slide ? req.slide.toJSON() : {};
+  slide.isCurrentUserOwner = !!(req.user && slide.user && slide.user._id.toString() === req.user._id.toString());
+  res.json(slide);
+};
 
 /**
  * Update an slide
@@ -108,6 +114,7 @@ exports.myList = function(req, res) {
  * slide middleware
  */
 exports.slideByID = function(req, res, next, id) {
+  console.log("find by id")
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'slide is invalid'
@@ -115,6 +122,26 @@ exports.slideByID = function(req, res, next, id) {
   }
 
   Slides.findById(id).populate('user', 'displayName').exec(function (err, slide) {
+    if (err) {
+      return next(err);
+    } else if (!slide) {
+      return res.status(404).send({
+        message: 'No slide with that identifier has been found'
+      });
+    }
+    req.slide = slide;
+    next();
+  });
+};
+exports.slideByIDFix = function(req, res, next, id) {
+  console.log("find by id fix")
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'slide is invalid'
+    });
+  }
+
+  Slides.findById(id).populate('slides.slideImage', 'path').exec(function (err, slide) {
     if (err) {
       return next(err);
     } else if (!slide) {

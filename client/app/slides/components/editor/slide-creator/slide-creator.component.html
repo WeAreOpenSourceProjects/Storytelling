@@ -11,6 +11,22 @@
         <div class="margin-frame">
           <table cellspacing="0" class="full-line">
             <tr>
+
+              <td>
+                <md-input-container class="page-title">
+                  <input mdInput placeholder="Page title" formControlName="pageTitle" name="pageTitle" class="input ">
+                </md-input-container>
+              </td>
+              <td>
+                <md-select placeholder="Select title align" formControlName="titleAlign" name="titleAlign" class="text-align">
+                  <md-option *ngFor="let align of titleAlign" [value]="align">
+                    {{ align }}
+                  </md-option>
+                </md-select>
+              </td>
+            </tr>
+            <br>
+            <tr>
               <td>
                 <md-select placeholder="Page layout" formControlName="pageLayout" name="pageLayout" (change)="pageLayoutChange()">
                   <md-option *ngFor="let layout of pageLayout" [value]="layout.value">
@@ -22,22 +38,6 @@
                 <md-select *ngIf="slide.hasGraph&&form.controls.pageLayout.value!='textInCenterImageBackground'" placeholder="Select graph" formControlName="slideGraph" name="slideGraph" (change)="graphChanged()">
                   <md-option *ngFor="let graph of graphs" [value]="graph.value">
                     {{ graph.type }}
-                  </md-option>
-                </md-select>
-              </td>
-            </tr>
-            <br>
-            <tr>
-
-              <td>
-                <md-input-container class="page-title">
-                  <input mdInput placeholder="Page title" formControlName="pageTitle" name="pageTitle" class="input ">
-                </md-input-container>
-              </td>
-              <td>
-                <md-select placeholder="Select title align" formControlName="titleAlign" name="titleAlign" class="text-align">
-                  <md-option *ngFor="let align of titleAlign" [value]="align">
-                    {{ align }}
                   </md-option>
                 </md-select>
               </td>
@@ -56,7 +56,7 @@
                 <app-csv-input (csv2json)="getCsvJson($event)"></app-csv-input>
               </md-tab>
             </md-tab-group>
-            <app-image-upload (setImage)="setImageHtml($event)" *ngIf="(slide.hasGraph&&form.controls.slideGraph.value=='image')||(this.form.value.pageLayout=='textInCenterImageBackground')"></app-image-upload>
+            <app-image-upload (setImage)="setImageHtml($event)" [imagePath]="slide.slideImage" *ngIf="(slide.hasGraph&&form.controls.slideGraph.value=='image')||(this.form.value.pageLayout=='textInCenterImageBackground')"></app-image-upload>
 
           </div>
           <div class="margin-ver-frame" *ngIf="slide.hasText">

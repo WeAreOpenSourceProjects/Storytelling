@@ -25,13 +25,12 @@
         </a>
       </td>
     </tr>
-    <!-- hide image part
     <tr class="secondery-setting">
       <td>
-        <app-image-upload [label]="'Choose Image for Banner'" (uploadImage)="upload($event)"></app-image-upload>
+        <app-image-upload [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''"></app-image-upload>
       </td>
     </tr>
-  -->
+
     <tr class="secondery-setting">
       <td colspan="2">
         <md-input-container class="slide-description">

@@ -40,7 +40,7 @@ export class FullScreenGraphSlideComponent implements OnInit, AfterContentInit, 
 
 
   ngAfterContentInit() {
-    if (this.slide.graph === 'noGraph') return;
+    if (this.slide.graph === 'noGraph'||this.slide.graph === 'image') return;
     const cmpType: string = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
     this.setChart(cmpType);
     // this.slideload$.filter(n => n === this.pos).subscribe(() => {
@@ -56,7 +56,7 @@ export class FullScreenGraphSlideComponent implements OnInit, AfterContentInit, 
   ngOnChanges(changes: SimpleChanges) {
     console.log('changes : ', changes);
 
-    if (this.slide.graph === 'noGraph') return;
+    if (this.slide.graph === 'noGraph'||this.slide.graph === 'image') return;
     let cmpType: string = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
     this.setChart(cmpType);
 
@@ -82,8 +82,6 @@ export class FullScreenGraphSlideComponent implements OnInit, AfterContentInit, 
     this.easeContentAni = false;
 
     if (this.slide.graph == "image") {
-      if (this.slide.fullScreenHtml.length)
-        this.slide.fullScreenHtml = this.sanitizer.bypassSecurityTrustHtml(this.slide.fullScreenHtml) as string;
       this.config.hasImage = true;
     }
     else {

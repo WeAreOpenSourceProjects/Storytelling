@@ -1,45 +1,61 @@
-@import 'client/theme.scss';
+@import 'client/theme.scss'; //  background-color: $accent;
 
+:host {
+    width: 100%;
+    height: 100%;
 
+    .chart {
+        padding: 20px;
+        width: 100%;
+    }
 
-    //  background-color: $accent;
+    md-grid-tile {
+        overflow: visible;
+    }
 
-    :host {
+    md-grid-list,
+    md-grid-tile {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .graph-container {
         width: 100%;
         height: 100%;
-        .chart {
-            padding: 20px;
-            width: 100%;
-        }
-        md-grid-tile {
-            overflow: visible;
-        }
-        md-grid-list,
-        md-grid-tile {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            height: 100%;
-            overflow: visible;
-        }
-        .graph-container{
-            width: 100%;
-            height: 100%;
-        }
-        .text-container {
-            display: flex;
-            height: 100%;
-            align-items: center;
-            margin-left: 40px;
-            margin-right: 40px;
-        }
-        h2 {
-            color: $accent;
-            font-size: $lg;
-        }
-        /deep/ app-ng-graph {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
     }
+
+    .text-container {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    h2 {
+        color: $accent;
+        font-size: $lg;
+    }
+
+    /deep/ app-ng-graph {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .img-container{
+      margin-left: 20px;
+      margin-right: 20px;
+      .halfImg {
+
+
+          max-width: 100%;
+          max-height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+    }
+}

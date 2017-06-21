@@ -1,4 +1,13 @@
-<div class="text-container">
-  <div *ngIf="slide.fullScreenHtml.length" [innerHTML]="slide.fullScreenHtml" #chart style="height:100%;width:100%"></div>
-  <div *ngIf="config.hasText " [innerHTML]="slide.text" [class.fadeIn]="easeContentAni" [class.expandUp]="loadContentAni"></div>
+<div *ngIf="slide.slideImage" class="img-bkg">
+  <img [src]="slide.slideImage.path" class="fullScreenImg">
+</div>
+<!--
+  <div class="text-container" *ngIf="config.hasText " [innerHTML]="slide.text" [class.fadeIn]="easeContentAni" [class.expandUp]="loadContentAni">
+
+  </div>
+-->
+<div fxLayout="row" fxFill>
+  <div class="text-container" *ngIf="config.hasText " [class.fadeIn]="easeContentAni" [class.expandUp]="loadContentAni" fxFlex="100%">
+    <div [innerHTML]="slide.text" style="width:100%"></div>
+  </div>
 </div>

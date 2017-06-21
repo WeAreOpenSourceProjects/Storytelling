@@ -7,110 +7,105 @@ import { Chart } from "../../../../../charts/chart.class";
 import { ChartsService } from "../../../../services";
 
 @Component({
-  selector: 'app-right-graph-left-text-slide',
-  templateUrl: './right-graph-left-text-slide.component.html',
-  styleUrls: ['./right-graph-left-text-slide.component.scss']
+    selector: 'app-right-graph-left-text-slide',
+    templateUrl: './right-graph-left-text-slide.component.html',
+    styleUrls: ['./right-graph-left-text-slide.component.scss']
 
 })
-export class RightGraphLeftTextSlideComponent implements OnInit, AfterContentInit, OnChanges  {
+export class RightGraphLeftTextSlideComponent implements OnInit, AfterContentInit, OnChanges {
 
-  @Input() slide: Slide;
-  @Input() pos: number;
-  @Input() slideload$: Observable<number>;
-  @Input() slideease$: Observable<number>;
+    @Input() slide: Slide;
+    @Input() pos: number;
+    @Input() slideload$: Observable<number>;
+    @Input() slideease$: Observable<number>;
 
-  @ViewChild('parent', { read: ViewContainerRef })
-  parent: ViewContainerRef;
-  private componentRef: ComponentRef<Chart>;
+    @ViewChild('parent', { read: ViewContainerRef })
+    parent: ViewContainerRef;
+    private componentRef: ComponentRef<Chart>;
 
-  config: PageConfig;
-  loadContentAni: boolean = false;
-  easeContentAni: boolean = false;
+    config: PageConfig;
+    loadContentAni: boolean = false;
+    easeContentAni: boolean = false;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver,
-    private chartsService: ChartsService,
-    private sanitizer: DomSanitizer) { }
+    constructor(private _componentFactoryResolver: ComponentFactoryResolver,
+        private chartsService: ChartsService,
+        private sanitizer: DomSanitizer) { }
 
-  ngAfterViewInit() {
+    ngAfterViewInit() {
 
-  }
-
-  ngOnInit() {
-    this.setConfig();
-  }
-
-  ngAfterContentInit() {
-    if (this.slide.graph === 'noGraph') return;
-    let cmpType = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
-    this.setChart(cmpType);
-  }
-  
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.slide.graph === 'noGraph') return;
-    let cmpType: string = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
-    this.setChart(cmpType);
-  }
-
-  private setChart(chartType: string) {
-    const componentFactory = this._componentFactoryResolver.resolveComponentFactory(this.chartsService.getChartType(chartType));
-    this.parent.clear();
-    if (this.componentRef) {
-      this.componentRef.destroy();
     }
-    this.componentRef = this.parent.createComponent(componentFactory);
-    this.componentRef.instance.dataInput = this.slide.data; // set the input inputData of the abstract class Chart
-    this.componentRef.instance.configInput = this.slide.config; // set the input inputData of the abstract class Chart
-  }
 
-  private setConfig() {
-    this.config = new PageConfig();
-    Object.assign(this.config, HALF_HALF_LAYOUT);
-
-    if (this.slide.graph == "image") {
-      if (this.slide.fullScreenHtml.length)
-        this.slide.fullScreenHtml = this.sanitizer.bypassSecurityTrustHtml(this.slide.fullScreenHtml) as string;
-      this.config.hasImage = true;
+    ngOnInit() {
+        this.setConfig();
     }
-    else {
-      this.config.hasChart = true;
 
-      if (this.slide.text.length) {
-        this.slide.text = this.sanitizer.bypassSecurityTrustHtml(this.slide.text) as string;
-      }
-    };
-  }
+    ngAfterContentInit() {
+        if (this.slide.graph === 'noGraph' || this.slide.graph === 'image') return;
+        let cmpType = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
+        this.setChart(cmpType);
+    }
 
-  // private loadChart() {
-  //   if (this.config.hasChart) {
-  //     (<Chart>this.componentRef.instance).load();
-  //   }
-  // }
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.slide.graph === 'noGraph' || this.slide.graph === 'image') return;
+        let cmpType: string = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
+        this.setChart(cmpType);
 
-  // private easeChart() {
-  //   if (this.config.hasChart) {
-  //     (<Chart>this.componentRef.instance).ease();
-  //   }
-  // }
+    }
+
+    private setChart(chartType: string) {
+        const componentFactory = this._componentFactoryResolver.resolveComponentFactory(this.chartsService.getChartType(chartType));
+        this.parent.clear();
+        if (this.componentRef) {
+            this.componentRef.destroy();
+        }
+        this.componentRef = this.parent.createComponent(componentFactory);
+        this.componentRef.instance.dataInput = this.slide.data; // set the input inputData of the abstract class Chart
+        this.componentRef.instance.configInput = this.slide.config; // set the input inputData of the abstract class Chart
+    }
+
+    private setConfig() {
+        this.config = new PageConfig();
+        Object.assign(this.config, HALF_HALF_LAYOUT);
+
+        if (this.slide.graph == "image") {
+            this.config.hasImage = true;
+        }
+        else {
+            this.config.hasChart = true;
+        };
+    }
+
+    // private loadChart() {
+    //   if (this.config.hasChart) {
+    //     (<Chart>this.componentRef.instance).load();
+    //   }
+    // }
+
+    // private easeChart() {
+    //   if (this.config.hasChart) {
+    //     (<Chart>this.componentRef.instance).ease();
+    //   }
+    // }
 
 
-  // private loadContent() {
-  //   if (this.config.hasText) {
-  //     this.loadContentAni = false;
-  //     setTimeout(_ => {
-  //       this.easeContentAni = false;
-  //       this.loadContentAni = true;
-  //     }, 150);
-  //   }
-  // }
+    // private loadContent() {
+    //   if (this.config.hasText) {
+    //     this.loadContentAni = false;
+    //     setTimeout(_ => {
+    //       this.easeContentAni = false;
+    //       this.loadContentAni = true;
+    //     }, 150);
+    //   }
+    // }
 
-  // private easeContent() {
-  //   if (this.config.hasText) {
-  //     this.easeContentAni = false;
-  //     setTimeout(() => {
-  //       this.loadContentAni = false;
-  //       this.easeContentAni = true;
-  //     }, 0);
-  //   }
-  // }
+    // private easeContent() {
+    //   if (this.config.hasText) {
+    //     this.easeContentAni = false;
+    //     setTimeout(() => {
+    //       this.loadContentAni = false;
+    //       this.easeContentAni = true;
+    //     }, 0);
+    //   }
+    // }
 
 }

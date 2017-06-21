@@ -24,6 +24,9 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/search/slides',
       permissions: ['*']
     }, {
+      resources: '/api/slidesFix/:slideIdFix',
+      permissions: ['*']
+    }, {
       resources: '/api/slides/me',
       permissions: ['*']
     }, {
@@ -39,9 +42,12 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/slides/:slideId',
       permissions: ['*']
     }, {
-      resources: '/api/search/slides',
+      resources: '/api/slidesFix/:slideIdFix',
       permissions: ['*']
     }, {
+      resources: '/api/search/slides',
+      permissions: ['*']
+    },  {
       resources: '/api/slides/me',
       permissions: ['*']
     }, {
@@ -57,9 +63,12 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/slides/:slideId',
       permissions: ['*']
     }, {
-      resources: '/api/search/slides',
+      resources: '/api/slidesFix/:slideIdFix',
       permissions: ['*']
     }, {
+      resources: '/api/search/slides',
+      permissions: ['*']
+    },{
       resources: '/api/slides/me',
       permissions: ['*']
     }, {
