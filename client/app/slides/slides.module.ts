@@ -70,6 +70,8 @@ import { SlidesCardComponent } from './components/slides-card/slides-card.compon
 import { DialogComponent } from './components/dialog/dialog.component';
 import { FavoriteFilterComponent } from './components/favorite-filter/favorite-filter.component';
 import { ToggleFullscreenDirective } from './components/slides-presentation/toggle-fullscreen.directive';
+import { SlidePreviewComponent } from './components/editor/slide-creator/slide-preview/slide-preview.component';
+import { TrySamplesComponent } from './components/editor/slides-setting/try-samples/try-samples.component';
 
 
 
@@ -104,7 +106,8 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         GaugeChartComponent,
         AdvancedPieChartComponent,
         DialogComponent,
-        DendogramComponent, 
+        DendogramComponent,
+        TrySamplesComponent,
         NgGraphComponent],
     declarations: [
         ScrollDirective,
@@ -138,11 +141,14 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         SlidesCardComponent,
         HierarchicalEdgeBundlingComponent,
         DialogComponent,
+        DendogramComponent,
+        SlidePreviewComponent,
         NgGraphComponent,
         DendogramComponent,
         FavoriteFilterComponent,
         KeySwitchDirective,
-        ToggleFullscreenDirective
+        ToggleFullscreenDirective,
+        TrySamplesComponent
     ],
     exports:[
       FilterComponent,

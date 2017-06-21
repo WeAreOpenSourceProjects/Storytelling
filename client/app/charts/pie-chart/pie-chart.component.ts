@@ -31,12 +31,14 @@ export class PieChartComponent extends Chart implements OnInit  {
       this.init();
   }
   init() {
-        this.width = this.element.offsetWidth - this.margin.left - this.margin.right;
-        this.height = this.element.offsetHeight - this.margin.top - this.margin.bottom;
+        this.width = this.element.offsetWidth ;
+        this.height = this.element.offsetHeight;
         const svg = d3.select(this.element)
-          .append('svg')
-          .append('g')
-          .attr('transform', `translate(${this.width / 2},${this.height / 2})`);
+            .append('svg')
+            .attr('width', this.width)
+            .attr('height', this.height)
+            .append('g')
+            .attr('transform', `translate(${this.width / 2},${this.height / 2})`);
         console.log(this.element);
     this.radius = Math.min(this.width, this.height) / 2;
     const values = this.data.map(data => data.value);

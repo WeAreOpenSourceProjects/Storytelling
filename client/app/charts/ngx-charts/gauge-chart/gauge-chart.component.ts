@@ -51,8 +51,15 @@ export class GaugeChartComponent extends Chart implements OnInit {
     }
 
     // Set data
-    this.gaugeUnits = this.dataInput[0].unit;
-    this.data =  this.dataInput[0].results;
+    console.log(this.dataInput);
+    if (this.dataInput[0]) {
+      this.gaugeUnits = this.dataInput[0].unit;
+      this.data =  this.dataInput[0].results;
+    } else {
+      this.gaugeUnits = this.dataInput.unit;
+      this.data =  this.dataInput.results;
+    }
+
   }
 
   init() {

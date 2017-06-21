@@ -2,6 +2,8 @@ import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angu
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { SlidesSetting } from '../../../models/slides-setting';
 import {ValidService} from '../../../services/valid.service';
+import {MdDialog} from '@angular/material';
+import {TrySamplesComponent} from './try-samples/try-samples.component';
 @Component({
     selector: 'app-slides-setting',
     templateUrl: './slides-setting.component.html',
@@ -13,7 +15,7 @@ export class SlidesSettingComponent implements OnInit, OnChanges {
     @Output() onSettingChange: EventEmitter<SlidesSetting> = new EventEmitter();
     form: FormGroup;
     slidesSetting: SlidesSetting = new SlidesSetting();
-    constructor(private _fb: FormBuilder, private validService: ValidService) {
+    constructor(private _fb: FormBuilder, private validService: ValidService, private dialog: MdDialog) {
         this.form = this._buildForm();
     }
 
@@ -65,5 +67,13 @@ export class SlidesSettingComponent implements OnInit, OnChanges {
         console.log('image',image);
        this.slidesSetting.banner = image;
        this.onSettingChange.emit(this.slidesSetting);
+    }
+    trySample (){
+        const dialog = this.dialog.open(TrySamplesComponent);
+        dialog.afterClosed().subscribe(result => {
+            if (result === 'YES') {
+              console.log('user say yes');
+            }
+        });
     }
 }
