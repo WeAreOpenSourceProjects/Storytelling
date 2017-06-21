@@ -23,8 +23,7 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
     ngOnInit() {
         // Set data
 
-        this.data = this.dataInput[0];
-
+        this.data = this.dataInput[0] || this.dataInput;
 
         this.init();
     }

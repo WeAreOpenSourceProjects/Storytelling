@@ -9,19 +9,12 @@
     <app-title-slide [slideTitle]="slideTitle"> </app-title-slide>
   </div>
 
-  <div [ngStyle]="slideHeight_style" class="slide" [attr.id]="'slide-'+curSlideIndex" *ngIf="curSlideIndex !== 0 && currentSlide != null" [@routerTransition]="direction" (@routerTransition.done)="animationDone($event)">
-    <!--title text-->
-    <div class="title-text" fxLayout="column" fxLayoutAlign="space-between stretch" align="{{currentSlide.pageTitle.align}}" *ngIf="currentSlide.pageTitle.title.length!=0">
-      <div fxLayout="row" fxFlex="95%">
-        <p fxFlex="100%">{{currentSlide.pageTitle.title}}</p>
-      </div>
-
-    </div>
-    <div [ngStyle]="contentHeight_style" fxLayout="column" fxLayoutAlign="space-between none" class="content">
-      <!--{{currentSlide | json}}-->
-      <!--full screen :chart -->
-      <app-full-screen-graph-slide *ngIf="(currentSlide.pageLayout=='FullScreenGraph'&&currentSlide.graph!='image')" [slide]="currentSlide" [pos]="curSlideIndex+1" [slideload$]="slideload$" [slideease$]="slideease$" class="graph-container">
-      </app-full-screen-graph-slide>
+  <div [ngStyle]="slideHeight_style" [@routerTransition]="direction" (@routerTransition.done)="animationDone($event)" class="slide" [attr.id]="'slide-'+curSlideIndex" *ngIf="curSlideIndex !== 0 && currentSlide != null">
+    <!--{{currentSlide | json}}-->
+    <!--full screen :chart -->
+    <app-full-screen-graph-slide *ngIf="(currentSlide.pageLayout=='FullScreenGraph'&&currentSlide.graph!='image')"
+       [slide] = "currentSlide" [pos]="curSlideIndex+1"  [slideload$]="slideload$" [slideease$]="slideease$" class="slide-full-screen">
+    </app-full-screen-graph-slide>
 
       <!--left graph right text-->
       <app-left-graph-right-text-slide *ngIf="currentSlide.pageLayout=='LeftGraphRightText'" [slide]="currentSlide" [pos]="curSlideIndex+1" [slideload$]="slideload$" [slideease$]="slideease$" class="graph-container">
@@ -57,5 +50,3 @@
 
 
 </div>
-
-  </div>

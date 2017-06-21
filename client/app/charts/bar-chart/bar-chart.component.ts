@@ -10,7 +10,7 @@ export class BarChartComponent extends Chart implements OnInit {
 
     @ViewChild('chart') private chartContainer: ElementRef;
     private data: Array<any> = sample;
-    private margin: any = { top: 0, bottom: 0, left: 40, right: 40 };
+    private margin: any = { bottom: 20, right: 20 };
     private chart: any;
     private width: number;
     private height: number;
@@ -28,23 +28,24 @@ export class BarChartComponent extends Chart implements OnInit {
     ngOnInit() {
         // Set data
         this.data = this.dataInput;
-
+        console.log(this.data);
         this.init();
     }
 
     createChart() {
         let element = this.chartContainer.nativeElement;
-        this.width = element.offsetWidth - this.margin.left - this.margin.right;
-        this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
+        console.log('ele', element.offsetTop);
+        this.width = element.offsetWidth;
+        this.height = element.offsetHeight ;
 
         let svg = d3.select(element).append('svg')
-            .attr('width', element.offsetWidth)
-            .attr('height', element.offsetHeight);
+            .attr('width', this.width + element.offsetLeft + this.margin.right)
+            .attr('height', this.height + element.offsetTop + this.margin.bottom);
 
         // chart plot area
         this.chart = svg.append('g')
             .attr('class', 'bars')
-            .attr('transform', `translate(${this.margin.left}, ${this.height / 2})`);
+            .attr('transform', `translate(0,0)`);
 
         // define X & Y domains
         let xDomain = this.data.map(d => d.index);
@@ -60,11 +61,11 @@ export class BarChartComponent extends Chart implements OnInit {
         // x & y axis
         this.xAxis = svg.append('g')
             .attr('class', 'axis axis-x')
-            .attr('transform', `translate(${this.margin.left}, ${this.height / 2 + this.height})`)
+            .attr('transform', `translate(0, ${this.height})`)
             .call(d3.axisBottom(this.xScale));
         this.yAxis = svg.append('g')
             .attr('class', 'axis axis-y')
-            .attr('transform', `translate(${this.margin.left}, ${this.height / 2})`)
+            .attr('transform', `translate(0,0)`)
             .call(d3.axisLeft(this.yScale));
 
 

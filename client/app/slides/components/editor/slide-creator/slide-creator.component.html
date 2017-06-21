@@ -1,10 +1,10 @@
 <md-card class="slide-creator secondery-theme">
-
   <md-toolbar class="title-bar" (click)="toggleForm()">
     <span class="section-title">Slide {{slideIndex}}</span>
     <span class="spacer"></span>
     <span class="error" *ngIf=" !form.valid">Please complete the slide setting</span>
   </md-toolbar>
+
   <md-card-content *ngIf="showForm">
     <form novalidate [formGroup]="form" (ngSubmit)="f.form.valid" #f="ngForm">
       <div class="full-frame">
@@ -60,7 +60,7 @@
 
           </div>
           <div class="margin-ver-frame" *ngIf="slide.hasText">
-            <textarea [froalaEditor]='editorOptions' [(froalaModel)]="slide.text"></textarea>
+            <textarea [froalaEditor]="editorOptions" [(froalaModel)]="slideText" ></textarea>
           </div>
           <div *ngIf="form.controls.slideGraph.value == 'ngGraph'">
             <app-charts-builder (configGraph)="confirmeSlideGRaphConfig($event)">
@@ -68,9 +68,14 @@
           </div>
         </div>
       </div>
+      <div class="preview">
+         <app-slide-preview *ngIf="((slide && slide.hasGraph && slide.pageLayout) || slide.hasText) && preview" [slide] ="slidePreview" ></app-slide-preview>
+      </div>
       <br>
       <button md-raised-button type="button" (click)="confirmSlide()" [disabled]="!form.valid||isInShuffle">OK</button>
       <button md-raised-button type="button" (click)="deleteSlide($event)" [disabled]="isInShuffle" color="warn">DELETE</button>
+      <button md-raised-button type="button" (click)="previewSlide()" [disabled]="!form.valid||isInShuffle || preview || form.controls.slideGraph.value=='ngGraph'">PREVIEW</button>
+
       <span class="error" *ngIf="isInShuffle"> Modification and delete are not allowed during shuffling </span>
     </form>
   </md-card-content>

@@ -1,0 +1,40 @@
+<div class="dialog-container ">
+<h1 md-dialog-title>Choose a Chart</h1>
+  <div class="row container-fluid">
+    <div class="col-md-3 card-view">
+      <md-card>
+        <md-card-header class="card-header">
+          <div md-card-image class="banner-container">
+            <img [src]="chartSlected.image">
+          </div>
+        </md-card-header>
+        <h3>{{chartSlected.name}}</h3>
+        <md-card-content class="content">
+          {{chartSlected.description}}
+        </md-card-content>
+      </md-card>
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+        <md-card class="col-md-3 space layout" (click)="chartSlected=chart" *ngFor="let chart of charts"  >
+          <md-card-header class="card-header">
+            <div md-card-image class="banner-container">
+              <img [src]="chart.image">
+            </div>
+          </md-card-header>
+          <h3>{{chart.name}}</h3>
+          <md-card-content class="content">
+            {{chart.categorie}}
+          </md-card-content>
+          <div class="layout-check" [ngClass]="{'selected': chartSlected===chart} ">
+            <md-icon class="check-icon">done</md-icon>
+          </div>
+        </md-card>
+      </div>
+    </div>
+  </div>
+
+<div md-dialog-actions>
+  <button md-raised-button (click)="dialogRef.close('YES')" color="accent">OK</button>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="preview slide" [ngStyle]="slideHeight_style" >
+
+<!--full screen :chart -->
+  <app-full-screen-graph-slide *ngIf="(slide && slide.pageLayout=='FullScreenGraph'&&slide.graph!='image')" [slide] = "slide" ></app-full-screen-graph-slide>
+  <app-left-graph-right-text-slide *ngIf="slide &&  slide.pageLayout=='LeftGraphRightText'" [slide]="slide">
+  </app-left-graph-right-text-slide>
+
+  <!--left text right grah-->
+  <app-right-graph-left-text-slide *ngIf="slide &&  slide.pageLayout=='LeftTextRightGraph'" [slide]="slide">
+  </app-right-graph-left-text-slide>
+
+  <app-text-slide *ngIf="slide && (slide.pageLayout=='textInCenter'||slide.pageLayout=='textInCenterImageBackground')" [slide]="slide">
+  </app-text-slide>
+</div>

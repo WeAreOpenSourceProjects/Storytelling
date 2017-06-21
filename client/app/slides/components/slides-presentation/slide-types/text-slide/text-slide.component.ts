@@ -27,12 +27,12 @@ export class TextSlideComponent implements OnInit {
 
   ngOnInit() {
     this.setConfig();
-    this.slideload$.filter(n => n === this.pos).subscribe(() => {
-      this.loadContent();
-    })
-    this.slideease$.filter(n => n === this.pos).subscribe(() => {
-      this.easeContent();
-    })
+    // this.slideload$.filter(n => n === this.pos).subscribe(() => {
+    //   this.loadContent();
+    // })
+    // this.slideease$.filter(n => n === this.pos).subscribe(() => {
+    //   this.easeContent();
+    // })
   }
 
   private setConfig() {

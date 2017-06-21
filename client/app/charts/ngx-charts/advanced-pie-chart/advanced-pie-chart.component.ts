@@ -24,8 +24,8 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
   // margin
   private margin: any = { top: 20, bottom: 20, left: 40, right: 40 };
 
-  constructor() { 
-       super()  
+  constructor() {
+       super();
     }
 
    ngOnInit() {
@@ -39,8 +39,11 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
     }
 
     // Set the data
-    this.data =  this.dataInput[0].results;
-
+     if (this.dataInput[0]) {
+       this.data =  this.dataInput[0].results;
+     } else {
+       this.data =  this.dataInput.results;
+     }
     this.init();
   }
 
