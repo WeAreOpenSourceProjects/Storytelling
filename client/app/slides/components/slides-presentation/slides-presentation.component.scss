@@ -6,14 +6,17 @@
 // }
 
 
-    .slide {
-        width: 100%;
-        height: 100%;
-    }
+.slide {
+    width: 100%;
+    height: 100%;
+}
 
 .slides {
     .slide {
         width: 100%;
+        height: 100%;
+    }
+    .slide-full-screen{
         height: 100%;
     }
     .title-text{
@@ -142,7 +145,7 @@
             opacity: 0.3;
         }
     }
-    
+
     .navigate-center {
         border: 3px;
         left: 42px;

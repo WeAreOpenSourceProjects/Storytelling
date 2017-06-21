@@ -1,0 +1,12 @@
+.preview {
+  width: 100%;
+  position: relative;
+}
+
+  .slide {
+    width: 100%;
+    height: 450px;
+   }
+:host /deep/ ul, :host /deep/ ol{
+  list-style-position: inside;
+}

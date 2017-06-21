@@ -21,8 +21,10 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     showForm: boolean = true; //indicator for showing slide setting
     @Input() isInShuffle: boolean;
     slide: Slide = new Slide();
+    slideText = this.slide.text;
     form: FormGroup;
-
+    slidePreview: any;
+    preview: boolean = false;
     graphs: Array<any>;
     pageLayout: Array<any>;
     titleAlign:Array<string>
@@ -31,6 +33,11 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         heightMin: 200,
         heightMax: 400,
         charCounterMax: 1000,
+        events : {
+            'froalaEditor.input' : () => {
+                this.preview = false;
+            }
+        },
         imageUploadURL: 'http://127.0.0.1:3000/api/imagesServer',
         imageManagerLoadURL: 'http://127.0.0.1:3000/api/imagesServer'
     }
@@ -65,9 +72,10 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         this.validService.changeSlideValid(this.form.valid, this.slideIndex);
         this.form.valueChanges.subscribe(data => {
             this.validService.changeSlideValid(this.form.valid, this.slideIndex);
-        })
+        });
         this.graphChanged();
         this.showForm = !this.form.valid;
+        this.slideText = this.slide.text;
     }
     private _buildForm() {
         return this._fb.group({
@@ -87,8 +95,22 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         this.showForm = !this.showForm;
     }
     confirmSlide() {
+       this.parseData();
         /* to decide which data to take from tab*/
 
+        console.log('slide 1 confirme: ', this.slide);
+        this.confirmSlideOpt.emit(this.slide);
+        this.slide = new Slide();
+
+        this.csvJson = [];
+        this.form = this._buildForm();
+    }
+    previewSlide() {
+        this.parseData();
+        this.slidePreview = this.slide;
+        this.preview = true;
+    }
+    parseData() {
         if (this.slide.hasGraph && !(this.form.value.slideGraph == 'noGraph' || this.form.value.slideGraph == 'ngGraph' || this.form.value.slideGraph == 'image')) {
             switch (this.dataInputTab.selectedIndex) {
                 //json input
@@ -96,7 +118,6 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
                     let data;
                     try {
                         data = JSON.parse(this.form.value.graphDataJson);
-                        console.log("data here", this.form.value.graphDataJson);
                         this.slide.data = data.graphData;
                     }
                     catch (e) {
@@ -121,26 +142,21 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
                 default: this.slide.data = '';
             }
         }
+        console.log(this.slide.text.toString());
         if (this.slide.hasGraph)
             this.slide.graph = this.form.value.slideGraph;
         else this.slide.graph = "";
+        this.slide.text = this.slideText;
+
         this.slide.pageLayout = this.form.value.pageLayout;
         if (!this.slide.hasText)
             this.slide.text = "";
         if (this.slideIndex) {
             this.slide.index = this.slideIndex;
         }
-        this.slide.pageTitle.title=this.form.value.pageTitle;
-        this.slide.pageTitle.align=this.form.value.titleAlign;
-        console.log('slide 1 confirme: ', this.slide);
-        this.confirmSlideOpt.emit(this.slide);
-        this.slide = new Slide();
-
-        this.csvJson = [];
-        this.form = this._buildForm();
-
-    }
-
+        this.slide.pageTitle.title = this.form.value.pageTitle;
+        this.slide.pageTitle.align = this.form.value.titleAlign;
+     }
     confirmeSlideGRaphConfig(data) {
         console.log('data: ', data);
         this.slide.data = data.data;
@@ -167,6 +183,7 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         //
         //change json sample
         //**if the slide data is already set
+        this.preview = false;
         if (this.slide.data != undefined) {
             if (this.slide.data.length && this.form.value.slideGraph == this.slide.graph) {
                 //if has data, set tab to json
@@ -194,15 +211,23 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
 
     }
     pageLayoutChange() {
+        this.preview = false;
         switch (this.form.value.pageLayout) {
             case "FullScreenGraph":
                 this.slide.hasGraph = true;
                 this.slide.hasText = false;
                 break;
-            case "textInCenter": this.slide.hasGraph = false; this.slide.hasText = true; break;
-            case "textInCenterImageBackground": this.slide.hasGraph = true; this.slide.hasText = true; break;
-            case "LeftGraphRightText": this.slide.hasGraph = true; this.slide.hasText = true; break;
-            case "LeftTextRightGraph": this.slide.hasGraph = true; this.slide.hasText = true; break;
+            case "textInCenter":
+                this.slide.hasGraph = false; this.slide.hasText = true; break;
+            case "textInCenterImageBackground":
+                this.slide.hasGraph = true;
+                this.slide.hasText = true; break;
+            case "LeftGraphRightText":
+                this.slide.hasGraph = true;
+                this.slide.hasText = true; break;
+            case "LeftTextRightGraph":
+                this.slide.hasGraph = true;
+                this.slide.hasText = true; break;
             default: ;
         }
     }
