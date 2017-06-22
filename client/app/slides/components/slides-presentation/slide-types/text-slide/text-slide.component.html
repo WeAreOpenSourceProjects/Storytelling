@@ -1,4 +1,6 @@
 <div class="text-container">
   <div *ngIf="slide.fullScreenHtml.length" [innerHTML]="slide.fullScreenHtml" #chart style="height:100%;width:100%"></div>
+
   <div *ngIf="config.hasText " [innerHTML]="slide.text" [class.fadeIn]="easeContentAni" [class.expandUp]="loadContentAni"></div>
+
 </div>

@@ -1,5 +1,5 @@
 <md-card class="slides-card-container" *ngIf="(loggedIn$|async)||slides.slidesSetting.public">
-  <div class="card-link"  [routerLink]="['/slides/slidesPresentation', slides._id]">
+  <div class="card-link" [routerLink]="['/slides/slidesPresentation', slides._id]">
     <md-card-header class="card-header">
       <div md-card-avatar class="user-logo">
         <img src="assets/logo_simple_250.png" width="100%" height="100%">
@@ -9,7 +9,7 @@
     </md-card-header>
     <div md-card-image class="banner-container">
       <img *ngIf="slides.slidesSetting.banner && slides.slidesSetting.banner.path;else useDefaultBanner" [src]="slides.slidesSetting.banner.path">
-      <ng-template #useDefaultBanner>  <img [src]="'assets/svg.png'"></ng-template>
+      <ng-template #useDefaultBanner> <img [src]="'assets/svg.png'"></ng-template>
 
       <md-chip-list class="tag-container">
         <md-chip class="tip" *ngFor="let tag of slides.slidesSetting.tags">{{tag}}</md-chip>
@@ -18,18 +18,42 @@
   </div>
   <md-card-content class="content">
     <div class="description left">{{slides.slidesSetting.description}}</div>
+
+
+    <div class="right" *ngIf="(loggedIn$|async) && ((username$|async) === slides.slidesSetting.author)&&editable" [class.published]="slides.slidesSetting.public" [class.unpublished]="!slides.slidesSetting.public" [mdTooltip]="slides.slidesSetting.public ? 'Unpublish' : 'Publish'">
+      <md-icon md-ripple mdRippleColor="rgba(0, 172, 193, 0.3)" mdRippleCentered="true" mdRippleUnbounded="true" (click)="publish()">publish</md-icon>
+    </div>
+
+    <div class="right" *ngIf="loggedIn$|async" [class.favorite]="slides.slidesSetting.favorite" [class.unfavorite]="!slides.slidesSetting.favorite" [mdTooltip]="slides.slidesSetting.favorite ? 'Remove from favorite' : 'Add to favorite'"  (click)="toggleFavorite()">
+      <md-icon md-ripple mdRippleColor="rgba(229, 57, 53, 0.3)" mdRippleCentered="true" mdRippleUnbounded="true" >favorite</md-icon>
+<!--
+
     <div class="right"  *ngIf="(loggedIn$|async) && ((username$|async) === slides.slidesSetting.author)&&editable" [class.published]="slides.slidesSetting.public" [class.unpublished]="!slides.slidesSetting.public" [mdTooltip]="slides.slidesSetting.public ? 'Unpublish' : 'Publish'">
       <md-icon md-ripple mdRippleColor="rgba(0, 172, 193, 0.3)" mdRippleCentered="true" mdRippleUnbounded="true" (click)="publish()">publish</md-icon>
     </div>
     <div class="right" *ngIf="loggedIn$|async" [class.favorite]="slides.slidesSetting.favorite" [class.unfavorite]="!slides.slidesSetting.favorite" [mdTooltip]="slides.slidesSetting.favorite ? 'Remove from favorite' : 'Add to favorite'" (click)="toggleFavorite()">
       <md-icon *ngIf="!slides.slidesSetting.favorite">favorite_border</md-icon>
       <md-icon *ngIf="slides.slidesSetting.favorite">favorite</md-icon>
+
+-->
     </div>
-    <div class="right" class="delete-icon" *ngIf="(loggedIn$|async) && ((username$|async) === slides.slidesSetting.author)&&editable" (click)="deleteSlides(slides._id)"  mdTooltip="Delete">
-      <md-icon>delete</md-icon>
+    <div class="right edit-icon" *ngIf="(loggedIn$|async) && ((username$|async) === slides.slidesSetting.author)&&editable" [routerLink]="['slides', slides._id]" mdTooltip="Edit">
+      <md-icon md-ripple mdRippleColor="rgba(0, 172, 193, 0.3)" mdRippleCentered="true" mdRippleUnbounded="true">mode_edit</md-icon>
     </div>
-    <div class="right" class="edit-icon" *ngIf="(loggedIn$|async) && ((username$|async) === slides.slidesSetting.author)&&editable" [routerLink]="['slides', slides._id]"  mdTooltip="Edit">
-      <md-icon>mode_edit</md-icon>
+
+    <div class="right more" *ngIf="(loggedIn$|async) && ((username$|async) === slides.slidesSetting.author)&&editable" mdTooltip="more operation">
+      <md-icon md-ripple mdRippleColor="rgba(0, 172, 193, 0.3)" mdRippleCentered="true" mdRippleUnbounded="true" [mdMenuTriggerFor]="menu">more_vert</md-icon>
+      <md-menu #menu="mdMenu">
+        <button class=" delete-icon" md-menu-item (click)="deleteSlides(slides._id)">
+          <md-icon>delete</md-icon>delete
+        </button>
+        <button md-menu-item (click)="duplicateSlides(slides)"><md-icon>content_copy</md-icon>duplicate</button>
+      </md-menu>
     </div>
+
+
+
+
+
   </md-card-content>
 </md-card>

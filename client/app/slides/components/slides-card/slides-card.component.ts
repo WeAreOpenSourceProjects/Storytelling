@@ -6,14 +6,20 @@ import {SlidesService} from '../../services/slides.service';
 import {MdDialog} from '@angular/material';
 import {DialogComponent} from '../dialog/dialog.component';
 @Component({
-  selector: 'app-slides-card',
-  templateUrl: './slides-card.component.html',
-  styleUrls: ['./slides-card.component.scss']
+    selector: 'app-slides-card',
+    templateUrl: './slides-card.component.html',
+    styleUrls: ['./slides-card.component.scss']
 })
 export class SlidesCardComponent implements OnInit {
     @Input() slides: Slides;
     @Input() editable: boolean; //whether the slides can be edited;
     @Output() deletedSlides = new EventEmitter();
+
+    isFavorite: Boolean;
+    @Output() duplicateslidesOpt=new EventEmitter();
+
+
+
     @select(['session', 'token']) loggedIn$: Observable<string>;
     @select(['session', 'user', 'username']) username$: Observable<Object>;
 
@@ -40,13 +46,29 @@ export class SlidesCardComponent implements OnInit {
             if (result === 'YES') {
                 this.slidesService.deleteSlides(id)
                     .subscribe(res => {
-                            console.log("update succesfully");
-                            // this.router.navigate(['/slides']);
-                            this.deletedSlides.emit(id);
-                        },
-                        error => console.log(error));
+                        console.log("update succesfully");
+                        // this.router.navigate(['/slides']);
+                        this.deletedSlides.emit(id);
+                    },
+                    error => console.log(error));
             }
         });
 
+    }
+
+    /*duplicate slides*/
+    duplicateSlides(slides) {
+        let newSlide: Slides = new Slides(slides);
+        this.slidesService.submitSlides(newSlide)
+            .subscribe(
+            data => {
+                console.log('created');
+                this.duplicateslidesOpt.emit();
+                // this.router.navigate(['/login']);
+                //this.router.navigate(['/slides']);
+            },
+            error => {
+                console.log('fail to createSlides');
+            });
     }
 }

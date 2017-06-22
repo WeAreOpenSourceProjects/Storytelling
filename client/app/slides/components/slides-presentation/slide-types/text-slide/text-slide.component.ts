@@ -57,10 +57,10 @@ export class TextSlideComponent implements OnInit {
   private loadContent() {
     if (this.config.hasText) {
       this.loadContentAni = false;
-    //  setTimeout(_ => {
+      setTimeout(_ => {
         this.easeContentAni = false;
         this.loadContentAni = true
-      //}, 625);
+      }, 300);
     }
   }
 

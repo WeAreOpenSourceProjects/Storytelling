@@ -28,8 +28,8 @@ export class ScrollDirective implements OnInit {
     //     console.log('event => ', event); Observable.of(event).do(console.log).debounceTime(30).map(this.mouseWheelFunc); this.mouseWheelFunc(event);
     // }
     // @HostListener('DOMMouseScroll', ['$event']) private onMouseWheelFirefox(event: any) { this.mouseWheelFunc(event); }
-    // @HostListener('onmousewheel', ['$event']) private onMouseWheelIE(event: any) { this.mouseWheelFunc(event); } 
-    
+    // @HostListener('onmousewheel', ['$event']) private onMouseWheelIE(event: any) { this.mouseWheelFunc(event); }
+
     private mouseWheelFunc(event: any) {
         console.log(event);     //  if (!this.enableScroll) return;     var event = window.event || event; // old IE support
         // for IE

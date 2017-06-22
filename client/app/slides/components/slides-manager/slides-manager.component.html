@@ -7,7 +7,7 @@
 
   <div class="row">
     <div *ngFor="let s of slides" [class.display-div]="!(loggedIn$|async)&& !s.slidesSetting.public" class="list-item slides-item col-xs-12 col-sm-6  col-md-4 col-lg-3">
-      <app-slides-card (deletedSlides)="refreshList()"  [slides]="s" [editable]="true"></app-slides-card>
+      <app-slides-card (deletedSlides)="refreshList()" (duplicateslidesOpt)="refreshList()" [slides]="s" [editable]="true"></app-slides-card>
     </div>
   </div>
   <div class="no-result" *ngIf="result.noResult">

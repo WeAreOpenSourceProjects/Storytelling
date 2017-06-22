@@ -5,9 +5,11 @@
     cursor: pointer;
     margin-bottom: 15px;
     width: 100%;
+
     .card-link:focus {
         outline: none;
     }
+
     .card-header {
         .user-logo {
             background-color: #c5401a;
@@ -61,7 +63,11 @@
             flex: 0 0 32px;
             height: 32px;
 
-            &.favorite {
+            &:focus {
+                outline: none;
+            }
+
+            &.favorite, &.favorite:hover, &.unfavorite:hover {
                 color: $warn;
             }
 
@@ -77,21 +83,37 @@
             &.unpublished {
                 color: $primary;
                 opacity: 0.5;
+                &:hover{
+                    color: $accent;
+                }
+            }
+            &.delete-icon:hover {
+                color: #b50000;
             }
 
-         }
+            &.edit-icon:hover {
+                color: $accent;
+            }
+            &.more{
+              color:$primary;
+              &:hover{
+                color:$accent;
+              }
+            }
+        }
+
         md-icon {
             font-size: 24px;
             margin: 4px;
             position: relative;
+
+            &:focus {
+                outline: none;
+            }
         }
 
-        .delete-icon:hover {
-            color : #b50000
-        }
-        .edit-icon:hover {
-            color : #0000b8
-        }
+
+
         .left {
             flex: 1;
         }
