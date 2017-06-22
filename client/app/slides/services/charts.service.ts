@@ -1,6 +1,5 @@
 import { Injectable, Type, ComponentFactoryResolver } from '@angular/core';
-import { PieChartComponent, AdvancedPieChartComponent, BarChartComponent, ForceDirectedGraphComponent, GaugeChartComponent,
-  HierarchicalEdgeBundlingComponent, LineChartComponent, DendogramComponent,
+import { PieChartComponent, AdvancedPieChartComponent, BarChartComponent, ForceDirectedGraphComponent, GaugeChartComponent, LineChartComponent,
   NgGraphComponent
 }  from "app/charts";
 
@@ -13,8 +12,8 @@ export class ChartsService {
 
     this.listWidget = new Map<string, Type<any>>([['PieChartComponent', PieChartComponent], ['AdvancedPieChartComponent', AdvancedPieChartComponent],
      ['BarChartComponent', BarChartComponent], ['ForceDirectedGraphComponent', ForceDirectedGraphComponent],
-     ['GaugeChartComponent', GaugeChartComponent], ['HierarchicalEdgeBundlingComponent', HierarchicalEdgeBundlingComponent],
-     ['LineChartComponent', LineChartComponent], ['DendogramChartComponent', DendogramComponent], ['NgGraphComponent', NgGraphComponent]
+     ['GaugeChartComponent', GaugeChartComponent],
+     ['LineChartComponent', LineChartComponent], ['NgGraphComponent', NgGraphComponent]
      ]);
   }
 

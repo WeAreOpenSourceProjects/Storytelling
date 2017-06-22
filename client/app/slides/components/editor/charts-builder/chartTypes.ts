@@ -1,6 +1,6 @@
 
 import { PieChartComponent, AdvancedPieChartComponent, BarChartComponent, ForceDirectedGraphComponent, GaugeChartComponent,
-  HierarchicalEdgeBundlingComponent, LineChartComponent, DendogramComponent,
+  LineChartComponent,
   NgGraphComponent
 }  from "app/charts";
 

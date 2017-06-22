@@ -44,13 +44,11 @@ import {DragulaModule} from 'ng2-dragula';
 import { BarChartComponent } from '../charts';
 import { GaugeChartComponent } from '../charts';
 import { NgGraphComponent } from "../charts";
-import { HierarchicalEdgeBundlingComponent } from '../charts/hierarchical-edge-bundling/hierarchical-edge-bundling.component';
 
 import { AdvancedPieChartComponent } from '../charts';
 import { ForceDirectedGraphComponent } from '../charts/force-directed-graph/force-directed-graph.component';
 import { LineChartComponent } from '../charts/line-chart/line-chart.component';
 import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
-import { DendogramComponent } from '../charts/dendogram/dendogram.component';
 import { PieChartComponent } from '../charts/pie-chart/pie-chart.component';
 
 
@@ -94,13 +92,11 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         BarChartComponent,
         LineChartComponent,
         ForceDirectedGraphComponent,
-        HierarchicalEdgeBundlingComponent,
         PieChartComponent,
         FullScreenGraphSlideComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,
         DialogComponent,
-        DendogramComponent,
         NgGraphComponent],
     declarations: [
         ScrollDirective,
@@ -130,10 +126,8 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         TextSlideComponent,
         PieChartComponent,
         SlidesCardComponent,
-        HierarchicalEdgeBundlingComponent,
         DialogComponent,
         NgGraphComponent,
-        DendogramComponent,
         FavoriteFilterComponent,
         KeySwitchDirective,
         ToggleFullscreenDirective

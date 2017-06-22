@@ -11,10 +11,6 @@ export const graphType: Array<any> = [
         type: "Force Directed Graph"
     },
     {
-        value: "HierarchicalEdgeBundling",
-        type: "Hierarchical edge bundling"
-    },
-    {
         value: "lineChart",
         type: "Line Chart"
     },
@@ -25,10 +21,6 @@ export const graphType: Array<any> = [
     {
         value: "gaugeChart",
         type: "Gauge Chart"
-    },
-    {
-        value: "dendogramChart",
-        type: "Dendrogram chart"
     },
     /* hide image part
   {

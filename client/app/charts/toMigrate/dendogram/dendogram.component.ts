@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import * as d3 from 'd3';
-import {Chart} from '../chart.class';
+import {Chart} from '../../chart.class';
 
 @Component({
   selector: 'app-dendogram',

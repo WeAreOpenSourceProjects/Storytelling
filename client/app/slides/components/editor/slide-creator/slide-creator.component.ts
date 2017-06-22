@@ -189,8 +189,6 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
             case "forceDirectedGraph": this.form.controls['graphDataJson'].setValue(forceDirectedGraphDataExample); break;
             case "lineChart": this.form.controls['graphDataJson'].setValue(lineChartExample); break;
             case "pieChart": this.form.controls['graphDataJson'].setValue(pieChartExample); break;
-            case "HierarchicalEdgeBundling": this.form.controls['graphDataJson'].setValue(HierarchicalEdgeExample); break;
-            case "dendogramChart": this.form.controls['graphDataJson'].setValue(dendogramChartExemple); break;
             default: ;
         }
 
@@ -268,5 +266,3 @@ const barCharDataExample = JSON.stringify(sampleData.barCharData);
 const forceDirectedGraphDataExample = JSON.stringify(sampleData.forceDirectedGraphData);
 const lineChartExample = JSON.stringify(sampleData.lineChartData);
 const pieChartExample = JSON.stringify(sampleData.pieChartData);
-const dendogramChartExemple = JSON.stringify(sampleData.dendogramChartData);
-const HierarchicalEdgeExample = JSON.stringify(sampleData.HierarchicalEdgeData);
