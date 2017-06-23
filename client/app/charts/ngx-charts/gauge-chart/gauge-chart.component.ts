@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import {Chart} from '../../chart.class';
-
+import { nest } from 'd3-collection';
+import * as d3 from 'd3';
 @Component({
   selector: 'app-gauge-chart',
   templateUrl: './gauge-chart.component.html',
@@ -12,7 +13,7 @@ export class GaugeChartComponent extends Chart implements OnInit {
 
   private width: number;
   private height: number;
-
+  chartOptions: any;
   view: any[];
   showLegend: boolean = true;
   legendTitle: string = 'Legend';
@@ -51,20 +52,42 @@ export class GaugeChartComponent extends Chart implements OnInit {
     }
 
     // Set data
-    this.gaugeUnits = this.dataInput[0].unit;
-    this.data =  this.dataInput[0].results;
+    this.chartOptions = { ...this.configInput };
+    this.init();
   }
 
   init() {
     // this.width = 700;
     // this.height = 300;
     // this.view = [this.width, this.height];
+    if (this.configInput != null)
+      this.data = GaugeChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+    else
+      this.data = this.dataInput;
+    console.log(this.data);
+    this.load();
   }
 
   load() {
     this.data = [...this.data];
   }
+  public static convertData(dataDims: string[], rawData: any) {
+    const key$ = d => d[dataDims[0]];
+    const value$ = d => d3.sum(d, (s: any) => s[dataDims[1]]);
 
+    return (<any>nest())
+        .key(key$)
+        .rollup(value$)
+        .entries(rawData)
+        .map(seriesPoints);
+
+    function seriesPoints(d) {
+      return {
+        name: d.key,
+        value: d.value,
+      };
+    }
+  }
 
   ease() {
   }
