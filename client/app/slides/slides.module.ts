@@ -49,7 +49,7 @@ import { TreemapChartComponent } from "../charts";
 import { PieGridChartComponent } from '../charts';
 
 import { HierarchicalEdgeBundlingComponent } from '../charts/hierarchical-edge-bundling/hierarchical-edge-bundling.component';
-
+import { AreaChartComponent } from '../charts';
 import { AdvancedPieChartComponent } from '../charts';
 import { ForceDirectedGraphComponent } from '../charts/force-directed-graph/force-directed-graph.component';
 import { LineChartComponent } from '../charts/line-chart/line-chart.component';
@@ -101,6 +101,7 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         FullScreenGraphSlideComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,
+        AreaChartComponent,
         DialogComponent,
         DendogramComponent,
         NgGraphComponent,
@@ -127,6 +128,7 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         FullScreenGraphSlideComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,
+        AreaChartComponent,
         TitleSlideComponent,
         LeftGraphRightTextSlideComponent,
         RightGraphLeftTextSlideComponent,

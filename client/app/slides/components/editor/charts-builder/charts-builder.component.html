@@ -159,7 +159,7 @@
         </ngx-charts-bubble-chart>
         <ngx-charts-tree-map *ngIf="chartType.name === 'treemap'" [view]="null" [scheme]="chartOptions.colorScheme" [results]="data">
         </ngx-charts-tree-map>
-
+        <app-area-chart *ngIf="chartType.name === 'area-chart'"  [dataInput]="data"></app-area-chart>
         <app-bar-chart *ngIf="chartType.name === 'bar-chart'" [dataInput]="data">
         </app-bar-chart>
         <app-pie-chart *ngIf="chartType.name === 'pie-chart'" [dataInput]="data">
