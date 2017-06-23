@@ -171,8 +171,10 @@
         </ngx-charts-pie-grid>
         <app-dendogram *ngIf="chartType.name === 'dendogram'" [dataInput]="data">
         </app-dendogram>
+        <app-advanced-pie-chart *ngIf="chartType.name ==='advanced-pie-chart'" [dataInput]="data"></app-advanced-pie-chart>
         <app-force-directed-graph *ngIf="chartType.name === 'force-directed-graph'" [dataInput]="data">
         </app-force-directed-graph>
+        <app-gauge-chart *ngIf="chartType.name ==='gauge-chart'" [dataInput]="data"></app-gauge-chart>
       </div>
 
     </md-card-content>
