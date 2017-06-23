@@ -31,5 +31,9 @@ export const chartTypes = [
   createChartType({ title: 'Line Chart', convertData: NgGraphComponent.convertData, dimLabels: ['Group by', 'x-Values', 'y-Values', null] }),
   createChartType({ title: 'Heat Map', convertData: NgGraphComponent.convertData, dimLabels: ['x-Category', 'y-Category', 'Color', null] }),
   createChartType({ title: 'Bubble Chart', convertData: NgGraphComponent.convertData, dimLabels: ['GroupBy', 'x-Values', 'y-Values', 'Radius'] }),
+
+  createChartType({ title: 'Number Cards',simpleData: true, convertData: NgGraphComponent.convertSingleData, dimLabels: ['Card Name', 'Card Values','Color',null ] }),
+
   createChartType({ title: 'Treemap', simpleData: true, cmpName: 'treemapChart', convertData: TreemapChartComponent.convertData, dimLabels: ['GroupBy', 'Sum of values', null, null] })
+
 ];

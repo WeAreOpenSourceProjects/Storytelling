@@ -208,4 +208,10 @@
     [minRadius]="3"
     [maxRadius]="20">
   </ngx-charts-bubble-chart>
+  <ngx-charts-number-card fxFlex
+    [style.visibility]="activated ?  'visible' : 'hidden' "
+    *ngIf="chartOptions.chartType.name === 'number-cards'"
+    [scheme]="chartOptions.colorScheme"
+    [results]="data">
+  </ngx-charts-number-card>
 </div>

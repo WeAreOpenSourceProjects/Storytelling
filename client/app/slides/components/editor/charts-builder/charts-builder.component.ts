@@ -159,7 +159,6 @@ export class ChartsBuilderComponent implements OnInit {
     if (!this.hasValidDimensions) {
       return;
     }
-
     if (this.chartType.simpleData) {
       this.data = this.chartType.convertData(this.dataDims, this.rawData);
     } else {
