@@ -32,7 +32,8 @@ exports.signup = function (req, res) {
   user.save(function (err) {
     if (err) {
       return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
+        message: errorHandler.getErrorMessage(err),
+        ok:false
       });
     } else {
       // Remove sensitive data before login
