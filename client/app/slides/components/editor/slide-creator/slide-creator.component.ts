@@ -24,7 +24,9 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() slideIndex: number;
     @Input() slideSetting: Slide;
     @Input() slideOpendIndex: number;
-    @Output() openSlideIndex: EventEmitter<number> = new EventEmitter();
+    @Output() openSlideIndex: EventEmitter<number> =  new EventEmitter();
+    @Output() shuffle: EventEmitter<boolean> =  new EventEmitter();
+
     showForm: boolean = true; // indicator for showing slide setting
     @Input() isInShuffle: boolean;
     slide: Slide = new Slide();
@@ -249,6 +251,10 @@ export class SlideCreatorComponent implements OnInit, AfterViewInit, OnChanges {
         console.log(newJson);
         return newJson;
     }
+    startShuffle() {
+        this.shuffle.emit(false);
+    }
+
 }
 
 const ngxSingleChartDataExample = JSON.stringify(sampleData.single);

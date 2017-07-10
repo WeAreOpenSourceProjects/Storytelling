@@ -1,12 +1,10 @@
 <form novalidate [formGroup]="form" (ngSubmit)="f.form.valid" #f="ngForm">
   <md-card>
-    <md-toolbar (click)="toggleForm()">
-      <div>
-        <span class="section-title">{{slideIndex}} - {{slide.pageTitle.title}}</span>
-      </div>
-      <a (click)="deleteSlide($event)" *ngIf="!isInShuffle" class="delete">
-        <md-icon>delete</md-icon>
-      </a>
+    <md-toolbar (panstart)="startShuffle()" (click)="toggleForm()">
+     <div>
+      <span class="section-title">{{slideIndex}} - {{slide.pageTitle.title}}</span>
+     </div>
+      <a (click)="deleteSlide($event)" *ngIf="!isInShuffle" class="delete"><md-icon>delete</md-icon></a>
       <div class="align-right">
         <md-icon *ngIf="showForm">keyboard_arrow_down</md-icon>
         <md-icon *ngIf="!showForm">keyboard_arrow_right</md-icon>
