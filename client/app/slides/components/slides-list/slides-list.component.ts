@@ -5,12 +5,12 @@ import {SlidesService} from '../../services/index';
 import {Slides} from '../../models/index'
 import {NotifBarService} from "app/core";
 @Component({
-  selector: 'app-slides-manger',
-  templateUrl: './slides-manager.component.html',
-  styleUrls: ['./slides-manager.component.scss']
+  selector: 'app-slides-list',
+  templateUrl: './slides-list.component.html',
+  styleUrls: ['./slides-list.component.scss']
 })
 
-export class SlidesMangerComponent implements OnInit {
+export class SlidesListComponent implements OnInit {
   @select(['session', 'token']) loggedIn$: Observable<string>;
   states = ['All', 'Private', 'Public'];
   selectedState = 'All';

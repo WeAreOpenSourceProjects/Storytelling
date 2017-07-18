@@ -12,12 +12,12 @@ import { IUser } from "../../store/session";
 import { ToggleNavService } from '../../services';
 
 @Component({
-  selector: 'app-app-toolbar',
-  templateUrl: './app-toolbar.component.html',
-  styleUrls: ['./app-toolbar.component.scss']
+  selector: 'app-toolbar',
+  templateUrl: './toolbar.component.html',
+  styleUrls: ['./toolbar.component.scss']
 })
-export class AppToolbarComponent implements OnInit {
-  title : string;
+export class ToolbarComponent implements OnInit {
+  title: string;
   isToggled: Observable<boolean>;
 
   @Input() titleToolbar: string;

@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray  } from '@angular/forms';
-import {ValidService} from '../../../services/valid.service';
-import { environment } from '../../../../../environments/environment';
+import {ValidService} from '../../../../services/valid.service';
+import { environment } from '../../../../../../environments/environment';
 import * as slideOption from './slideOption';
 
-import { Slide } from '../../../models/slide';
+import { Slide } from '../../../../models/slide';
 
 @Component({
     selector: 'app-slide',

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SlidesMangerComponent } from './slides-manager.component';
+import { SlidesListComponent } from './slides-list.component';
 
-describe('SlidesMangerComponent', () => {
-  let component: SlidesMangerComponent;
-  let fixture: ComponentFixture<SlidesMangerComponent>;
+describe('SlidesListComponent', () => {
+  let component: SlidesListComponent;
+  let fixture: ComponentFixture<SlidesListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SlidesMangerComponent]
+      declarations: [SlidesListComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SlidesMangerComponent);
+    fixture = TestBed.createComponent(SlidesListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

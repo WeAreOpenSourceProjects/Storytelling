@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
-import { SlidesSetting } from '../../../models/slides-setting';
-import {ValidService} from '../../../services/valid.service';
+import { SlidesSetting } from '../../../../models/slides-setting';
+import {ValidService} from '../../../../services/valid.service';
 @Component({
     selector: 'app-slides-setting',
     templateUrl: './slides-setting.component.html',

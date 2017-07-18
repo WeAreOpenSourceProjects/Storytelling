@@ -19,9 +19,9 @@ import { DndModule } from 'ng2-dnd';
 import { HotTableModule } from 'ng2-handsontable';
 
 
-import {SlidesSearchComponent} from './components/slides-manger/slides-search/slides-search.component';
+import {SlidesSearchComponent} from './components/slides-list/slides-search/slides-search.component';
 // SLIDES COMPONENTS
-import { SlidesPresentationComponent,
+import { SlidesViewComponent,
     FullScreenGraphSlideComponent,
     ImageComponent,
     TitleSlideComponent,
@@ -42,7 +42,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { KeySwitchDirective } from './components/slides-presentation/key-switch.directive';
+import { KeySwitchDirective } from './components/slides-view/key-switch.directive';
 
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
 import { DragulaModule } from 'ng2-dragula';
@@ -67,16 +67,16 @@ import { WordCloudComponent } from '../charts';
 
 import { AreaChartComponent } from '../charts/ngx-charts/area-chart';
 
-import { ImageUploadComponent } from './components/slides-editor/slide/image-upload/image-upload.component';
+import { ImageUploadComponent } from './components/slides-editor-form/slides-editor/slide/image-upload/image-upload.component';
 
-import { SlidesSettingComponent } from './components/slides-editor/slides-setting/slides-setting.component';
-import { ChartsBuilderComponent, CodeEditorComponent, DataTableComponent } from './components/slides-editor/slide/charts-builder';
-import { SlidesEditorComponent } from './components/slides-editor/slides-editor.component';
+import { SlidesSettingComponent } from './components/slides-editor-form/slides-editor/slides-setting/slides-setting.component';
+import { ChartsBuilderComponent, CodeEditorComponent, DataTableComponent } from './components/slides-editor-form/slides-editor/slide/charts-builder';
+import { SlidesEditorComponent } from './components/slides-editor-form/slides-editor/slides-editor.component';
 
-import { SlidesMangerComponent } from './components/slides-manger/slides-manager.component';
-import { SlidesCardComponent } from './components/slides-manger/slides-card/slides-card.component';
-import { DeleteDialogComponent } from './components/slides-manger/slides-card/delete-dialog/delete-dialog.component';
-import { ToggleFullscreenDirective } from './components/slides-presentation/toggle-fullscreen.directive';
+import { SlidesListComponent } from './components/slides-list/slides-list.component';
+import { SlidesCardComponent } from './components/slides-list/slides-card/slides-card.component';
+import { DeleteDialogComponent } from './components/slides-list/slides-card/delete-dialog/delete-dialog.component';
+import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
 
 
 
@@ -125,7 +125,7 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
 
     declarations: [
         KeySwitchDirective,
-        SlidesPresentationComponent,
+        SlidesViewComponent,
         SlidesEditorFormComponent,
         SlideComponent,
         ImageUploadComponent,
@@ -138,7 +138,7 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         DataTableComponent,
         ChartsBuilderComponent,
         SlidesEditorComponent,
-        SlidesMangerComponent,
+        SlidesListComponent,
         FullScreenGraphSlideComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,

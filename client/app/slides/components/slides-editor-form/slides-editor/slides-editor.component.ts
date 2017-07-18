@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, QueryList, OnChanges, ViewEncapsulation, ViewChildren } from '@angular/core';
-import {Slides} from '../../models/slides';
-import {Slide} from '../../models/slide';
+import {Slides} from '../../../models/slides';
+import {Slide} from '../../../models/slide';
 import { DragulaService } from 'ng2-dragula';
-import {ValidService} from '../../services/valid.service';
+import {ValidService} from '../../../services/valid.service';
 import {NotifBarService} from 'app/core';
 @Component({
     selector: 'app-slides-editor',

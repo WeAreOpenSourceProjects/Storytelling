@@ -14,14 +14,14 @@ import { slideTransition } from "./slide.animation";
 import * as screenfull from 'screenfull';
 import {NotifBarService} from "app/core";
 @Component({
-    selector: 'app-slides-presentation',
-    templateUrl: './slides-presentation.component.html',
-    styleUrls: ['./slides-presentation.component.scss'],
+    selector: 'app-slides-view',
+    templateUrl: './slides-view.component.html',
+    styleUrls: ['./slides-view.component.scss'],
     animations: [slideTransition()],
     providers: [WindowResizeService, SlidesService]
 })
 
-export class SlidesPresentationComponent implements OnInit {
+export class SlidesViewComponent implements OnInit {
     slides: Array<any> = [];
     slideTitle: String;
     slideHeight_style: any = {

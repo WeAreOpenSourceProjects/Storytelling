@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppSidenavComponent } from './app-sidenav.component';
+import { SlidesViewComponent } from './slides-view.component';
 
-describe('AppSidenavComponent', () => {
-  let component: AppSidenavComponent;
-  let fixture: ComponentFixture<AppSidenavComponent>;
+describe('SlidesViewComponent', () => {
+  let component: SlidesViewComponent;
+  let fixture: ComponentFixture<SlidesViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppSidenavComponent ]
+      declarations: [ SlidesViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppSidenavComponent);
+    fixture = TestBed.createComponent(SlidesViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

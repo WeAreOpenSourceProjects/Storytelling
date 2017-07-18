@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SlidesService } from '../../../services/slides.service';
-import { ValidService } from '../../../services/valid.service';
-import { Slides } from '../../../models/slides';
-import { SlidesEditorComponent} from '../slides-editor.component';
+import { SlidesService } from '../../services/slides.service';
+import { ValidService } from '../../services/valid.service';
+import { Slides } from '../../models/slides';
+import { SlidesEditorComponent} from './slides-editor/slides-editor.component';
 import {NotifBarService} from 'app/core';
 
 @Component({

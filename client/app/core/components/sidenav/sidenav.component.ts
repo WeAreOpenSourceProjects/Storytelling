@@ -7,11 +7,11 @@ import { IUser } from "../../store/session";
 
 
 @Component({
-  selector: 'app-app-sidenav',
-  templateUrl: './app-sidenav.component.html',
-  styleUrls: ['./app-sidenav.component.scss'],
+  selector: 'app-sidenav',
+  templateUrl: './sidenav.component.html',
+  styleUrls: ['./sidenav.component.scss'],
 })
-export class AppSidenavComponent {
+export class SidenavComponent {
 
   @ViewChild('sidenav') sidenav: ElementRef;
 
