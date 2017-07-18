@@ -18,13 +18,13 @@ export class SidenavComponent {
   isNormalScreen: boolean = true;
   sideNavLock: boolean = false;
   isToggled: Observable<boolean>;
-  //Menu Item
+  // Menu Item
   menuList: Array<Object> = [];
 
   @select(['session', 'token']) loggedIn$: Observable<string>;
   @select(['session', 'user']) user$: Observable<IUser>;
 
-  constructor(private toggleNavService: ToggleNavService, private menuService : MenuService) {
+  constructor(private toggleNavService: ToggleNavService, private menuService: MenuService) {
     this.menuList =menuService.getMenu('sideNav').items;
     //subscribe toggle service
     this.isToggled = this.toggleNavService.toggle();
