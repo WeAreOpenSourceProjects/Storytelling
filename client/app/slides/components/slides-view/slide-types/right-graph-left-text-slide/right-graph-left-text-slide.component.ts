@@ -1,9 +1,8 @@
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Component, OnInit, AfterContentInit, OnChanges, SimpleChanges, AfterViewInit, Input, ViewChild, ViewChildren, ComponentFactoryResolver, ViewContainerRef, ComponentRef, ChangeDetectionStrategy } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit, AfterContentInit, OnChanges, SimpleChanges, Input, ViewChild, ComponentFactoryResolver, ViewContainerRef, ComponentRef } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { Slide } from "../../../../models";
 import { PageConfig, HALF_HALF_LAYOUT } from "../../pageConfig";
-import { Chart } from "../../../../../charts/chart.class";
 import { ChartsService } from "../../../../services";
 
 @Component({
@@ -29,12 +28,7 @@ export class RightGraphLeftTextSlideComponent implements OnInit, AfterContentIni
   easeContentAni: boolean = false;
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver,
-    private chartsService: ChartsService,
-    private sanitizer: DomSanitizer) { }
-
-  ngAfterViewInit() {
-
-  }
+    private chartsService: ChartsService) { }
 
   ngOnInit() {
     this.setConfig();
@@ -86,25 +80,7 @@ export class RightGraphLeftTextSlideComponent implements OnInit, AfterContentIni
         }
 
     }
-/*
-    ngOnChanges(changes: SimpleChanges) {
-        if (this.slide.graph === 'noGraph' || this.slide.graph === 'image') return;
-        let cmpType: string = this.slide.graph.charAt(0).toUpperCase() + this.slide.graph.slice(1) + 'Component';
-        this.setChart(cmpType);
 
-    }
-
-    private setChart(chartType: string) {
-        const componentFactory = this._componentFactoryResolver.resolveComponentFactory(this.chartsService.getChartType(chartType));
-        this.parent.clear();
-        if (this.componentRef) {
-            this.componentRef.destroy();
-        }
-        this.componentRef = this.parent.createComponent(componentFactory);
-        this.componentRef.instance.dataInput = this.slide.data; // set the input inputData of the abstract class Chart
-        this.componentRef.instance.configInput = this.slide.config; // set the input inputData of the abstract class Chart
-    }
-*/
     private setConfig() {
         this.config = new PageConfig();
         Object.assign(this.config, HALF_HALF_LAYOUT);
@@ -116,38 +92,4 @@ export class RightGraphLeftTextSlideComponent implements OnInit, AfterContentIni
             this.config.hasChart = true;
         };
     }
-
-    // private loadChart() {
-    //   if (this.config.hasChart) {
-    //     (<Chart>this.componentRef.instance).load();
-    //   }
-    // }
-
-    // private easeChart() {
-    //   if (this.config.hasChart) {
-    //     (<Chart>this.componentRef.instance).ease();
-    //   }
-    // }
-
-
-    // private loadContent() {
-    //   if (this.config.hasText) {
-    //     this.loadContentAni = false;
-    //     setTimeout(_ => {
-    //       this.easeContentAni = false;
-    //       this.loadContentAni = true;
-    //     }, 150);
-    //   }
-    // }
-
-    // private easeContent() {
-    //   if (this.config.hasText) {
-    //     this.easeContentAni = false;
-    //     setTimeout(() => {
-    //       this.loadContentAni = false;
-    //       this.easeContentAni = true;
-    //     }, 0);
-    //   }
-    // }
-
 }

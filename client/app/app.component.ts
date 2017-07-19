@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { ToggleNavService } from './core';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-root',

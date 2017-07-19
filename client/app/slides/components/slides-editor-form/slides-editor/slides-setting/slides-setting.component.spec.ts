@@ -1,6 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SlidesSettingComponent } from './slides-setting.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ImageUploadComponent } from '../slide/image-upload/image-upload.component';
+import { MaterialModule } from '@angular/material';
+import {ValidService} from '../../../../services/valid.service';
+import { SlidesService } from '../../../../services/slides.service';
+import {HttpModule} from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NotifBarService} from 'app/core';
+
 
 describe('SlidesSettingComponent', () => {
   let component: SlidesSettingComponent;
@@ -8,7 +17,9 @@ describe('SlidesSettingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SlidesSettingComponent ]
+      declarations: [ SlidesSettingComponent, ImageUploadComponent ],
+      imports: [FormsModule, ReactiveFormsModule, BrowserAnimationsModule, HttpModule,  MaterialModule ],
+      providers: [ValidService, SlidesService, NotifBarService]
     })
     .compileComponents();
   }));

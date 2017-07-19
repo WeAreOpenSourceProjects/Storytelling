@@ -5,12 +5,17 @@ import { SlidesModule } from '../slides';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
 import {SessionActions} from '../core';
-import { MaterialModule, OverlayContainer } from '@angular/material';
+import { MaterialModule } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { SlidesService } from 'app/slides';
-import { Slides } from 'app/slides';
+import { Observable } from 'rxjs/Observable';
 
 describe('HomeComponent', () => {
+  class SlidesServiceMock {
+    getSlideToSearch (): Observable<any>  {
+      return Observable.of([]);
+    }
+  }
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
 
@@ -24,7 +29,8 @@ describe('HomeComponent', () => {
         MaterialModule,
         BrowserAnimationsModule
       ],
-      providers : [ SessionActions, OverlayContainer, SlidesService ]
+      providers : [ SessionActions,
+        {provide: SlidesService, useClass : SlidesServiceMock}]
     })
       .compileComponents();
     MockNgRedux.reset();

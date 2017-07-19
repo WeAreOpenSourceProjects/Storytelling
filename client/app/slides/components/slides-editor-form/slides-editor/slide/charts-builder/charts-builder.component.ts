@@ -1,9 +1,6 @@
-import { Component, ViewEncapsulation, OnInit, Input, Output, EventEmitter, DoCheck, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck, ChangeDetectionStrategy } from '@angular/core';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import * as shape from 'd3-shape';
-import * as dsv from 'd3-dsv';
-import { nest } from 'd3-collection';
-import { Observable } from "rxjs";
 import * as babyparse from 'babyparse';
 import * as _ from 'lodash';
 
@@ -32,26 +29,6 @@ const defaultOptions = {
     curve: shape.curveLinear,
     curveClosed: shape.curveCardinalClosed
 };
-
-const curves = {
-    'Basis': shape.curveBasis,
-    'Basis Closed': shape.curveBasisClosed,
-    'Bundle': shape.curveBundle.beta(1),
-    'Cardinal': shape.curveCardinal,
-    'Cardinal Closed': shape.curveCardinalClosed,
-    'Catmull Rom': shape.curveCatmullRom,
-    'Catmull Rom Closed': shape.curveCatmullRomClosed,
-    'Linear': shape.curveLinear,
-    'Linear Closed': shape.curveLinearClosed,
-    'Monotone X': shape.curveMonotoneX,
-    'Monotone Y': shape.curveMonotoneY,
-    'Natural': shape.curveNatural,
-    'Step': shape.curveStep,
-    'Step After': shape.curveStepAfter,
-    'Step Before': shape.curveStepBefore,
-    'default': shape.curveLinear
-};
-
 
 @Component({
     selector: 'app-charts-builder',

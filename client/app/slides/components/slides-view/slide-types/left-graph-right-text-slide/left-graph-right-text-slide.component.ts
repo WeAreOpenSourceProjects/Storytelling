@@ -1,9 +1,8 @@
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Component, OnInit, AfterContentInit, OnChanges, SimpleChanges, AfterViewInit, Input, ViewChild, ViewChildren, ComponentFactoryResolver, ViewContainerRef, ComponentRef } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit, AfterContentInit, OnChanges, SimpleChanges, Input, ViewChild, ComponentFactoryResolver, ViewContainerRef, ComponentRef } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { Slide } from "../../../../models";
 import { PageConfig, HALF_HALF_LAYOUT } from "../../pageConfig";
-import { Chart } from "../../../../../charts/chart.class";
 import { ChartsService } from "../../../../services";
 
 @Component({
@@ -30,9 +29,6 @@ export class LeftGraphRightTextSlideComponent implements OnInit, AfterContentIni
     constructor(private _componentFactoryResolver: ComponentFactoryResolver,
         private chartsService: ChartsService,
         private sanitizer: DomSanitizer) { }
-
-    ngAfterViewInit() {
-    }
 
     ngOnInit() {
         this.setConfig();
@@ -95,42 +91,8 @@ export class LeftGraphRightTextSlideComponent implements OnInit, AfterContentIni
 
         if (this.slide.graph == "image") {
             this.config.hasImage = true;
-        }
-        else {
+        } else {
             this.config.hasChart = true;
         };
     }
-
-    private loadChart() {
-      if (this.slide.text.length) {
-          this.slide.text = this.sanitizer.bypassSecurityTrustHtml(this.slide.text) as string;
-      }
-        if (this.config.hasChart) {
-            (<Chart>this.componentRef.instance).load();
-        }
-    }
-
-    private easeChart() {
-        if (this.config.hasChart) {
-            (<Chart>this.componentRef.instance).ease();
-        }
-    }
-
-
-    private loadContent() {
-        if (this.config.hasText) {
-            this.loadContentAni = false;
-            this.easeContentAni = false;
-            this.loadContentAni = true;
-        }
-    }
-
-    private easeContent() {
-        if (this.config.hasText) {
-            this.easeContentAni = false;
-            this.loadContentAni = false;
-            this.easeContentAni = true;
-        }
-    }
-
 }

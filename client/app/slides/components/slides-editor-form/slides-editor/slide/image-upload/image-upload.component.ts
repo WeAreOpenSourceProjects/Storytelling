@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { SlidesService } from '../../../../../services/slides.service';
 import { FileUploader} from 'ng2-file-upload';
-import {Http } from '@angular/http';
 import {NotifBarService} from 'app/core'
 const URL = 'localhost:3000/api/images/';
 

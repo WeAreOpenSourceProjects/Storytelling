@@ -3,12 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 import { WindowResizeService } from '../../services/window-resize.service';
-import { PageScrollInstance, PageScrollService, PageScrollConfig } from 'ng2-page-scroll';
+import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
 import {DOCUMENT, DomSanitizer} from '@angular/platform-browser';
 import {SlidesService} from '../../services/slides.service';
-import { BarChartComponent, ForceDirectedGraphComponent, LineChartComponent, HierarchicalEdgeBundlingComponent} from 'app/charts';
-
-import { PageConfig, HALF_HALF_LAYOUT, FULL_LAYOUT} from './pageConfig';
 
 import { slideTransition } from "./slide.animation";
 import * as screenfull from 'screenfull';
@@ -204,9 +201,6 @@ export class SlidesViewComponent implements OnInit {
 
     private getCurSlideIndex(): number {
         let scrollDis = document.body.scrollTop;
-        // console.log('scrollDis: ', scrollDis);
-        // console.log('this.slideHeight: ', this.slideHeight);
-
         let curIndex = Math.round(scrollDis / this.slideHeight);
         return curIndex;
     }

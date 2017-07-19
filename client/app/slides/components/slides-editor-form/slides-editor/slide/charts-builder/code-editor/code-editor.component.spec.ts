@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CodeEditorComponent } from './code-editor.component';
+import { CodemirrorModule } from 'ng2-codemirror';
 
 describe('CodeEditorComponent', () => {
   let component: CodeEditorComponent;
@@ -8,7 +9,8 @@ describe('CodeEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CodeEditorComponent ]
+      declarations: [ CodeEditorComponent ],
+      imports: [CodemirrorModule]
     })
     .compileComponents();
   }));

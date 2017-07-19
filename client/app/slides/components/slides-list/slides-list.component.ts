@@ -37,7 +37,6 @@ export class SlidesListComponent implements OnInit {
     this.slidesService.getSlidesList()
       .subscribe(
       slide => {
-        /*slide.forEach(s => this.slides.push(new SlidesListItem(s.slidesSetting)))*/
         this.slides = slide;
         this.result = this.calculResult(this.slides.length, this.toSearch.filter, this.toSearch.title);
       },
