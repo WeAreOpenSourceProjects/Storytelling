@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule, OverlayContainer, TooltipPosition } from '@angular/material';
 import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {XHRBackend, Http, RequestOptions} from '@angular/http';
+import {XHRBackend, RequestOptions} from '@angular/http';
 
 // NGX-CHARTS MODULE
 import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
@@ -19,18 +19,17 @@ import { DndModule } from 'ng2-dnd';
 import { HotTableModule } from 'ng2-handsontable';
 
 
-import {PrezFormSearchComponent} from './components/prez/search/prez-form-search.component';
+import {SlidesSearchComponent} from './components/slides-list/slides-search/slides-search.component';
 // SLIDES COMPONENTS
-import { SlidesPresentationComponent,
-    SlidesCardComponent,
+import { SlidesViewComponent,
     FullScreenGraphSlideComponent,
     ImageComponent,
     TitleSlideComponent,
     LeftGraphRightTextSlideComponent,
     RightGraphLeftTextSlideComponent,
     TextSlideComponent,
-    PrezFormComponent,
-    SlideCreatorComponent
+    SlidesEditorFormComponent,
+    SlideComponent
 } from '.';
 
 // SLIDES SERVICES
@@ -39,14 +38,11 @@ import {SlidesService, ValidService, ChartsService} from '.';
 // SLIDES ROUTES MODULE
 import { SlidesRoutingModule } from '.';
 import { CoreModule } from 'app/core';
-import { FileUploadModule } from 'ng2-file-upload';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { ScrollDirective } from './components/slides-presentation/scroll.directive';
-import { KeySwitchDirective } from './components/slides-presentation/key-switch.directive';
+import { KeySwitchDirective } from './components/slides-view/key-switch.directive';
 
-import { Ng2PageScrollModule } from 'ng2-page-scroll';
 import { DragulaModule } from 'ng2-dragula';
 import { BarChartComponent } from '../charts';
 import { GaugeChartComponent } from '../charts';
@@ -69,17 +65,16 @@ import { WordCloudComponent } from '../charts';
 
 import { AreaChartComponent } from '../charts/ngx-charts/area-chart';
 
-import { CsvInputComponent } from './components/editor/slide-creator/csv-input/csv-input.component';
-import { ImageUploadComponent } from './components/editor/slide-creator/image-upload/image-upload.component';
+import { ImageUploadComponent } from './components/slides-editor-form/slides-editor/slide/image-upload/image-upload.component';
 
-import { SlidesSettingComponent } from './components/editor/slides-setting/slides-setting.component';
-import { ChartsBuilderComponent, CodeEditorComponent, DataTableComponent } from './components/editor/charts-builder';
-import { EditorComponent } from './components/editor/editor.component';
+import { SlidesSettingComponent } from './components/slides-editor-form/slides-editor/slides-setting/slides-setting.component';
+import { ChartsBuilderComponent, CodeEditorComponent, DataTableComponent } from './components/slides-editor-form/slides-editor/slide/charts-builder';
+import { SlidesEditorComponent } from './components/slides-editor-form/slides-editor/slides-editor.component';
 
-import { PrezListComponent } from './components/prez/prez-list.component';
-import { PrezListCardComponent } from './components/prez/card/prez-list-card.component';
-import { DialogComponent } from './components/dialog/dialog.component';
-import { ToggleFullscreenDirective } from './components/slides-presentation/toggle-fullscreen.directive';
+import { SlidesListComponent } from './components/slides-list/slides-list.component';
+import { SlidesCardComponent } from './components/slides-list/slides-card/slides-card.component';
+import { DeleteDialogComponent } from './components/slides-list/slides-card/delete-dialog/delete-dialog.component';
+import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
 
 
 
@@ -99,10 +94,8 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         FlexLayoutModule,
         DndModule.forRoot(),
         HotTableModule,
-        Ng2PageScrollModule.forRoot(),
         FroalaEditorModule.forRoot(),
-        FroalaViewModule.forRoot(),
-        FileUploadModule
+        FroalaViewModule.forRoot()
     ],
     entryComponents: [
         BarChartComponent,
@@ -115,7 +108,7 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         FullScreenGraphSlideComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,
-        DialogComponent,
+        DeleteDialogComponent,
         DendogramComponent,
         NgGraphComponent,
         TreemapChartComponent,
@@ -127,15 +120,12 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         ImageComponent],
 
     declarations: [
-        ScrollDirective,
         KeySwitchDirective,
-        SlidesPresentationComponent,
-        SlidesCardComponent,
-        PrezFormComponent,
-        SlideCreatorComponent,
-        CsvInputComponent,
+        SlidesViewComponent,
+        SlidesEditorFormComponent,
+        SlideComponent,
         ImageUploadComponent,
-        PrezFormSearchComponent,
+        SlidesSearchComponent,
         BarChartComponent,
         ForceDirectedGraphComponent,
         LineChartComponent,
@@ -143,8 +133,8 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         CodeEditorComponent,
         DataTableComponent,
         ChartsBuilderComponent,
-        EditorComponent,
-        PrezListComponent,
+        SlidesEditorComponent,
+        SlidesListComponent,
         FullScreenGraphSlideComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,
@@ -153,12 +143,12 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         RightGraphLeftTextSlideComponent,
         TextSlideComponent,
         PieChartComponent,
-        PrezListCardComponent,
+        SlidesCardComponent,
         HierarchicalEdgeBundlingComponent,
         AreaChartComponent,
         PieGridChartComponent,
         NumberCardComponent,
-        DialogComponent,
+        DeleteDialogComponent,
         NgGraphComponent,
         TreemapChartComponent,
         ZoomableTreemapChartComponent,
@@ -171,8 +161,8 @@ import { ToggleFullscreenDirective } from './components/slides-presentation/togg
         ImageComponent
     ],
     exports: [
-      PrezListCardComponent,
-      PrezFormSearchComponent
+      SlidesCardComponent,
+      SlidesSearchComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [OverlayContainer, SlidesService, ChartsService]

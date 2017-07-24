@@ -5,96 +5,96 @@ import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Chart } from '../../chart.class';
 import { nest } from 'd3-collection';
 const defaultOptions = {
-  view: [1200, 800],
-  showXAxis : true,
-  showYAxis : true,
-  gradient : false,
-  showLegend : true,
-  showXAxisLabel : true,
-  showYAxisLabel : true,
-  colorScheme : {
-   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  },
-  autoScale : true
+    view: [1200, 800],
+    showXAxis: true,
+    showYAxis: true,
+    gradient: false,
+    showLegend: true,
+    showXAxisLabel: true,
+    showYAxisLabel: true,
+    colorScheme: {
+        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    },
+    autoScale: true
 };
 @Component({
-  selector: 'app-pie-grid-chart',
-  templateUrl: './pie-grid-chart.component.html',
-  styleUrls: ['./pie-grid-chart.component.scss']
+    selector: 'app-pie-grid-chart',
+    templateUrl: './pie-grid-chart.component.html',
+    styleUrls: ['./pie-grid-chart.component.scss']
 })
 export class PieGridChartComponent extends Chart implements OnInit, OnDestroy, OnChanges {
 
-  chartOptions: any;
+    chartOptions: any;
 
-  data: any[];
-  private activated: boolean = true;
-  private _setIntervalHandler: any;
+    data: any[];
+    private activated: boolean = true;
+    private _setIntervalHandler: any;
 
-  constructor() { super() }
+    constructor() { super() }
 
-  ngOnInit() {
-    // Set the config
-    this.chartOptions = { ...defaultOptions, ...this.configInput };
+    ngOnInit() {
+        // Set the config
+        this.chartOptions = { ...defaultOptions, ...this.configInput };
 
-    this.init();
+        this.init();
 
-  }
-
-  /**
-   * Process json Data to Ngx-charts format
-   * @param dataDims :  string[] Selected Dimentions
-   * @param rawData : array<Object> Json data
-   */
-  public static convertData(dataDims: string[], rawData: any) {
-
-    const key$ = d => d[dataDims[0]];
-    return nest()
-        .key(key$)
-        .entries(rawData)
-        .map(values);
-
-    function values(d) {
-      return {
-        name: d.key,
-        value: d.values.map((val) => {
-          return val[dataDims[1]];
-        }).reduce((ele1, ele2) => {
-          return ele1 + ele2;
-          }, 0)
-      };
     }
-  }
 
-  setData(graphData, graphConfig) {
-    this.chartOptions = { ...this.chartOptions, ...graphConfig };
-    this.data = graphData;
-  }
-  ngOnChanges() {
-    d3.select("#PieGridChartComponent").remove();
-    this.init();
-  }
-  init() {
-    this.data = PieGridChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
-  }
+    /**
+     * Process json Data to Ngx-charts format
+     * @param dataDims :  string[] Selected Dimentions
+     * @param rawData : array<Object> Json data
+     */
+    public static convertData(dataDims: string[], rawData: any) {
+        if (dataDims === undefined || rawData === undefined) return null;
+        const key$ = d => d[dataDims[0]];
+        return nest()
+            .key(key$)
+            .entries(rawData)
+            .map(values);
 
-  load() {
-    // this.data = [];
-    // this._setIntervalHandler =  setTimeout(() => this.data = this.dataInput);
-  }
+        function values(d) {
+            return {
+                name: d.key,
+                value: d.values.map((val) => {
+                    return val[dataDims[1]];
+                }).reduce((ele1, ele2) => {
+                    return ele1 + ele2;
+                }, 0)
+            };
+        }
+    }
 
-  ease() {
-  }
+    setData(graphData, graphConfig) {
+        this.chartOptions = { ...this.chartOptions, ...graphConfig };
+        this.data = graphData;
+    }
+    ngOnChanges() {
+        d3.select("#PieGridChartComponent").remove();
+        this.init();
+    }
+    init() {
+        this.data = PieGridChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+    }
 
-  select(data) {
-    console.log('Item clicked', data);
-  }
+    load() {
+        // this.data = [];
+        // this._setIntervalHandler =  setTimeout(() => this.data = this.dataInput);
+    }
 
-  onLegendLabelClick(entry) {
-    console.log('Legend clicked', entry);
-  }
+    ease() {
+    }
 
-  ngOnDestroy() {
-    clearTimeout(this._setIntervalHandler);
-  }
+    select(data) {
+        console.log('Item clicked', data);
+    }
+
+    onLegendLabelClick(entry) {
+        console.log('Legend clicked', entry);
+    }
+
+    ngOnDestroy() {
+        clearTimeout(this._setIntervalHandler);
+    }
 
 }

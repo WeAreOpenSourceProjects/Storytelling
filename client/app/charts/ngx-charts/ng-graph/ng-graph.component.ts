@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 
 const defaultOptions = {
     view: [900, 600],
-    colorScheme: colorSets.find(s => s.name === 'cool'),
+    colorScheme: colorSets.find(s => { if (s === undefined) return; else return s.name === 'cool' }),
     schemeType: 'ordinal',
     showLegend: true,
     legendTitle: 'Legend',
@@ -58,7 +58,7 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
      * @param rawData : array<Object> Json data
      */
     public static convertData(dataDims: string[][], rawData: any) {
-
+        if (dataDims === undefined || rawData === undefined) return;
         const key$ = d => d[_.head(dataDims[0])];
         const name$ = d => d[_.head(dataDims[1])];
         const value$ = d => d[_.head(dataDims[2])];

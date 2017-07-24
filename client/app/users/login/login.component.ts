@@ -4,9 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SessionActions } from '../../core/actions';
 import { select } from '@angular-redux/store';
 import {Observable} from 'rxjs/Observable';
-import {  IAppState} from '../../core/store';
-import { NgRedux } from '@angular-redux/store';
-import { UsersService } from '../services/index';
 import { IMessage } from "../../core/store/session";
 
 
@@ -26,9 +23,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private actions: SessionActions,
-    private ngRedux:NgRedux<IAppState>,
-    private usersService:UsersService ) {
+    private actions: SessionActions) {
     this.form = this._buildForm();
   }
 

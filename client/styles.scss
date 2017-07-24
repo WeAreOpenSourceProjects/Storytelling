@@ -65,3 +65,6 @@ button:disabled {
   cursor: no-drop;
   opacity: .5;
 }
+ngx-tooltip-content.ngx-tooltip-content.position-right.type-tooltip.animate {
+  z-index: 2147483648 !important;
+}

@@ -4,7 +4,7 @@
   </div>
   <div class="search-block" [class.center-mode]="!showSlidesList" [class.side-mode]="showSlidesList">
     <div class="search-wrap">
-      <app-search (textSearch)="searchSlides($event)" kind="generic"></app-search>
+      <app-slides-search (textSearch)="searchSlides($event)" kind="generic"></app-slides-search>
     </div>
     <button *ngIf="!showSlidesList" class="buttonBottom floating" (click)="getAllslides()" md-fab><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
   </div>
@@ -12,7 +12,7 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
   <div *ngFor="let s of slides" [class.display-div]="!(loggedIn$|async)&& !s.slidesSetting.public" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
-    <app-prez-list-card [slides]="s" [editable]="false"></app-prez-list-card>
+    <app-slides-card [slides]="s" [editable]="false"></app-slides-card>
   </div>
 </div>
 

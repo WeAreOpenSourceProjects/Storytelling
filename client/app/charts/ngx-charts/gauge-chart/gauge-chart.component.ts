@@ -8,7 +8,7 @@ import * as d3 from 'd3';
   styleUrls: ['./gauge-chart.component.scss']
 })
 export class GaugeChartComponent extends Chart implements OnInit, OnChanges {
-  
+
   data: Array<any> = [];
 
   private width: number;
@@ -37,8 +37,8 @@ export class GaugeChartComponent extends Chart implements OnInit, OnChanges {
 
   tooltipDisabled = false;
 
-  constructor() { 
-       super()  
+  constructor() {
+       super()
     }
 
   ngOnInit() {
@@ -74,6 +74,7 @@ export class GaugeChartComponent extends Chart implements OnInit, OnChanges {
   }
 
   load() {
+    if(this.data===undefined) return;
     this.data = [...this.data];
   }
   public static convertData(dataDims: string[], rawData: any) {

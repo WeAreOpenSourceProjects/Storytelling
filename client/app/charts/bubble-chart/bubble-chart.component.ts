@@ -46,7 +46,7 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
             this.data = BubbleChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
         else
             this.data = this.dataInput;
-        
+
         console.log('convertData: ', this.data);
 
         this.drawChart();
@@ -115,7 +115,7 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
                 y: centerY + (node.y - centerY) * 3,
                 r: 0, // for tweening
                 radius: node.r, //original radius
-                id: data.cat + '.' + (data.name.replace(/\s/g, '-')),
+                id: data.cat + '.' + (data.name?data.name.replace(/\s/g, '-'):''),
                 cat: data.cat,
                 name: data.name,
                 value: data.value,
@@ -361,15 +361,15 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
 
     /**
      * Process json Data to D3.js Pie chart format
-     * @param dataDims :  string[] Selected Dimentions 
-     * @param rawData : array<Object> Json data 
+     * @param dataDims :  string[] Selected Dimentions
+     * @param rawData : array<Object> Json data
      */
     public static convertData(dataDims: string[], rawData: any) {
 
       const category$ = d => d[_.head(dataDims[0])];
       const label$ = d => d[_.head(dataDims[1])];
       const value$ = d => d[_.head(dataDims[2])];
-        
+
       const desc$ = d => d[_.head(dataDims[3])];
 
 
@@ -395,7 +395,7 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
     // FIXME
     load() { }
 
-    // FIXME 
+    // FIXME
     ease() { }
 
 

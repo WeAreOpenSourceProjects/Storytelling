@@ -20,9 +20,9 @@ export class PasswordComponent implements OnInit {
   @select(['session', 'hasMessage']) hasMessage$: Observable<IMessage>;
 
 
-  constructor(private actions : SessionActions, private ngRedux: NgRedux<IAppState>) {
+  constructor(private actions: SessionActions, private ngRedux: NgRedux<IAppState>) {
     this.ngRedux.subscribe(() =>{
-      this.state=this.ngRedux.getState();
+      this.state = this.ngRedux.getState();
     })
     this.form = this._buildForm();
   }

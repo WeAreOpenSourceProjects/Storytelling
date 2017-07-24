@@ -1,0 +1,40 @@
+@import 'client/theme.scss'; //  background-color: $accent;
+
+
+:host {
+    position: relative;
+
+    .text-container {
+        display: flex;
+        height: 100%;
+        padding-left: 10px;
+        padding-right: 20px;
+        position: relative;
+
+        &.alignTop {
+            align-items: none;
+        }
+        &.alignMiddle {
+            align-items: center;
+        }
+        &.alignBottom {
+            div:first-child {
+                position: absolute;
+                bottom: 120px;
+            }
+        }
+    }
+
+    .img-bkg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        .fullScreenImg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

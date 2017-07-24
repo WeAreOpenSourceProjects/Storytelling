@@ -2,7 +2,7 @@
   <ngx-charts-area-chart
     [view]="view"
     [scheme]="colorScheme"
-    [results]="data"
+    [results]="data?data:[]"
     [gradient]="gradient"
     [xAxis]="showXAxis"
     [yAxis]="showYAxis"

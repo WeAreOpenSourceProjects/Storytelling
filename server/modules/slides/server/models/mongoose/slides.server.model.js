@@ -38,11 +38,6 @@ var SlidesSchema = new Schema({
         defalut: '',
         trim: true
       },
-    /*  bannerPath: {
-        type: String,
-        defalut: '',
-        trim: true
-      },*/
       author: {
         type: String,
         default: '',
@@ -65,6 +60,11 @@ var SlidesSchema = new Schema({
       text: {
         type: String,
         default: '',
+        trim: true
+      },
+      textVerAlign: {
+        type: String,
+        default: 'TOP',
         trim: true
       },
       graph: {

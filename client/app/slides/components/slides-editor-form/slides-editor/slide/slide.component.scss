@@ -1,0 +1,99 @@
+@import 'client/theme.scss';
+
+.pointer {
+    cursor: pointer;
+}
+
+md-card {
+    box-shadow: none !important;
+    padding: 20px;
+
+    md-toolbar {
+        border-bottom: 5px solid #333;
+        cursor: pointer;
+        //.click {
+        //    cursor: pointer;
+        //    height: 100%;
+        //    margin-left: 50px;
+        //    width: 100%;
+        //}
+
+
+    }
+    md-select {
+        margin: 0 7px;
+        position: relative;
+        top: 2px;
+    }
+    .titleDiv {
+        margin-top : 1%;
+    }
+
+}
+/*page layout selector*/
+.layout-selector, .text-vertical-align {
+    input[type="radio"] {
+        display: none;
+
+        & + label {
+            a {
+                //  margin-top: 5px;
+                margin-bottom: 15px;
+            }
+
+            &:hover {
+                a {
+                    background-color: $accent;
+                    color: white;
+                }
+            }
+        }
+
+        &:checked {
+            & + label {
+                a {
+                    background-color: $accent;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+.step {
+  min-height: 200px;
+  min-width: 250px;
+  padding-top: 20px;
+}
+
+
+/*title bar for each step*/
+.sub-title-bar {
+    width: 100%;
+    font-weight: bold;
+    font-size: 20px;
+    height: 50px;
+
+    .fa {
+        color: grey;
+
+        &.checked {
+            color: $accent;
+        }
+    }
+}
+.delete{
+    color: #e53935;
+    margin-left: 93%;
+    position: absolute;
+    cursor: pointer;
+}
+.align-right {
+    margin-left: 95%;
+    position: absolute;
+    cursor: pointer;
+}
+a.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}
