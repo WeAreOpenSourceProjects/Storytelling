@@ -3,7 +3,7 @@ import {
   PieChartComponent, AdvancedPieChartComponent, BarChartComponent, ForceDirectedGraphComponent,
   GaugeChartComponent, HierarchicalEdgeBundlingComponent, LineChartComponent, DendogramComponent,
   NgGraphComponent, TreemapChartComponent, ZoomableTreemapChartComponent, PieGridChartComponent,
-  BubbleChartComponent, SunburstChartComponent, WordCloudComponent,AreaChartComponent,NumberCardComponent
+  BubbleChartComponent, SunburstChartComponent, WordCloudComponent, AreaChartComponent, NumberCardComponent
 
 } from 'app/charts';
 import { ImageComponent } from '../components/slides-view/slide-types/';

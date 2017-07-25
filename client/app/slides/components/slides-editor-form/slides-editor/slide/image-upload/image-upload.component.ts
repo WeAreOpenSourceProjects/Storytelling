@@ -45,7 +45,6 @@ export class ImageUploadComponent implements OnInit, OnChanges {
         let file = inputEl.files[0];
 
         let textType = /image.*/;
-        console.log(file.type.match(textType));
 
         if (file.type.match(textType)) {
             var reader: any = new FileReader();
@@ -57,7 +56,6 @@ export class ImageUploadComponent implements OnInit, OnChanges {
                     image => {
                         this.uploadImage.emit(image._id);
                         this.imgPreview = image.path;
-                        console.log("get image", image);
                         this.setImage.emit(image._id);
                         this.notifBarService.showNotif("upload image successfully")
                     },

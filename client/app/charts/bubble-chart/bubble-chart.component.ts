@@ -108,7 +108,6 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
         // we use pack() to automatically calculate radius conveniently only
         // and get only the leaves
         let nodes = pack(root).leaves().map(node => {
-            // console.log('node:', node.x, (node.x - centerX) * 2);
             const data: any = node.data;
             return {
                 x: centerX + (node.x - centerX) * 3, // magnify start position to have transition to center movement
@@ -251,7 +250,6 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
 
         node.on('click', (currentNode: INode) => {
             d3.event.stopPropagation();
-            console.log('currentNode', currentNode);
             let currentTarget = d3.event.currentTarget; // the <g> el
 
             if (currentNode === focusedNode) {
@@ -292,7 +290,6 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
                     let iy = d3.interpolateNumber(currentNode.y, centerY);
                     let ir = d3.interpolateNumber(currentNode.r, centerY * 0.5);
                     return function(t) {
-                        // console.log('i', ix(t), iy(t));
                         currentNode.fx = ix(t);
                         currentNode.fy = iy(t);
                         currentNode.r = ir(t);

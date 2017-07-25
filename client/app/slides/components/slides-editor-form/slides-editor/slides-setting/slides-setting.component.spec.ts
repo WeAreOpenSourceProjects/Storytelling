@@ -14,12 +14,13 @@ import {NotifBarService} from 'app/core';
 describe('SlidesSettingComponent', () => {
   let component: SlidesSettingComponent;
   let fixture: ComponentFixture<SlidesSettingComponent>;
-
+  let slidesServiceStub = {};
+  let slidesService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SlidesSettingComponent, ImageUploadComponent ],
       imports: [FormsModule, ReactiveFormsModule, BrowserAnimationsModule, HttpModule,  MaterialModule ],
-      providers: [ValidService, SlidesService, NotifBarService]
+      providers: [ValidService, {provide: SlidesService, useValue:slidesServiceStub }, NotifBarService]
     })
     .compileComponents();
   }));
@@ -28,6 +29,7 @@ describe('SlidesSettingComponent', () => {
     fixture = TestBed.createComponent(SlidesSettingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+      slidesService = TestBed.get(SlidesService);
   });
 
   it('should create', () => {

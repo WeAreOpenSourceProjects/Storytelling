@@ -8,12 +8,13 @@ import { MaterialModule } from '@angular/material';
 describe('ImageUploadComponent', () => {
   let component: ImageUploadComponent;
   let fixture: ComponentFixture<ImageUploadComponent>;
-
+  let slidesServiceStub = {};
+  let slidesService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ImageUploadComponent ],
       imports: [FormsModule, HttpModule, MaterialModule],
-      providers: [SlidesService, NotifBarService]
+      providers: [{provide: SlidesService, useValue:slidesServiceStub }, NotifBarService]
     })
     .compileComponents();
   }));
@@ -22,6 +23,7 @@ describe('ImageUploadComponent', () => {
     fixture = TestBed.createComponent(ImageUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    slidesService = TestBed.get(SlidesService);
   });
 
   it('should create', () => {

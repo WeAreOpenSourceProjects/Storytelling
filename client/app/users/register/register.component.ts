@@ -30,8 +30,6 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnChange(record) {
-      //this.model = new User();
-      console.log('record:', record);
   }
 
   register(model) {

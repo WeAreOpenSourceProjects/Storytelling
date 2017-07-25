@@ -9,7 +9,7 @@ import {NotifBarService} from 'app/core';
 import { MaterialModule } from '@angular/material';
 import {SlideComponent} from './slides-editor/slide/slide.component';
 import {SlidesSettingComponent} from './slides-editor/slides-setting/slides-setting.component'
-import {DragulaModule , DragulaService} from 'ng2-dragula/ng2-dragula';
+import {DragulaModule, DragulaService} from 'ng2-dragula/ng2-dragula';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {ChartsBuilderComponent} from './slides-editor/slide/charts-builder';
 import { DataTableComponent } from './slides-editor/slide/charts-builder/data-table';
@@ -18,9 +18,9 @@ import { DndModule } from 'ng2-dnd';
 import { HotTableModule } from 'ng2-handsontable';
 import { ImageUploadComponent } from './slides-editor/slide/image-upload/image-upload.component';
 import { BarChartComponent, BubbleChartComponent, DendogramComponent, ForceDirectedGraphComponent, HierarchicalEdgeBundlingComponent,
-  LineChartComponent, PieChartComponent, SunburstChartComponent,
-  WordCloudComponent, ZoomableTreemapChartComponent, AdvancedPieChartComponent, AreaChartComponent, GaugeChartComponent, NumberCardComponent,
-  PieGridChartComponent, TreemapChartComponent
+    LineChartComponent, PieChartComponent, SunburstChartComponent,
+    WordCloudComponent, ZoomableTreemapChartComponent, AdvancedPieChartComponent, AreaChartComponent, GaugeChartComponent, NumberCardComponent,
+    PieGridChartComponent, TreemapChartComponent
 } from '../../../charts';
 import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
 import { CodeEditorComponent } from './slides-editor/slide/charts-builder/code-editor';
@@ -30,29 +30,32 @@ import {HttpModule} from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SlidesEditorFormComponent', () => {
-  let component: SlidesEditorFormComponent;
-  let fixture: ComponentFixture<SlidesEditorFormComponent>;
+    let component: SlidesEditorFormComponent;
+    let fixture: ComponentFixture<SlidesEditorFormComponent>;
+    let slidesServiceStub = {};
+    let slidesService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ SlidesEditorFormComponent, ImageUploadComponent, DataTableComponent, CodeEditorComponent, SlidesEditorComponent , SlideComponent, SlidesSettingComponent,
-        ChartsBuilderComponent, BarChartComponent, BubbleChartComponent, DendogramComponent, ForceDirectedGraphComponent, HierarchicalEdgeBundlingComponent,
-        LineChartComponent, PieChartComponent, SunburstChartComponent,
-        WordCloudComponent, ZoomableTreemapChartComponent, AdvancedPieChartComponent, AreaChartComponent, GaugeChartComponent, NumberCardComponent,
-        PieGridChartComponent, TreemapChartComponent],
-      imports: [RouterTestingModule, MaterialModule, BrowserAnimationsModule, HttpModule, ReactiveFormsModule, FroalaEditorModule, FroalaViewModule, DragulaModule, NgxChartsModule, FormsModule, HotTableModule, DndModule, CodemirrorModule],
-      providers: [ SlidesService, ValidService, NotifBarService, DragulaService, {provide: APP_BASE_HREF, useValue: '/'}]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [SlidesEditorFormComponent, ImageUploadComponent, DataTableComponent, CodeEditorComponent, SlidesEditorComponent, SlideComponent, SlidesSettingComponent,
+                ChartsBuilderComponent, BarChartComponent, BubbleChartComponent, DendogramComponent, ForceDirectedGraphComponent, HierarchicalEdgeBundlingComponent,
+                LineChartComponent, PieChartComponent, SunburstChartComponent,
+                WordCloudComponent, ZoomableTreemapChartComponent, AdvancedPieChartComponent, AreaChartComponent, GaugeChartComponent, NumberCardComponent,
+                PieGridChartComponent, TreemapChartComponent],
+            imports: [RouterTestingModule, MaterialModule, BrowserAnimationsModule, HttpModule, ReactiveFormsModule, FroalaEditorModule, FroalaViewModule, DragulaModule, NgxChartsModule, FormsModule, HotTableModule, DndModule, CodemirrorModule],
+            providers: [{provide: SlidesService, useValue:slidesServiceStub }, ValidService, NotifBarService, DragulaService, { provide: APP_BASE_HREF, useValue: '/' }]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SlidesEditorFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(SlidesEditorFormComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+        slidesService = TestBed.get(SlidesService);
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

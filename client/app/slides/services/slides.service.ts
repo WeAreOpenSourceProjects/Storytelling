@@ -24,7 +24,6 @@ export class SlidesService {
             this._baseUrl += `:${environment.backend.port}`;
         };
         this.user$.subscribe(user => {
-            console.log(user.username);
             this.user = {
                 username: user.username,
                 firstName: user.firstName,

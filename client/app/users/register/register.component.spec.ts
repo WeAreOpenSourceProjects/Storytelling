@@ -14,12 +14,13 @@ import {HttpModule} from '@angular/http';
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
-
+  let usersServiceStub = {};
+  let usersService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RegisterComponent ],
       imports : [FormsModule, ReactiveFormsModule, MaterialModule, RouterTestingModule, HttpModule, NgReduxTestingModule, BrowserAnimationsModule],
-      providers: [SessionActions, UsersService]
+      providers: [SessionActions, {provide: UsersService, useValue:usersServiceStub }]
     })
     .compileComponents();
   }));
@@ -28,6 +29,7 @@ describe('RegisterComponent', () => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    usersService = TestBed.get(UsersService);
   });
 
   it('should create', () => {

@@ -10,7 +10,8 @@ import { Slides } from '../../../models/slides';
 describe('SlidesCardComponent', () => {
     let component: SlidesCardComponent;
     let fixture: ComponentFixture<SlidesCardComponent>;
-
+    let slidesServiceStub = {};
+    let slidesService;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -20,7 +21,7 @@ describe('SlidesCardComponent', () => {
                 NgReduxTestingModule
             ],
             declarations: [SlidesCardComponent],
-            providers: [SlidesService,NotifBarService]
+            providers: [{provide: SlidesService, useValue:slidesServiceStub },NotifBarService]
         })
             .compileComponents();
     }));
@@ -29,6 +30,7 @@ describe('SlidesCardComponent', () => {
         fixture = TestBed.createComponent(SlidesCardComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
+          slidesService = TestBed.get(SlidesService);
     });
 
     it('should create', () => {

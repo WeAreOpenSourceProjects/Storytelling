@@ -69,7 +69,6 @@ export class GaugeChartComponent extends Chart implements OnInit, OnChanges {
       this.data = GaugeChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else
       this.data = this.dataInput;
-    console.log(this.data);
     this.load();
   }
 

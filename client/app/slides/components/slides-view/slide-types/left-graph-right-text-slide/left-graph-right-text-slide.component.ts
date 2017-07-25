@@ -58,7 +58,6 @@ export class LeftGraphRightTextSlideComponent implements OnInit, AfterContentIni
         }
         this.componentRef = this.parent.createComponent(componentFactory);
         if (chartType == 'ImageComponent') {
-            console.log("get path");
             if (this.slide.slideImage) this.componentRef.instance.path = this.slide.slideImage.path;
         }
         else {

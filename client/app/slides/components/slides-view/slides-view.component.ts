@@ -81,7 +81,6 @@ export class SlidesViewComponent implements OnInit {
         /* generate and initialize slides*/
         this.slidesService.getSlides(id).subscribe(
             slide => {
-                console.log("get slide",slide);
                 this.slides = slide.slides;
                 this.slideNum = this.slides.length;
                 this.slideTitle = slide.slidesSetting.title;
@@ -133,17 +132,8 @@ export class SlidesViewComponent implements OnInit {
             // }
             this.slideease$.next(this.curSlideIndex);
             this.curSlideIndex++;
-            // console.log('curSlideIndex : ', this.curSlideIndex);
             this.slideload$.next(this.curSlideIndex);
-            // this.loadChart(this.curSlideIndex - 1);
             /*add animation to text content*/
-            // this.loadContent(this.curSlideIndex - 1);
-        }
-        else {
-            /*this.snackBar.openFromComponent(ScrollToEndComponent, {
-                duration: 500,
-            });*/
-
         }
     }
 
@@ -196,9 +186,6 @@ export class SlidesViewComponent implements OnInit {
 
     private getCurSlideIndex(): number {
         let scrollDis = document.body.scrollTop;
-        // console.log('scrollDis: ', scrollDis);
-        // console.log('this.slideHeight: ', this.slideHeight);
-
         let curIndex = Math.round(scrollDis / this.slideHeight);
         return curIndex;
     }

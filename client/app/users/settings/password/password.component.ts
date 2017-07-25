@@ -46,7 +46,6 @@ export class PasswordComponent implements OnInit {
     });
   }
   changePasword(value){
-    console.log(value);
     this.actions.changePassword(value);
   }
 }

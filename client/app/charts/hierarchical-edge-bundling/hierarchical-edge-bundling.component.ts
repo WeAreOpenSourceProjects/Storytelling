@@ -60,7 +60,6 @@ export class HierarchicalEdgeBundlingComponent extends Chart implements OnInit {
 
     const root = packageHierarchy(this.data)
         .sum(d => { return d.size; });
-    console.log(root);
 
     cluster(root);
 

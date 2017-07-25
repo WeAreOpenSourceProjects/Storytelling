@@ -31,7 +31,6 @@ export class UsersService {
     }
     editProfile(user):Observable<any>{
       let backendURL = `${this._baseUrl}${environment.backend.endpoints.users}` ;
-      console.log('backendURL',backendURL)
       return this.http.put(backendURL, user).map((response: Response) => response.json());
     }
     getUsers():Observable<any>{

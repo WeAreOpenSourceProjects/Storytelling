@@ -26,7 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 describe('SlideComponent', () => {
   let component: SlideComponent;
   let fixture: ComponentFixture<SlideComponent>;
-
+  let slidesServiceStub = {};
+  let slidesService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
         declarations: [ SlideComponent, ImageUploadComponent, DataTableComponent, CodeEditorComponent , SlideComponent,
@@ -35,7 +36,7 @@ describe('SlideComponent', () => {
       WordCloudComponent, ZoomableTreemapChartComponent, AdvancedPieChartComponent, AreaChartComponent, GaugeChartComponent, NumberCardComponent,
       PieGridChartComponent, TreemapChartComponent],
         imports: [ MaterialModule, BrowserAnimationsModule, HttpModule, ReactiveFormsModule, FroalaEditorModule, FroalaViewModule, DragulaModule, NgxChartsModule, FormsModule, HotTableModule, DndModule, CodemirrorModule],
-        providers: [ SlidesService, ValidService, NotifBarService, DragulaService]
+        providers: [{provide: SlidesService, useValue:slidesServiceStub },  ValidService, NotifBarService, DragulaService]
     })
     .compileComponents();
   }));
@@ -44,6 +45,7 @@ describe('SlideComponent', () => {
     fixture = TestBed.createComponent(SlideComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+      slidesService = TestBed.get(SlidesService);
   });
 
   it('should create', () => {

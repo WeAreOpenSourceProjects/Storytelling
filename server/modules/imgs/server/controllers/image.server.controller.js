@@ -224,7 +224,6 @@ exports.imageByID = function(req, res, next, id) {
     if (err) {
       return res.status(404).end(JSON.stringify(err));
     }
-    console.log(data)
     return res.send(data);
   });
 };

@@ -34,7 +34,6 @@ export class ToolbarComponent implements OnInit {
       .filter(event => event instanceof NavigationEnd)
       .map(() => this.activatedRoute)
       .map(route => {
-        console.log('route: ',route);
         while (route.firstChild) route = route.firstChild;
         return route;
       })

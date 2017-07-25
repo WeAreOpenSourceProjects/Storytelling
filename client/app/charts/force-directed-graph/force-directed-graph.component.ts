@@ -215,7 +215,6 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit, AfterV
         });
         this.node.append("title")
             .text(d => {
-                console.log(d,d.id.split('.')[d.depth]);
                 return (d.data)&&d.depth ? d.id.split('.')[d.depth] + " : " + d.data.value : d.id
             });
         this.simulation
@@ -264,7 +263,6 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit, AfterV
             .attr('y', legendRectSize - legendSpacing / 2)
             .attr("transform", "translate(0,5)")
             .text(d => {
-                console.log(d);
                 return d.split('.')[this.maxDepth - 1]
             });
 
