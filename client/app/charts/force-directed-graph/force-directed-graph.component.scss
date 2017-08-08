@@ -4,7 +4,25 @@
     .d3-chart {
         width: 100%;
         height: 80vh;
+        display: flex;
+
+        .legend-container {
+            //overflow: scroll !important;
+            flex: initial;
+            width: 200px;
+            min-width: 100px;
+            height: 60vh;
+            overflow-y: scroll;
+        }
+
+        .svg-container {
+            flex: 1;
+        }
     }
+}
+
+:host /deep/ .svg-container svg {
+    overflow: visible;
 }
 
 :host /deep/ .links line {
@@ -22,6 +40,25 @@
     font-size: 20px;
 }
 
-:host /deep/ text{
-  fill:#999;
+:host /deep/ text {
+    fill: #999;
+}
+/* Scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    //border: 1px solid grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #88ba1c;
 }

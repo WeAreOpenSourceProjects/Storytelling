@@ -1,0 +1,12 @@
+<md-card-content>
+  <app-slides-editor #editor [sliderIpt]="slider"></app-slides-editor>
+</md-card-content>
+<div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+  <div class="base dark">
+    <md-card-actions fxLayout="row" fxLayoutAlign="center center">
+      <button md-raised-button type="button" color="primary" [disabled]="!isValidated||_editor.isInShuffle" type="submit" (click)="saveSlides(id)">{{mode}}</button>
+      <button md-raised-button type="button" class="secondery" [routerLink]="['/slides']">CANCEL</button>
+    </md-card-actions>
+    <p *ngFor="let msg of errorMsg" class="error">*{{msg}}</p>
+  </div>
+</div>

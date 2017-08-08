@@ -4,20 +4,21 @@ import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../core/store';
 import {UsersService} from '../services/users.service';
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+    selector: 'app-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  users=[];
-  state :Object;
-  constructor(private actions : SessionActions, private usersService : UsersService ) {
-    this.usersService.getUsers().subscribe(users=>{
-      this.users = users;
-    })
-  }
+    users = [];
+    state: Object;
+    constructor(private usersService: UsersService) {
 
-  ngOnInit() {
-  }
+    }
+
+    ngOnInit() {
+        this.usersService.getUsers().subscribe(users => {
+            this.users = users;
+        });
+    }
 
 }

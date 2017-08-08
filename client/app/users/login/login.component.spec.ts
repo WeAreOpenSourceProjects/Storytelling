@@ -2,6 +2,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { MaterialModule } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
+import {SessionActions} from '../../core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgReduxTestingModule } from '@angular-redux/store/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './login.component';
 
@@ -11,7 +17,9 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ]
+      declarations: [ LoginComponent ],
+      imports: [MaterialModule, RouterTestingModule, FormsModule, ReactiveFormsModule, NgReduxTestingModule, BrowserAnimationsModule],
+      providers: [SessionActions]
     })
     .compileComponents();
   }));

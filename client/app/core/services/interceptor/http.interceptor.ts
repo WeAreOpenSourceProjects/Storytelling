@@ -26,7 +26,6 @@ export class InterceptedHttp extends Http {
 
 
     private setRequestOptionArgs(url: string | Request, options?: RequestOptionsArgs): RequestOptionsArgs {
-        console.log('options: ', url);
         if (options == null) {
             options = new RequestOptions();
         }

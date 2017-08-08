@@ -1,0 +1,10 @@
+<div fxLayout="row" fxLayoutAlign="space-around " fxFill>
+  <!--text-->
+  <div fxFlex="50%" *ngIf="config.hasText" class="text-container" [class.alignTop]="slide.textVerAlign=='TOP'" [class.alignMiddle]="slide.textVerAlign=='MIDDLE'" [class.alignBottom]="slide.textVerAlign=='BOTTOM'">
+    <div [innerHTML]="slide.text" style="width:100%"></div>
+  </div>
+  <!--graph-->
+  <div fxFlex="50%" [attr.id]="slide.graph" class="graph-container">
+    <ng-template #parent></ng-template>
+  </div>
+</div>

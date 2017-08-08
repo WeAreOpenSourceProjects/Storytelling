@@ -44,7 +44,7 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
             this.data = PieChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
         else
             this.data = this.dataInput;
-        
+
         this.drawChart();
     }
 
@@ -52,12 +52,12 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
      * Draw function for D3.js Bar chart
      */
     drawChart() {
-
+        if(this.data===undefined) return;
         let element = this.chartContainer.nativeElement;
         this.width = element.offsetWidth - this.margin.left - this.margin.right;
         this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
         const svg = d3.select(element)
-            .append('svg')        
+            .append('svg')
             .attr("id","PieChartComponent")
             .attr('width', element.offsetWidth)
             .attr('height', element.offsetHeight)
@@ -127,8 +127,8 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
 
     /**
      * Process json Data to D3.js Pie chart format
-     * @param dataDims :  string[] Selected Dimentions 
-     * @param rawData : array<Object> Json data 
+     * @param dataDims :  string[] Selected Dimentions
+     * @param rawData : array<Object> Json data
      */
     public static convertData(dataDims: string[], rawData: any) {
         const name$ = d => d[_.head(dataDims[0])];
@@ -158,7 +158,7 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
 
     }
 
-    // FIXME 
+    // FIXME
     ease() {
         d3.selectAll('.arc')
             .transition()

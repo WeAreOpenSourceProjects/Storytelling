@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // SLIDES COMPONENTS
-import { SlidesPresentationComponent, PrezFormComponent, PrezListComponent} from '.';
+import { SlidesViewComponent, SlidesEditorFormComponent, SlidesListComponent} from '.';
 
 import { Auth } from 'app/users';
 
@@ -10,27 +10,27 @@ import { Auth } from 'app/users';
 const slidesRoutes: Routes = [
   {
     path: '',
-    component: PrezListComponent,
+    component: SlidesListComponent,
     canActivate: [Auth],
     data: {
       roles: ['*'],
-      title: 'slides Manager'
+      title: 'slides List'
     },
     pathMatch: 'full'
   }, {
     path: 'createSlides',
-    component: PrezFormComponent,
+    component: SlidesEditorFormComponent,
     data: { title: 'Slides Creator' }
   }, {
     path: 'slides/:id',
-    component: PrezFormComponent,
+    component: SlidesEditorFormComponent,
     data: {
       roles: ['user'],
       title: 'Slides Editor'
     }
   }, {
     path: 'slidesPresentation/:id',
-    component: SlidesPresentationComponent,
+    component: SlidesViewComponent,
     data: { title: 'Presentation' }
   }
 ];

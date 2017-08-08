@@ -1,0 +1,14 @@
+<app-slides-setting #slidesSetting (onSettingChange)="slidesSettingChange($event)" (formValidateChange)="settingValidateChange($event)" [setting]="slider.slidesSetting"></app-slides-setting>
+<p class="tips">*Please drag slide to reorder, and drag after closing all slide form toggle</p>
+<div [dragula]="'shuffle-bag'" [dragulaModel]='slider.slides'>
+  <app-slide *ngFor="let slide of slider.slides;let i=index" [slideIndex]="i+1" [slideOpendIndex]="slideOpendIndex"  (openSlideIndexOpt)="openSlideIndex($event)" [slideSetting]="slide" (deleteSlideOpt)="deleteSlide($event)" (formValidateChange)="slideValidateChange($event)"
+      #creator></app-slide>
+</div>
+
+<div class="base light" fxLayout="row" fxLayoutAlign="center center">
+
+  <a md-fab (click)="addSlide()" mdTooltip="add a new slide" >
+    <md-icon>add</md-icon>
+  </a>
+
+</div>

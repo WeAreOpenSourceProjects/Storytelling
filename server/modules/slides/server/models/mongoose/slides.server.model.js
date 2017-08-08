@@ -38,11 +38,6 @@ var SlidesSchema = new Schema({
         defalut: '',
         trim: true
       },
-    /*  bannerPath: {
-        type: String,
-        defalut: '',
-        trim: true
-      },*/
       author: {
         type: String,
         default: '',
@@ -67,6 +62,11 @@ var SlidesSchema = new Schema({
         default: '',
         trim: true
       },
+      textVerAlign: {
+        type: String,
+        default: 'TOP',
+        trim: true
+      },
       graph: {
         type: String,
         default: '',
@@ -80,6 +80,11 @@ var SlidesSchema = new Schema({
       slideImage: {
         type: Schema.ObjectId,
         ref: 'Image'
+      },
+      bkgLayout: {
+        type: String,
+        default: 'STRETCH',
+        trim: true
       },
       data: {
         type: Array,

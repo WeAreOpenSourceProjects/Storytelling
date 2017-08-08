@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild }    from '@angular/router';
-import { UsersService } from './users.service'
+import { CanActivate, CanActivateChild } from '@angular/router';
 import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../core/store';
 @Injectable()
 export class Auth implements CanActivate, CanActivateChild{
   userRoles = [];
-  constructor(private usersService : UsersService, 
-                private ngRedux: NgRedux<IAppState>){}
+  constructor(private ngRedux: NgRedux<IAppState>){}
 
   canActivate(route) {
     this.userRoles = JSON.parse(JSON.stringify(this.ngRedux.getState())).session.user.roles;

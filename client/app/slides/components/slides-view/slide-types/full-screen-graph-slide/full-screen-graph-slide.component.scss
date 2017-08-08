@@ -1,0 +1,25 @@
+@import 'client/stylesheets/theme.scss';
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  /deep/ app-ng-graph {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+  }
+/*
+#keep this because we may have full screen picture for it
+  /deep/ .img-container {
+    height: 100%;
+    width: 100%;
+  }
+
+  /deep/ .img-cmp{
+    height: 100%;
+    width:100%;
+  }
+  */
+}

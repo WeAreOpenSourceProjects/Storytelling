@@ -1,6 +1,6 @@
 <div class="d3-chart" >
-  <ngx-charts-number-card 
+  <ngx-charts-number-card
   [scheme]="chartOptions.colorScheme"
-  [results]="data">
+  [results]="data?data:[]">
   </ngx-charts-number-card>
 </div>

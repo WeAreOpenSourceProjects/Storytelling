@@ -24,7 +24,6 @@ export class SlidesService {
             this._baseUrl += `:${environment.backend.port}`;
         };
         this.user$.subscribe(user => {
-            console.log(user.username);
             this.user = {
                 username: user.username,
                 firstName: user.firstName,
@@ -47,7 +46,8 @@ export class SlidesService {
     }
     getSlidesList(): Observable<any> {
         const params: URLSearchParams = new URLSearchParams();
-        params.set('username', this.user.username);
+        if (this.user != undefined)
+            params.set('username', this.user.username);
         const backendURL = `${this._baseUrl}${environment.backend.endpoints.search}`;
         return this.http.get(backendURL, { search: params }).map((response: Response) => response.json());
     }
@@ -55,48 +55,7 @@ export class SlidesService {
         const backendURL = `${this._baseUrl}${environment.backend.endpoints.slides}/${id}`;
         return this.http.get(backendURL).map((response: Response) => response.json());
     }
-    getSlidesFix(id): Observable<any> {
-        const backendURL = `${this._baseUrl}${environment.backend.endpoints.slidesFix}/${id}`;
-        return this.http.get(backendURL).map((response: Response) => response.json());
-    }
-    uploadImage(img) {
-        /*console.log('iùg', img);
-        const backendURL = `${this._baseUrl}${environment.backend.endpoints.images}`;
-        return this.http.post(backendURL, img).map((response: Response) => response.json());*/
-        return Observable.create(observer => {
-            console.log("recieve");
-            console.log(img);
 
-            const backendURL = `${this._baseUrl}${environment.backend.endpoints.images}`
-            let xhr: XMLHttpRequest = new XMLHttpRequest();
-            let formData: any = new FormData();
-            console.log("formdata", formData.entries());
-            formData.append('file', img);
-            console.log("formdata", formData);
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        observer.next(JSON.parse(xhr.response));
-                        observer.complete();
-                    } else {
-                        observer.error(xhr.response);
-                    }
-                }
-            };
-
-            xhr.upload.onprogress = (event) => {
-                this.progress = Math.round(event.loaded / event.total * 100);
-                //  this.progressObserver.next(this.progress);
-            };
-
-            xhr.open('POST', backendURL, true);
-            xhr.send(formData);
-        })
-    }
-    getImage(id): Observable<any> {
-        const backendURL = `${this._baseUrl}${environment.backend.endpoints.images}/${id}`;
-        return this.http.get(backendURL).map((response: Response) => response.json());
-    }
     updateSlide(slide, id): Observable<any> {
         const backendURL = `${this._baseUrl}${environment.backend.endpoints.slides}/${id}`;
         return this.http.put(backendURL, slide).map((response: Response) => response.json());

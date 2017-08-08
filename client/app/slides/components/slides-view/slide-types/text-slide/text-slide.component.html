@@ -1,0 +1,9 @@
+<!--image background-->
+
+<!--text content-->
+<div fxLayout="row" fxFill [ngStyle]="{'background-image': 'url('+slide.slideImage+')'}" class="container" [class.bkgStretch]="slide.bkgLayout=='STRETCH'" [class.bkgCenter]="slide.bkgLayout=='CENTER'" [class.bkgCover]="slide.bkgLayout=='COVER'">
+  <div class="text-container" *ngIf="config.hasText "  [class.alignTop]="slide.textVerAlign=='TOP'" [class.alignMiddle]="slide.textVerAlign=='MIDDLE'" [class.alignBottom]="slide.textVerAlign=='BOTTOM'"
+      fxFlex="100%">
+    <div [innerHTML]="slide.text" style="width:100%"></div>
+  </div>
+</div>

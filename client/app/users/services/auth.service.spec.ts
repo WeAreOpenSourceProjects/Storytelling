@@ -1,11 +1,13 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { NgReduxTestingModule } from '@angular-redux/store/testing';
 
 import { Auth } from './auth.service';
 
 describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [Auth]
+      providers: [Auth],
+      imports: [NgReduxTestingModule]
     });
   });
 

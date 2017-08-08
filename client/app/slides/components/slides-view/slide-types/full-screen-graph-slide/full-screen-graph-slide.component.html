@@ -1,0 +1,13 @@
+<div fxLayout="row" fxFlex="100%"  fxFill>
+  <!--graph-->
+  <div fxFlex="100%" [attr.id]="slide.graph">
+    <ng-template #parent ></ng-template>
+  </div>
+
+<!--
+# keep this because we may have full screen picture for it
+  <div fxFlex="100%" [attr.id]="slide.graph" fxLayoutAlign="center center" *ngIf="slide.graph=='image'&&slide.slideImage">
+    <img [src]="slide.slideImage.path" class="fullScreenImg">
+  </div>
+-->
+</div>

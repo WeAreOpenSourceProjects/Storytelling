@@ -1,11 +1,11 @@
 <div class="d3-chart" >
   <ngx-charts-bar-vertical-2d fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'bar-vertical-2d'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-2d'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-    [results]="data"
+    [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
     [xAxis]="chartOptions.showXAxis"
     [yAxis]="chartOptions.showYAxis"
@@ -23,11 +23,11 @@
   </ngx-charts-bar-vertical-2d>
   <ngx-charts-bar-horizontal-2d fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'bar-horizontal-2d'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-2d'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-    [results]="data"
+  [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
     [tooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxis]="chartOptions.showXAxis"
@@ -43,11 +43,11 @@
   </ngx-charts-bar-horizontal-2d>
   <ngx-charts-bar-vertical-stacked fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'bar-vertical-stacked'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-stacked'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-    [results]="data"
+    [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
     [tooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxis]="chartOptions.showXAxis"
@@ -63,11 +63,11 @@
   </ngx-charts-bar-vertical-stacked>
   <ngx-charts-bar-horizontal-stacked fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'bar-horizontal-stacked'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-stacked'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-    [results]="data"
+    [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
     [xAxis]="chartOptions.showXAxis"
     [yAxis]="chartOptions.showYAxis"
@@ -82,11 +82,11 @@
   </ngx-charts-bar-horizontal-stacked>
   <ngx-charts-bar-vertical-normalized fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'bar-vertical-normalized'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-normalized'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-    [results]="data"
+    [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
     [tooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxis]="chartOptions.showXAxis"
@@ -102,11 +102,11 @@
   </ngx-charts-bar-vertical-normalized>
   <ngx-charts-bar-horizontal-normalized fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'bar-horizontal-normalized'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-normalized'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-    [results]="data"
+    [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
     [tooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxis]="chartOptions.showXAxis"
@@ -122,11 +122,11 @@
   </ngx-charts-bar-horizontal-normalized>
   <ngx-charts-polar-chart fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'polar-chart'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'polar-chart'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-    [results]="data"
+    [results]="data?data:[]"
     [legend]="chartOptions.showLegend"
     [legendTitle]="chartOptions.legendTitle"
     [gradient]="chartOptions.gradient"
@@ -146,11 +146,11 @@
   </ngx-charts-polar-chart>
   <ngx-charts-line-chart fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'line-chart'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'line-chart'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-    [results]="data"
+    [results]="data?data:[]"
     [legend]="chartOptions.showLegend"
     [legendTitle]="chartOptions.legendTitle"
     [gradient]="chartOptions.gradient"
@@ -170,10 +170,10 @@
   </ngx-charts-line-chart>
   <ngx-charts-heat-map fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'heat-map'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'heat-map'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
-    [results]="data"
+    [results]="data?data:[]"
     [legend]="chartOptions.showLegend"
     [gradient]="chartOptions.gradient"
     [xAxis]="chartOptions.showXAxis"
@@ -187,10 +187,10 @@
   </ngx-charts-heat-map>
   <ngx-charts-bubble-chart fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'bubble-chart'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bubble-chart'"
     class="chart-container"
     [view]="null"
-    [results]="data"
+    [results]="data?data:[]"
     [showGridLines]="chartOptions.showGridLines"
     [legend]="chartOptions.showLegend"
     [legendTitle]="chartOptions.legendTitle"
@@ -210,8 +210,8 @@
   </ngx-charts-bubble-chart>
   <ngx-charts-number-card fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType.name === 'number-cards'"
+    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'number-cards'"
     [scheme]="chartOptions.colorScheme"
-    [results]="data">
+    [results]="data?data:[]">
   </ngx-charts-number-card>
 </div>

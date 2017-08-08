@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
 import { Chart } from '../chart.class';
@@ -8,8 +8,9 @@ import { Chart } from '../chart.class';
     templateUrl: './force-directed-graph.component.html',
     styleUrls: ['./force-directed-graph.component.scss']
 })
-export class ForceDirectedGraphComponent extends Chart implements OnInit {
+export class ForceDirectedGraphComponent extends Chart implements OnInit, AfterViewInit {
     @ViewChild('chart') private chartContainer: ElementRef;
+    @ViewChild('legend') private legendContainer: ElementRef;
     private chart: any;
     private width: number;
     private height: number;
@@ -18,6 +19,9 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
     private link: any;
     private node: any;
     private chartOptions: any;
+    private maxValue: any;
+    private minValue: any;
+    private maxDepth: number;
 
     constructor() {
         super()
@@ -26,87 +30,124 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
     ngOnInit() {
         // Set data
         // FIXME
-        this.data = this.dataInput[0];
+        this.data = this.dataInput;
 
+
+
+
+    }
+
+    ngAfterViewInit() {
         this.chartOptions = { ...this.configInput };
-
+        d3.select("#ForceDirectedGraphComponent").remove();
+        d3.select("#ForceDirectedGraphComponentLegend").remove();
+        if(this.data===undefined) return;
+        this.init();
+    }
+    ngOnChanges() {
+        d3.select("#ForceDirectedGraphComponent").remove();
+        d3.select("#ForceDirectedGraphComponentLegend").remove();
+        if(this.data===undefined) return;
         this.init();
     }
 
-
     /**
      * Process json Data to D3.js Bar chart format
-     * @param dataDims :  string[] Selected Dimentions 
-     * @param rawData : array<Object> Json data 
+     * @param dataDims :  string[] Selected Dimentions
+     * @param rawData : array<Object> Json data
      */
     public static convertData(dataDims: string[], rawData: any) {
+        if(dataDims===undefined || rawData===undefined) return null;
+        const hierarchy$ = depth => d => d[dataDims[0][depth]];
+        const value$ = d => d[dataDims[1]];
+        const depthDim = dataDims[0].length;
 
-        const source$ = d => d[_.head(dataDims[0])];
-        const sourceGroup$ = d => d[_.head(dataDims[1])];
-        const target$ = d => d[_.head(dataDims[2])];
-        const targetGroup$ = d => d[_.head(dataDims[3])];
-        const value$ = d => d[_.head(dataDims[4])];
+        const root = [{ id: _.head(dataDims[0]), value: 0 }];
 
-        let sources = _.chain(rawData)
-            .map(r => getNode(r, source$, sourceGroup$))
-            .uniqBy('id')
+        const level0 = _.chain(rawData)
+            .groupBy(_.head(dataDims[0]))
+            .flatMap(d => sum(d, 0, _.head(dataDims[0]) + '.', hierarchy$(0)))
             .value();
 
-        let targets = _.chain(rawData)
-            .map(r => getNode(r, target$, targetGroup$))
-            .uniqBy('id')
-            .value();
-
-        let nodes = _.chain(sources.concat(targets))
-            .uniqBy('id')
-            .value();
-        
-        let links = _.chain(rawData)
-            .map(r => getLink(r, source$, target$, value$))
-            .value();
-
-
-        console.log('nodes: ', nodes);
-        console.log('links: ', links);
-
-        function getNode(raw:any, node$ : Function , nodeGroup$: Function) {
-            return {
-                id: node$(raw),
-                group: nodeGroup$(raw)
+        function sum(d, depth, prefix, fetchId$) {
+            let level = [];
+            depth += 1;
+            if (depth < depthDim) {
+                level = _.chain(d)
+                    .groupBy(dataDims[0][depth])
+                    .flatMap(d1 => sum(d1, depth, prefix + fetchId$(d[0]) + '.', hierarchy$(depth)))
+                    .value();
             }
+            return level.concat({
+                id: prefix + fetchId$(d[0]),
+                value: _.reduce(d, (total, el) => total + value$(el), 0)
+            })
         }
+        let result = root.concat(level0);
 
-        function getLink(raw:any, source$: Function, target$: Function, value$: Function) {
-            return {
-                source: source$(raw),
-                target: target$(raw),
-                value: value$(raw)
-            }
-        }
 
-        return {
-            nodes: nodes,
-            links: links
-        }
+        return result;
 
     }
 
     init() {
-
         if (this.configInput != null)
             this.data = ForceDirectedGraphComponent.convertData(this.chartOptions.dataDims, this.dataInput);
         else
             this.data = this.dataInput;
 
+        //convert data to hierachy
+        let convertedData = this.data;
+        this.maxValue = d3.max(convertedData, d => d['value']);
+        this.minValue = d3.min(convertedData, d => d['value']);
+        let stratify = d3.stratify()
+            .parentId(d => { return d['id'].substring(0, d['id'].lastIndexOf(".")); });
+
+        this.data = stratify(convertedData)
+            .sort((a, b) => { return (a.height - b.height) || a.id.localeCompare(b.id); });
+
+        this.maxDepth = this.data.height;
+
+        let nodes = flatten(this.data);
+        let Hierachylinks = d3.hierarchy(this.data).links();
+        let links: { source: number; target: number }[] = simplizeLink(Hierachylinks);
+
+        function flatten(root) {
+            var nodes = [], i = 0;
+
+            function recurse(node) {
+                if (node.children) node.children.forEach(recurse);
+                if (!node.id) node.id = ++i;
+                nodes.push(node);
+            }
+
+            recurse(root);
+            return nodes;
+        }
+        function simplizeLink(links) {
+            let result = _.chain(links)
+                .map(d => {
+                    return {
+                        source: d.source.data.id,
+                        target: d.target.data.id
+                    }
+                })
+                .value();
+            return result;
+        }
+
         let element = this.chartContainer.nativeElement;
+        let legendEle = this.legendContainer.nativeElement;
         this.width = element.offsetWidth;
         this.height = element.offsetHeight;
+
         let svg = d3.select(element).append('svg')
-            //    .attr('width', element.offsetWidth)
-            //  .attr('height', element.offsetHeight);
+            .attr("id", "ForceDirectedGraphComponent")
+            .attr('width', element.offsetWidth)
+            .attr('height', element.offsetHeight)
             //    .atrr("overflow", "visible")
-            .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("viewBox", "100 0 " + (element.offsetWidth) + " " + element.offsetHeight)
+            //    .attr("preserveAspectRatio", "xMidYMid meet")
+            //  .attr("viewBox", "0 0 " + (element.offsetWidth) + " " + element.offsetHeight)
             .classed("allow-overflow", true);
 
         //var width = +this.svg.attr("width");
@@ -115,34 +156,34 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
         let color = d3.scaleOrdinal(d3.schemeCategory20);
 
         this.simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(function (d: { id: string, group: number }) { return d.id; }).distance(50))
-            .force("charge", d3.forceManyBody().strength(-40))
+
+            .force("link", d3.forceLink().id(d => d['id']).distance(30).strength(1))
+            .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter((element.offsetWidth) / 2, element.offsetHeight / 2))
             .force("x", d3.forceX().strength(0).x(this.width / 2))
             .force("y", d3.forceY().strength(0).y(this.height / 2))
-
-        //      .force("center", d3.forceCenter(width / 2, height / 2))
-
 
 
         this.link = svg.append("g")
             .attr("class", "links")
             .selectAll(".link")
-            .data(this.data.links)
+            .data(links)
             .enter().append("line")
             .attr("class", "link")
-            .attr("stroke-width", function (d) { return Math.sqrt(d['value']); })
+            //  .attr("stroke-width", function(d) { return Math.sqrt(d['value']); })
             .attr("stroke", "#999")
 
 
         this.node = svg.append("g")
             .attr("class", "nodes")
             .selectAll(".node")
-            .data(this.data.nodes)
+            .data(nodes)
             .enter().append("circle")
             .attr("class", "node")
-            .attr("r", 8)
-            .attr("fill", (d) => { return color(d['group']); })
+            .attr("r", d => {
+                return d['data']['value'] * 15 / this.maxValue + 5;
+            })
+            .attr("fill", (d) => { return (d['parent'] && d["depth"] == this.maxDepth) ? color(d['parent']['id']) : "grey"; })
             .on("click", _ => {
                 let targetId = d3.select(d3.event.target).datum()['id'];
                 //fade all node
@@ -173,49 +214,73 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
             this.reset()
         });
         this.node.append("title")
-            .text(function (d) { return d.id; });
-
+            .text(d => {
+                return (d.data)&&d.depth ? d.id.split('.')[d.depth] + " : " + d.data.value : d.id
+            });
         this.simulation
-            .nodes(this.data.nodes)
+            .nodes(nodes)
             .on("tick", () => { return this.ticked() });
 
         this.simulation.force("link")
-            .links(this.data.links)
+            .links(links)
 
 
         //*********legend
-        /*  let legendBox = svg.append("g")
-              .attr("class", "legends")
-              .attr("transform", "translate(120,200)")
-  
-  
-  
-          let legendRectSize = 12;
-          let legendSpacing = 24;
-          let legends = legendBox.selectAll('.legend')
-              .data(color.domain())
-              .enter()
-              .append('g')
-              .attr('class', 'legend')
-              .attr('transform', function(d, i) {
-                  var height = legendRectSize + legendSpacing;
-                  var offset = height * color.domain().length / 2;
-  
-                  var vert = i * height;
-                  return 'translate(' + 0 + ',' + vert + ')';
-              });
-  
-          legends.append('circle')
-              .attr("r", legendRectSize / 2)
-              .style('fill', color)
-              .style('stroke', color);
-  
-          legends.append('text')
-              .attr('x', legendRectSize + legendSpacing)
-              .attr('y', legendRectSize - legendSpacing / 2)
-              .attr("transform", "translate(0,5)")
-              .text(d => "group" + d);
-  */
+
+        let legendBox = d3.select(legendEle).append('svg')
+            .attr("id", "ForceDirectedGraphComponentLegend")
+            .attr("class", "legends")
+            //.attr('width', legendEle.offsetWidth)
+            //.attr('height', legendEle.offsetHeight)
+            //  .attr("viewBox", "0 0 " + (legendEle.offsetWidth) + " " + legendEle.offsetHeight)
+            //.attr("transform", "translate(40,20)")
+            .attr("overflow", "scroll");
+
+
+
+
+        let legendRectSize = 12;
+        let legendSpacing = 24;
+        let legends = legendBox.selectAll('.legend')
+            .data(color.domain())
+            .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .attr('transform', function(d, i) {
+                var height = legendRectSize + legendSpacing;
+                var offset = height * color.domain().length / 2;
+                var vert = i * height + 20;
+                return 'translate(' + 26 + ',' + vert + ')';
+            });
+
+        legends.append('circle')
+            .attr("r", legendRectSize / 2)
+            .style('fill', color)
+            .style('stroke', color);
+
+        legends.append('text')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing / 2)
+            .attr("transform", "translate(0,5)")
+            .text(d => {
+                return d.split('.')[this.maxDepth - 1]
+            });
+
+        let d = document.getElementById("ForceDirectedGraphComponentLegend").getBoundingClientRect();
+
+        //get legend max width
+        let maxWL = 0;
+
+        let lEle = document.getElementsByClassName('legend')
+        for (let i = 0; i < lEle.length; i++) {
+            if (lEle[i].getBoundingClientRect().width > maxWL) maxWL = lEle[i].getBoundingClientRect().width;
+        }
+
+        legendBox.attr("width", (maxWL + 26) + "px")
+            .attr("height", (document.getElementsByClassName('legend').length * (legendRectSize + legendSpacing) + 20) + "px")
+
+
+
 
         this.load();
 
@@ -223,17 +288,18 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
     }
 
     ticked() {
+
         this.link
-            .attr("x1", function (d) {
+            .attr("x1", function(d) {
                 return d.source.x;
             })
-            .attr("y1", function (d) { return d.source.y; })
-            .attr("x2", function (d) { return d.target.x; })
-            .attr("y2", function (d) { return d.target.y; });
+            .attr("y1", function(d) { return d.source.y; })
+            .attr("x2", function(d) { return d.target.x; })
+            .attr("y2", function(d) { return d.target.y; });
 
         this.node
-            .attr("cx", function (d) { return d.x; })
-            .attr("cy", function (d) { return d.y; });
+            .attr("cx", function(d) { return d.x; })
+            .attr("cy", function(d) { return d.y; });
     }
 
     dragged(d) {
@@ -274,24 +340,24 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
         this.link.filter((d, i) => i == link["index"]).attr("opacity", .1);
     }
     centerPoint(node) {
-        this.node.filter((d, i) => i == node["index"]).attr("r", 15).attr("opacity", 1);
+        this.node.filter((d, i) => i == node["index"]).attr("r", d => d['data']['value'] * 15 / this.maxValue + 20).attr("opacity", 1);
     }
     focus(node) {
         this.node.filter((d, i) => i == node["index"]).attr("opacity", 1);
     }
     fade(node) {
-        this.node.filter((d, i) => i == node["index"]).attr("r", 8).attr("opacity", .1);
+        this.node.filter((d, i) => i == node["index"]).attr("r", d => d['data']['value'] * 15 / this.maxValue + 5).attr("opacity", .1);
     }
     reset() {
-        console.log("reset");
-        this.node.transition().duration(200).attr("r", 8).attr("opacity", 1);
+
+        this.node.transition().duration(200).attr("r", d => d['data']['value'] * 15 / this.maxValue + 5).attr("opacity", 1);
         this.link.transition().duration(200).attr("opacity", 1);
     }
     transition() {
         this.shrink();
         setTimeout(_ => {
             this.expand()
-        }, 800);
+        }, 500);
     }
     setData(data) {
         //  this.data=data[0];

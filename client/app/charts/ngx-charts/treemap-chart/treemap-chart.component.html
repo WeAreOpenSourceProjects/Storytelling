@@ -1,9 +1,9 @@
 <div class="d3-chart" >
     <ngx-charts-tree-map fxFlex
         [style.visibility]="activated ?  'visible' : 'hidden' "
-        *ngIf="chartOptions.chartType.name === 'treemap'"
+        *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'treemap'"
         class="chart-container"
         [scheme]="chartOptions.colorScheme"
-        [results]="data">
+        [results]="data?data:[]">
     </ngx-charts-tree-map>
 </div>

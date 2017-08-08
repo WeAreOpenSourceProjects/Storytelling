@@ -1,0 +1,84 @@
+<form novalidate [formGroup]="form" (ngSubmit)="f.form.valid" #f="ngForm">
+  <md-card>
+    <md-toolbar (click)="toggleForm()">
+      <div>
+        <span class="section-title">{{slideIndex}} - {{slide.pageTitle.title}}</span>
+      </div>
+      <a (click)="deleteSlide($event)" class="delete">
+        <md-icon>delete</md-icon>
+      </a>
+      <div class="align-right">
+        <md-icon *ngIf="showForm">keyboard_arrow_down</md-icon>
+        <md-icon *ngIf="!showForm">keyboard_arrow_right</md-icon>
+      </div>
+    </md-toolbar>
+
+    <md-card-content *ngIf="showForm">
+      <div class="titleDiv">
+        <md-input-container>
+          <input mdInput [(ngModel)]="slide.pageTitle.title" formControlName="pageTitle" name="pageTitle" placeholder="Title" />
+        </md-input-container>
+        <md-select formControlName="titleAlign" [(ngModel)]="slide.pageTitle.align" name="titleAlign" placeholder="Title Align">
+          <md-option *ngFor="let align of titleAlignOption" [value]="align">
+            {{ align }}
+          </md-option>
+        </md-select>
+      </div>
+      <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around" class="base dark layout-selector ">
+        <md-toolbar-row class="sub-title-bar">
+          <span><i class="fa fa-check-circle-o fa-fw" [class.checked]="slide.pageLayout"></i>Select Page Layout*</span>
+        </md-toolbar-row>
+        <div fxFlex="19" *ngFor="let layout of pageLayoutOption">
+          <input type="radio" [attr.id]="layout.value+slide.index" name="layout-selector+slide.index" (change)="pageLayoutChange(layout.value)" [attr.checked]="layout.value==slide.pageLayout?true:null" />
+
+          <label fxFlex="100" for={{layout.value+slide.index}}><a fxFlex="100" md-raised-button mdTooltip={{layout.type}}><i *ngFor="let icon of layout.icon" [ngStyle]="{ 'padding': '24px'}" class="fa {{icon}} fa-4x"></i></a></label>
+
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutWrap="wrap" fxLayoutAlign="space-between none" class="base dark">
+        <div *ngIf="(slide.pageLayout=='textInCenterImageBackground')" class="step">
+          <md-toolbar-row class="sub-title-bar">
+            <span><i class="fa fa-check-circle-o fa-fw" [class.checked]="slide.slideImage"></i>Upload Image*</span>
+          </md-toolbar-row>
+          <div class="image-layout">
+            <span>Choose text vertical align: </span>
+            <input type="radio" id="img-stretch" name="img-stretch" (change)="imgLayoutChange('STRETCH')" [attr.checked]="slide.bkgLayout=='STRETCH'?true:null" />
+            <label for="img-stretch"><a  md-raised-button mdTooltip="">STRETCH</a></label>
+            <input type="radio" id="img-center" name="img-center" (change)="imgLayoutChange('CENTER')" [attr.checked]="slide.bkgLayout=='CENTER'?true:null" />
+            <label for="img-center"><a  md-raised-button mdTooltip="">CENTER</a></label>
+            <input type="radio" id="img-cover" name="img-cover" (change)="imgLayoutChange('COVER')" [attr.checked]="slide.bkgLayout=='COVER'?true:null" />
+            <label for="img-cover"><a  md-raised-button mdTooltip="">COVER</a></label>
+          </div>
+          <app-image-upload (setImage)="setImageHtml($event)" [imagePath]="slide.slideImage" align="center"></app-image-upload>
+        </div>
+
+        <div *ngIf="slide.hasText" class="step text-container">
+          <div class="sub-title-bar">
+            <md-toolbar-row>
+              <span><i class="fa fa-check-circle-o fa-fw" [class.checked]="slide.text"></i>Input Text Content*</span>
+            </md-toolbar-row>
+          </div>
+          <div class="text-vertical-align">
+            <span>Choose text vertical align: </span>
+            <input type="radio" id="ver-top" name="ver-align" (change)="textAlignChange('TOP')" [attr.checked]="slide.textVerAlign=='TOP'?true:null" />
+            <label for="ver-top"><a  md-raised-button mdTooltip="">TOP</a></label>
+            <input type="radio" id="ver-middle" name="ver-align" (change)="textAlignChange('MIDDLE')" [attr.checked]="slide.textVerAlign=='MIDDLE'?true:null" />
+            <label for="ver-middle"><a  md-raised-button mdTooltip="">MIDDLE</a></label>
+            <input type="radio" id="ver-bottom" name="ver-align" (change)="textAlignChange('BOTTOM')" [attr.checked]="slide.textVerAlign=='BOTTOM'?true:null" />
+            <label for="ver-bottom"><a  md-raised-button mdTooltip="">BOTTOM</a></label>
+          </div>
+          <textarea [froalaEditor]='editorOptions' [(froalaModel)]="slide.text"></textarea>
+        </div>
+
+        <div *ngIf="slide.hasGraph" class="step">
+          <app-charts-builder [inputData]="slide.data" [inputOptions]="slide.config" (validForm)="validChildForm($event)" (configGraph)="confirmeSlideGRaphConfig($event)" (validSlide)="confirmSlide($event)">
+          </app-charts-builder>
+        </div>
+        <br>
+
+      </div>
+    </md-card-content>
+
+  </md-card>
+</form>
