@@ -1,0 +1,125 @@
+/* You can add global styles to this file, and also import other style files */
+@import url( 'https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url( 'https://fonts.googleapis.com/css?family=Montserrat:700');
+@import 'spinner.scss';
+@import 'animation.css';
+/*@font-face {
+  font-family: "Montserrat";
+  src: url("/assets/Montserrat-Bold.woff") format("woff")
+}*/
+body,
+html {
+    -o-animation-delay: 3;
+    animation-delay: 2;
+    background-color: #f2f2f2;
+    font-family: 'SF Pro Display','SF Pro Icons','Helvetica Neue','Helvetica','Arial',sans-serif !important;
+    font-weight: 400;
+    height: 100% !important;
+    letter-spacing: 0.005em;
+    line-height: 1.5;
+    margin: 0;
+    min-height: 100% !important;
+    padding: 0;
+    -o-transition-timing-function: 3;
+    transition-timing-function: 2;
+}
+
+*,
+*:after,
+*:before {
+    box-sizing: inherit;
+}
+/*
+ * Environment
+ */
+/* scrollbar */
+::-webkit-scrollbar {
+    display: block;
+    height: 10px;
+    width: 10px;
+}
+
+::-webkit-scrollbar-button:end:increment,
+::-webkit-scrollbar-button:start:decrement {
+    background-color: transparent;
+    display: block;
+    height: 15px;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    background-color: gray;
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+}
+
+/* General */
+a {
+    text-decoration: none;
+}
+
+li,
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+/* Forms */
+textarea {
+    border: 1px solid #ddd;
+    height: 10em;
+}
+
+textarea:active,
+textarea:focus {
+    border: none !important;
+}
+
+button:disabled {
+    cursor: no-drop;
+    opacity: 0.5;
+}
+
+ngx-tooltip-content.ngx-tooltip-content.position-right.type-tooltip.animate {
+    z-index: 2147483648 !important;
+}
+/**
+ Project specifications
+ **/
+
+ .error{
+   display: block;
+   padding: 20px;
+   width: 100%;
+   text-align: center;
+ }
+
+ md-input-container .error {
+   padding: 0;
+   margin: 0;
+   font-size: 75%;
+   text-align: right;
+   position: absolute;
+   top: 0;
+ }
+
+ /* base */
+ .base {
+   width: 100%;
+   padding: 20px;
+ }
+
+ .base.light {
+  background: #fff;
+ }
+
+ .base.dark {
+   background: #f6f6f6;
+ }
+.mat-dialog-container{
+  max-width: 100% !important;
+}

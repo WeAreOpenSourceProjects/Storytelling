@@ -46,7 +46,7 @@ export class NumberCardComponent extends Chart implements OnInit, OnDestroy {
      * @param rawData : array<Object> Json data
      */
     public static convertData(dataDims: string[], rawData: any) {
-
+        if (dataDims === undefined || rawData === undefined) return null;
         const key$ = d => d[dataDims[0]];
         const value$ = d => d[dataDims[1]];
         let result = nest()

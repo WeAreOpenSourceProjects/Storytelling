@@ -7,13 +7,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 // LOGIN COMPONENTS
 import { LoginComponent, RegisterComponent, SettingsComponent, ProfileComponent,
-   PasswordComponent,ListComponent, EqualValidator} from './index';
+   PasswordComponent, UsersListComponent, EqualValidator} from './index';
 
 // LOGIN ROUTES
-import { USERS_ROUTES } from './index';
+import { UsersRoutingModule } from './users-routing.module';
 
-// LOGIN SERVICES 
-import { UsersConfig, UsersService, Auth, AuthInterceptor } from './index';
+import { AuthGuard } from './services';
+
+// LOGIN SERVICES
+import { UsersConfig, UsersService } from './index';
 
 
 export function usersFactory(config: UsersConfig) {
@@ -22,7 +24,7 @@ export function usersFactory(config: UsersConfig) {
 
 @NgModule({
   imports: [
-    USERS_ROUTES,
+    UsersRoutingModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
@@ -35,7 +37,7 @@ export function usersFactory(config: UsersConfig) {
     ProfileComponent,
     PasswordComponent,
     EqualValidator,
-    ListComponent
+    UsersListComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [ UsersConfig, UsersService,
@@ -46,7 +48,7 @@ export class UsersModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: UsersModule,
-      providers: [Auth, AuthInterceptor]
+      providers: [AuthGuard]
     }
   }
 

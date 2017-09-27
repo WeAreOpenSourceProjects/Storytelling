@@ -27,7 +27,7 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
     private chartOptions: any;
 
     constructor() {
-       super()
+        super()
     }
 
     ngOnInit() {
@@ -36,49 +36,49 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
         this.init();
     }
 
-    ngOnChanges(){
+    ngOnChanges() {
         d3.select("#ZoomableTreemapComponent").remove();
         this.init();
     }
 
     /**
    * Process json Data to Ngx-charts format
-   * @param dataDims :  string[] Selected Dimentions 
-   * @param rawData : array<Object> Json data 
+   * @param dataDims :  string[] Selected Dimentions
+   * @param rawData : array<Object> Json data
    */
-   public static convertData(dataDims: string[], rawData: any) {
+    public static convertData(dataDims: string[], rawData: any) {
         const hierarchy$ = depth => d => d[dataDims[0][depth]];
         const value$ = d => d[dataDims[1]];
         const depthDim = dataDims[0].length;
 
-        const root =  { name: _.head(dataDims[0]), children: []};
+        const root = { name: _.head(dataDims[0]), children: [] };
 
         const level0 = _.chain(rawData)
-                .groupBy(_.head(dataDims[0]))
-                .flatMap(d => sum(d, 0, hierarchy$(0)))
-                .value();
+            .groupBy(_.head(dataDims[0]))
+            .flatMap(d => sum(d, 0, hierarchy$(0)))
+            .value();
 
-        function sum(d, depth, fetchId$){        
+        function sum(d, depth, fetchId$) {
             let level = {
                 name: fetchId$(d[0])
-            }; 
+            };
 
             let upperLevel;
 
             depth += 1;
-            if(depth < depthDim) {
-                upperLevel = Object.assign({}, level, {children:[]});
+            if (depth < depthDim) {
+                upperLevel = Object.assign({}, level, { children: [] });
 
                 upperLevel.children = _.chain(d)
-                .groupBy(dataDims[0][depth])
-                .flatMap(d1 => sum(d1, depth, hierarchy$(depth)))
-                .value();
+                    .groupBy(dataDims[0][depth])
+                    .flatMap(d1 => sum(d1, depth, hierarchy$(depth)))
+                    .value();
             }
 
-            if(upperLevel) {
+            if (upperLevel) {
                 level = upperLevel;
             } else {
-                level = Object.assign(level, {value: _.reduce(d, (total, el) => total + value$(el), 0)})
+                level = Object.assign(level, { value: _.reduce(d, (total, el) => total + value$(el), 0) })
             }
 
             return level;
@@ -89,9 +89,9 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
     }
 
     init() {
-        if (this.configInput != null){
+        if (this.configInput != null) {
             this.data = ZoomableTreemapChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
-            }
+        }
         else {
             this.data = this.dataInput;
         }
@@ -103,6 +103,7 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
      * Draw function for D3.js Bar chart
      */
     drawChart() {
+        if (this.data === undefined) return;
         let element = this.chartContainer.nativeElement;
         this.width = element.offsetWidth - this.margin.left - this.margin.right;
         this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
@@ -112,14 +113,14 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
         this.yScale = d3.scaleLinear().range([0, this.height]);
 
         // Color definition
-        let colorDomain = ['#FF8A8A','#C58AFF', '#FF8AC5', '#FFC875', '#F8FF86', '#86FF6a', '#7DF5FF', '#8AFFC5', '#BED2ED'];
+        let colorDomain = ['#FF8A8A', '#C58AFF', '#FF8AC5', '#FFC875', '#F8FF86', '#86FF6a', '#7DF5FF', '#8AFFC5', '#BED2ED'];
         let color = d3.scaleOrdinal(colorDomain);
 
         let format = d3.format(",d");
 
         // Chart construction
         this.chart = d3.select(element).append('svg')
-            .attr("id","ZoomableTreemapComponent")
+            .attr("id", "ZoomableTreemapComponent")
             .attr("class", "svg")
             .attr('width', this.width)
             .attr('height', this.height);
@@ -129,12 +130,12 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
             .size([this.width, this.height])
             .round(true);
 
-    
+
         this.root = d3.hierarchy(this.data)
-            .eachBefore((d:any) => { d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name })
-            .sum((d:any)=> d.value)
-            .sort((a, b) =>  b.height - a.height || b.value - a.value);
-        
+            .eachBefore((d: any) => { d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name })
+            .sum((d: any) => d.value)
+            .sort((a, b) => b.height - a.height || b.value - a.value);
+
 
         this.node = this.root;
 
@@ -144,9 +145,10 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
             .data(this.root.leaves())
             .enter().append("g")
             .attr("class", "cell")
-            .attr("transform", function (d)  {
-                return "translate(" + d['x0'] + "," + d['y0'] + ")"}
-                ) 
+            .attr("transform", function(d) {
+                return "translate(" + d['x0'] + "," + d['y0'] + ")"
+            }
+            )
             .on("click", d => this.zoom(this.node == d.parent ? this.root : d.parent, this.xScale, this.yScale));
 
         cell.append("rect")
@@ -156,8 +158,8 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
             .attr("fill", d => color(d.parent.data.id));
 
         cell.append("text")
-            .attr("x", d => (d['x1'] - d['x0'])/2)
-            .attr("y", d => (d['y1'] - d['y0'])/2)
+            .attr("x", d => (d['x1'] - d['x0']) / 2)
+            .attr("y", d => (d['y1'] - d['y0']) / 2)
             .attr("dy", ".35em")
             .attr("text-anchor", "middle")
             .text(d => d.data.id)
@@ -211,12 +213,14 @@ export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnCh
     }
 
     load() {
+        if (this.curtain === undefined) return;
         this.curtain.transition()
             .duration(2000)
             .style('opacity', 1);
-     }
+    }
 
     ease() {
+        if (this.curtain === undefined) return;
         this.curtain.transition()
             .duration(1000)
             .style('opacity', 0);

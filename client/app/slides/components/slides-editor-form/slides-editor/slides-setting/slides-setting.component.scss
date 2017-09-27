@@ -1,0 +1,40 @@
+@import 'client/stylesheets/theme.scss';
+
+md-input-container {
+  padding: 0 10px;
+}
+
+.tag {
+  padding: 0 10px;
+
+  .tag-group {
+    display: inline-block;
+    md-chip:first-child {
+      margin-left: 20px;
+    }
+    md-chip:last-child {
+      margin-right: 10px;
+    }
+    .close-tag {
+      cursor: pointer;
+      &:hover {
+        color: white;
+      }
+    }
+
+    md-input-container {
+      padding: 0;
+    }
+  }
+}
+.published {
+  color: mat-color($accent);
+}
+
+.unpublished {
+  color: mat-color($primary);
+  opacity: 0.5;
+}
+.published-icon{
+  margin-top: 90%;
+}

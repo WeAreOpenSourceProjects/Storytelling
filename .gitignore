@@ -22,7 +22,8 @@ coverage/
 dist
 public/dist/
 uploads
-server/public/
+/dist
+
 modules/users/client/img/profile/uploads
 config/env/local.js
 *.pem
@@ -46,6 +47,7 @@ _site/
 *.tmp
 *.bak
 *.swp
+*.mov
 logs/
 build/
 

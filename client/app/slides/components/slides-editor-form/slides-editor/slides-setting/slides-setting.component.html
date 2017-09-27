@@ -1,0 +1,29 @@
+<form novalidate [formGroup]="form" #f="ngForm" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+
+  <div class="base" fxLayout="row">
+    <md-input-container fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+      <input mdInput placeholder="Presentation name" formControlName="title" name="title" required (ngModelChange)="titleChange($event)">
+      <span class="error" *ngIf=" form.controls.title.invalid">Slides Name is required</span>
+    </md-input-container>
+    <div class="tag" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+      <div class="tag-group">
+        <md-chip-list>
+          <md-chip *ngFor="let tag of slidesSetting.tags;let i=index">{{tag}} <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i></md-chip>
+        </md-chip-list>
+      </div>
+      <md-input-container fxFlex.xs="100">
+        <input mdInput validateOnBlur placeholder="Input Tag" formControlName="tag" name="tag" (addTagOpt)="addTag()">
+      </md-input-container>
+    </div>
+    <a class="option-btn" (click)="publicStatusChange($event); false" [class.published]="slidesSetting.public" [class.unpublished]="!slidesSetting.public" [mdTooltip]="(slidesSetting.public) ? 'Unpublish' : 'Publish'">
+      <md-icon md-ripple mdRippleCentered="true" mdRippleUnbounded="true" class="published-icon">publish</md-icon>
+    </a>
+  </div>
+
+  <div class="base light" fxLayoutAlign="center center">
+    <md-input-container fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+      <textarea mdInput mdTextareaAutosize placeholder="Slides Description" formControlName="description" name="description" (ngModelChange)="descriptionChange($event)"></textarea>
+    </md-input-container>
+    <app-image-upload  fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="base light" [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''" fxFlex="100"></app-image-upload>
+  </div>
+</form>

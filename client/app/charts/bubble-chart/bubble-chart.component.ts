@@ -46,8 +46,7 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
             this.data = BubbleChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
         else
             this.data = this.dataInput;
-        
-        console.log('convertData: ', this.data);
+
 
         this.drawChart();
     }
@@ -108,14 +107,13 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
         // we use pack() to automatically calculate radius conveniently only
         // and get only the leaves
         let nodes = pack(root).leaves().map(node => {
-            // console.log('node:', node.x, (node.x - centerX) * 2);
             const data: any = node.data;
             return {
                 x: centerX + (node.x - centerX) * 3, // magnify start position to have transition to center movement
                 y: centerY + (node.y - centerY) * 3,
                 r: 0, // for tweening
                 radius: node.r, //original radius
-                id: data.cat + '.' + (data.name.replace(/\s/g, '-')),
+                id: data.cat + '.' + (data.name?data.name.replace(/\s/g, '-'):''),
                 cat: data.cat,
                 name: data.name,
                 value: data.value,
@@ -251,7 +249,6 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
 
         node.on('click', (currentNode: INode) => {
             d3.event.stopPropagation();
-            console.log('currentNode', currentNode);
             let currentTarget = d3.event.currentTarget; // the <g> el
 
             if (currentNode === focusedNode) {
@@ -271,7 +268,7 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
                 lastNode.fx = null;
                 lastNode.fy = null;
                 node.filter((d, i) => i === lastNode.index)
-                    .transition().duration(2000).ease(d3.easePolyOut)
+                    .transition().duration(1000).ease(d3.easePolyOut)
                     .tween('circleOut', () => {
                         let irl = d3.interpolateNumber(lastNode.r, lastNode.radius);
                         return (t) => {
@@ -285,14 +282,12 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
 
             // if (!d3.event.active) simulation.alphaTarget(0.5).restart();
 
-            d3.transition('').duration(2000).ease(d3.easePolyOut)
+            d3.transition('').duration(1000).ease(d3.easePolyOut)
                 .tween('moveIn', () => {
-                    console.log('tweenMoveIn', currentNode);
                     let ix = d3.interpolateNumber(currentNode.x, centerX);
                     let iy = d3.interpolateNumber(currentNode.y, centerY);
                     let ir = d3.interpolateNumber(currentNode.r, centerY * 0.5);
                     return function(t) {
-                        // console.log('i', ix(t), iy(t));
                         currentNode.fx = ix(t);
                         currentNode.fy = iy(t);
                         currentNode.r = ir(t);
@@ -309,7 +304,6 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
 
                 })
                 .on('interrupt', () => {
-                    console.log('move interrupt', currentNode);
                     currentNode.fx = null;
                     currentNode.fy = null;
                     simulation.alphaTarget(0);
@@ -325,9 +319,8 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
                 focusedNode.fx = null;
                 focusedNode.fy = null;
                 simulation.alphaTarget(0.2).restart();
-                d3.transition('').duration(2000).ease(d3.easePolyOut)
+                d3.transition('').duration(1000).ease(d3.easePolyOut)
                     .tween('moveOut', function() {
-                        console.log('tweenMoveOut', focusedNode);
                         let ir = d3.interpolateNumber(focusedNode.r, focusedNode.radius);
                         return function(t) {
                             focusedNode.r = ir(t);
@@ -361,15 +354,15 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
 
     /**
      * Process json Data to D3.js Pie chart format
-     * @param dataDims :  string[] Selected Dimentions 
-     * @param rawData : array<Object> Json data 
+     * @param dataDims :  string[] Selected Dimentions
+     * @param rawData : array<Object> Json data
      */
     public static convertData(dataDims: string[], rawData: any) {
 
       const category$ = d => d[_.head(dataDims[0])];
       const label$ = d => d[_.head(dataDims[1])];
       const value$ = d => d[_.head(dataDims[2])];
-        
+
       const desc$ = d => d[_.head(dataDims[3])];
 
 
@@ -395,7 +388,7 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
     // FIXME
     load() { }
 
-    // FIXME 
+    // FIXME
     ease() { }
 
 

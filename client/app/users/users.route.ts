@@ -1,18 +1,18 @@
 import { RouterModule, Routes } from '@angular/router';
 // APP COMPONENTS
- import { SettingsComponent } from './settings/index';
- import { LoginComponent, RegisterComponent, ListComponent } from './index';
- import { Auth } from './services/auth.service';
+ import { SettingsComponent } from './components/settings/index';
+ import { LoginComponent, RegisterComponent, UsersListComponent } from './index';
+ import { AuthGuard } from './services';
 
 const USERSROUTES: Routes = [
   { path: 'login', component: LoginComponent, data : { title : 'Login'} },
-  { path: 'register', component: RegisterComponent , canActivateChild: [Auth], data : { title : 'Register'}},
-  { path: 'settings/profile', component: SettingsComponent, canActivateChild: [Auth],
+  { path: 'register', component: RegisterComponent , canActivateChild: [AuthGuard], data : { title : 'Register'}},
+  { path: 'settings/profile', component: SettingsComponent, canActivateChild: [AuthGuard],
   data : {
     roles : ['user', 'admin'],
     title : 'Settings / Profile'
   } },
-  { path:'list-users', component: ListComponent, canActivateChild: [Auth],
+  { path:'users-list-users', component: UsersListComponent, canActivateChild: [AuthGuard],
   data : {
     roles : ['admin'],
     title : 'Users List'

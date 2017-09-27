@@ -7,9 +7,9 @@ export class UsersConfig {
   }
   addMenu(){
     this.menuService.addMenuItem('toolBar',{
-      state: '#/list-users',
-      title: 'User list',
-      icon: 'fa-list',
+      state: '#/users-list-users',
+      title: 'User users-list',
+      icon: 'fa-users-list',
       roles: ['admin'],
     })
   }

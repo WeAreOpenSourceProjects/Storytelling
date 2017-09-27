@@ -7,7 +7,8 @@ export class Slides {
     constructor(slides?: Slides) {
         //for copy slides
         if (slides) {
-        this.slidesSetting = slides.slidesSetting;
+            this.slidesSetting = new SlidesSetting(slides.slidesSetting);
+
             this.slidesSetting.title = this.slidesSetting.title + " " + "copy"
             this.slides = slides.slides;
         }

@@ -2,9 +2,9 @@ import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // APP COMPONENTS
-import { Auth } from './users';
+import { AuthGuard } from './users';
 import { HomeComponent } from "./home";
-import { BadRequestPageComponent, NotFoundPageComponent } from "./core";
+import { BadRequestPageComponent, NotFoundPageComponent, ForbidenComponent } from "./core";
 
 const appRoutes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,7 +14,8 @@ const appRoutes: Routes = [
     // otherwise redirect to home
     { path: 'bad-request', component: BadRequestPageComponent, data: { title: 'Bad-request' } },
     { path: 'not-found', component: NotFoundPageComponent, data: { title: 'Not-Found' } },
-    { path: '**', redirectTo: 'not-found' }
+    { path: '**', redirectTo: 'not-found' },
+    { path: 'forbiden', component: ForbidenComponent, data: { title: 'Forbiden'} },
 ];
 
 @NgModule({
@@ -25,7 +26,7 @@ const appRoutes: Routes = [
         RouterModule
     ],
     providers: [
-        Auth
+        AuthGuard
     ]
 })
 export class AppRoutingModule { }

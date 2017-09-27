@@ -32,12 +32,14 @@ export class LineChartComponent extends Chart implements OnInit {
 
         this.chartOptions = { ...this.configInput };
         d3.select("#LineChartComponent").remove();
+        if (this.data === undefined) return;
         this.init();
     }
 
     ngOnChanges() {
 
         d3.select("#LineChartComponent").remove();
+        if (this.data === undefined) return;
         this.init();
     }
     brushed(x, xTB, xAxis, svg, area, focus, zoom) {
@@ -67,10 +69,10 @@ export class LineChartComponent extends Chart implements OnInit {
         if (this.dateMode) context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
     }
     setData(data: any) {
-
+        if (data === undefined) return;
         let parseDate = d3.timeParse("%b %Y");
 
-        this.data = JSON.parse(JSON.stringify(data));
+         this.data = data;
 
         if (parseDate(this.data[0][0].xAxis) != null) this.dateMode = true;
         this.data.forEach((d) => {
@@ -92,18 +94,37 @@ export class LineChartComponent extends Chart implements OnInit {
         const series$ = d => d[_.head(dataDims[0])];
         const xaxis$ = d => d[_.head(dataDims[1])];
         const yaxis$ = d => d[_.head(dataDims[2])];
-        let result = _.chain(rawData)
+        let result1 = _.chain(rawData)
             .groupBy(_.head(dataDims[0]))
             .map(series)
             .value();
+
+        let result = _.chain(result1)
+            .map(mapSeries)
+            .value();
         function series(d: any) {
-            return _.map(d, d => {
+            let result = _.map(d, d => {
                 return {
                     series: series$(d),
                     xAxis: xaxis$(d),
                     yAxis: yaxis$(d)
                 }
             })
+            return result;
+        }
+        function mapSeries(d: any) {
+            let result1 = _.groupBy(d, d => { return d['xAxis'] });
+
+            let result = _.map(result1, d => {
+                return _.reduce(d, (total, d) => {
+                    return {
+                        series: total['series'],
+                        xAxis: total['xAxis'],
+                        yAxis: total['yAxis'] + d['yAxis']
+                    }
+                })
+            })
+            return result;
         }
         return result;
 
@@ -118,6 +139,7 @@ export class LineChartComponent extends Chart implements OnInit {
         this.heightTB = 60;//set height of thumbnail
 
         this.setData(this.data);
+        if(this.data===undefined) return;
         this.drawChart();
         this.load();
     }
@@ -233,6 +255,8 @@ export class LineChartComponent extends Chart implements OnInit {
             .attr("width", this.width)
             .attr("height", this.height)
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
         this.paths = pathContainer.selectAll('.line')
             .data(this.data)
             .enter()
@@ -344,7 +368,7 @@ export class LineChartComponent extends Chart implements OnInit {
                         .duration(200)
                         .style("opacity", .9);
 
-                    div.html('<p>'  +d["series"] + "<br/>"+ d["xAxis"] + "<br/>" + d["yAxis"] + '</p>')
+                    div.html('<p>' + d["series"] + "<br/>" + d["xAxis"] + "<br/>" + d["yAxis"] + '</p>')
                         .style("left", (d3.event.layerX) + "px")
                         .style("top", (d3.event.layerY + 25) + "px");
                 })

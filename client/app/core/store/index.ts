@@ -1,7 +1,7 @@
 import * as createLogger from 'redux-logger';
 
 import { IAppState, rootReducer, deimmutify, reimmutify } from './store';
-import { ISessionRecord } from './session';
+import { ISessionRecord, IUserRecord, IMessage  } from './session';
 import * as adapter from 'redux-localstorage/lib/adapters/localStorage';
 import persistState, {mergePersistedState} from 'redux-localstorage';
 import {compose, createStore} from 'redux';
@@ -9,6 +9,8 @@ export {
   IAppState,
   ISessionRecord,
   rootReducer,
+  IUserRecord,
+  IMessage,
   reimmutify,
 };
 let storage = compose(

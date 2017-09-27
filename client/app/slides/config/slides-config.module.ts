@@ -10,7 +10,7 @@ export class SlidesConfig {
       state: 'slides',
       title: 'slides',
       icon: 'fa-desktop',
-      roles: ['*'],
+      roles: ['user', 'admin'],
     });
   }
 }

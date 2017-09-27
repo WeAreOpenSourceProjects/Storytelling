@@ -10,10 +10,11 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awes
 import { HttpModule, Http, XHRBackend, RequestOptions } from "@angular/http";
 
 // CORE COMPONENTS
-import { AppToolbarComponent, AppSidenavComponent, NotFoundPageComponent, BadRequestPageComponent } from '.';
+import { ToolbarComponent, SidenavComponent, NotFoundPageComponent, BadRequestPageComponent, ForbidenComponent } from '.';
 
 // CORE SERVICES
-import { SessionActions, MenuService, ToggleNavService, InterceptedHttp } from '.';
+import { SessionActions, MenuService, NotifBarService, ToggleNavService, InterceptedHttp } from '.';
+import { HelpComponent } from './components/toolbar/help/help.component';
 
 export function httpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions,  router: Router, actions: SessionActions): Http {
     return new InterceptedHttp(xhrBackend, requestOptions, router, actions);
@@ -30,22 +31,29 @@ export function httpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptio
     CommonModule
   ],
   declarations: [
-    AppToolbarComponent,
-    AppSidenavComponent,
+    ToolbarComponent,
+    SidenavComponent,
     NotFoundPageComponent,
-    BadRequestPageComponent
+    BadRequestPageComponent,
+    HelpComponent,
+    ForbidenComponent
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  entryComponents: [
+    HelpComponent
+  ],
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
+    NotifBarService,
     MenuService,
     ToggleNavService,
     { provide: Http,  useFactory: httpFactory, deps: [XHRBackend, RequestOptions, Router, SessionActions]}
-  ], 
-  exports: [ 
-    AppToolbarComponent,
-    AppSidenavComponent,
+  ],
+  exports: [
+    ToolbarComponent,
+    SidenavComponent,
     NotFoundPageComponent,
-    BadRequestPageComponent
+    BadRequestPageComponent,
+    ForbidenComponent
   ]
 })
 

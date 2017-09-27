@@ -14,7 +14,7 @@ const defaultOptions = {
   styleUrls: ['./advanced-pie-chart.component.scss']
 })
 export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestroy {
-  
+
   data: Array<any> = [];
   chartOptions: any;
   private width: number;

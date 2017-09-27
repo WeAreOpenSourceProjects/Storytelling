@@ -8,7 +8,7 @@
 // You do not want to accidentally overwrite/lose any data. For instance, if you create a file for 'test' and don't change the
 // database name in the setting below, running the tests will drop all the data from the specified database.
 //
-// You may end up with a list of files, that will be used with their corresponding NODE_ENV:
+// You may end up with a users-list of files, that will be used with their corresponding NODE_ENV:
 //
 // local-development.js
 // local-test.js

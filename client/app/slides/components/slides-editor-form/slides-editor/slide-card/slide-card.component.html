@@ -1,0 +1,15 @@
+<a class="card-container" (click)="creatSlide()">
+  <md-card  [@flyInOut]="'in'"  class="prez-list-card" >
+    <h2 class="slide-title">{{slideIndex}} - {{slide.pageTitle.title}}</h2>
+    <div class="md-card-image" style="background-image:url('assets/logo_full_banner.png');">
+      <div class="banner-mask"><i class="fa fa-pencil-square-o fa-5x" aria-hidden="true"></i></div>
+      <div class="options">
+        <div class="btn-group">
+          <a class="option-btn" (click)="deleteSlide($event)" class="delete" mdTooltip="Delete">
+            <md-icon md-ripple mdRippleCentered="true" mdRippleUnbounded="true">delete</md-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </md-card>
+</a>

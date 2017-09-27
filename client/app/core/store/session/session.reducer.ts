@@ -14,7 +14,7 @@ export const sessionReducer = (
     case SessionActions.LOGIN_USER:
       return state.merge({
         token: null,
-        user: INITIAL_USER_STATE,
+        user: UserFactory(),
         hasError: false,
         isLoading: true
       });
@@ -33,7 +33,7 @@ export const sessionReducer = (
     case SessionActions.LOGIN_USER_ERROR:
       return state.merge({
         token: null,
-        user: INITIAL_USER_STATE,
+        user: UserFactory(),
         hasError: true,
         isLoading: false,
         hasMessage : action.payload.hasMessage,
@@ -43,7 +43,7 @@ export const sessionReducer = (
     case SessionActions.LOGOUT_USER:
       return state.merge({
         token: null,
-        user: INITIAL_USER_STATE,
+        user: UserFactory(),
         hasError: false,
         isLoading: false,
         hasMessage : null,
@@ -101,7 +101,7 @@ export const sessionReducer = (
         case SessionActions.GET_USER_ERROR:
           return state.merge({
             token: null,
-            user: INITIAL_USER_STATE,
+            user: UserFactory(),
             hasError: true,
             isLoading: false,
             hasMessage:null,

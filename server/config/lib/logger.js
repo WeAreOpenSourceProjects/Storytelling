@@ -6,7 +6,7 @@ var _ = require('lodash'),
   fs = require('fs'),
   winston = require('winston');
 
-// list of valid formats for the logging
+// users-list of valid formats for the logging
 var validFormats = ['combined', 'common', 'dev', 'short', 'tiny'];
 
 // Instantiating the default winston application logger with the Console

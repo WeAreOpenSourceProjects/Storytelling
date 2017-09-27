@@ -1,9 +1,9 @@
 export const environment = {
     production: true,
     backend: {
-        protocol: 'https',
-        host: '192.35.34.101/datx/app/storytelling',
-        port: undefined,
+        protocol: 'http',
+        host: 'localhost',
+        port: 4002,
         endpoints: {
           signup: '/api/auth/signup',
           signin: '/api/auth/signin',

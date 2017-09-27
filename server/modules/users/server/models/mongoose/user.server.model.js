@@ -34,7 +34,7 @@ var validateLocalStrategyEmail = function (email) {
  * - at least 3 characters
  * - only a-z0-9_-.
  * - contain at least one alphanumeric character
- * - not in list of illegal usernames
+ * - not in users-list of illegal usernames
  * - no consecutive dots: "." ok, ".." nope
  * - not begin or end with "."
  */

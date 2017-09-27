@@ -1,0 +1,26 @@
+<form fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+  <md-input-container *ngIf="kind === 'advanced'" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="60">
+    <md-placeholder>
+      <md-icon>search</md-icon>
+    </md-placeholder>
+    <input mdInput [(ngModel)]="textToSearch" name="textToSearch" (ngModelChange)="onChange(textToSearch)">
+  </md-input-container>
+
+  <md-input-container *ngIf="kind !== 'advanced'" fxFlex="100">
+    <md-placeholder>
+      <md-icon>search</md-icon>
+    </md-placeholder>
+    <input mdInput [(ngModel)]="textToSearch" name="textToSearch" (ngModelChange)="onChange(textToSearch)">
+  </md-input-container>
+
+  <div *ngIf="kind === 'advanced'" class="filter-container" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="40">
+    <md-checkbox name="checkFavor" [(ngModel)]="states.checkFavor" [disabled]="states.checkFavor&&!states.checkNotFavor" (change)="onChangeState($event)">Favorite</md-checkbox>
+    <md-checkbox name="checkNotFavor" [(ngModel)]="states.checkNotFavor" (change)="onChangeState($event)" [disabled]="!states.checkFavor&&states.checkNotFavor">Unfavorite</md-checkbox>
+    <md-checkbox name="checkPublic" [(ngModel)]="states.checkPublic" (change)="onChangeState($event)" [disabled]="states.checkPublic&&!states.checkPrivate">Public</md-checkbox>
+    <md-checkbox name="checkPrivate" [(ngModel)]="states.checkPrivate" (change)="onChangeState($event)" [disabled]="!states.checkPublic&&states.checkPrivate">Private</md-checkbox>
+     <md-select [(ngModel)]="states.sortedBy" name="sortedBy"  placeholder="Sorted" (change)="sort(states.sortedBy)">
+       <md-option [value]="'alphabetically'" >alphabetically</md-option>
+       <md-option [value]="'date'">by date</md-option>
+     </md-select>
+  </div>
+</form>

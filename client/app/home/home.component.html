@@ -4,7 +4,7 @@
   </div>
   <div class="search-block" [class.center-mode]="!showSlidesList" [class.side-mode]="showSlidesList">
     <div class="search-wrap">
-      <app-search (textSearch)="searchSlides($event)" kind="generic"></app-search>
+      <app-slides-search (textSearchOpt)="searchSlides($event)" kind="generic"></app-slides-search>
     </div>
     <button *ngIf="!showSlidesList" class="buttonBottom floating" (click)="getAllslides()" md-fab><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
   </div>
@@ -12,11 +12,18 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
   <div *ngFor="let s of slides" [class.display-div]="!(loggedIn$|async)&& !s.slidesSetting.public" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
-    <app-prez-list-card [slides]="s" [editable]="false"></app-prez-list-card>
+    <app-slides-card [slides]="s" [editable]="false"></app-slides-card>
   </div>
 </div>
-
+<md-paginator *ngIf="showSlidesList" [length]="length"
+              [pageSize]="pageSize"
+              (page)="nextPage($event)">
+</md-paginator>
 <div class="error">
-  <p *ngIf="noPublish">Sorry, no one publish slides yet! <br>Would you want to be the pioneer?</p>
+  <p *ngIf="noPublish">Sorry, no one publish slides yet! <br>Would you want to be the pioneer?
+    <a href="#/slides/createSlides">
+      <button md-button color="accent">Create Now</button>
+    </a>
+  </p>
   <p *ngIf="noResult">Opps, no result for these key words</p>
 </div>

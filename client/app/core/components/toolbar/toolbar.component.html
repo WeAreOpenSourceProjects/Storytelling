@@ -1,0 +1,30 @@
+<div class="extend-toolbar header" [class.toggled]="isToggled | async">
+  <div class="top" md-colors="{background: 'background-TOPNAV', color: 'primary-50'}">
+    <div class="nav-wrapper">
+      <ul class="left">
+        <b>{{title}}</b>
+      </ul>
+
+      <ul class="right">
+        <li><a (click)="help()"><i class="fa fa-question" mdTooltip="Help" size="1x"></i></a></li>
+        <li *ngIf="!(loggedIn$ | async)" mdTooltip="Sign in">
+          <a [routerLink]="['user/login']" class="login">
+            <fa name="sign-in" size="1x"></fa>
+          </a>
+        </li>
+        <div *ngIf="loggedIn$ | async">
+          <a  [mdMenuTriggerFor]="menu" md-button class="logout">
+            <fa name="user-circle-o" size="1x"></fa>
+            <span>{{ (user$ | async)?.username }}</span>
+          </a>
+          <md-menu #menu="mdMenu" [overlapTrigger]="false" >
+            <button md-menu-item (click)="logout()" >
+              <md-icon class="md-24 fa-lg" fontSet="fa" fontIcon="fa-power-off"></md-icon>
+              <span> Sign-out </span>
+            </button>
+          </md-menu>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,9 @@
 <div class="d3-chart">
-    <ngx-charts-gauge class="chart-container" 
+    <ngx-charts-gauge class="chart-container"
     [view]="view"
     [legend]="showLegend"
     [legendTitle]="legendTitle"
-    [results]="data"
+    [results]="data?data:[]"
     [textValue]="gaugeTextValue"
     [scheme]="colorScheme"
     [min]="gaugeMin"

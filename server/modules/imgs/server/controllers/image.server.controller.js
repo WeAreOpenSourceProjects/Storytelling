@@ -10,7 +10,7 @@ var path = require('path'),
   multer = require('multer'),
   FroalaEditor = require(path.resolve('../node_modules/wysiwyg-editor-node-sdk/lib/froalaEditor.js')),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  DIR = './uploads/',
+  DIR = './uploads/', //server path for image middle transfer
   upload = multer({
     dest: DIR
   }).single('banner');
@@ -26,7 +26,8 @@ var storage = multer.diskStorage({
     cb(null, filename);
   }
 });
-/* create new folder for image*/
+
+/* create new folder in server for image*/
 var publicDir = path.join(path.dirname(require.main.filename), 'public');
 if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir);
@@ -35,85 +36,83 @@ var imageDir = path.join(path.dirname(require.main.filename), 'public/images');
 if (!fs.existsSync(imageDir)) {
   fs.mkdirSync(imageDir);
 }
-/**
- * Create an Image
- */
 
+/**
+ * upload an image from FroalaEditor
+ */
 exports.createServer = function(req, res) {
-  // Store image.
+  // Store image in server.
   FroalaEditor.Image.upload(req, DIR, function(err, data) {
-    // Return data.
-    //console.log(req);
     if (err) {
       // An error occurred when uploading
       console.log(err);
       return res.status(422).send("an Error occured");
     }
     // No error occured.
-  //  console.log(data);
     path = fs.readFileSync(data.link);
     var filePath = data.link;
     var image = new Image({
       data: path,
       path: 'data:image/png;base64,' + path.toString('base64')
     });
-
+    //Store image in database, then delete from server
     image.save(function(err) {
       if (err) {
         console.log(err);
-      }
-      else {
-        fs.unlinkSync(filePath);// delete the image in server
-        console.log("deleted");
+      } else {
+        // delete the image in server
+        fs.unlinkSync(filePath);
       }
     });
-    return res.send({ link: image.path });
+    return res.send({
+      link: image.path
+    });
   });
 }
+
+/**
+ * upload an image from slides editor
+ */
 exports.create = function(req, res) {
   // Store image.
   FroalaEditor.Image.upload(req, DIR, function(err, data) {
     // Return data.
-    //console.log(req);
     if (err) {
       // An error occurred when uploading
       console.log(err);
       return res.status(422).send("an Error occured");
     }
     // No error occured.
-  //  console.log(data);
     path = fs.readFileSync(data.link);
     var filePath = data.link;
     var image = new Image({
       data: path,
       path: 'data:image/png;base64,' + path.toString('base64')
     });
-
     image.save(function(err) {
       if (err) {
         console.log(err);
-      }
-      else {
-        fs.unlinkSync(filePath);// delete the image in server
-        console.log("deleted");
+      } else {
+        // delete the image in server
+        fs.unlinkSync(filePath);
       }
     });
     return res.send(image);
   });
 };
+
 /**
- * Show the current image
+ * get an image
  */
 exports.read = function(req, res, next, id) {
   // convert mongoose document to JSON
-  console.log('id', req.params.imageByID);
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'slide is invalid'
     });
   }
   mongoose.set('debug', true);
-  Image.findById(id).exec(function (err, image) {
+  Image.findById(id).exec(function(err, image) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
@@ -166,8 +165,6 @@ exports.imageByID = function(req, res, next, id) {
       message: 'image is invalid'
     });
   }
-
-
   Image.findById(id).populate('user', 'displayName').exec(function(err, image) {
     if (err) {
       return next(err);
@@ -179,7 +176,6 @@ exports.imageByID = function(req, res, next, id) {
     req.image = image;
     next();
   });*/
-  console.log("listing");
 
   FroalaEditor.Image.list('public/images/', function(err, data) {
 
@@ -191,7 +187,6 @@ exports.imageByID = function(req, res, next, id) {
   });
 };
 exports.list = function(req, res) {
-
   /*Image.find().sort('-created').populate('user', 'displayName').exec(function(err, images) {
     if (err) {
       return res.status(422).send({
@@ -223,14 +218,12 @@ exports.imageByID = function(req, res, next, id) {
     req.image = image;
     next();
   });*/
-  console.log("listing");
 
   FroalaEditor.Image.list('public/images/', function(err, data) {
 
     if (err) {
       return res.status(404).end(JSON.stringify(err));
     }
-    console.log(data)
     return res.send(data);
   });
 };

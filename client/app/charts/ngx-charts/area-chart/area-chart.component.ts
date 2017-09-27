@@ -79,8 +79,6 @@ export class AreaChartComponent extends Chart implements OnInit, OnChanges, OnDe
       this.data = AreaChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else
       this.data = this.dataInput;
-    console.log(this.data);
-
   }
 
   load() {

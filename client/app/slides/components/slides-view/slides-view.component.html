@@ -1,0 +1,53 @@
+<div class="slides-container" #slider>
+
+  <div class="slides" appKeySwitch (keySwitch)="switchSlide($event)">
+
+    <!--title -->
+    <div [ngStyle]="slideHeight_style" class="slide" *ngIf="curSlideIndex === 0" id="slide-0">
+      <app-title-slide [slideTitle]="slideTitle"> </app-title-slide>
+    </div>
+    <!--slides content-->
+    <div [ngStyle]="slideHeight_style" class="slide" [attr.id]="'slide-'+curSlideIndex" *ngIf="curSlideIndex !== 0 && currentSlide != null" [@routerTransition]="direction">
+      <!--slide title text-->
+      <div class="title-text" fxLayout="column" fxLayoutAlign="space-between stretch" align="{{currentSlide.pageTitle.align}}" *ngIf="currentSlide.pageTitle.title.length!=0">
+        <div fxLayout="row" fxFlex="95%">
+          <h2 fxFlex="100%">{{currentSlide.pageTitle.title}}</h2>
+        </div>
+      </div>
+      <!--slide content-->
+      <div [ngStyle]="contentHeight_style" fxLayout="column" fxLayoutAlign="space-between none" class="content">
+
+        <!--full screen :chart -->
+        <app-full-screen-graph-slide *ngIf="(currentSlide.pageLayout=='FullScreenGraph')" [slide]="currentSlide" class="slide-container">
+        </app-full-screen-graph-slide>
+
+        <!--left graph right text-->
+        <app-left-graph-right-text-slide *ngIf="currentSlide.pageLayout=='LeftGraphRightText'" [slide]="currentSlide"  class="slide-container">
+        </app-left-graph-right-text-slide>
+
+        <!--left text right grah-->
+        <app-right-graph-left-text-slide *ngIf="currentSlide.pageLayout=='LeftTextRightGraph'" [slide]="currentSlide" class="slide-container">
+        </app-right-graph-left-text-slide>
+
+        <!--full screen :text-->
+        <!--full screen :imgback + text-->
+        <app-text-slide *ngIf="currentSlide.pageLayout=='textInCenter'||currentSlide.pageLayout=='textInCenterImageBackground'" [slide]="currentSlide" class="slide-container">
+        </app-text-slide>
+      </div>
+    </div>
+    <!--progress bar-->
+    <div class="progress" style="display: block;">
+      <span [style.width]="((curSlideIndex  * 100)/slideNum) + '%'"></span>
+    </div>
+    <!--control handler-->
+    <aside class="controls" style="display: block;">
+      <button class="navigate-left enabled" aria-label="previous slide" [ngClass]="{'fragmented':  curSlideIndex == 0 }" (click)="switchSlide(-1)"></button>
+      <button class="navigate-right enabled" aria-label="next slide" [ngClass]="{'fragmented':  curSlideIndex == slideNum }" (click)="switchSlide(1)"></button>
+      <button class="navigate-center enabled" (click)="onClick()" *ngIf="showFullScreen && !screenfull.isFullscreen" aria-label="above slide"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+
+      <button class="navigate-up" aria-label="above slide"></button>
+      <button class="navigate-down" aria-label="below slide"></button>
+    </aside>
+  </div>
+
+</div>

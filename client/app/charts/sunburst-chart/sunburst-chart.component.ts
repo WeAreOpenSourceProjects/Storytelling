@@ -13,7 +13,7 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
     @ViewChild('chart') private chartContainer: ElementRef;
     private data: any;
     private curtain: any; //for animation
-    private margin: any = {top: 20, bottom: 20, left: 20, right: 20};
+    private margin: any = { top: 20, bottom: 20, left: 20, right: 20 };
     private chart: any;
     private width: number;
     private height: number;
@@ -45,7 +45,7 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
         this.init();
     }
 
-    ngOnChanges(){
+    ngOnChanges() {
         d3.select("#SunburstComponent").remove();
         this.coloralternative = 0;
         this.init();
@@ -53,42 +53,42 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
 
     /**
    * Process json Data to Ngx-charts format
-   * @param dataDims :  string[] Selected Dimentions 
-   * @param rawData : array<Object> Json data 
+   * @param dataDims :  string[] Selected Dimentions
+   * @param rawData : array<Object> Json data
    */
-   public static convertData(dataDims: string[], rawData: any) {
+    public static convertData(dataDims: string[], rawData: any) {
         const hierarchy$ = depth => d => d[dataDims[0][depth]];
         const value$ = d => d[dataDims[1]];
         const depthDim = dataDims[0].length;
 
-        const root =  { name: _.head(dataDims[0]), children: []};
+        const root = { name: _.head(dataDims[0]), children: [] };
 
         const level0 = _.chain(rawData)
-                .groupBy(_.head(dataDims[0]))
-                .flatMap(d => sum(d, 0, hierarchy$(0)))
-                .value();
+            .groupBy(_.head(dataDims[0]))
+            .flatMap(d => sum(d, 0, hierarchy$(0)))
+            .value();
 
-        function sum(d, depth, fetchId$){        
+        function sum(d, depth, fetchId$) {
             let level = {
                 name: fetchId$(d[0])
-            }; 
+            };
 
             let upperLevel;
 
             depth += 1;
-            if(depth < depthDim) {
-                upperLevel = Object.assign({}, level, {children:[]});
+            if (depth < depthDim) {
+                upperLevel = Object.assign({}, level, { children: [] });
 
                 upperLevel.children = _.chain(d)
-                .groupBy(dataDims[0][depth])
-                .flatMap(d1 => sum(d1, depth, hierarchy$(depth)))
-                .value();
+                    .groupBy(dataDims[0][depth])
+                    .flatMap(d1 => sum(d1, depth, hierarchy$(depth)))
+                    .value();
             }
 
-            if(upperLevel) {
+            if (upperLevel) {
                 level = upperLevel;
             } else {
-                level = Object.assign(level, {value: _.reduce(d, (total, el) => total + value$(el), 0)})
+                level = Object.assign(level, { value: _.reduce(d, (total, el) => total + value$(el), 0) })
             }
 
             return level;
@@ -99,9 +99,9 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
     }
 
     init() {
-        if (this.configInput != null){
+        if (this.configInput != null) {
             this.data = SunburstChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
-            }
+        }
         else {
             this.data = this.dataInput;
         }
@@ -113,18 +113,18 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
      * Draw function for D3.js Bar chart
      */
     drawChart() {
+        if (this.data === undefined) return;
         // Set size of the svg
         let element = this.chartContainer.nativeElement;
         this.width = element.offsetWidth - this.margin.left - this.margin.right;
-        this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
-
+        this.height = element.offsetHeight - this.margin.top - this.margin.bottom-100;//100 is the height of explanation
         this.formatNumber = d3.format(",d");
         this.radius = Math.min(this.width - this.margin.left - this.margin.right, this.height - this.margin.top - this.margin.bottom) / 2;
         this.xScale = d3.scaleLinear().range([0, 2 * Math.PI]);
         this.yScale = d3.scaleSqrt().range([0, this.radius]);
         d3.select(element).select('#sequence')
             .select('svg')
-            .style('opacity',0);
+            .style('opacity', 0);
 
         // Position of the Explanation label in the center of the sunburst
         let explanationElmnt = d3.select(element).select('#explanation').node() as HTMLElement;
@@ -158,14 +158,14 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
             .attr("id", "container")
             .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
 
-             this.chart.append("svg:circle")
-                .attr("r", this.radius)
-                .style("opacity", 0);
+        this.chart.append("svg:circle")
+            .attr("r", this.radius)
+            .style("opacity", 0);
 
         // Turn the data into a d3 hierarchy and calculate the sums.
         let root = d3.hierarchy(this.data)
             .sum((d: any) => d.value)
-            .sort((a, b) =>  b.height - a.height || b.value - a.value);
+            .sort((a, b) => b.height - a.height || b.value - a.value);
 
         let nodes = partition(root)
             .descendants();
@@ -239,7 +239,7 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
 
         // Then highlight only those that are an ancestor of the current segment.
         thisClass.chart.selectAll("path")
-            .filter(function (node) {
+            .filter(function(node) {
                 return (sequenceArray.indexOf(node) >= 0);
             })
             .style("opacity", 1);
@@ -266,17 +266,17 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
             .attr("y", thisClass.b.h / 2)
             .attr("dy", "0.35em")
             .attr("text-anchor", "middle")
-            .text(function (d) {
+            .text(function(d) {
                 return d.data.name;
             })
-            .each(function (d) {
+            .each(function(d) {
                 let stringLength = (<SVGTextContentElement>this).getComputedTextLength();
-                d3.select(this).attr("x", () => ( thisClass.b.w + stringLength + thisClass.b.t) / 2);
+                d3.select(this).attr("x", () => (thisClass.b.w + stringLength + thisClass.b.t) / 2);
 
             });
 
         // 2. We calculate the effective size ot these texts
-        d3.select(element).select('#trail').selectAll('g').select('text').each(function (d) {
+        d3.select(element).select('#trail').selectAll('g').select('text').each(function(d) {
             let stringLength = (<SVGTextContentElement>this).getComputedTextLength();
             thisClass.stringsLength.push(stringLength);
         });
@@ -285,7 +285,7 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
         entering.append("polygon")
             .attr("points", (d, i) => thisClass.breadcrumbPoints(d, i, this, thisClass, thisClass.stringsLength[i]))
             .style("fill", d => d.depth === 0 ? '#BFBFBF' : d._color)
-            .each(function () {
+            .each(function() {
                 // 4. We place polygons back of the texts
                 let firstChild = (<Node>this).parentNode.firstChild;
 
@@ -308,11 +308,11 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
         // Position of the sequence
         d3.select(element).select('#sequence')
             .select('svg')
-            .attr("transform", d => "translate(" + ((thisClass.width  - SequenceTotalSize - thisClass.explanationWidth) / 2)   + "," + (thisClass.height / 2 - thisClass.radius + thisClass.margin.top)  + ")");
+            .attr("transform", d => "translate(" + ((thisClass.width - SequenceTotalSize - thisClass.explanationWidth) / 2) + "," + (thisClass.height / 2 - thisClass.radius + thisClass.margin.top) + ")");
 
         // Position of the explanation
         d3.select(element).select('#explanation')
-            .style("top", thisClass.height / 2 - thisClass.radius - 50 - thisClass.explanationHeight / 4  + 'px')
+            .style("top", thisClass.height / 2 - thisClass.radius - 50 - thisClass.explanationHeight / 4 + 'px')
             .style("left", (thisClass.width + SequenceTotalSize - thisClass.explanationWidth) / 2 + 'px');
 
         // Make the breadcrumb trail visible, if it's hidden.
@@ -360,50 +360,50 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
             .transition()
             .duration(250)
             .style("opacity", 1)
-            .on("end", function () {
+            .on("end", function() {
                 d3.select(this)
-                .on("mouseover", (d: any) => {
-                    if (d.depth !== 0) {
-                        return thisClass.mouseover(d, thisClass, element);
-                    } else {
-                        thisClass.mouseleave(d, thisClass, element)
-                    }
-                })
+                    .on("mouseover", (d: any) => {
+                        if (d.depth !== 0) {
+                            return thisClass.mouseover(d, thisClass, element);
+                        } else {
+                            thisClass.mouseleave(d, thisClass, element)
+                        }
+                    })
             });
     }
 
     private setColor(d) {
         let color;
-        
-        switch(d.depth) { 
+
+        switch (d.depth) {
             case 0: {
                 color = 'transparent';
-                break; 
+                break;
             }
 
             case 1: {
                 color = this.colorsPanel[this.coloralternative % this.colorsPanel.length];
                 d._color = color;
                 this.coloralternative++
-                break; 
+                break;
             }
 
-            default: { 
-                color = d3.rgb(d.parent._color).brighter(.1 * d.depth );
-                d._color  = color;
-                break; 
-            } 
-        } 
+            default: {
+                color = d3.rgb(d.parent._color).brighter(.1 * d.depth);
+                d._color = color;
+                break;
+            }
+        }
 
         return color;
     }
 
-    
+
 
     private zoom(d, thisClass) {
         thisClass.chart.transition()
             .duration(750)
-            .tween("scale", function () {
+            .tween("scale", function() {
                 let xd = d3.interpolate(thisClass.xScale.domain(), [d.x0, d.x1]);
                 let yd = d3.interpolate(thisClass.yScale.domain(), [d.y0, 1]);
                 let yr = d3.interpolate(thisClass.yScale.range(), [d.y0 ? 20 : 0, thisClass.radius]);
@@ -415,19 +415,21 @@ export class SunburstChartComponent extends Chart implements OnInit, OnChanges {
             })
             .selectAll("path")
             .attrTween("d", d => {
-                return function () {
+                return function() {
                     return thisClass.arc(d);
                 };
             });
     }
 
     load() {
+        if (this.curtain === undefined) return;
         this.curtain.transition()
             .duration(2000)
             .style('opacity', 1)
     }
 
     ease() {
+        if (this.curtain === undefined) return;
         this.curtain.transition()
             .duration(1000)
             .style('opacity', 0);

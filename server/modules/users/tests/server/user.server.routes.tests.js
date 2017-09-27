@@ -158,7 +158,7 @@ describe('User CRUD tests', function () {
       });
   });
 
-  it('should not be able to retrieve a list of users if not admin', function (done) {
+  it('should not be able to retrieve a users-list of users if not admin', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -168,7 +168,7 @@ describe('User CRUD tests', function () {
           return done(signinErr);
         }
 
-        // Request list of users
+        // Request users-list of users
         agent.get('/api/users')
           .expect(403)
           .end(function (usersGetErr, usersGetRes) {
@@ -181,7 +181,7 @@ describe('User CRUD tests', function () {
       });
   });
 
-  it('should be able to retrieve a list of users if admin', function (done) {
+  it('should be able to retrieve a users-list of users if admin', function (done) {
     user.roles = ['user', 'admin'];
 
     user.save(function (err) {
@@ -195,7 +195,7 @@ describe('User CRUD tests', function () {
             return done(signinErr);
           }
 
-          // Request list of users
+          // Request users-list of users
           agent.get('/api/users')
             .expect(200)
             .end(function (usersGetErr, usersGetRes) {

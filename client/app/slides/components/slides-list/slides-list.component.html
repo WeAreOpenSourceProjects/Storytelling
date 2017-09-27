@@ -1,0 +1,30 @@
+<div *ngIf="!loading">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <app-slides-search (textSearchOpt)="search($event)" kind="advanced" (filterPubOpt)="filterPub($event)" (sortedByOpt)="sortedOrder($event)"  (filterFavorOpt)="filterFavor($event)" ></app-slides-search>
+  </div>
+
+  <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+    <div *ngFor="let s of slides" [class.display-div]="!(loggedIn$|async)&& !s.slidesSetting.public" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
+      <app-slides-card (deletedSlides)="deletedSlides($event)" [slides]="s" [editable]="true" (duplicateslidesOpt)="duplicate($event)"></app-slides-card>
+    </div>
+
+  </div>
+
+  <div class="error" >
+    <p *ngIf="result.noPrivate">Sorry, no one private slides</p>
+    <p *ngIf="result.noSlides">Sorry, you don't have any slides yet!</p>
+    <p *ngIf="result.noPublish">Sorry, no one publish slides yet! <br>Would you want to be the pioneer?</p>
+    <p *ngIf="result.noResult">Opps, no result for these key words</p>
+  </div>
+  <md-paginator [length]="length"
+                [pageSize]="pageSize"
+                (page)="nextPage($event)">
+  </md-paginator>
+  <button class="buttonBottom" *ngIf="loggedIn$|async" [routerLink]="['createSlides']"  md-fab><md-icon>add</md-icon> </button>
+  <button class="buttonBottom" *ngIf="!(loggedIn$|async)" [routerLink]="['/user/login']" [queryParams]="{returnUrl: '/slides/createSlides'}"  md-fab><md-icon>add</md-icon> </button>
+
+</div>
+
+<div id="spinner" *ngIf="loading">
+  <div></div>
+</div>

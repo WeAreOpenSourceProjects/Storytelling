@@ -1,7 +1,7 @@
 <div class="d3-chart" >
-    <ngx-charts-pie-grid 
-        class="pie-grid-container" 
-        [scheme]="chartOptions.colorScheme" 
-        [results]="data">
+    <ngx-charts-pie-grid
+        class="pie-grid-container"
+        [scheme]="chartOptions.colorScheme"
+        [results]="data?data:[]">
     </ngx-charts-pie-grid>
 </div>
