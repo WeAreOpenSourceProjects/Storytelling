@@ -1,2 +1,2 @@
 export * from './slides-view.component';
-export * from './slide-types';
+export * from './title-slide';

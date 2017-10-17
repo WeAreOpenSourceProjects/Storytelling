@@ -6,7 +6,6 @@ import {
   BubbleChartComponent, SunburstChartComponent, WordCloudComponent, AreaChartComponent, NumberCardComponent
 
 } from 'app/charts';
-import { ImageComponent } from '../components/slides-view/slide-types/';
 
 @Injectable()
 export class ChartsService {
@@ -20,7 +19,7 @@ export class ChartsService {
       ['ForceDirectedGraphComponent', ForceDirectedGraphComponent], ['GaugeChartComponent', GaugeChartComponent],
       ['HierarchicalEdgeBundlingComponent', HierarchicalEdgeBundlingComponent], ['LineChartComponent', LineChartComponent],
       ['PieGridChartComponent', PieGridChartComponent], ['DendogramComponent', DendogramComponent],
-      ['NgGraphComponent', NgGraphComponent], ['ImageComponent', ImageComponent], ['TreemapChartComponent', TreemapChartComponent],
+      ['NgGraphComponent', NgGraphComponent], ['TreemapChartComponent', TreemapChartComponent],
       ['ZoomableTreemapChartComponent', ZoomableTreemapChartComponent], ['BubbleChartComponent', BubbleChartComponent],
       ['SunburstChartComponent', SunburstChartComponent], ['AreaChartComponent', AreaChartComponent],
       ['WordCloudComponent', WordCloudComponent], ['NumberCardComponent', NumberCardComponent]

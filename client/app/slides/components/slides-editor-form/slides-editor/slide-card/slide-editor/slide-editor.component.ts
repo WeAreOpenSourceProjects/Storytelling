@@ -1,144 +1,142 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, FormArray  } from '@angular/forms';
-import {ValidService} from '../../../../../services/valid.service';
-import { environment } from '../../../../../../../environments/environment';
-import * as slideOption from './slideOption';
-import {MdDialogRef} from '@angular/material';
-
+import {Component, ViewEncapsulation, ViewChildren, ViewChild, ElementRef, QueryList} from '@angular/core';
+import {NgGrid, NgGridItem, NgGridConfig, NgGridItemConfig, NgGridItemEvent} from 'angular2-grid';
 import { Slide } from '../../../../../models/slide';
+import { MdDialog, MdDialogRef } from '@angular/material';
+
+import {ChartsBuilderComponent} from './charts-builder';
+import {TextEditorComponent} from './text-editor/text-editor.component';
+import {Chart} from '../../../../../../charts';
+
+
+
 @Component({
-  selector: 'app-slide-editor',
+  selector: 'app-slides-drag-drop',
   templateUrl: './slide-editor.component.html',
   styleUrls: ['./slide-editor.component.scss']
 })
-export class SlideEditorComponent implements OnInit, OnChanges {
+export class SlideEditorComponent {
+  public slide: Slide;
+  public slideIndex: number;  // slide index
+  boxIndexToResize = -1;
+  event: NgGridItemEvent;
+  @ViewChild('dragDropElem') dragDropElem : ElementRef;
+  private gridConfig: NgGridConfig = <NgGridConfig>{
+    'margins': [5],
+    'draggable': true,
+    'resizable': true,
+    'max_rows': 38,
+    'visible_rows': 90,
+    'visible_cols': 90,
+    'min_cols': 1,
+    'min_rows': 1,
+    'col_width': 1,
+    'row_height': 1,
+    'cascade': 'off',
+    'min_width': 1,
+    'min_height': 1,
+    'fix_to_grid': false,
+    'auto_style': true,
+    'auto_resize': true,
+    'maintain_ratio': false,
+    'prefer_new': false,
+    'zoom_on_drag': false,
+    'limit_to_screen': false
+  };
+  private itemPositions: Array<any> = [];
 
-  public slideIndex: number;  //slide index
-  public slideSetting: Slide; //if it's not a new slide, the previous setting of the slide
-  public slide: Slide; //slide setting
-  form: FormGroup;//slide setting form
-  private showForm: boolean; // indicator:showing slide form
-  private dataBuilder: any; //data builder of graph
-  pageLayoutOption: Array<any>; // page layout option of the slide
-  titleAlignOption: Array<string>; //title align option of the slide
-  private editorOptions: Object;//option of the text editor
-  private isChartBuilderValid: boolean;//indicator for validation of chart builder
-
-
-  constructor( public dialogRef: MdDialogRef<SlideEditorComponent>, private _fb: FormBuilder, private validService: ValidService) {
-    this.slide = new Slide();
-    this.form = this._buildForm();
-    this.showForm = true;
-    this.dataBuilder = {};
-
-    this.titleAlignOption = slideOption.titleAlign;
-    this.pageLayoutOption = slideOption.pageLayoutOption;
-
-    this.isChartBuilderValid = true;
-    // set server path
-    let baseURL = `${environment.backend.protocol}://${environment.backend.host}`;
-    if (environment.backend.port) {
-      baseURL += `:${environment.backend.port}`;
-    };
-    this.editorOptions = {
-      heightMin: 200,
-      heightMax: 400,
-      charCounterMax: 3000,
-      toolbarSticky: false,
-      imageUploadURL: `${baseURL}${environment.backend.endpoints.imagesServer}`,
-      imageManagerLoadURL: `${baseURL}${environment.backend.endpoints.imagesServer}`
-    };
-
-  }
-
-  ngOnInit() {
-    if (!this.slide.pageLayout) {
-      this.validService.changeSlideValid(false, this.slideIndex, "LAYOUT");
-    }
-
-  }
-
-  ngOnChanges(changes) {
-    if (changes.hasOwnProperty("slideSetting")) {
-      this.slide = this.slideSetting;
-      this.slide.isValid = this.slide.pageLayout && this.isChartBuilderValid;
-      this.validService.changeSlideValid(this.slide.pageLayout && this.isChartBuilderValid, this.slideIndex);
-    }
-  }
-
-  private _buildForm() {
-    return this._fb.group({
-      pageTitle: new FormControl(this.slide.pageTitle.title, Validators.nullValidator),
-      titleAlign: new FormControl(this.slide.pageTitle.align, Validators.nullValidator),
-      slideText: new FormControl(this.slide.text, Validators.nullValidator)
+  openChartBuilder() {
+    const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
+    dialog.afterClosed().subscribe(result => {
+      if (result !== 'CANCEL') {
+        console.log('The dialog was closed');
+        this.addBox(result, 'chart');
+      }
     });
   }
 
-  /*validation for the childForm of slideForm*/
-  validChildForm(isValid) {
-    this.validService.changeSlideValid(isValid, this.slideIndex);
+  constructor(private dialog: MdDialog, public dialogRef: MdDialogRef<SlideEditorComponent>) {
   }
-  /*confirm the slide setting*/
-  confirmSlide(isValid) {
-    if (this.slide.hasGraph) {
-      if (this.dataBuilder.chartOptions.chartType
-          && this.dataBuilder.chartOptions.chartType.cmpName != null) {
-        this.slide.graph = this.dataBuilder.chartOptions.chartType.cmpName;
-      } else {
-        this.slide.graph = 'ngGraph';
+
+  refreshBox(index, box) {
+    this.removeBox(index);
+    box = {
+      config : this._generateItemConfig( box.config.col, box.config.row, box.config.sizex, box.config.sizey),
+      text: box.text,
+      chart: box.chart,
+      height: box.height,
+      width: box.width
+    };
+    this.slide.boxes.push(box);
+  }
+
+  addBox(objectToAdd, type) {
+    if (type === 'text') {
+      const conf: NgGridItemConfig = this._generateItemConfig(1, 1, 30, 30);
+      this.slide.boxes.push({config: conf, text: objectToAdd, chart: null, height: 30, width: 30});
+    } else if (type === 'chart') {
+      const conf: NgGridItemConfig = this._generateItemConfig(1, 1, 20, 20);
+      this.slide.boxes.push({config: conf, text: null, chart: objectToAdd, height: 20, width: 30});
+    }
+  }
+
+  addText() {
+    const dialog = this.dialog.open(TextEditorComponent, {height: '60%', width: '90%'});
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('The dialog was closed');
+        this.addBox(result, 'text');
       }
-      this.slide.data = this.dataBuilder.data;
-      this.slide.config = this.dataBuilder.chartOptions;
-      this.slide.slideImage = null;
-    } else {
-      this.slide.graph = 'noGraph';
-      this.slide.data = [];
+    });
+  }
+
+  removeBox(index: number) {
+    if (this.slide.boxes[index]) {
+      this.slide.boxes.splice(index, 1);
     }
-    if (!this.slide.hasText) {
-      this.slide.text = '';
+  }
+
+  editBox(index: number) {
+    if (this.slide.boxes[index].text) {
+      const dialog = this.dialog.open(TextEditorComponent, {height: '60%', width: '95%'});
+      dialog.componentInstance.text = this.slide.boxes[index].text;
+      dialog.afterClosed().subscribe(result => {
+        if (result !== 'CANCEL') {
+          this.slide.boxes[index].text = result;
+        }
+      });
     }
-    if (this.slideIndex) {
-      this.slide.index = this.slideIndex;
+    if (this.slide.boxes[index].chart) {
+      const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '95%'});
+      dialog.componentInstance.chartType = this.slide.boxes[index].chart.chartType;
+      dialog.componentInstance.inputOptions = this.slide.boxes[index].chart.chartOptions;
+      dialog.componentInstance.inputData = this.slide.boxes[index].chart.data;
+      dialog.afterClosed().subscribe(result => {
+        console.log(result);
+        if (result !== 'CANCEL') {
+          this.slide.boxes[index].chart = result;
+        }
+      });
     }
-    this.slide.pageTitle.title = this.form.value.pageTitle;
-    this.slide.pageTitle.align = this.form.value.titleAlign;
-    this.validService.changeSlideValid(true, this.slideIndex);
-    this.slide.isValid = true;
+  }
+
+  onResize(index: number, event: NgGridItemEvent): void {
+    this.slide.boxes[index].width = event.width ;
+    this.slide.boxes[index].height = event.height;
+    this.event = event;
+    this.boxIndexToResize = index;
+  }
+
+  confirmSlide(){
     this.dialogRef.close(this.slide);
   }
-  /*confirm graph setting*/
-  confirmeSlideGRaphConfig(data) {
-    this.dataBuilder.data = data.data;
-    this.dataBuilder.chartOptions = data.chartOptions;
+
+  private _generateItemConfig(col, row, sizex, sizey): NgGridItemConfig {
+    return {'dragHandle': '.handle', 'col': col, 'row': row, 'sizex': sizex, 'sizey': sizey};
   }
-  /*change page layout*/
-  pageLayoutChange(value) {
-    console.log(value);
-    switch (value) {
-      case 'FullScreenGraph':
-        this.slide.hasGraph = true;
-        this.slide.hasText = false;
-        break;
-      case 'textInCenter': this.slide.hasGraph = false; this.slide.hasText = true; break;
-      case 'textInCenterImageBackground': this.slide.hasGraph = false; this.slide.hasText = true; break;
-      case 'LeftGraphRightText': this.slide.hasGraph = true; this.slide.hasText = true; break;
-      case 'LeftTextRightGraph': this.slide.hasGraph = true; this.slide.hasText = true; break;
-      default: break;
+
+  onDragStop(index, item , box) {
+    if (item.width + item.left + 60 > this.dragDropElem.nativeElement.offsetWidth) {
+      this.refreshBox(index, box);
     }
-    this.slide.pageLayout = value;
-  }
-  /*change bkg layout*/
-  imgLayoutChange(value) {
-    this.slide.bkgLayout = value;
-
-  }
-  /*change text vertical align*/
-  textAlignChange(value) {
-    this.slide.textVerAlign = value;
-  }
-  /* set image path*/
-  setImageHtml(image) {
-    this.slide.slideImage = image;
-
   }
 }

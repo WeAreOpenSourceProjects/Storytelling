@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {TitleSlideComponent, FullScreenGraphSlideComponent, LeftGraphRightTextSlideComponent, RightGraphLeftTextSlideComponent, TextSlideComponent} from './slide-types';
 import { SlidesViewComponent } from './slides-view.component';
 import {HttpModule} from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,14 +12,9 @@ describe('SlidesViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SlidesViewComponent,
-        TitleSlideComponent,
-        FullScreenGraphSlideComponent,
-        LeftGraphRightTextSlideComponent,
-        RightGraphLeftTextSlideComponent,
-        TextSlideComponent],
+      declarations: [ SlidesViewComponent],
       imports : [HttpModule, RouterTestingModule, MaterialModule, BrowserAnimationsModule],
-      providers :[NotifBarService]
+      providers : [NotifBarService]
     })
     .compileComponents();
   }));

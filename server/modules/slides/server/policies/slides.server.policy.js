@@ -53,6 +53,9 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/banner',
       permissions: ['*']
+    }, {
+      resources: '/api/slides/:idSlides/slide/:id',
+      permissions: ['*']
     }]
   }, {
     roles: ['guest'],

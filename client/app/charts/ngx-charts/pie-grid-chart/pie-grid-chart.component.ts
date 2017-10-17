@@ -74,7 +74,10 @@ export class PieGridChartComponent extends Chart implements OnInit, OnDestroy, O
         this.init();
     }
     init() {
-        this.data = PieGridChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+        if (this.configInput != null)
+            this.data = PieGridChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+        else
+            this.data = this.dataInput;
     }
 
     load() {

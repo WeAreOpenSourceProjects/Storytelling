@@ -3,7 +3,6 @@ import { trigger, state, style, transition, animate, keyframes } from '@angular/
 import { Slide } from '../../../../models/slide';
 import {SlideEditorComponent} from './slide-editor/slide-editor.component';
 import { MdDialog } from '@angular/material';
-
 @Component({
     selector: 'app-slide-card',
     templateUrl: './slide-card.component.html',

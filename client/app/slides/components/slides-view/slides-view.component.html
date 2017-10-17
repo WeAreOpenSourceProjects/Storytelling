@@ -7,32 +7,15 @@
       <app-title-slide [slideTitle]="slideTitle"> </app-title-slide>
     </div>
     <!--slides content-->
-    <div [ngStyle]="slideHeight_style" class="slide" [attr.id]="'slide-'+curSlideIndex" *ngIf="curSlideIndex !== 0 && currentSlide != null" [@routerTransition]="direction">
-      <!--slide title text-->
-      <div class="title-text" fxLayout="column" fxLayoutAlign="space-between stretch" align="{{currentSlide.pageTitle.align}}" *ngIf="currentSlide.pageTitle.title.length!=0">
-        <div fxLayout="row" fxFlex="95%">
-          <h2 fxFlex="100%">{{currentSlide.pageTitle.title}}</h2>
-        </div>
-      </div>
+    <div class="slide" [attr.id]="'slide-'+curSlideIndex" *ngIf="curSlideIndex !== 0 && currentSlide != null" [@routerTransition]="direction">
       <!--slide content-->
-      <div [ngStyle]="contentHeight_style" fxLayout="column" fxLayoutAlign="space-between none" class="content">
-
-        <!--full screen :chart -->
-        <app-full-screen-graph-slide *ngIf="(currentSlide.pageLayout=='FullScreenGraph')" [slide]="currentSlide" class="slide-container">
-        </app-full-screen-graph-slide>
-
-        <!--left graph right text-->
-        <app-left-graph-right-text-slide *ngIf="currentSlide.pageLayout=='LeftGraphRightText'" [slide]="currentSlide"  class="slide-container">
-        </app-left-graph-right-text-slide>
-
-        <!--left text right grah-->
-        <app-right-graph-left-text-slide *ngIf="currentSlide.pageLayout=='LeftTextRightGraph'" [slide]="currentSlide" class="slide-container">
-        </app-right-graph-left-text-slide>
-
-        <!--full screen :text-->
-        <!--full screen :imgback + text-->
-        <app-text-slide *ngIf="currentSlide.pageLayout=='textInCenter'||currentSlide.pageLayout=='textInCenterImageBackground'" [slide]="currentSlide" class="slide-container">
-        </app-text-slide>
+      <div #grid [ngGrid]="gridConfig">
+        <div *ngFor="let box of currentSlide.boxes; let i = index" [(ngGridItem)]="box.config" >
+          <div *ngIf="box.text"   #textContainer [innerHTML]="box.text" ></div>
+          <app-graph [width]="box.width" [height]="box.height" *ngIf="box.chart" [chart]="box.chart"></app-graph>
+          </div>
+          </div>
+        </div>
       </div>
     </div>
     <!--progress bar-->
@@ -48,6 +31,3 @@
       <button class="navigate-up" aria-label="above slide"></button>
       <button class="navigate-down" aria-label="below slide"></button>
     </aside>
-  </div>
-
-</div>

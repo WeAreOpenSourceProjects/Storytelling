@@ -1,12 +1,11 @@
-:host {
+:host /deep/{
     width: 100%;
 
     .d3-chart {
         width: 100%;
-        height: 80vh;
-        display: flex;
+        height: 100%;
 
-        .legend-container {
+    .legend-container {
             //overflow: scroll !important;
             flex: initial;
             width: 200px;

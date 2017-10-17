@@ -17,6 +17,7 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   var slide = new Slides(req.body);
+  console.log(req.body);
   slide.user = req.user;
   slide.save(function(err) {
     if (err) {
@@ -48,7 +49,7 @@ exports.update = function(req, res) {
   //transfer image object to id string
   if (slides.slidesSetting.banner && slides.slidesSetting.banner._id) slides.slidesSetting.banner = slides.slidesSetting.banner._id;
   if (slides.slides.slideImage && slides.slides.slideImage._id) slides.slides.slideImage = slides.slides.slideImage._id;
-
+  console.log(req.body.slides);
   slides.slides = req.body.slides;
   slides.save(function(err) {
     if (err) {
@@ -60,8 +61,7 @@ exports.update = function(req, res) {
     }
   });
 };
-
-/**
+  /**
  * Delete an slide
  */
 exports.delete = function(req, res) {
@@ -135,6 +135,8 @@ exports.slideByID = function(req, res, next, id) {
     next();
   });
 };
+
+
 /**
  * search with filter
  */

@@ -22,12 +22,7 @@ import { HotTableModule } from 'ng2-handsontable';
 import {SlidesSearchComponent} from './components/slides-list/slides-search/slides-search.component';
 // SLIDES COMPONENTS
 import { SlidesViewComponent,
-    FullScreenGraphSlideComponent,
-    ImageComponent,
     TitleSlideComponent,
-    LeftGraphRightTextSlideComponent,
-    RightGraphLeftTextSlideComponent,
-    TextSlideComponent,
     SlidesEditorFormComponent,
     SlideCardComponent
 } from '.';
@@ -68,16 +63,16 @@ import { AreaChartComponent } from '../charts/ngx-charts/area-chart';
 import { ImageUploadComponent } from './components/slides-editor-form/slides-editor/slide-card/slide-editor/image-upload/image-upload.component';
 
 import { SlidesSettingComponent } from './components/slides-editor-form/slides-editor/slides-setting/slides-setting.component';
-import { ChartsBuilderComponent, CodeEditorComponent, DataTableComponent } from './components/slides-editor-form/slides-editor/slide-card/slide-editor/charts-builder';
+import { CodeEditorComponent, DataTableComponent } from './components/slides-editor-form/slides-editor/slide-card/slide-editor/charts-builder';
 import { SlidesEditorComponent } from './components/slides-editor-form/slides-editor/slides-editor.component';
-
 import { SlidesListComponent } from './components/slides-list/slides-list.component';
 import { SlidesCardComponent } from './components/slides-list/slides-card/slides-card.component';
 import { DeleteDialogComponent } from './components/slides-list/slides-card/delete-dialog/delete-dialog.component';
 import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
 
 import { ValidateOnBlurDirective } from './components/slides-editor-form/slides-editor/slides-setting/validate-on-blur.directive';
-import { SlideEditorComponent } from './components/slides-editor-form/slides-editor/slide-card/slide-editor/slide-editor.component';
+import { SlideEditorComponent, ChartsBuilderComponent, TextEditorComponent, GraphComponent, TextComponent } from '.';
+import { NgGridModule} from 'angular2-grid';
 
 @NgModule({
     imports: [
@@ -96,7 +91,8 @@ import { SlideEditorComponent } from './components/slides-editor-form/slides-edi
         DndModule.forRoot(),
         HotTableModule,
         FroalaEditorModule.forRoot(),
-        FroalaViewModule.forRoot()
+        FroalaViewModule.forRoot(),
+        NgGridModule
     ],
     entryComponents: [
         BarChartComponent,
@@ -106,7 +102,6 @@ import { SlideEditorComponent } from './components/slides-editor-form/slides-edi
         PieChartComponent,
         PieGridChartComponent,
         NumberCardComponent,
-        FullScreenGraphSlideComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,
         DeleteDialogComponent,
@@ -118,8 +113,10 @@ import { SlideEditorComponent } from './components/slides-editor-form/slides-edi
         WordCloudComponent,
         SunburstChartComponent,
         AreaChartComponent,
-        ImageComponent,
-        SlideEditorComponent],
+        SlideEditorComponent,
+        ChartsBuilderComponent,
+        TextEditorComponent
+    ],
 
     declarations: [
         KeySwitchDirective,
@@ -134,16 +131,10 @@ import { SlideEditorComponent } from './components/slides-editor-form/slides-edi
         SlidesSettingComponent,
         CodeEditorComponent,
         DataTableComponent,
-        ChartsBuilderComponent,
         SlidesEditorComponent,
         SlidesListComponent,
-        FullScreenGraphSlideComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,
-        TitleSlideComponent,
-        LeftGraphRightTextSlideComponent,
-        RightGraphLeftTextSlideComponent,
-        TextSlideComponent,
         PieChartComponent,
         SlidesCardComponent,
         HierarchicalEdgeBundlingComponent,
@@ -160,9 +151,13 @@ import { SlideEditorComponent } from './components/slides-editor-form/slides-edi
         SunburstChartComponent,
         KeySwitchDirective,
         ToggleFullscreenDirective,
-        ImageComponent,
         ValidateOnBlurDirective,
-        SlideEditorComponent
+        SlideEditorComponent,
+        ChartsBuilderComponent,
+        TextEditorComponent,
+        GraphComponent,
+        TitleSlideComponent,
+        TextComponent
     ],
     exports: [
       SlidesCardComponent,

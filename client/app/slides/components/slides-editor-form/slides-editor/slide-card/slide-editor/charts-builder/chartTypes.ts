@@ -96,7 +96,7 @@ export const chartTypes = [
         image: 'assets/img-graph/ForceDirectedGraph.jpg'
     }),
     createChartType({
-        title: 'Bar Vertical 2D', convertData: NgGraphComponent.convertData,
+        title: 'Bar Vertical 2D', convertData: NgGraphComponent.convertData, cmpName: 'ngGraph',
         dimLabels: [{ column: 'Group by', maxSize: 10, dataType: ["string", "number"] }, { column: 'Name', maxSize: 1, dataType: ["string", "number"] }, { column: 'Value', maxSize: 1, dataType: ["number"] }],
         description: 'Bar Vertical 2D is a bar chart with vertical representation of data',
         categorie: 'Dispersion',
@@ -104,7 +104,7 @@ export const chartTypes = [
         image: 'assets/img-graph/barVertical2D.jpg'
     }),
     createChartType({
-        title: 'Bar Horizontal 2D', convertData: NgGraphComponent.convertData,
+        title: 'Bar Horizontal 2D', convertData: NgGraphComponent.convertData, cmpName: 'ngGraph',
         dimLabels: [{ column: 'Group by', maxSize: 10, dataType: ["string", "number"] }, { column: 'Name', maxSize: 1, dataType: ["string", "number"] }, { column: 'Value', maxSize: 1, dataType: ["number"] }],
         description: 'Bar Horizontal 2D is a bar chart with horizontal representation of data',
         categorie: 'Comparison',
@@ -112,7 +112,7 @@ export const chartTypes = [
         image: 'assets/img-graph/barHorizontal2D.jpg'
     }),
     createChartType({
-        title: 'Bar Vertical Stacked', convertData: NgGraphComponent.convertData,
+        title: 'Bar Vertical Stacked', convertData: NgGraphComponent.convertData, cmpName: 'ngGraph',
         dimLabels: [{ column: 'Group by', maxSize: 10, dataType: ["string", "number"] }, { column: 'Name', maxSize: 1, dataType: ["string", "number"] }, { column: 'Value', maxSize: 1, dataType: ["number"] }],
         description: '',
         categorie: 'Comparison',
@@ -120,7 +120,7 @@ export const chartTypes = [
         image: 'assets/img-graph/barverticalStacked.jpg'
     }),
     createChartType({
-        title: 'Bar Vertical Normalized', convertData: NgGraphComponent.convertData,
+        title: 'Bar Vertical Normalized', convertData: NgGraphComponent.convertData, cmpName: 'ngGraph',
         dimLabels: [{ column: 'Group by', maxSize: 10, dataType: ["string", "number"] }, { column: 'Name', maxSize: 1, dataType: ["string", "number"] }, { column: 'Value', maxSize: 1, dataType: ["number"] }],
         description: '',
         categorie: 'Comparison',
@@ -128,7 +128,7 @@ export const chartTypes = [
         image: 'assets/img-graph/barVerticalNormalized.jpg'
     }),
     createChartType({
-        title: 'Bar Horizontal Normalized', convertData: NgGraphComponent.convertData,
+        title: 'Bar Horizontal Normalized', convertData: NgGraphComponent.convertData,  cmpName: 'ngGraph',
         dimLabels: [{ column: 'Group by', maxSize: 10, dataType: ["string", "number"] }, { column: 'Name', maxSize: 1, dataType: ["string", "number"] }, { column: 'Value', maxSize: 1, dataType: ["number"] }],
         description: '',
         categorie: 'Comparison',
@@ -136,14 +136,14 @@ export const chartTypes = [
         image: 'assets/img-graph/BarHorizontalNormalize.jpg'
     }),
     createChartType({
-        title: 'Polar Chart', convertData: NgGraphComponent.convertData, dimLabels: [{ column: 'Group by', maxSize: 1, dataType: ["string", "number"] }, { column: 'Angle Values', maxSize: 1, dataType: ["string", "number"] }, { column: 'Radius Values', maxSize: 1, dataType: ["number"] }],
+        title: 'Polar Chart',  cmpName: 'ngGraph',convertData: NgGraphComponent.convertData, dimLabels: [{ column: 'Group by', maxSize: 1, dataType: ["string", "number"] }, { column: 'Angle Values', maxSize: 1, dataType: ["string", "number"] }, { column: 'Radius Values', maxSize: 1, dataType: ["number"] }],
         description: '',
         categorie: 'Comparison',
         dimExemple:  [['continent'], ['year'], ['pop']],
         image: 'assets/img-graph/polarChart.jpg'
     }),
     createChartType({
-        title: 'Line Chart', convertData: NgGraphComponent.convertData, dimLabels: [{ column: 'GroupBy', maxSize: 1, dataType: ["string", "number"] }, { column: 'x-Values', maxSize: 1, dataType: ["string", "number"] }, { column: 'y-Values', maxSize: 1, dataType: ["string", "number"] }],
+        title: 'Line Chart',  cmpName: 'ngGraph', convertData: NgGraphComponent.convertData, dimLabels: [{ column: 'GroupBy', maxSize: 1, dataType: ["string", "number"] }, { column: 'x-Values', maxSize: 1, dataType: ["string", "number"] }, { column: 'y-Values', maxSize: 1, dataType: ["string", "number"] }],
         description: 'Is an interactive line chart that can be configured for multiple axes. ' +
         'The multi-axis line chart is a special type of chart that allows multiple y-axes to be rendered in the same chart. ' +
         'The advantage of using a multi-axis line chart is that you can plot multiple data sets with different types of units and different scale ranges  on the same chart.',
@@ -152,14 +152,14 @@ export const chartTypes = [
         image: 'assets/img-graph/line-chart.jpg'
     }),
     createChartType({
-        title: 'Heat Map', convertData: NgGraphComponent.convertData, dimLabels: [{ column: 'x-Category', maxSize: 1, dataType: ["string", "number"] }, { column: 'y-Category', maxSize: 1, dataType: ["number"] }, { column: 'Color', maxSize: 1, dataType: ["string", "number"] }],
+        title: 'Heat Map', cmpName: 'ngGraph', convertData: NgGraphComponent.convertData, dimLabels: [{ column: 'x-Category', maxSize: 1, dataType: ["string", "number"] }, { column: 'y-Category', maxSize: 1, dataType: ["number"] }, { column: 'Color', maxSize: 1, dataType: ["string", "number"] }],
         description: '',
         categorie: 'Comparison',
         dimExemple:  [['continent'], ['year'], ['pop']],
         image: 'assets/img-graph/heatMap.jpg'
     }),
     createChartType({
-        title: 'Bubble Chart', convertData: NgGraphComponent.convertData, dimLabels: [{ column: 'GroupBy', maxSize: 1, dataType: ["string", "number"] }, { column: 'x-Values', maxSize: 1, dataType: ["string", "number"] }, { column: 'y-Values', maxSize: 1, dataType: ["number"] }, { column: 'Radius', maxSize: 1, dataType: ["string", "number"] }],
+        title: 'Bubble Chart', cmpName: 'ngGraph', convertData: NgGraphComponent.convertData, dimLabels: [{ column: 'GroupBy', maxSize: 1, dataType: ["string", "number"] }, { column: 'x-Values', maxSize: 1, dataType: ["string", "number"] }, { column: 'y-Values', maxSize: 1, dataType: ["number"] }, { column: 'Radius', maxSize: 1, dataType: ["string", "number"] }],
         description: '',
         categorie: 'Dispersion',
         dimExemple:  [['continent'], ['pop'], ['year'],['gdpPercap']],

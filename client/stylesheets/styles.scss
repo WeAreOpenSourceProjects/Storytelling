@@ -120,6 +120,18 @@ ngx-tooltip-content.ngx-tooltip-content.position-right.type-tooltip.animate {
  .base.dark {
    background: #f6f6f6;
  }
-.mat-dialog-container{
+md-dialog-container{
   max-width: 100% !important;
+  padding: 0 !important;
+}
+.fr-box {
+  margin :1%
+}
+img {
+  height: 100%;
+  width: 100%;
+}
+video {
+  height: 100%;
+  width: 100%;
 }

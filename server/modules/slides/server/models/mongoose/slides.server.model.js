@@ -57,62 +57,34 @@ var SlidesSchema = new Schema({
         default: '1',
         trim: true
       },
-      text: {
-        type: String,
-        default: '',
-        trim: true
-      },
-      textVerAlign: {
-        type: String,
-        default: 'TOP',
-        trim: true
-      },
-      graph: {
-        type: String,
-        default: '',
-        trim: true
-      },
-      pageLayout: {
-        type: String,
-        default: 'textInCenter',
-        trim: true
-      },
-      slideImage: {
-        type: Schema.ObjectId,
-        ref: 'Image'
-      },
-      bkgLayout: {
-        type: String,
-        default: 'STRETCH',
-        trim: true
-      },
-      data: {
-        type: Array,
-        default: {}
-      },
-      config: {
-        type: Object,
-        default: {}
-      },
-      hasGraph: {
-        type: Boolean,
-        default: false,
-        trim: true
-      },
-      hasText: {
-        type: Boolean,
-        default: false,
-        trim: true
-      },
-      pageTitle: {
-        title: {
-          type: String,
-          default: "",
-        },
-        align: {
-          type: String,
-          default: "left",
-        }
+      boxes: {
+        type: [{
+          config: {
+            type: Object
+          },
+          text: {
+            type: Object
+          },
+          chart: {
+            type: Object
+          },
+          width: {
+            type: Number,
+            default: '10'
+          },
+          height: {
+            type: Number,
+            default: '10'
+          },
+          top: {
+            type: Number,
+            default: 50
+          },
+          left: {
+            type: Number,
+            default: 60
+          }
+        }]
       },
       isValid: {
         type: Boolean,

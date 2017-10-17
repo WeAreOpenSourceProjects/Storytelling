@@ -32,7 +32,11 @@ const slidesRoutes: Routes = [
     path: 'slidesPresentation/:id',
     component: SlidesViewComponent,
     data: { title: 'Presentation' }
-  },
+  }, {
+    path: ':idSlides/slide/:id',
+    component: SlideEditorComponent,
+    data: { title: 'Slide editor' }
+  }
 ];
 
 @NgModule({

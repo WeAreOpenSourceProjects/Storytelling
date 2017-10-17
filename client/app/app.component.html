@@ -3,10 +3,8 @@
   <app-toolbar></app-toolbar>
   <app-sidenav></app-sidenav>
 </div>
-<div class="jumbotron">
-    <div class="app-container" [class.toggled]="isToggled">
-        <div>
+<div class="app-container" [class.toggled]="isToggled">
+        <div class="router-class">
         <router-outlet></router-outlet>
         </div>
     </div>
-</div>

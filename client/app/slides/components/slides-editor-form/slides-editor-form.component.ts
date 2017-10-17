@@ -63,14 +63,6 @@ export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
             this.slider = new Slides();
             this.loading = false;
         }
-
-        this.editorValid = this.validService.validAll$.subscribe(
-            valid => {
-                this.isRequired = valid['msg'][0];
-                this.errorMsg = [];
-                if (this.isRequired) this.errorMsg.push({msg : valid['msg'], index: -1});
-                this.slider.slides.forEach((slide, index) => !slide.isValid ? this.errorMsg.push({msg : 'Slide ' + (index+1) + ' is not finished', index : index + 1} ) : false);
-            });
     }
 
     // TODO rework service, rename in presentatiion
@@ -115,10 +107,6 @@ export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
         this.isInShuffle = shuffle;
         if (!shuffle) {
             this.errorMsg = [];
-            this.slider.slides.forEach((slides, index) =>
-                !slides.isValid ?
-                    this.errorMsg.push({msg: 'Slide ' + (index + 1) + ' is not finished', index: index + 1})
-                    : false);
-        };
+        }
     }
 }

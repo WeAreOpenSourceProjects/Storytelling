@@ -3,6 +3,7 @@ import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import * as shape from 'd3-shape';
 import * as babyparse from 'babyparse';
 import * as _ from 'lodash';
+import {MdDialogRef} from '@angular/material';
 
 import { chartTypes } from './chartTypes';
 import { gapminder } from './data';
@@ -31,7 +32,7 @@ const defaultOptions = {
 };
 
 @Component({
-    selector: 'app-charts-builder',
+    selector: 'app-chart-builder',
     templateUrl: './charts-builder.component.html',
     styleUrls: ['./charts-builder.component.scss']
 })
@@ -60,6 +61,8 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     @Output() configGraph = new EventEmitter();
     warnMsg: string;//to tell the user which part isn't validated
     _dataText: string;
+
+    constructor(public dialogRef: MdDialogRef<ChartsBuilderComponent>){}
     get dataText() {
         return this._dataText || ' ';
     }
