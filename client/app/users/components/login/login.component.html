@@ -30,6 +30,11 @@
             <div type="danger" *ngIf="hasMessage$ | async" class="center-align text-danger">
                 <span>{{hasMessage$ | async}}</span>
             </div>
+          <div class="center-align">
+            <a [routerLink]="['../password/forgot']">
+              <md-button md-no-ink class="md-primary">Forgot your password?</md-button>
+            </a>
+          </div>
         </form>
     </md-card>
 </div>

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // USERS COMPONENTS
-import { LoginComponent, RegisterComponent, SettingsComponent, UsersListComponent } from '.';
+import { LoginComponent, RegisterComponent, SettingsComponent, UsersListComponent, ForgotPasswordComponent, PasswordComponent, ResetPasswordComponent } from '.';
 
 // AUTH SERVICE
 import { AuthGuard } from './services';
@@ -22,7 +22,11 @@ const USERS_ROUTES: Routes = [
             roles: ['admin'],
             title: 'Users List'
         }
-    }];
+    }, {
+        path : 'password/forgot', component : ForgotPasswordComponent, data : { title : 'Password / Forgot'}, canActivate: [AuthGuard]
+    },
+    { path : 'password/reset/:token', component: ResetPasswordComponent,  data : { title : 'Password / Reset'}}
+];
 
 @NgModule({
     imports: [

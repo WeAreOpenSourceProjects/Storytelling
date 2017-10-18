@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 // APP COMPONENTS
  import { SettingsComponent } from './components/settings/index';
- import { LoginComponent, RegisterComponent, UsersListComponent } from './index';
+ import { LoginComponent, RegisterComponent, UsersListComponent, ForgotPasswordComponent } from './index';
  import { AuthGuard } from './services';
 
 const USERSROUTES: Routes = [
@@ -16,6 +16,8 @@ const USERSROUTES: Routes = [
   data : {
     roles : ['admin'],
     title : 'Users List'
-  }}];
+  }}, {
+    path : 'password/forgot', component : ForgotPasswordComponent, data : { title : 'Forgot password'}
+}];
 
 export const USERS_ROUTES = RouterModule.forChild(USERSROUTES);

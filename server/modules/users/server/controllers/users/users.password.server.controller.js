@@ -34,8 +34,8 @@ exports.forgot = function (req, res, next) {
           username: req.body.username.toLowerCase()
         }, '-salt -password', function (err, user) {
           if (err || !user) {
-            return res.status(400).send({
-              message: 'No account with that username has been found'
+            return res.status(200).send({
+              error: 'No account with that username has been found'
             });
           } else if (user.provider !== 'local') {
             return res.status(400).send({
@@ -57,12 +57,11 @@ exports.forgot = function (req, res, next) {
       }
     },
     function (token, user, done) {
-
       var httpTransport = 'http://';
       if (config.secure && config.secure.ssl === true) {
         httpTransport = 'https://';
       }
-      var baseUrl = req.app.get('domain') || httpTransport + req.headers.host;
+      var baseUrl = req.app.get('domain') || httpTransport + req.headers.host ;
       res.render(path.resolve('modules/users/server/templates/reset-password-email'), {
         name: user.displayName,
         appName: config.app.title,
@@ -85,7 +84,7 @@ exports.forgot = function (req, res, next) {
             message: 'An email has been sent to the provided email with further instructions.'
           });
         } else {
-          return res.status(400).send({
+          return res.status(200).send({
             message: 'Failure sending email'
           });
         }
@@ -114,7 +113,7 @@ exports.validateResetToken = function (req, res) {
       return res.redirect('/password/reset/invalid');
     }
 
-    res.redirect('/password/reset/' + req.params.token);
+    res.redirect('/#/password/reset/' + req.params.token);
   });
 };
 
@@ -124,7 +123,6 @@ exports.validateResetToken = function (req, res) {
 exports.reset = function (req, res, next) {
   // Init Variables
   var passwordDetails = req.body;
-
   async.waterfall([
 
     function (done) {

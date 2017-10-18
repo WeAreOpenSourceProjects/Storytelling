@@ -20,21 +20,29 @@ export class UsersService {
         }
     }
     signup(user: User): Observable<any> {
-        let backendURL = `${this._baseUrl}${environment.backend.endpoints.signup}` ;
+        const backendURL = `${this._baseUrl}${environment.backend.endpoints.signup}`;
         return this.http.post(backendURL, user).map((response: Response) => response.json());
     }
 
-
     getProfile (): Observable<any> {
-      let backendURL = `${this._baseUrl}${environment.backend.endpoints.users}/me` ;
+        const backendURL = `${this._baseUrl}${environment.backend.endpoints.users}/me` ;
       return this.http.get(backendURL).map((response: Response) => response.json());
     }
-    editProfile(user):Observable<any>{
-      let backendURL = `${this._baseUrl}${environment.backend.endpoints.users}` ;
+    editProfile(user): Observable<any> {
+      const backendURL = `${this._baseUrl}${environment.backend.endpoints.users}` ;
       return this.http.put(backendURL, user).map((response: Response) => response.json());
     }
-    getUsers():Observable<any>{
-      let backendURL = `${this._baseUrl}${environment.backend.endpoints.users}` ;
+    getUsers(): Observable<any> {
+        const backendURL = `${this._baseUrl}${environment.backend.endpoints.users}` ;
       return this.http.get(backendURL).map((response: Response) => response.json());
+    }
+    forgotPassword(username): Observable<any> {
+        const backendURL = `${this._baseUrl}${environment.backend.endpoints.forgotPassword}` ;
+        return this.http.post(backendURL, username).map((response: Response) => response.json());
+    }
+    resetPassword(newPassword, token): Observable<any> {
+        console.log('token', token);
+        const backendURL = `${this._baseUrl}${environment.backend.endpoints.resetPassword}/${token}` ;
+        return this.http.post(backendURL, newPassword ).map((response: Response) => response.json());
     }
 }

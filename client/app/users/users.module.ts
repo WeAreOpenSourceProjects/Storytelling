@@ -7,7 +7,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 // LOGIN COMPONENTS
 import { LoginComponent, RegisterComponent, SettingsComponent, ProfileComponent,
-   PasswordComponent, UsersListComponent, EqualValidator} from './index';
+   PasswordComponent, ForgotPasswordComponent, UsersListComponent, EqualValidator, ResetPasswordComponent} from './index';
 
 // LOGIN ROUTES
 import { UsersRoutingModule } from './users-routing.module';
@@ -37,7 +37,9 @@ export function usersFactory(config: UsersConfig) {
     ProfileComponent,
     PasswordComponent,
     EqualValidator,
-    UsersListComponent
+    UsersListComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [ UsersConfig, UsersService,
