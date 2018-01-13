@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
  * Box Schema
  */
 var BoxSchema = new Schema({
-  slide: {
+  slideId: {
     type: Schema.ObjectId,
     ref: 'Slide'
   },

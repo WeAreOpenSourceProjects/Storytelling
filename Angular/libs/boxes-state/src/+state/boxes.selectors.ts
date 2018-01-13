@@ -19,7 +19,6 @@ export const selectCurrentBox = createSelector(
   selectBoxesEntities,
   selectCurrentBoxId,
   (boxEntities, boxId) => boxEntities[boxId]);
-
-  export const selectCurrentBoxGrid = createSelector(selectCurrentBox, box => box.grid);
-  export const selectCurrentBoxType = createSelector(selectCurrentBox, box => box.mime);
-  export const selectCurrentBoxContent = createSelector(selectCurrentBox, box => box.content);
+export const selectCurrentBoxGrid = createSelector(selectCurrentBox, box => box.grid);
+export const selectCurrentBoxType = createSelector(selectCurrentBox, box => box.mime);
+export const selectCurrentBoxContent = createSelector(selectCurrentBox, box => box.content);

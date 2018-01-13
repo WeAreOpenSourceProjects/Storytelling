@@ -76,7 +76,10 @@ exports.update = function(req, res, next) {
  * Delete an presentation
  */
 exports.delete = function(req, res) {
-  Presentation.findByIdAndRemove(req.params.presentationId)
+  Presentation.findOneById(req.params.presentationId, function(err, customer) {
+    Presentation.remove();
+  })
+//  Presentation.findByIdAndRemove(req.params.presentationId)
   .exec()
   .then(function(presentation) {
     res.json(presentation);

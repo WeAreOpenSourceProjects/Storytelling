@@ -64,7 +64,7 @@ export class SlidesEffects {
     .pipe(
       map(toPayload),
       switchMap((payload) => this.slidesApiService.delete(payload.slideId)),
-      map((response: any) => new fromSlides.DeleteSuccess({slideId: response.id})),
+      map((response: any) => new fromSlides.DeleteSuccess({slideIds: [response.id]})),
       catchError(error => of(new fromSlides.DeleteFailure(error)))
     )
 

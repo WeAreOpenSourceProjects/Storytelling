@@ -63,7 +63,7 @@ export class BoxesEffects {
     .pipe(
       map(toPayload),
       switchMap((payload) => this.boxesApiService.delete(payload.boxeId)),
-      map((response: any) => new fromBoxes.DeleteSuccess({boxeId: response.id})),
+      map((response: any) => new fromBoxes.DeleteSuccess({boxeIds: [response.id]})),
       catchError(error => of(new fromBoxes.DeleteFailure(error)))
     )
 

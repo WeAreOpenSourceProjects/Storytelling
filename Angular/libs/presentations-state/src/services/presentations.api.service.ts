@@ -80,7 +80,8 @@ export class PresentationsApiService {
     const backendURL = `${this._baseUrl}/${environment.backend.endpoints.presentations}/${id}`;
     return this.http.delete(backendURL);
   }
-  getPresentationToSearch(textToSearch, pageIndex, pageSize): Observable<any> {
+
+  search(textToSearch, pageIndex, pageSize): Observable<any> {
     const params: URLSearchParams = new URLSearchParams();
     params.set('title', textToSearch.title);
     params.set('state', textToSearch.filter);
@@ -90,7 +91,7 @@ export class PresentationsApiService {
     params.set('pageIndex', pageIndex);
     params.set('pageSize', pageSize);
     params.set('order', textToSearch.order);
-    const backendURL = `${this.baseUrl}/${this.endpoints.search}`;
+    const backendURL = `${this.baseUrl}/presentations/search`;
 //    return this.http.get(backendURL, { params: params });
     return this.http.get(backendURL);
 }

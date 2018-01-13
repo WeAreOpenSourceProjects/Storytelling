@@ -75,12 +75,12 @@ export class UpdateFailure implements Action {
 
 export class Delete implements Action {
   readonly type = DELETE;
-  constructor(public payload: { slideId: string }) {}
+  constructor(public payload: { slideIds: string[] }) {}
 }
 
 export class DeleteSuccess implements Action {
   readonly type = DELETE_SUCCESS;
-  constructor(public payload: { slideId: string }) {}
+  constructor(public payload: { slideIds: string[] }) {}
 }
 
 export class DeleteFailure implements Action {

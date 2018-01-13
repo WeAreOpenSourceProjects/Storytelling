@@ -41,7 +41,7 @@ export class SlidesApiService {
   }
 
   delete(id): Observable<any> {
-    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.slides}/${id}`;
+    const backendURL = `${this.baseUrl}/slide/${id}`;
     return this.http.delete(backendURL);
   }
 }

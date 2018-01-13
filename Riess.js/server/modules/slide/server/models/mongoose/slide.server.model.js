@@ -14,12 +14,12 @@ var SlideSchema = new Schema({
     type: Number,
     default: 1
   },
-  boxes: [{
+  boxeIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Box',
     required: false
   }],
-  presentation: {
+  presentationId: {
     type: Schema.Types.ObjectId,
     ref: 'Presentation',
     required: false
@@ -28,3 +28,8 @@ var SlideSchema = new Schema({
   timestamps: true
 });
 mongoose.model('Slide', SlideSchema);
+
+SlideSchema.post('remove', function (slide) {
+  Boxes.remove(slide.boxes)
+  next();
+});

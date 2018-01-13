@@ -19,7 +19,7 @@ export const environment = {
       slides: 'slides',
       images: 'images',
       imagesServer: 'imagesServer',
-      search: 'search/presentations',
+      search: 'search/slides',
       banner: 'banner'
     }
   }

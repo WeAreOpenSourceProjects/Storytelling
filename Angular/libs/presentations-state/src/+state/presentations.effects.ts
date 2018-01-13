@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import { DataPersistence } from '@nrwl/nx';
 import { of } from 'rxjs/observable/of';
+import { from } from 'rxjs/observable/from';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import { PresentationsState } from './presentations.interfaces';
@@ -12,6 +13,8 @@ import { catchError } from 'rxjs/operators/catchError';
 import { toPayload } from '@ngrx/effects';
 import { PresentationsApiService } from '../services/presentations.api.service';
 import { fromAuthentication } from '@labdat/authentication-state';
+import { fromSlides } from '@labdat/slides-state';
+import { fromBoxes } from '@labdat/boxes-state';
 import { mapTo } from 'rxjs/operators/mapTo';
 
 @Injectable()
@@ -57,13 +60,16 @@ export class PresentationsEffects {
     }
   });
 
-  @Effect()
   delete$ = this.actions
     .ofType(fromPresentations.DELETE)
     .pipe(
       map(toPayload),
       switchMap((payload) => this.presentationsApiService.delete(payload.presentationId)),
-      map((response: any) => new fromPresentations.DeleteSuccess({presentationId: response.id})),
+      map((response: any) => from([
+        new fromPresentations.DeleteSuccess({presentationId: response.presentationId}),
+        new fromSlides.DeleteSuccess({slideIds: response.slideIds}),
+        new fromBoxes.DeleteSuccess({boxeIds: response.boxeIds})
+      ])),
       catchError(error => of(new fromPresentations.DeleteFailure(error)))
     )
 

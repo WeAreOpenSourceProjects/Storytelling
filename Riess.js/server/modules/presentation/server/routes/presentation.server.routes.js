@@ -10,18 +10,18 @@ module.exports = function(app) {
   // users-list all presentations
   app.route('/api/presentations')
   //  .all(presentationPolicy.isAllowed)
-    .get(presentation.list)
-    .post(presentation.create);
+  .get(presentation.list)
+  .post(presentation.create);
 
   // users-list private presentation
   app.route('/api/presentations/me')
   .all(presentationPolicy.isAllowed)
-    .get(presentation.myList);
+  .get(presentation.myList);
 
   //search presentation
-  app.route('/api/search/presentations')
+  app.route('/api/presentations/search')
 //  .all(presentationPolicy.isAllowed)
-    .get(presentation.search);
+  .get(presentation.search);
 
   // Single presentation routes
   app.param('presentationId', presentation.presentationByID)

@@ -8,7 +8,7 @@ export const slidesInitialState: SlidesState = slidesAdapter.getInitialState({
   loading: false
 });
 
-export function slidesReducer(state: SlidesState = slidesInitialState, action: fromSlides.Actions | fromAuthentication.Actions): SlidesState {
+export function slidesReducer(state: SlidesState = slidesInitialState, action: fromSlides.Actions | fromAuthentication.Actions) : SlidesState {
   switch (action.type) {
     case fromAuthentication.LOGOUT: {
       return slidesInitialState;
@@ -18,6 +18,9 @@ export function slidesReducer(state: SlidesState = slidesInitialState, action: f
     }
     case fromSlides.LOAD_SUCCESS: {
       return slidesAdapter.addAll(action.payload.slides, { ...state, loaded: true, loading: false });
+    }
+    case fromSlides.DELETE_SUCCESS: {
+      return slidesAdapter.removeMany(action.payload.slideIds, state);
     }
     default: {
       return state;

@@ -1,4 +1,6 @@
-export { PresentationsStateModule } from './src/presentations-state.module'
+export { PresentationsStateModule } from './src/presentations-state.module';
+import * as fromPresentations from './src/+state/presentations.actions';
+export { fromPresentations }
 export {
   selectPresentationsIds,
   selectPresentationsEntities,

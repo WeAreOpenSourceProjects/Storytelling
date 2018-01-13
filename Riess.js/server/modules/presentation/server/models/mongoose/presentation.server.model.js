@@ -45,7 +45,7 @@ var PresentationSchema = new Schema({
     ref: 'Image',
     required: false
   },
-  slides: {
+  slideIds: {
     type: [{
       type: Schema.ObjectId,
       ref: 'Slide'
@@ -55,3 +55,7 @@ var PresentationSchema = new Schema({
   timestamps: true
 });
 mongoose.model('Presentation', PresentationSchema);
+
+PresentationSchema.post('remove', function(presentation) {
+  Slides.remove(presentation.slides)
+});

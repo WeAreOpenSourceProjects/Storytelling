@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// SLIDES COMPONENTS
 import {
   SlidesViewComponent,
   SlidesEditorFormComponent,
@@ -9,13 +8,11 @@ import {
   SlideEditorComponent
 } from '@labdat/slides/components';
 import { SlideResolve } from '@labdat/slides/src/services/slide.resolve';
-//import { AuthGuard } from 'app/users';
 
 const slidesRoutes: Routes = [
   {
     path: '',
     component: SlidesListComponent,
-    //    canActivate: [AuthGuard],
     data: {
       roles: ['user', 'admin'],
       title: 'slides List'

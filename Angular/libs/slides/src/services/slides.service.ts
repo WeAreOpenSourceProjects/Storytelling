@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators';
 import { User } from '@labdat/data-models';
+
 @Injectable()
 export class SlidesService {
   private _baseUrl: string;

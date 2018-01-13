@@ -19,6 +19,9 @@ export function boxesReducer(state: BoxesState = boxesInitialState, action: from
     case fromBoxes.LOAD_SUCCESS: {
       return boxesAdapter.addAll(action.payload.boxes, { ...state, loaded: true, loading: false });
     }
+    case fromBoxes.DELETE_SUCCESS: {
+      return boxesAdapter.removeMany(action.payload.boxeIds, state);
+    }
     default: {
       return state;
     }
