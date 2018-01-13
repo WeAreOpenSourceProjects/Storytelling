@@ -6,6 +6,9 @@ import {SlidesService, ImagesService} from '../../services/index';
 import {Slides, SlidesSetting} from '../../models/index';
 //import {NotifBarService} from "app/core";
 import { PageEvent } from '@angular/material';
+import { PresentationsApiService } from '@labdat/presentations-state';
+import { Presentation } from '@labdat/data-models';
+
 @Component({
   selector: 'app-slides-list',
   templateUrl: './slides-list.component.html',
@@ -20,7 +23,7 @@ export class SlidesListComponent implements OnInit {
     noSlides: false,
     noPrivate: false
   };
-  private pageSize = 6;
+  public pageSize = 6;
   private pageIndex = 0;
   loading = true;
   listCopy = [];
@@ -32,35 +35,31 @@ export class SlidesListComponent implements OnInit {
     order: '0'
   };
   pageEvent: PageEvent;
-  public slides: Array<Slides> = [];
-  private length = this.slides.length;
+  public presentations: Array<Presentation> = [];
 
   constructor(
-    private slidesService: SlidesService,
+    private slidesService: PresentationsApiService,
     private imagesService: ImagesService
   ) //        private notifBarService: NotifBarService
-  {
-  }
+  { }
   nextPage($event) {
     this.pageEvent = $event;
     this.pageIndex = $event.pageIndex;
-    this.slidesService.getSlideToSearch(this.toSearch, this.pageIndex, this.pageSize).subscribe(
-      slides => {
-        this.slides = slides[0];
-        this.length = slides[1];
-        this.result = this.calculResult(this.slides.length, this.toSearch.filter, this.toSearch.title);
+    this.slidesService
+    .search(this.toSearch, this.pageIndex, this.pageSize)
+    .subscribe(
+      presentations => {
+        this.presentations = presentations;
+        this.result = this.calculResult(this.presentations.length, this.toSearch.filter, this.toSearch.title);
       },
-      error => {
-        //                    this.notifBarService.showNotif("fail to load slides users-list");
-      }
+    error => { /* this.notifBarService.showNotif("fail to load slides users-list");*/ }
     );
   }
   ngOnInit() {
-    this.slidesService.getSlidesList(this.pageIndex, this.pageSize).subscribe(
-      slides => {
-        this.slides = slides[0];
-        this.length = slides[1];
-        this.result = this.calculResult(this.slides.length, this.toSearch.filter, this.toSearch.title);
+    this.slidesService.getAll(this.pageIndex, this.pageSize).subscribe(
+      presentations => {
+        this.presentations = presentations;
+        this.result = this.calculResult(this.presentations.length, this.toSearch.filter, this.toSearch.title);
         this.loading = false;
       },
       error => {
@@ -87,11 +86,11 @@ export class SlidesListComponent implements OnInit {
     this.refreshList();
   }
   refreshList() {
-    this.slidesService.getSlideToSearch(this.toSearch, this.pageIndex, this.pageSize).subscribe(slides => {
-      this.slides = [];
-      this.slides = slides[0];
-      this.length = slides[1];
-      this.result = this.calculResult(this.slides.length, this.toSearch.filter, this.toSearch.title);
+    this.slidesService
+    .search(this.toSearch, this.pageIndex, this.pageSize)
+    .subscribe(presentations => {
+      this.presentations = presentations;
+      this.result = this.calculResult(this.presentations.length, this.toSearch.filter, this.toSearch.title);
     });
   }
   calculResult(slidesLength, state, title) {
@@ -112,27 +111,27 @@ export class SlidesListComponent implements OnInit {
   }
 
   duplicate(id) {
-    this.slidesService.getSlides(id).subscribe(slides => {
-      this.slides.push(slides);
+    this.slidesService.getOne(id).subscribe(presentation => {
+      this.presentations.push(presentation);
     });
   }
 
   deletedSlides(id) {
-    this.slides.forEach((slide, i) => {
-      if (slide._id === id) {
-        this.slides.splice(i, 1);
+    this.presentations.forEach((presentation, i) => {
+      if (presentation.id === id) {
+        this.presentations.splice(i, 1);
       }
     });
   }
 
   createSlides(){
-      var slides = new Slides();
-      slides.slidesSetting = new SlidesSetting();
-      if (this.slides.length>0 && this.slides[this.slides.length -1]){
-        slides.slidesSetting.index =  this.slides[this.slides.length -1].slidesSetting.index+1
+      var presentation
+      presentation.slidesSetting = new SlidesSetting();
+      if (this.presentations.length>0 && this.presentations[this.presentations.length -1]){
+//        presentation.slidesSetting.index =  this.presentations[this.presentations.length -1].slidesSetting.index+1
       }
-      this.slidesService.submitSlides(slides).subscribe(slides => {
-       this.slides.push(slides)
+      this.slidesService.add(presentation).subscribe(presentation => {
+       this.presentations.push(presentation)
       })
   }
 }

@@ -1,18 +1,33 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  Input,
+  EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, ControlValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-slides-search',
   templateUrl: './slides-search.component.html',
   styleUrls: ['./slides-search.component.scss']
 })
-export class SlidesSearchComponent implements OnInit {
-  @Output() textSearchOpt: EventEmitter<string> = new EventEmitter(); //event for change search text
-  @Output() filterPubOpt = new EventEmitter(); //event for change pub filter
-  @Output() filterFavorOpt = new EventEmitter(); //event for change favor filter
-  @Output() sortedByOpt = new EventEmitter(); //event for change sort filter
+export class SlidesSearchComponent implements ControlValueAccessor {
+  @Output()
+  public textSearchOpt: EventEmitter<string> = new EventEmitter();
 
-  @Input() kind: string;
-  private states = {
+  @Output()
+  public filterPubOpt = new EventEmitter(); //event for change pub filter
+
+  @Output()
+  public filterFavorOpt = new EventEmitter(); //event for change favor filter
+
+  @Output()
+  public sortedByOpt = new EventEmitter(); //event for change sort filter
+
+  @Input()
+  public kind: string;
+
+  public states = {
     checkFavor: true,
     checkNotFavor: true,
     checkPrivate: true,
@@ -20,11 +35,45 @@ export class SlidesSearchComponent implements OnInit {
     sortedBy: 'alphabetically'
   };
 
-  private textToSearch: string;
+  public textToSearch: string;
 
-  constructor() {}
-  ngOnInit() {}
-  /*change search text*/
+  public searchForm: FormGroup;
+
+  get counterValue() {
+    return this._counterValue;
+  }
+
+  set counterValue(val) {
+    this._counterValue = val;
+    this.propagateChange(this._counterValue);
+  }
+
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit() {
+    this.searchForm = this.formBuilder.group({
+      term: '',
+      favorite: true,
+      public: true
+    });
+    this.formBuilder.
+  }
+
+  propagateChange = (_: any) => {};
+
+  writeValue(value: any) {
+    if (value !== undefined) {
+      this.counterValue = value;
+    }
+  }
+
+  registerOnChange(fn) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched() {}
+
+
   onChange(textToSearch) {
     if (textToSearch) {
       this.textSearchOpt.emit(textToSearch);
@@ -32,7 +81,7 @@ export class SlidesSearchComponent implements OnInit {
       this.textSearchOpt.emit('');
     }
   }
-  /*change filter*/
+
   onChangeState(change) {
     //filterFavorOpt: all
     if (change.source.name == 'checkFavor' || change.source.name == 'checkNotFavor') {
@@ -52,7 +101,6 @@ export class SlidesSearchComponent implements OnInit {
   }
 
   sort(sortedBy) {
-    console.log(sortedBy);
     this.sortedByOpt.emit(sortedBy);
   }
 }

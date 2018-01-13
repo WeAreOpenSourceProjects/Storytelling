@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 //import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import { map, filter } from 'rxjs/operators';
-import { Slides } from '../../../models/slides';
+import { Presentation } from '@labdat/data-models';
 import { SlidesService, ImagesService } from '../../../services';
 import { MatDialog } from '@angular/material';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
@@ -12,6 +12,7 @@ import { selectUser, selectIsLoggedIn, AuthenticationState } from '@labdat/authe
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { combineLatest } from 'rxjs/observable/combineLatest';
+import { PresentationsApiService } from '@labdat/presentations-state';
 
 @Component({
   selector: 'app-slides-card',
@@ -44,10 +45,17 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
   ]
 })
 export class SlidesCardComponent implements OnInit {
-  @Input() slides: Slides;
-  @Input() editable: boolean; // whether the slides can be edited;
-  @Output() deletedSlides = new EventEmitter();
-  @Output() duplicateslidesOpt = new EventEmitter();
+  @Input()
+  public presentation: Presentation;
+
+  @Input()
+  public editable: boolean; // whether the presentation can be edited;
+
+  @Output()
+  public deletedSlides = new EventEmitter();
+
+  @Output()
+  public duplicateslidesOpt = new EventEmitter();
   //    @select(['session', 'token']) loggedIn$: Observable<string>;
   //    @select(['session', 'user', 'username']) username$: Observable<Object>;
 
@@ -56,78 +64,77 @@ export class SlidesCardComponent implements OnInit {
     .select(selectUser)
     .pipe(filter(user => !isEmpty(user)), map(user => user.firstName + user.lastName));
 
-  private banner: string; // banner picture of the slides card
+  public banner: string; // banner picture of the presentation card
 
   constructor(
-    private slidesService: SlidesService,
+    private slidesService: PresentationsApiService,
     private imagesService: ImagesService,
     private dialog: MatDialog,
     private store: Store<AuthenticationState>
-  ) //        private notifBarService: NotifBarService
-  {
+   /*        private notifBarService: NotifBarService */ ) {
     this.banner = '';
   }
 
   ngOnInit() {
-    /*after load slides info, load slides banner*/
-    if (this.slides.slidesSetting && this.slides.slidesSetting.banner) {
-      this.imagesService.getImage(this.slides.slidesSetting.banner).subscribe(_banner => {
+    /*after load presentation info, load presentation banner*/
+    if (this.presentation.banner) {
+      this.imagesService.getImage(this.presentation.banner).subscribe(_banner => {
         this.banner = _banner;
       });
     }
   }
 
-  /*publish/unpublish slides*/
+  /*publish/unpublish presentation*/
   togglePublish(e) {
     e.stopPropagation();
-    this.slides.slidesSetting.public = !this.slides.slidesSetting.public;
+    this.presentation.public = !this.presentation.public;
     this.slidesService
-      .updateSlide(this.slides, this.slides._id)
+      .update(this.presentation, this.presentation._id)
       .subscribe
       //            elm => this.notifBarService.showNotif("set upload status successfully!"),
       //            error => this.notifBarService.showNotif("fail to set upload status, error is " + error)
       ();
   }
-  /*set like/dislike slides*/
+  /*set like/dislike presentation*/
   toggleFavorite(e) {
     e.stopPropagation();
-    this.slides.slidesSetting.favorite = !this.slides.slidesSetting.favorite;
+    this.presentation.favorite = !this.presentation.favorite;
     this.slidesService
-      .updateSlide(this.slides, this.slides._id)
+      .update(this.presentation, this.presentation._id)
       .subscribe
       //            elm => this.notifBarService.showNotif("set favorte status successfully!"),
       //            error => this.notifBarService.showNotif("fail to set favorite status, error is " + error)
       ();
   }
-  /*delete the whole slides*/
+  /*delete the whole presentation*/
   deleteSlides(e, id) {
     e.stopPropagation();
 
     const dialog = this.dialog.open(DeleteDialogComponent, { height: '20%', width: '20%' });
     dialog.afterClosed().subscribe(result => {
       if (result === 'YES') {
-        this.slidesService.deleteSlides(id).subscribe(
+        this.slidesService.delete(id).subscribe(
           res => {
-            //                        this.notifBarService.showNotif("the slides has been deleted successfully!");
+            //                        this.notifBarService.showNotif("the presentation has been deleted successfully!");
             this.deletedSlides.emit(id);
           }
-          //                    error => this.notifBarService.showNotif("fail to delete the slides, error is " + error)
+          //                    error => this.notifBarService.showNotif("fail to delete the presentation, error is " + error)
         );
       }
     });
   }
-  /*duplicate slides*/
-  duplicateSlides(e, slides) {
+  /*duplicate presentation*/
+  duplicateSlides(e, presentation) {
     e.stopPropagation();
-    let newSlide: Slides = new Slides(slides);
-    console.log(newSlide);
-    this.slidesService.submitSlides(newSlide).subscribe(
+    let newPresentation: Presentation = presentation;
+    console.log(newPresentation);
+    this.slidesService.add(newPresentation).subscribe(
       data => {
         this.duplicateslidesOpt.emit(data._id);
-        //                this.notifBarService.showNotif("slides has been copied");
+        //                this.notifBarService.showNotif("presentation has been copied");
       },
       error => {
-        //                this.notifBarService.showNotif("Opps! fail to copy the slides. error :" + error);
+        //                this.notifBarService.showNotif("Opps! fail to copy the presentation. error :" + error);
       }
     );
   }
@@ -136,7 +143,7 @@ export class SlidesCardComponent implements OnInit {
     return combineLatest(
       this.loggedIn$,
       this.userName$,
-      (loggedIn, userName) => loggedIn && this.editable && this.slides && this.slides.slidesSetting.author === userName
+      (loggedIn, userName) => loggedIn && this.editable && this.presentation && this.presentation.author === userName
     );
   }
 }

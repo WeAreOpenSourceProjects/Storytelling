@@ -11,13 +11,13 @@
   </div>
 
   <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-    <div *ngFor="let s of slides" [class.display-div]="!(loggedIn$|async) && !s.slidesSetting.public" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
-      <app-slides-card [slides]="s" [editable]="false"></app-slides-card>
+    <div *ngFor="let presentation of presentations" [class.display-div]="!(loggedIn$|async) && !s.public" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
+      <app-slides-card [presentation]="presentation" [editable]="false"></app-slides-card>
     </div>
   </div>
   <mat-paginator
     *ngIf="showSlidesList"
-    [length]="length"
+    [length]="presentations?.length"
     [pageSize]="pageSize"
     (page)="nextPage($event)">
   </mat-paginator>

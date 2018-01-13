@@ -1,11 +1,22 @@
 <div *ngIf="!loading">
   <div fxLayout="row" fxLayoutAlign="center center">
-    <app-slides-search (textSearchOpt)="search($event)" kind="advanced" (filterPubOpt)="filterPub($event)" (sortedByOpt)="sortedOrder($event)"  (filterFavorOpt)="filterFavor($event)" ></app-slides-search>
+    <app-slides-search
+      (textSearchOpt)="search($event)"
+      (filterPubOpt)="filterPub($event)"
+      (sortedByOpt)="sortedOrder($event)"
+      (filterFavorOpt)="filterFavor($event)"
+      kind="advanced"></app-slides-search>
   </div>
 
   <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-    <div *ngFor="let slide of slides" [class.display-div]="!(loggedIn$|async)&& !slide.slidesSetting.public" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
-      <app-slides-card (deletedSlides)="deletedSlides($event)" [slides]="slide" [editable]="true" (duplicateslidesOpt)="duplicate($event)"></app-slides-card>
+    <div *ngFor="let presentation of presentations"
+      [class.display-div]="!(loggedIn$|async) && !presentation.public"
+      fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
+      <app-slides-card
+        (deletedSlides)="deletedSlides($event)"
+        [presentation]="presentation"
+        [editable]="true"
+        (duplicateslidesOpt)="duplicate($event)"></app-slides-card>
     </div>
 
   </div>
@@ -15,13 +26,24 @@
     <p *ngIf="result.noPublish">Sorry, no one publish slides yet! <br>Would you want to be the pioneer?</p>
     <p *ngIf="result.noResult">Opps, no result for these key words</p>
   </div>
-  <mat-paginator [length]="length"
-                [pageSize]="pageSize"
-                (page)="nextPage($event)">
+
+  <mat-paginator
+    [length]="presentations?.length"
+    [pageSize]="pageSize"
+    (page)="nextPage($event)">
   </mat-paginator>
-  <button class="buttonBottom" *ngIf="loggedIn$|async" (click)="createSlides()"  mat-fab><mat-icon svgIcon="content:ic_add_24px"></mat-icon></button>
-  <button class="buttonBottom" *ngIf="!(loggedIn$|async)" [routerLink]="['/user/login']" [queryParams]="{returnUrl: '/slides/createSlides'}"  mat-fab><mat-icon svgIcon="content:ic_add_24px"></mat-icon></button>
+
+  <button class="buttonBottom" *ngIf="loggedIn$|async" (click)="createSlides()" mat-fab>
+    <mat-icon svgIcon="content:ic_add_24px"></mat-icon>
+  </button>
+
+  <button
+    class="buttonBottom"
+    *ngIf="!(loggedIn$|async)"
+    [routerLink]="['/user/login']"
+    [queryParams]="{returnUrl: '/slides/createSlides'}"
+    mat-fab>
+    <mat-icon svgIcon="content:ic_add_24px"></mat-icon>
+  </button>
 </div>
-<div id="spinner" *ngIf="loading">
-  <div></div>
-</div>
+<div id="spinner" *ngIf="loading"></div>

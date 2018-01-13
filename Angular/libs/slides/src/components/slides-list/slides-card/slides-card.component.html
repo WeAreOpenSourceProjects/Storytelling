@@ -1,38 +1,38 @@
-<a class="card-container" *ngIf="(loggedIn$|async)||(slides && slides.slidesSetting.public)" [routerLink]="['/slides/slidesPresentation', slides._id]">
+<a class="card-container" *ngIf="(loggedIn$|async)||(presentation && presentation.public)" [routerLink]="['/slides/slidesPresentation', presentation._id]">
   <mat-card  [@flyInOut]="'in'"  class="prez-list-card" >
-    <h2 class="slides-title">{{slides?.slidesSetting.title}}</h2>
+    <h2 class="slides-title">{{presentation?.title}}</h2>
     <div class="mat-card-image" style="background-image:url('assets/logo_full_banner.png');">
-      <div class="banner-container" *ngIf="slides && slides.slidesSetting.banner">
+      <div class="banner-container" *ngIf="presentation && presentation.banner">
         <img class="banner" [src]="banner">
       </div>
       <div class="banner-mask"><i class="fa fa-play-circle-o fa-5x" aria-hidden="true"></i></div>
       <div class="options">
-        <button mat-icon-button *ngIf="loggedIn$|async" (click)="toggleFavorite($event); false" [class.favorite]="slides && slides.slidesSetting.favorite" [class.unfavorite]="slides && !slides.slidesSetting.favorite" [matTooltip]="(slides && slides.slidesSetting.favorite) ? 'Remove from favorite' : 'Add to favorite'">
-          <mat-icon *ngIf="slides && !slides.slidesSetting.favorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_border_24px"></mat-icon>
-          <mat-icon *ngIf="slides && slides.slidesSetting.favorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_24px"></mat-icon>
+        <button mat-icon-button *ngIf="loggedIn$|async" (click)="toggleFavorite($event); false" [class.favorite]="presentation && presentation.favorite" [class.unfavorite]="presentation && !presentation.favorite" [matTooltip]="(presentation && presentation.favorite) ? 'Remove from favorite' : 'Add to favorite'">
+          <mat-icon *ngIf="presentation && !presentation.favorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_border_24px"></mat-icon>
+          <mat-icon *ngIf="presentation && presentation.favorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_24px"></mat-icon>
         </button>
         <div *ngIf="showOptions() | async" class="btn-group">
-          <button mat-icon-button (click)="togglePublish($event); false" [class.published]="slides && slides.slidesSetting.public" [class.unpublished]="slides && !slides.slidesSetting.public" [matTooltip]="(slides && slides.slidesSetting.public) ? 'Unpublish' : 'Publish'">
+          <button mat-icon-button (click)="togglePublish($event); false" [class.published]="presentation && presentation.public" [class.unpublished]="presentation && !presentation.slidesSetting.public" [matTooltip]="(presentation && presentation.public) ? 'Unpublish' : 'Publish'">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="editor:ic_publish_24px"></mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteSlides($event, slides._id); false" matTooltip="Delete">
+          <button mat-icon-button (click)="deleteSlides($event, presentation._id); false" matTooltip="Delete">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_delete_24px"></mat-icon>
           </button>
-          <button mat-icon-button (click)="false" [routerLink]="['display', slides._id]" matTooltip="Edit">
+          <button mat-icon-button (click)="false" [routerLink]="['display', presentation._id]" matTooltip="Edit">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="image:ic_edit_24px"></mat-icon>
           </button>
-          <button mat-icon-button (click)="duplicateSlides($event,slides); false" matTooltip="Copy">
+          <button mat-icon-button (click)="duplicateSlides($event,presentation); false" matTooltip="Copy">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="content:ic_content_copy_24px"></mat-icon>
           </button>
         </div>
       </div>
-      <mat-chip-list class="tip-list" *ngIf="slides">
-        <mat-chip class="tip" *ngFor="let tag of slides.slidesSetting.tags">{{tag}}</mat-chip>
+      <mat-chip-list class="tip-list" *ngIf="presentation">
+        <mat-chip class="tip" *ngFor="let tag of presentation.tags">{{tag}}</mat-chip>
       </mat-chip-list>
     </div>
     <mat-card-content class="card-content">
-      <p class="description" *ngIf="slides">{{slides.slidesSetting.description}}</p>
-      <p class="author" *ngIf="slides">{{slides.slidesSetting.author}}</p>
+      <p class="description" *ngIf="presentation">{{presentation.description}}</p>
+      <p class="author" *ngIf="presentation">{{presentation.author}}</p>
     </mat-card-content>
   </mat-card>
 </a>

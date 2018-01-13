@@ -83,6 +83,7 @@ export class Slides {
 }
 
 export interface Box {
+  id: number,
   grid: {
     width: Number,
     height:  Number,
@@ -94,6 +95,8 @@ export interface Box {
 }
 
 export interface Presentation {
+  _id?: number,
+  id: number,
   title: string
   public: boolean,
   favorite: boolean,
@@ -102,4 +105,10 @@ export interface Presentation {
   author: string,
   banner: any,
   slides: string[]
+}
+
+export interface Slide {
+  id: string;
+  index:number;
+  boxeIds: Box[];
 }

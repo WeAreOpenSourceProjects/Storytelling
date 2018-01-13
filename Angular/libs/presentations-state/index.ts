@@ -1,5 +1,6 @@
 export { PresentationsStateModule } from './src/presentations-state.module';
 import * as fromPresentations from './src/+state/presentations.actions';
+export { PresentationsApiService } from './src/services/presentations.api.service';
 export { fromPresentations }
 export {
   selectPresentationsIds,
