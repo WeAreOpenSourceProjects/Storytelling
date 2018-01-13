@@ -1,11 +1,6 @@
 <div *ngIf="!loading">
   <div fxLayout="row" fxLayoutAlign="center center">
-    <app-slides-search
-      (textSearchOpt)="search($event)"
-      (filterPubOpt)="filterPub($event)"
-      (sortedByOpt)="sortedOrder($event)"
-      (filterFavorOpt)="filterFavor($event)"
-      kind="advanced"></app-slides-search>
+    <app-slides-search kind="advanced" [formControl]="searchControl"></app-slides-search>
   </div>
 
   <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">

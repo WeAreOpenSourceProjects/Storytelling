@@ -8,6 +8,9 @@ import {Slides, SlidesSetting} from '../../models/index';
 import { PageEvent } from '@angular/material';
 import { PresentationsApiService } from '@labdat/presentations-state';
 import { Presentation } from '@labdat/data-models';
+import { FormControl } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators/debounceTime';
+import { switchMap } from 'rxjs/operators/switchMap';
 
 @Component({
   selector: 'app-slides-list',
@@ -36,12 +39,42 @@ export class SlidesListComponent implements OnInit {
   };
   pageEvent: PageEvent;
   public presentations: Array<Presentation> = [];
+  public searchControl = new FormControl({
+    term: '',
+    favorite: true,
+    unfavorite: true,
+    public: true,
+    private: true
+  });
 
   constructor(
     private slidesService: PresentationsApiService,
-    private imagesService: ImagesService
-  ) //        private notifBarService: NotifBarService
-  { }
+    private imagesService: ImagesService ) /*        private notifBarService: NotifBarService */ { }
+
+  ngOnInit() {
+
+    this.searchControl.valueChanges
+    .pipe(
+      debounceTime(500),
+      switchMap(search => this.slidesService.search(search, this.pageIndex, this.pageSize))
+    )
+    .subscribe(presentations => {
+      this.presentations = presentations;
+      this.result = this.calculResult(this.presentations.length, this.toSearch.filter, this.toSearch.title);
+    })
+
+    this.slidesService.getAll(this.pageIndex, this.pageSize).subscribe(
+      presentations => {
+        this.presentations = presentations;
+        this.result = this.calculResult(this.presentations.length, this.toSearch.filter, this.toSearch.title);
+        this.loading = false;
+      },
+      error => {
+        //                this.notifBarService.showNotif("fail to load slides users-list");
+      }
+    );
+  }
+
   nextPage($event) {
     this.pageEvent = $event;
     this.pageIndex = $event.pageIndex;
@@ -55,44 +88,7 @@ export class SlidesListComponent implements OnInit {
     error => { /* this.notifBarService.showNotif("fail to load slides users-list");*/ }
     );
   }
-  ngOnInit() {
-    this.slidesService.getAll(this.pageIndex, this.pageSize).subscribe(
-      presentations => {
-        this.presentations = presentations;
-        this.result = this.calculResult(this.presentations.length, this.toSearch.filter, this.toSearch.title);
-        this.loading = false;
-      },
-      error => {
-        //                this.notifBarService.showNotif("fail to load slides users-list");
-      }
-    );
-  }
-  search(paramsTosearch) {
-    //get search result
-    this.toSearch.title = paramsTosearch || '';
-    this.refreshList();
-  }
 
-  filterPub(state) {
-    this.toSearch.filter = state;
-    this.refreshList();
-  }
-  filterFavor(isFavorite) {
-    this.toSearch.favorite = isFavorite;
-    this.refreshList();
-  }
-  sortedOrder(order) {
-    this.toSearch.order = order;
-    this.refreshList();
-  }
-  refreshList() {
-    this.slidesService
-    .search(this.toSearch, this.pageIndex, this.pageSize)
-    .subscribe(presentations => {
-      this.presentations = presentations;
-      this.result = this.calculResult(this.presentations.length, this.toSearch.filter, this.toSearch.title);
-    });
-  }
   calculResult(slidesLength, state, title) {
     if (slidesLength === 0) {
       if (title === '') {

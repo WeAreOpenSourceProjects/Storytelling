@@ -1,53 +1,21 @@
-<form fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+<form fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around" [formGroup]="searchForm">
   <mat-form-field *ngIf="kind === 'advanced'" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="60">
     <mat-placeholder>
       <mat-icon svgIcon="action:ic_search_24px"></mat-icon>
     </mat-placeholder>
-    <input matInput [formControl]="term" [(ngModel)]="textToSearch" name="textToSearch" (ngModelChange)="onChange(textToSearch)">
+    <input matInput formControlName="term">
   </mat-form-field>
 
   <mat-form-field *ngIf="kind !== 'advanced'" fxFlex="100">
     <mat-placeholder>
       <mat-icon svgIcon="action:ic_search_24px"></mat-icon>
     </mat-placeholder>
-    <input matInput [(ngModel)]="textToSearch" name="textToSearch" (ngModelChange)="onChange(textToSearch)">
+    <input matInput formControlName="term">
   </mat-form-field>
   <div *ngIf="kind === 'advanced'" class="filter-container" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="40">
-    <mat-checkbox
-      name="checkFavor"
-      formControl="favorite"
-      [(ngModel)]="states.checkFavor"
-      [disabled]="states.checkFavor&&!states.checkNotFavor"
-      (change)="onChangeState($event)"
-      ngDefaultControl>Favorite</mat-checkbox>
-    <mat-checkbox
-      name="checkNotFavor"
-      formControl="favorite"
-      [(ngModel)]="states.checkNotFavor"
-      (change)="onChangeState($event)"
-      [disabled]="!states.checkFavor&&states.checkNotFavor"
-      ngDefaultControl>Unfavorite</mat-checkbox>
-    <mat-checkbox
-      name="checkPublic"
-      formControl="public"
-      [(ngModel)]="states.checkPublic"
-      (change)="onChangeState($event)"
-      [disabled]="states.checkPublic&&!states.checkPrivate"
-      ngDefaultControl>Public</mat-checkbox>
-    <mat-checkbox
-      name="checkPrivate"
-      formControl="public"
-      [(ngModel)]="states.checkPrivate"
-      (change)="onChangeState($event)"
-      [disabled]="!states.checkPublic&&states.checkPrivate"
-      ngDefaultControl>Private</mat-checkbox>
-     <mat-select
-       [(ngModel)]="states.sortedBy"
-       name="sortedBy"
-       placeholder="Sorted"
-       (change)="sort(states.sortedBy)">
-       <mat-option [value]="'alphabetically'" >alphabetically</mat-option>
-       <mat-option [value]="'date'">by date</mat-option>
-     </mat-select>
+    <mat-checkbox formControlName="favorite">Favorite</mat-checkbox>
+    <mat-checkbox formControlName="unfavorite">Unfavorite</mat-checkbox>
+    <mat-checkbox formControlName="public">Public</mat-checkbox>
+    <mat-checkbox formControlName="private">Private</mat-checkbox>
   </div>
 </form>

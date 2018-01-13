@@ -3,67 +3,47 @@ import {
   OnInit,
   Output,
   Input,
-  EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, ControlValueAccessor } from '@angular/forms';
+  EventEmitter,
+  forwardRef} from '@angular/core';
+import { FormBuilder, FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-slides-search',
   templateUrl: './slides-search.component.html',
-  styleUrls: ['./slides-search.component.scss']
+  styleUrls: ['./slides-search.component.scss'],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => SlidesSearchComponent),
+    multi: true
+  }]
 })
 export class SlidesSearchComponent implements ControlValueAccessor {
-  @Output()
-  public textSearchOpt: EventEmitter<string> = new EventEmitter();
-
-  @Output()
-  public filterPubOpt = new EventEmitter(); //event for change pub filter
-
-  @Output()
-  public filterFavorOpt = new EventEmitter(); //event for change favor filter
-
-  @Output()
-  public sortedByOpt = new EventEmitter(); //event for change sort filter
 
   @Input()
   public kind: string;
 
-  public states = {
-    checkFavor: true,
-    checkNotFavor: true,
-    checkPrivate: true,
-    checkPublic: true,
-    sortedBy: 'alphabetically'
-  };
-
-  public textToSearch: string;
-
   public searchForm: FormGroup;
-
-  get counterValue() {
-    return this._counterValue;
-  }
-
-  set counterValue(val) {
-    this._counterValue = val;
-    this.propagateChange(this._counterValue);
-  }
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.searchForm = this.formBuilder.group({
-      term: '',
-      favorite: true,
-      public: true
+      term: [''],
+      favorite: [true],
+      unfavorite: [true],
+      public: [true],
+      private: [true]
     });
-    this.formBuilder.
+
+    this.searchForm.valueChanges
+    .subscribe(search => this.propagateChange(search))
   }
 
   propagateChange = (_: any) => {};
 
-  writeValue(value: any) {
-    if (value !== undefined) {
-      this.counterValue = value;
+  writeValue(search: any) {
+    if (search !== undefined) {
+      this.searchForm.setValue(search);
     }
   }
 
@@ -73,7 +53,7 @@ export class SlidesSearchComponent implements ControlValueAccessor {
 
   registerOnTouched() {}
 
-
+/*
   onChange(textToSearch) {
     if (textToSearch) {
       this.textSearchOpt.emit(textToSearch);
@@ -102,5 +82,5 @@ export class SlidesSearchComponent implements ControlValueAccessor {
 
   sort(sortedBy) {
     this.sortedByOpt.emit(sortedBy);
-  }
+  }*/
 }
