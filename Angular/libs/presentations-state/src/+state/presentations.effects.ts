@@ -23,14 +23,35 @@ export class PresentationsEffects {
   @Effect()
   loginSuccess$ = this.actions
     .ofType(fromAuthentication.LOGIN_SUCCESS)
-    .pipe(mapTo(new fromPresentations.Load()))
+    .pipe(mapTo(new fromPresentations.Load({ pageIndex: 0, pageSize: 10})))
 
   @Effect()
   load = this.dataPersistence.fetch(fromPresentations.LOAD, {
     run: (action: fromPresentations.Load, state: PresentationsState) => {
-      return this.presentationsApiService.getAll(0, 10)
-        .map(presentations => presentations.map(presentation => ({ ...presentation, id: presentation._id })))
-        .map(presentations => new fromPresentations.LoadSuccess({ presentations }))
+      const { pageIndex, pageSize, search } = action.payload
+      return this.presentationsApiService
+        .search(pageIndex, pageSize, search)
+        .pipe(
+          map(presentations => presentations.map(presentation => ({ ...presentation, id: presentation._id }))),
+          map(presentations => {
+            let error = '';
+            let isEmpty = presentations.length === 0
+            if (!isEmpty) {
+              return new fromPresentations.LoadSuccess({ presentations })
+            } else {
+              if (search.title) {
+                error = 'Opps, no result for these key words'
+              } else if (search.public) {
+                error = `Sorry, no one publish slides yet! <br>Would you want to be the pioneer?</p>`
+              } else if (!search.public) {
+                error = `Sorry, you don't have any slides yet!`
+              } else if (search.favorite) {
+                error = `Sorry, you don't have any slides yet!`
+              }
+              return new fromPresentations.LoadFailure({ error })
+            }
+          })
+        )
     },
     onError: (action: fromPresentations.Load, error) => {
       console.error('Error', error);

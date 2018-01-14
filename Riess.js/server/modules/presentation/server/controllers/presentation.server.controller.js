@@ -115,7 +115,7 @@ exports.list = function(req, res) {
 exports.myList = function(req, res) {
   Presentation.find({
       $or: [{
-        'author': req.query.username
+        'author.username': req.query.username
       }, {
         'public': true
       }]
@@ -160,335 +160,189 @@ exports.search = function(req, res) {
   var pageIndex = parseInt(req.query.pageIndex ,10);
   var pageSize = parseInt(req.query.pageSize ,10);
   var request = null;
-  var totalResultsCount = null;
   var regexS = new RegExp((req.query.title) || '');
   if (req.query.state === 'Public') {
     if (req.query.favorite === 'favorite') {
       request = Presentation.find({
           $and: [{
             $or: [{
-              'presentationSetting.title': regexS
+              'title': regexS
             }, {
-              'presentationSetting.tags': regexS
+              'tags': regexS
             }]
           }, {
-            'presentationSetting.public': true
+            'public': true
           }, {
-            'presentationSetting.favorite': true
+            'favorite': true
           }]
         });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': regexS
-          }, {
-            'presentationSetting.tags': regexS
-          }]
-        }, {
-          'presentationSetting.public': true
-        }, {
-          'presentationSetting.favorite': true
-        }]
-      }).count();
     } else if (req.query.favorite === 'notFavorite') {
       request = Presentation.find({
         $and: [{
           $or: [{
-            'presentationSetting.title': regexS
+            'title': regexS
           }, {
-            'presentationSetting.tags': regexS
+            'tags': regexS
           }]
         }, {
-          'presentationSetting.public': true
+          'public': true
         }, {
-          'presentationSetting.favorite': false
+          'favorite': false
         }]
       });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': regexS
-          }, {
-            'presentationSetting.tags': regexS
-          }]
-        }, {
-          'presentationSetting.public': true
-        }, {
-          'presentationSetting.favorite': false
-        }]
-      }).count();
     } else {
       request = Presentation.find({
           $and: [{
             $or: [{
-              'presentationSetting.title': regexS
+              'title': regexS
             }, {
-              'presentationSetting.tags': regexS
+              'tags': regexS
             }]
           }, {
-            'presentationSetting.public': true
+            'public': true
           }]
         });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': regexS
-          }, {
-            'presentationSetting.tags': regexS
-          }]
-        }, {
-          'presentationSetting.public': true
-        }]
-      }).count();
     }
   } else if (req.query.state === 'Private') {
     if (req.query.favorite === 'favorite') {
       request = Presentation.find({
           $and: [{
             $or: [{
-              'presentationSetting.title': regexS
+              'title': regexS
             }, {
-              'presentationSetting.tags': regexS
+              'tags': regexS
             }]
           }, {
-            'presentationSetting.author': req.query.username
+            'author.username': req.query.username
           }, {
-            'presentationSetting.public': false
+            'public': false
           }, {
-            'presentationSetting.favorite': true
+            'favorite': true
           }]
         });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': regexS
-          }, {
-            'presentationSetting.tags': regexS
-          }]
-        }, {
-          'presentationSetting.author': req.query.username
-        }, {
-          'presentationSetting.public': false
-        }, {
-          'presentationSetting.favorite': true
-        }]
-      }).count();
     } else if (req.query.favorite === 'notFavorite') {
       request = Presentation.find({
           $and: [{
             $or: [{
-              'presentationSetting.title': regexS
+              'title': regexS
             }, {
-              'presentationSetting.tags': regexS
+              'tags': regexS
             }]
           }, {
-            'presentationSetting.author': req.query.username
+            'author.username': req.query.username
           }, {
-            'presentationSetting.public': false
+            'public': false
           }, {
-            'presentationSetting.favorite': false
+            'favorite': false
           }]
         });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': regexS
-          }, {
-            'presentationSetting.tags': regexS
-          }]
-        }, {
-          'presentationSetting.author': req.query.username
-        }, {
-          'presentationSetting.public': false
-        }, {
-          'presentationSetting.favorite': false
-        }]
-      }).count();
     }
     else {
       request = Presentation.find({
         $and: [{
           $or: [{
-            'presentationSetting.title': regexS
+            'title': regexS
           }, {
-            'presentationSetting.tags': regexS
+            'tags': regexS
           }]
         }, {
-          'presentationSetting.author': req.query.username
+          'author.username': req.query.username
         }, {
-          'presentationSetting.public': false
+          'public': false
         }]
       });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': regexS
-          }, {
-            'presentationSetting.tags': regexS
-          }]
-        }, {
-          'presentationSetting.author': req.query.username
-        }, {
-          'presentationSetting.public': false
-        }]
-      }).count();
     }
   } else {
     if (req.query.favorite === 'favorite') {
       request = Presentation.find({
         $and: [{
           $or: [{
-            'presentationSetting.title': {
+            'title': {
               $regex: regexS,
               $options: "i"
             }
           }, {
-            'presentationSetting.tags': {
+            'tags': {
               $regex: regexS,
               $options: "i"
             }
           }]
         }, {
           $or: [{
-            'presentationSetting.author': req.query.username
+            'author.username': req.query.username
           }, {
-            'presentationSetting.public': true
+            'public': true
           }]
         }, {
-          'presentationSetting.favorite': true
+          'favorite': true
         }]
       });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }, {
-            'presentationSetting.tags': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }]
-        }, {
-          $or: [{
-            'presentationSetting.author': req.query.username
-          }, {
-            'presentationSetting.public': true
-          }]
-        }, {
-          'presentationSetting.favorite': true
-        }]
-      }).count();
     } else if (req.query.favorite === 'notFavorite') {
       request = Presentation.find({
         $and: [{
           $or: [{
-            'presentationSetting.title': {
+            'title': {
               $regex: regexS,
               $options: "i"
             }
           }, {
-            'presentationSetting.tags': {
+            'tags': {
               $regex: regexS,
               $options: "i"
             }
           }]
         }, {
           $or: [{
-            'presentationSetting.author': req.query.username
+            'author.username': req.query.username
           }, {
-            'presentationSetting.public': true
+            'public': true
           }]
         }, {
-          'presentationSetting.favorite': false
+          'favorite': false
         }]
       });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }, {
-            'presentationSetting.tags': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }]
-        }, {
-          $or: [{
-            'presentationSetting.author': req.query.username
-          }, {
-            'presentationSetting.public': true
-          }]
-        }, {
-          'presentationSetting.favorite': false
-        }]
-      }).count();
     } else {
       request = Presentation.find({
         $and: [{
           $or: [{
-            'presentationSetting.title': {
+            'title': {
               $regex: regexS,
               $options: "i"
             }
           }, {
-            'presentationSetting.tags': {
+            'tags': {
               $regex: regexS,
               $options: "i"
             }
           }]
         }, {
           $or: [{
-            'presentationSetting.author': req.query.username
+            'author.username': req.query.username
           }, {
-            'presentationSetting.public': true
+            'public': true
           }]
         }]
       });
-      totalResultsCount = Presentation.find({
-        $and: [{
-          $or: [{
-            'presentationSetting.title': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }, {
-            'presentationSetting.tags': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }]
-        }, {
-          $or: [{
-            'presentationSetting.author': req.query.username
-          }, {
-            'presentationSetting.public': true
-          }]
-        }]
-      }).count();
     }
   }
   var order = '';
   if (req.query.order === 'date') {
     order = '-createdAt';
   } else {
-    order = { 'presentationSetting.title': 1 };
+    order = { 'title': 1 };
   }
-  Promise.all([
-      request.sort(order).skip(pageIndex > 0 ? (pageIndex * pageSize) : 0).limit(pageSize).exec(),
-      totalResultsCount])
-      .then(function(items) {
-        res.json(items);
-      }, function(err) {
-        if (err) {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        }
+  request
+  .sort(order)
+  .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
+  .limit(pageSize)
+  .exec()
+  .then(function(items) {
+    res.json(items);
+  }, function(err) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
       });
+    }
+  });
 };

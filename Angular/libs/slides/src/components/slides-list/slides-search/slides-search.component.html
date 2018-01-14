@@ -3,19 +3,25 @@
     <mat-placeholder>
       <mat-icon svgIcon="action:ic_search_24px"></mat-icon>
     </mat-placeholder>
-    <input matInput formControlName="term">
+    <input matInput formControlName="title">
   </mat-form-field>
 
   <mat-form-field *ngIf="kind !== 'advanced'" fxFlex="100">
     <mat-placeholder>
       <mat-icon svgIcon="action:ic_search_24px"></mat-icon>
     </mat-placeholder>
-    <input matInput formControlName="term">
+    <input matInput formControlName="title">
   </mat-form-field>
   <div *ngIf="kind === 'advanced'" class="filter-container" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="40">
-    <mat-checkbox formControlName="favorite">Favorite</mat-checkbox>
-    <mat-checkbox formControlName="unfavorite">Unfavorite</mat-checkbox>
-    <mat-checkbox formControlName="public">Public</mat-checkbox>
-    <mat-checkbox formControlName="private">Private</mat-checkbox>
+    <mat-checkbox
+      #favorite
+      formControlName="favorite"
+      (click)="onClick(favorite, 'favorite')"
+      [indeterminate]="true">Favorite</mat-checkbox>
+    <mat-checkbox
+      #public
+      formControlName="public"
+      (click)="onClick(public, 'public')"
+      [indeterminate]="true">Public</mat-checkbox>
   </div>
 </form>

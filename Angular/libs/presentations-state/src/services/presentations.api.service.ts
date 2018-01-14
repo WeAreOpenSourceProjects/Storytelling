@@ -30,6 +30,7 @@ export class PresentationsApiService {
     this.progress$ = Observable.create(observer => {
       this.progressObserver = observer;
     }).share();
+
     this.user$.subscribe((user: User) => {
       this.user = {
         username: user.firstName + user.lastName,
@@ -39,6 +40,7 @@ export class PresentationsApiService {
         email: user.email
       };
     });
+
     const { protocol, host, port, endpoints } = environment.backend;
     this.endpoints = endpoints;
     this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
@@ -81,18 +83,16 @@ export class PresentationsApiService {
     return this.http.delete(backendURL);
   }
 
-  search(textToSearch, pageIndex, pageSize): Observable<any> {
-    const params: URLSearchParams = new URLSearchParams();
-    params.set('title', textToSearch.title);
-    params.set('state', textToSearch.filter);
-    params.set('favorite', textToSearch.favorite);
-    params.set('username', this.user.username);
-    params.set('email', this.user.email);
-    params.set('pageIndex', pageIndex);
-    params.set('pageSize', pageSize);
-    params.set('order', textToSearch.order);
+  search(pageIndex, pageSize, search?): Observable<any> {
     const backendURL = `${this.baseUrl}/presentations/search`;
 //    return this.http.get(backendURL, { params: params });
-    return this.http.get(backendURL);
-}
+    return this.http.get(backendURL, {
+      params: {
+        ...search,
+        ...this.user,
+        pageIndex,
+        pageSize
+      }
+    });
+  }
 }

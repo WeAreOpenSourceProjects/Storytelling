@@ -17,6 +17,6 @@ export class PresentationsInitializationService {
       first(),
       filter(isLoggedIn => isLoggedIn)
     )
-    .subscribe(() => this.store.dispatch(new fromPresentations.Load()));
+    .subscribe(() => this.store.dispatch(new fromPresentations.Load({ pageIndex: 0, pageSize: 10 })));
   }
 }

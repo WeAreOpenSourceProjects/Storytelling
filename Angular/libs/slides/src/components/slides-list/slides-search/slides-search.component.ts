@@ -6,6 +6,7 @@ import {
   EventEmitter,
   forwardRef} from '@angular/core';
 import { FormBuilder, FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox } from '@angular/material';
 
 @Component({
   selector: 'app-slides-search',
@@ -15,6 +16,8 @@ import { FormBuilder, FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from 
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => SlidesSearchComponent),
     multi: true
+  }, {
+    provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'noop'
   }]
 })
 export class SlidesSearchComponent implements ControlValueAccessor {
@@ -28,11 +31,9 @@ export class SlidesSearchComponent implements ControlValueAccessor {
 
   ngOnInit() {
     this.searchForm = this.formBuilder.group({
-      term: [''],
-      favorite: [true],
-      unfavorite: [true],
-      public: [true],
-      private: [true]
+      title: '',
+      favorite: false,
+      public: false,
     });
 
     this.searchForm.valueChanges
@@ -53,6 +54,21 @@ export class SlidesSearchComponent implements ControlValueAccessor {
 
   registerOnTouched() {}
 
+  onClick(checkbox: MatCheckbox, name) {
+    if (checkbox.indeterminate) {
+      checkbox.indeterminate = false;
+      this.searchForm.controls[name].setValue(true)
+      return;
+    }
+    if (this.searchForm.controls[name].value) {
+      this.searchForm.controls[name].setValue(false)
+      return;
+    }
+    checkbox.indeterminate = true;
+    this.searchForm.controls[name].setValue('indeterminate')
+    return;
+  }
+}
 /*
   onChange(textToSearch) {
     if (textToSearch) {
@@ -83,4 +99,3 @@ export class SlidesSearchComponent implements ControlValueAccessor {
   sort(sortedBy) {
     this.sortedByOpt.emit(sortedBy);
   }*/
-}

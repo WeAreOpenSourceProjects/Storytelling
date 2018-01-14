@@ -31,6 +31,7 @@ export type Actions =
 
 export class Load implements Action {
   readonly type = LOAD;
+  constructor(public payload: { pageIndex: number, pageSize: number, search?: any}) {}
 }
 
 export class LoadSuccess implements Action {

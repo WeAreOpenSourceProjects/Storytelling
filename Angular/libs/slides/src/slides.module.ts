@@ -92,6 +92,7 @@ import {
   ImageUploadComponent
 } from './components/slides-editor-form/slides-editor/slide-editor';
 import { environment } from '../../../apps/default/src/environments/environment';
+import { DisableControlDirective } from './directives/disable-control/disable-control.directive';
 
 @NgModule({
     imports: [
@@ -188,7 +189,8 @@ import { environment } from '../../../apps/default/src/environments/environment'
         TextEditorComponent,
         TextComponent,
         ImageUploadComponent,
-        MenuBarComponent
+        MenuBarComponent,
+        DisableControlDirective
     ],
     exports: [
       SlidesCardComponent,
