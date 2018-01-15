@@ -22,18 +22,15 @@ import { MenuBarComponent } from '../../../menu-bar/menu-bar.component'
 export class SlideEditorComponent implements OnInit, OnChanges, AfterViewInit{
   @ViewChild('menubar', { read: ViewContainerRef }) menubar: ViewContainerRef;
   @ViewChildren('texteditor', {read: ViewContainerRef}) public texteditor: QueryList<ViewContainerRef>;
+  @HostListener ('window:click',['$event']) onClick(event){
+    this.editMode = false;
+  }
   editors;
   slide: any;
   isOpened = false;
-  public slideIndex: number; // slide index
-  boxIndexToResize = -1;
   id: any;
-  texteditorArray =[];
-  private width;
   idSlides: any;
-  private itemPositions: Array<any> = [];
   gridConfig:any;
-  remove;
   options;
   constructor(
     private dialog: MatDialog,
@@ -44,29 +41,10 @@ export class SlideEditorComponent implements OnInit, OnChanges, AfterViewInit{
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
-
-static itemChange(item, itemComponent) {
-  console.info('itemChanged', item, itemComponent);
+enableEdit(){
+  this.editMode= true;
+  console.log(this.editMode);
 }
-
-static itemResize(item, itemComponent) {
-  console.info('itemResized', item, itemComponent);
-}
-
-static itemInit(item, itemComponent) {
-  console.info('itemInitialized', item, itemComponent);
-}
-
-
-
-static gridInit(grid) {
-  console.info('gridInit', grid);
-}
-
-static gridDestroy(grid) {
-  console.info('gridDestroy', grid);
-}
-
 emptyCellClick(event, item) {
   console.info('empty cell click', event, item);
   let componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
@@ -88,8 +66,8 @@ emptyCellClick(event, item) {
            (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
              this.slide.boxes[this.slide.boxes.length-1].text = text;
            });
+
          }
-        else this.texteditor.toArray()[i].clear();
        }
      }
    })
@@ -105,25 +83,13 @@ emptyCellClick(event, item) {
     this.menubar.clear();
   });
 }
-saveItem(event, item){
 
-}
-ngAfterViewInit(){
-  console.log('texteditor after', this.texteditor);
-
-}
-ngOnChanges(){
-  console.log('texteditor', this.texteditor);
-}
 ngOnInit() {
-  console.log('texteditor init ', this.texteditor);
   this.route.params.subscribe(params => {
      this.idSlides = params['idSlides'];
      this.id = params['id'];
    });
-
    this.slide = this.route.snapshot.data.slide || {}
-   console.log(this.route.snapshot.data.slide);
    this.slide.index = this.id;
    if(!this.slide.boxes) {
      this.slide.boxes = []
@@ -167,11 +133,6 @@ ngOnInit() {
       dragHandleClass: 'drag-handler',
       stop: undefined
     },
-    api: {
-        resize: SlideEditorComponent.eventStop,
-        optionsChanged: SlideEditorComponent.eventStop,
-        getNextPossiblePosition: SlideEditorComponent.eventStop,
-      },
     resizable: {
       delayStart: 0,
       enabled: true,
@@ -186,43 +147,18 @@ ngOnInit() {
         sw: true,
         nw: true
       }
-    },
-    swap: false,
-    pushItems: false,
-    disablePushOnDrag: true,
-    disablePushOnResize: true,
-    pushDirections: {north: true, east: true, south: true, west: true},
-    pushResizeItems: false,
-    displayGrid: 'onDrag&Resize',
-    disableWindowResize: false,
-    disableWarnings: false,
-    scrollToNewItems: false
+    }
   };
 }
-changedOptions() {
-  if (this.options.api && this.options.api.optionsChanged) {
-    this.options.api.optionsChanged();
-  }
-}
 
-static eventStop(item, itemComponent, event) {
-    console.info('eventStop', item, itemComponent, event);
-  }
+
 
 removeItem($event, item) {
   $event.preventDefault();
   $event.stopPropagation();
-
   this.slide.boxes.splice(this.slide.boxes.indexOf(item), 1);
 }
 
-addItem() {
-  this.slide.boxes.push({});
-}
-
-destroy() {
-  this.remove = !this.remove;
-}
   //
   // openChartBuilder() {
   //   const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
@@ -302,7 +238,6 @@ destroy() {
   // }
   //
   confirmSlide(slide){
-    console.log("slide", slide);
     this.slideService.confirmSlides(slide, this.id, this.idSlides)
       .subscribe(
         res => {

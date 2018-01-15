@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input, Inject, HostListener, Output, EventEmitter} from '@angular/core';
+import { Component, Input, Inject, HostListener, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
 import { environment } from '../../../../../../../../apps/default/src/environments/environment';
 
 @Component({
@@ -8,9 +8,16 @@ import { environment } from '../../../../../../../../apps/default/src/environmen
   styleUrls: ['./text-editor.component.scss']
 })
 export class TextEditorComponent implements OnInit {
-  @HostListener('document:click', ['$event']) clickedOutside($event){
-   this.textTosave.emit(this.editorContent);
- }
+  @HostListener('dblclick', ['$event']) onDblClick(event) {
+    $(this.froalaEditor.nativeElement).froalaEditor('events.focus');
+
+  }
+  @HostListener('window:click', ['$event']) onClickOut(event) {
+    $(this.froalaEditor.nativeElement).froalaEditor('events.trigger', 'blur', [], true);
+  }
+
+  @ViewChild('froalaEditor') froalaEditor: ElementRef;
+
   private editorOptions: Object;//option of the text editor
   @Input() width: number;
   @Input() height: number;
@@ -23,19 +30,13 @@ export class TextEditorComponent implements OnInit {
     }
     this.editorOptions = {
       toolbarInline: true,
-      iframe: true,
+      iframe: false,
       initOnClick :false,
       heightMin: 200,
       heightMax: 400,
       widthMax: 1000,
       charCounterMax: 3000,
-      toolbarSticky: false,
-      imageUploadURL: `${baseURL}${environment.backend.endpoints.imagesServer}`,
-      imageManagerLoadURL: `${baseURL}${environment.backend.endpoints.imagesServer}`
+      toolbarSticky: false
     };
-  }
-
-  ngOnInit() {
-
   }
 }
