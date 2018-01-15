@@ -8,6 +8,8 @@ var path = require('path'),
   http = require('http'),
   fs = require('fs'),
   Presentation = mongoose.model('Presentation'),
+  Slide = mongoose.model('Slide'),
+  Box = mongoose.model('Box'),
   Image = mongoose.model('Image'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
@@ -193,13 +195,26 @@ exports.search = function(req, res) {
   .limit(pageSize)
   .sort(order)
   .exec()
+
+  var slides = presentations
   .then(function(presentations) {
+    return Slide.find({_id: { $in: [].concat.apply([], presentations.map(presentation => presentation.slideIds)) } })
+  })
+
+  var boxes = slides
+  .then(function(slides) {
+    return Box.find({_id: { $in: [].concat.apply([], slides.map(slide => slide.boxeIds)) } })
+  })
+
+  Promise.all([presentations, slides, boxes])
+  .then(function(result) {
     res.json({
-      presentations,
-      slides: [],
-      boxes: []
+      presentations: result[0],
+      slides: result[1],
+      boxes: result[2]
     });
-  }, function(err) {
+  })
+  .catch(function(err) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)

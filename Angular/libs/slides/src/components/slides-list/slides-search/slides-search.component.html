@@ -23,13 +23,15 @@
       formControlName="public"
       (click)="onClick(public, 'public')"
       [indeterminate]="true">Public</mat-checkbox>
-      <mat-select
+      <mat-form-field>
+        <mat-select
         #order
-        formControlName="public"
+        formControlName="order"
         placeholder="Sorted"
         (change)="onChange(order)">
-        <mat-option [value]="'alphabetically'" >alphabetically</mat-option>
-        <mat-option [value]="'date'">by date</mat-option>
-      </mat-select>
+          <mat-option value="date">by date</mat-option>
+          <mat-option value="alphabetically">alphabetically</mat-option>
+        </mat-select>
+      </mat-form-field>
   </div>
 </form>

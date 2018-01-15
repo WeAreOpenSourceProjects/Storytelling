@@ -25,7 +25,7 @@ export function slidesReducer(state: SlidesState = slidesInitialState, action: f
     }
     case fromPresentations.LOAD_SUCCESS: {
       slidesAdapter.removeAll(state);
-      return slidesAdapter.addMany(action.payload.slides, state);
+      return slidesAdapter.addMany(action.payload.slides, { ...state, loaded: true});
     }
     default: {
       return state;
