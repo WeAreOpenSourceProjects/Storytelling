@@ -13,8 +13,8 @@ export const {
   selectTotal: selectSlidesTotal,
 } = slidesAdapter.getSelectors(selectSlidesState);
 
-export const selectIsLoading = createSelector(selectSlidesState, (state: SlidesState) => state.loading);
-export const selectIsLoaded = createSelector(selectSlidesState, (state: SlidesState) => state.loaded);
+export const selectSlidesLoading = createSelector(selectSlidesState, (state: SlidesState) => state.loading);
+export const selectSlidesLoaded = createSelector(selectSlidesState, (state: SlidesState) => state.loaded);
 export const selectCurrentSlideId = createSelector(selectSlidesState, (state: SlidesState) => state.currentSlideId);
 export const selectCurrentSlide = createSelector(selectSlidesEntities, selectCurrentSlideId, (entities, id) => entities[id]);
 export const selectCurrentSlideIndex = createSelector(selectCurrentSlide, slide => slide.index);

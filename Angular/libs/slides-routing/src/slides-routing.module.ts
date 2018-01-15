@@ -6,13 +6,17 @@ import {
   SlidesEditorFormComponent,
   SlidesListComponent,
   SlideEditorComponent
-} from '@labdat/slides/components';
+} from '@labdat/slides/src/components';
 import { SlideResolve } from '@labdat/slides/src/services/slide.resolve';
+import { SlidesGuardService } from './services/slides.guard.service';
+export { SlidesGuardService }
+
 
 const slidesRoutes: Routes = [
   {
     path: '',
     component: SlidesListComponent,
+    canActivate: [ SlidesGuardService ],
     data: {
       roles: ['user', 'admin'],
       title: 'slides List'
@@ -52,3 +56,13 @@ const slidesRoutes: Routes = [
   exports: [RouterModule]
 })
 export class SlidesRoutingModule {}
+
+@NgModule({})
+export class RootSlidesRoutingModule {
+public static forRoot() {
+  return {
+      ngModule: RootSlidesRoutingModule,
+      providers: [ SlidesGuardService ]
+    }
+  };
+}

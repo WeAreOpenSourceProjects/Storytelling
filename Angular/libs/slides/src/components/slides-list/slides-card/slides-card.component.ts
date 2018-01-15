@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { PresentationsApiService } from '@labdat/presentations-state';
+import { User } from '@labdat/data-models';
 
 @Component({
   selector: 'app-slides-card',
@@ -51,8 +52,20 @@ export class SlidesCardComponent implements OnInit {
   @Input()
   public editable: boolean; // whether the presentation can be edited;
 
+  @Input()
+  public loggedIn: boolean;
+
+  @Input()
+  public user: User;
+
   @Output()
   public deletedSlides = new EventEmitter();
+
+  @Output()
+  public publishChange = new EventEmitter();
+
+  @Output()
+  public favoriteChange = new EventEmitter();
 
   @Output()
   public duplicateslidesOpt = new EventEmitter();
@@ -60,8 +73,7 @@ export class SlidesCardComponent implements OnInit {
   //    @select(['session', 'user', 'username']) username$: Observable<Object>;
 
   public loggedIn$: Observable<boolean> = this.store.select(selectIsLoggedIn);
-  public userName$ = this.store
-    .select(selectUser)
+  public userName$ = this.store.select(selectUser)
     .pipe(filter(user => !isEmpty(user)), map(user => user.firstName + user.lastName));
 
   public banner: string; // banner picture of the presentation card
@@ -84,66 +96,46 @@ export class SlidesCardComponent implements OnInit {
     }
   }
 
-  /*publish/unpublish presentation*/
-  togglePublish(e) {
-    e.stopPropagation();
-    this.presentation.public = !this.presentation.public;
-    this.slidesService
-      .update(this.presentation, this.presentation._id)
-      .subscribe
+  public togglePublish(event) {
       //            elm => this.notifBarService.showNotif("set upload status successfully!"),
       //            error => this.notifBarService.showNotif("fail to set upload status, error is " + error)
-      ();
+      event.preventDefault();
+      event.stopPropagation();
+      this.publishChange.emit(this.presentation.id)
   }
   /*set like/dislike presentation*/
-  toggleFavorite(e) {
-    e.stopPropagation();
-    this.presentation.favorite = !this.presentation.favorite;
-    this.slidesService
-      .update(this.presentation, this.presentation._id)
-      .subscribe
-      //            elm => this.notifBarService.showNotif("set favorte status successfully!"),
-      //            error => this.notifBarService.showNotif("fail to set favorite status, error is " + error)
-      ();
+  public toggleFavorite(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.favoriteChange.emit(this.presentation.id)
   }
   /*delete the whole presentation*/
-  deleteSlides(e, id) {
-    e.stopPropagation();
-
+  deleteSlides(event) {
+    event.preventDefault();
+    event.stopPropagation();
     const dialog = this.dialog.open(DeleteDialogComponent, { height: '20%', width: '20%' });
     dialog.afterClosed().subscribe(result => {
       if (result === 'YES') {
-        this.slidesService.delete(id).subscribe(
-          res => {
-            //                        this.notifBarService.showNotif("the presentation has been deleted successfully!");
-            this.deletedSlides.emit(id);
-          }
-          //                    error => this.notifBarService.showNotif("fail to delete the presentation, error is " + error)
-        );
+        // this.notifBarService.showNotif("the presentation has been deleted successfully!");
+        // error => this.notifBarService.showNotif("fail to delete the presentation, error is " + error)
+        this.deletedSlides.emit(this.presentation.id);
       }
     });
   }
   /*duplicate presentation*/
-  duplicateSlides(e, presentation) {
-    e.stopPropagation();
-    let newPresentation: Presentation = presentation;
-    console.log(newPresentation);
-    this.slidesService.add(newPresentation).subscribe(
-      data => {
-        this.duplicateslidesOpt.emit(data._id);
-        //                this.notifBarService.showNotif("presentation has been copied");
-      },
-      error => {
-        //                this.notifBarService.showNotif("Opps! fail to copy the presentation. error :" + error);
-      }
-    );
+  duplicateSlides(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.duplicateslidesOpt.emit(this.presentation.id);
+    // this.notifBarService.showNotif("presentation has been copied");
+    // this.notifBarService.showNotif("Opps! fail to copy the presentation. error :" + error);
+
   }
 
-  public showOptions(): Observable<boolean> {
-    return combineLatest(
-      this.loggedIn$,
-      this.userName$,
-      (loggedIn, userName) => loggedIn && this.editable && this.presentation && this.presentation.author === userName
-    );
+  public showOptions(): boolean {
+    return this.loggedIn
+    && this.editable
+    && this.presentation
+    && this.presentation.author === this.user.id;
   }
 }

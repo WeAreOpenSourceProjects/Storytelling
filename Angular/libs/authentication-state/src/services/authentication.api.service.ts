@@ -4,6 +4,7 @@ import { _throw } from 'rxjs/observable/throw';
 import { User, Authenticate } from '@labdat/data-models';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../apps/default/src/environments/environment';
+import { map } from 'rxjs/operators/map';
 
 @Injectable()
 export class AuthenticationApiService {
@@ -19,7 +20,7 @@ export class AuthenticationApiService {
       `${this.baseUrl}/auth/signin`,
       { usernameOrEmail: email, password },
       { withCredentials: true }
-    );
+    )
   }
 
   register(registration: any) {

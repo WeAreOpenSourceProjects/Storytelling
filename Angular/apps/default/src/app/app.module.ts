@@ -23,6 +23,7 @@ import { SlidesStateModule } from '@labdat/slides-state';
 import "froala-editor/js/froala_editor.pkgd.min.js";
 import { PresentationsStateModule } from '@labdat/presentations-state';
 import { BoxesStateModule } from '@labdat/boxes-state';
+import { RootSlidesRoutingModule } from '@labdat/slides-routing';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { BoxesStateModule } from '@labdat/boxes-state';
     SharedModule.forRoot(),
     AuthenticationModule.forRoot(),
     CoreModule.forRoot(),
+    RootSlidesRoutingModule.forRoot(),
     SlidesModule.forRoot(),
 
     RouterStateModule.forRoot(),

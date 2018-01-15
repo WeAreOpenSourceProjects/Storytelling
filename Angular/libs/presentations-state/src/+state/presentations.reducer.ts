@@ -6,7 +6,7 @@ export const presentationsInitialState: PresentationsState = presentationsAdapte
   selectedPresentationId: null,
   loaded: false,
   loading: false,
-  error: null
+  error: '',
 });
 
 export function presentationsReducer(state: PresentationsState = presentationsInitialState, action: fromPresentations.Actions | fromAuthentication.Actions): PresentationsState {
@@ -15,13 +15,16 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       return presentationsInitialState;
     }
     case fromPresentations.LOAD: {
-      return { ...state, loading: true, error: null };
+      return { ...state, loading: true };
     }
     case fromPresentations.LOAD_SUCCESS: {
-      return presentationsAdapter.addAll(action.payload.presentations, { ...state, loaded: true, loading: false, error: null });
+      return presentationsAdapter.addAll(action.payload.presentations, { ...state, loaded: true, loading: false });
     }
     case fromPresentations.LOAD_FAILURE: {
       return presentationsAdapter.removeAll({...state, error: action.payload.error });
+    }
+    case fromPresentations.UPDATE_SUCCESS: {
+      return presentationsAdapter.updateOne(action.payload, state);
     }
     default: {
       return state;

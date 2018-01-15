@@ -12,8 +12,8 @@ export const {
   selectTotal: selectPresentationsTotal,
 } = presentationsAdapter.getSelectors(selectPresentationsState);
 
-export const selectPresentationsIsLoading = createSelector(selectPresentationsState, (state: PresentationsState) => state.loading);
-export const selectPresentationsIsLoaded = createSelector(selectPresentationsState, (state: PresentationsState) => state.loaded);
+export const selectPresentationsLoading = createSelector(selectPresentationsState, (state: PresentationsState) => state.loading);
+export const selectPresentationsLoaded = createSelector(selectPresentationsState, (state: PresentationsState) => state.loaded);
 export const selectPresentationsError = createSelector(selectPresentationsState, (state: PresentationsState) => state.error);
 
 export const selectedPresentationId = createSelector(selectPresentationsState, (state: PresentationsState) => state.selectedPresentationId);

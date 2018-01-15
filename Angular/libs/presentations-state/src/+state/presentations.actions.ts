@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Presentation } from '@labdat/data-models';
+import { Presentation, Box, Slide } from '@labdat/data-models';
 
 export const LOAD = '[Presentations] Load';
 export const LOAD_SUCCESS = '[Presentations] Load Success';
@@ -36,7 +36,11 @@ export class Load implements Action {
 
 export class LoadSuccess implements Action {
   readonly type = LOAD_SUCCESS;
-  constructor(public payload: { presentations: Presentation[]}) {}
+  constructor(public payload: {
+    presentations: Presentation[],
+    slides: Slide[],
+    boxes: Box[]
+  }) { }
 }
 
 export class LoadFailure implements Action {
@@ -46,12 +50,12 @@ export class LoadFailure implements Action {
 
 export class Add implements Action {
   readonly type = ADD;
-  constructor(public payload: { presentation: Presentation }) {}
+  constructor(public payload: Presentation) {}
 }
 
 export class AddSuccess implements Action {
   readonly type = ADD_SUCCESS;
-  constructor(public payload: { presentation: Presentation }) {}
+  constructor(public payload: Presentation) {}
 }
 
 export class AddFailure implements Action {
@@ -61,12 +65,12 @@ export class AddFailure implements Action {
 
 export class Update implements Action {
   readonly type = UPDATE;
-  constructor(public payload: { presentation: { id: number, changes: any }}) {}
+  constructor(public payload: { id: number, changes: any }) {}
 }
 
 export class UpdateSuccess implements Action {
   readonly type = UPDATE_SUCCESS;
-  constructor(public payload: { presentation: { id: number, changes: any }}) {}
+  constructor(public payload: { id: number, changes: any }) {}
 }
 
 export class UpdateFailure implements Action {
@@ -76,7 +80,7 @@ export class UpdateFailure implements Action {
 
 export class Delete implements Action {
   readonly type = DELETE;
-  constructor(public payload: { presentationId: string }) {}
+  constructor(public payload: number) {}
 }
 
 export class DeleteSuccess implements Action {

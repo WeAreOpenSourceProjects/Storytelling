@@ -6,5 +6,5 @@ export const presentationsInitialState: PresentationsState = presentationsAdapte
   selectedPresentationId: null,
   loaded: false,
   loading: false,
-  error: null
+  error: '',
 });

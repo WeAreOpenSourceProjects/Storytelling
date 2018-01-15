@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-//import { select } from '@angular-redux/store';
-
-import {Observable} from 'rxjs/Observable';
-import {SlidesService, ImagesService} from '../../services/index';
-import {Slides, SlidesSetting} from '../../models/index';
+import { Observable } from 'rxjs/Observable';
+import { SlidesService, ImagesService } from '../../services/index';
+import { Slides, SlidesSetting } from '../../models/index';
 //import {NotifBarService} from "app/core";
 import { PageEvent } from '@angular/material';
 import {  } from '@labdat/presentations-state';
@@ -13,15 +11,20 @@ import { debounceTime } from 'rxjs/operators/debounceTime';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { tap } from 'rxjs/operators/tap';
 import { Store } from '@ngrx/store';
+import { selectIsLoggedIn, selectUser } from '@labdat/authentication-state';
 import {
   selectAllPresentations,
   selectPresentationsError,
   PresentationsState,
   PresentationsApiService,
-  fromPresentations } from '@labdat/presentations-state';
+  fromPresentations,
+  selectPresentationsTotal,
+  selectPresentationsEntities } from '@labdat/presentations-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
-import { selectPresentationsTotal } from '@labdat/presentations-state/src/+state/presentations.selectors';
+import { combineLatest } from 'rxjs/operators/combineLatest';
+import { startWith } from 'rxjs/operators/startWith';
+import { map } from 'rxjs/operators/map';
 
 @Component({
   selector: 'app-slides-list',
@@ -30,7 +33,8 @@ import { selectPresentationsTotal } from '@labdat/presentations-state/src/+state
 })
 export class SlidesListComponent implements OnInit {
   //    @select(['session', 'token']) loggedIn$: Observable<string>;
-  public loggedIn$ = Observable.of('me');
+  public loggedIn$ = this.store.select(selectIsLoggedIn);
+  public user$ = this.store.select(selectUser);
 
   loading = true;
   listCopy = [];
@@ -46,6 +50,30 @@ export class SlidesListComponent implements OnInit {
   public presentationsCount$ = this.store.select(selectPresentationsTotal);
   public presentationsError$ = this.store.select(selectPresentationsError);
   public nextPage$ = new Subject();
+  public togglePublish$ = new Subject();
+  public toggleFavorite$ = new Subject();
+  public delete$ = new Subject();
+  public duplicate$ = new Subject();
+  public message$ = this.searchControl.valueChanges
+    .pipe(
+      startWith({title: '', public: 'indeterminate', favorite: 'indeterminate'}),
+      combineLatest(this.presentationsCount$, (search, presentationCount) => {
+        let message = '';
+        let isEmpty = presentationCount === 0
+        if (isEmpty) {
+          if (search.title) {
+            message = 'Oops, no result for these key words'
+          } else if (search.public) {
+            message = `Sorry, no one publish slides yet! <br>Would you want to be the pioneer?</p>`
+          } else if (!search.public) {
+            message = `Sorry, you don't have any slides yet!`
+          } else if (search.favorite) {
+            message = `Sorry, you don't have any slides yet!`
+          }
+        }
+        return message;
+      })
+    )
 
   constructor(
     private slidesService: PresentationsApiService,
@@ -58,20 +86,41 @@ export class SlidesListComponent implements OnInit {
     this.searchControl.valueChanges
     .pipe(debounceTime(500))
     .subscribe(search => this.store.dispatch(new fromPresentations.Load({ pageIndex: 0, pageSize: 10, search})))
-    /*
-    .subscribe(presentations => {
-      this.presentations = presentations;
-      this.result = this.calculResult(this.presentations.length, this.toSearch.filter, this.toSearch.title);
-    })
-*/  this.nextPage$
+
+    this.nextPage$
     .pipe(withLatestFrom(this.searchControl.valueChanges))
     .subscribe(([pageEvent, search]: [PageEvent, any]) => this.store.dispatch(new fromPresentations.Load({ pageIndex: pageEvent.pageIndex, pageSize: 10, search})));
-  }
 
-  duplicate(id) {
-    this.slidesService.getOne(id).subscribe(presentation => {
-      //this.presentations.push(presentation);
-    });
+    this.togglePublish$
+    .pipe(
+      withLatestFrom(
+        this.store.select(selectPresentationsEntities),
+        (presentationId: number, presentationEntities) => presentationEntities[presentationId]
+      ),
+    )
+    .subscribe((presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { public: !presentation.public }})));
+
+    this.toggleFavorite$
+    .pipe(
+      withLatestFrom(
+        this.store.select(selectPresentationsEntities),
+        (presentationId: number, presentationEntities) => presentationEntities[presentationId]
+      ),
+    )
+    .subscribe((presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { favorite: !presentation.favorite }})));
+
+    this.duplicate$
+    .pipe(
+      withLatestFrom(
+        this.store.select(selectPresentationsEntities),
+        (presentationId: number, presentationEntities) => presentationEntities[presentationId]
+      )
+    )
+    .subscribe((presentation) => this.store.dispatch(new fromPresentations.Add(presentation)));
+
+    this.delete$
+    .subscribe((presentationId: number) => this.store.dispatch(new fromPresentations.Delete(presentationId)));
+
   }
 
   deletedSlides(id) {/*
@@ -80,6 +129,7 @@ export class SlidesListComponent implements OnInit {
         this.presentations.splice(i, 1);
       }
     });*/
+    this.store.dispatch(new fromPresentations.Delete(id))
   }
 
   createSlides(){/*

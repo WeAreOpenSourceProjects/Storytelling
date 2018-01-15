@@ -1,6 +1,7 @@
 import { BoxesState, boxesAdapter } from './boxes.interfaces';
 import * as fromBoxes from './boxes.actions';
 import { fromAuthentication } from '@labdat/authentication-state';
+import * as fromPresentations from '@labdat/presentations-state/src/+state/presentations.actions';
 
 export const boxesInitialState: BoxesState = boxesAdapter.getInitialState({
   currentBoxId: null,
@@ -8,7 +9,7 @@ export const boxesInitialState: BoxesState = boxesAdapter.getInitialState({
   loading: false
 });
 
-export function boxesReducer(state: BoxesState = boxesInitialState, action: fromBoxes.Actions | fromAuthentication.Actions): BoxesState {
+export function boxesReducer(state: BoxesState = boxesInitialState, action: fromBoxes.Actions | fromAuthentication.Actions | fromPresentations.Actions): BoxesState {
   switch (action.type) {
     case fromAuthentication.LOGOUT: {
       return boxesInitialState;
@@ -21,6 +22,10 @@ export function boxesReducer(state: BoxesState = boxesInitialState, action: from
     }
     case fromBoxes.DELETE_SUCCESS: {
       return boxesAdapter.removeMany(action.payload.boxeIds, state);
+    }
+    case fromPresentations.LOAD_SUCCESS: {
+      boxesAdapter.removeAll(state);
+      return boxesAdapter.addMany(action.payload.boxes, state);
     }
     default: {
       return state;

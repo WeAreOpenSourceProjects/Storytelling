@@ -34,7 +34,16 @@ import {
   TitleSlideComponent,
   SlidesEditorFormComponent,
   SlideCardComponent,
-  MenuBarComponent
+  MenuBarComponent,
+  SlideEditorComponent
+} from './components';
+export {
+  SlidesViewComponent,
+  TitleSlideComponent,
+  SlidesEditorFormComponent,
+  SlideCardComponent,
+  MenuBarComponent,
+  SlideEditorComponent
 } from './components';
 
 // SLIDES SERVICES
@@ -44,7 +53,7 @@ import { SlideService, SlideResolve, SlidesService, ImagesService, ValidService,
 import { SlidesRoutingModule } from '@labdat/slides-routing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { KeySwitchDirective } from './components/slides-view/key-switch.directive';
+import {  } from './components/slides-view/key-switch.directive';
 
 import { DragulaModule } from 'ng2-dragula';
 import {
@@ -75,13 +84,14 @@ import {
 } from './components/slides-editor-form/slides-editor/slide-editor/charts-builder';
 import { SlidesEditorComponent } from './components/slides-editor-form/slides-editor/slides-editor.component';
 
+import { KeySwitchDirective } from './components/slides-view/key-switch.directive';
 import { SlidesListComponent } from './components/slides-list/slides-list.component';
+export { SlidesListComponent };
 import { SlidesCardComponent } from './components/slides-list/slides-card/slides-card.component';
 import { DeleteDialogComponent } from './components/slides-list/slides-card/delete-dialog/delete-dialog.component';
 import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
 
 import { ValidateOnBlurDirective } from './components/slides-editor-form/slides-editor/slides-setting/validate-on-blur.directive';
-import { SlideEditorComponent } from './components';
 import { GridsterModule } from 'angular-gridster2';
 
 import {

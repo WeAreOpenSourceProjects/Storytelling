@@ -6,6 +6,7 @@ export interface Authenticate {
 }
 
 export interface User {
+  id: number
   firstName: string;
   lastName: string;
   username?: string;
@@ -102,7 +103,7 @@ export interface Presentation {
   favorite: boolean,
   description: string,
   tags: string[],
-  author: string,
+  author: number,
   banner: any,
   slides: string[]
 }

@@ -46,7 +46,7 @@ exports.read = function(req, res) {
 exports.update = function(req, res, next) {
   //transfer image object to id string
   //if (presentation.presentation.slideImage && presentation.presentation.slideImage._id) presentation.presentation.slideImage = presentation.presentation.slideImage._id;
-
+console.log(req.body)
   Presentation.findByIdAndUpdate(req.params.presentationId, req.body)
   .exec()
   .then(function(presentation) {
@@ -336,8 +336,12 @@ exports.search = function(req, res) {
   .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
   .limit(pageSize)
   .exec()
-  .then(function(items) {
-    res.json(items);
+  .then(function(presentations) {
+    res.json({
+      presentations,
+      slides: [],
+      boxes: []
+    });
   }, function(err) {
     if (err) {
       return res.status(422).send({

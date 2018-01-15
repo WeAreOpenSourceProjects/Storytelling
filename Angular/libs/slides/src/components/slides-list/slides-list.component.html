@@ -7,15 +7,19 @@
     [class.display-div]="!(loggedIn$|async) && presentation.public"
     fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
     <app-slides-card
-      (deletedSlides)="deletedSlides($event)"
+      (deletedSlides)="deletedSlides$.next($event)"
+      (duplicateslidesOpt)="duplicate$.next($event)"
+      (publishChange)="togglePublish$.next($event)"
+      (favoriteChange)="toggleFavorite$.next($event)"
       [presentation]="presentation"
-      [editable]="true"
-      (duplicateslidesOpt)="duplicate($event)"></app-slides-card>
+      [loggedIn]="loggedIn$ | async"
+      [user]="user$ | async"
+      [editable]="true"></app-slides-card>
   </div>
 </div>
 
 <div class="error">
-  <p>{{presentationsError$ | async}}</p>
+  <p>{{message$ | async}}</p>
 </div>
 
 <mat-paginator

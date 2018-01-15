@@ -1,6 +1,7 @@
 import { SlidesState, slidesAdapter } from './slides.interfaces';
 import * as fromSlides from './slides.actions';
 import { fromAuthentication } from '@labdat/authentication-state';
+import * as fromPresentations from '@labdat/presentations-state/src/+state/presentations.actions';
 
 export const slidesInitialState: SlidesState = slidesAdapter.getInitialState({
   currentSlideId: null,
@@ -8,7 +9,7 @@ export const slidesInitialState: SlidesState = slidesAdapter.getInitialState({
   loading: false
 });
 
-export function slidesReducer(state: SlidesState = slidesInitialState, action: fromSlides.Actions | fromAuthentication.Actions) : SlidesState {
+export function slidesReducer(state: SlidesState = slidesInitialState, action: fromSlides.Actions | fromAuthentication.Actions | fromPresentations.Actions ) : SlidesState {
   switch (action.type) {
     case fromAuthentication.LOGOUT: {
       return slidesInitialState;
@@ -21,6 +22,10 @@ export function slidesReducer(state: SlidesState = slidesInitialState, action: f
     }
     case fromSlides.DELETE_SUCCESS: {
       return slidesAdapter.removeMany(action.payload.slideIds, state);
+    }
+    case fromPresentations.LOAD_SUCCESS: {
+      slidesAdapter.removeAll(state);
+      return slidesAdapter.addMany(action.payload.slides, state);
     }
     default: {
       return state;

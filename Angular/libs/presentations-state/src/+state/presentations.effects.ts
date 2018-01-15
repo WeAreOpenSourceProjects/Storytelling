@@ -29,29 +29,8 @@ export class PresentationsEffects {
   load = this.dataPersistence.fetch(fromPresentations.LOAD, {
     run: (action: fromPresentations.Load, state: PresentationsState) => {
       const { pageIndex, pageSize, search } = action.payload
-      return this.presentationsApiService
-        .search(pageIndex, pageSize, search)
-        .pipe(
-          map(presentations => presentations.map(presentation => ({ ...presentation, id: presentation._id }))),
-          map(presentations => {
-            let error = '';
-            let isEmpty = presentations.length === 0
-            if (!isEmpty) {
-              return new fromPresentations.LoadSuccess({ presentations })
-            } else {
-              if (search.title) {
-                error = 'Opps, no result for these key words'
-              } else if (search.public) {
-                error = `Sorry, no one publish slides yet! <br>Would you want to be the pioneer?</p>`
-              } else if (!search.public) {
-                error = `Sorry, you don't have any slides yet!`
-              } else if (search.favorite) {
-                error = `Sorry, you don't have any slides yet!`
-              }
-              return new fromPresentations.LoadFailure({ error })
-            }
-          })
-        )
+      return this.presentationsApiService.search(pageIndex, pageSize, search)
+        .pipe(map(result => new fromPresentations.LoadSuccess(result)))
     },
     onError: (action: fromPresentations.Load, error) => {
       console.error('Error', error);
@@ -65,7 +44,7 @@ export class PresentationsEffects {
     .pipe(
       map(toPayload),
       switchMap((payload) => this.presentationsApiService.add(payload.presentations)),
-      map((response: any) => new fromPresentations.AddSuccess({ presentation: response })),
+      map((response: any) => new fromPresentations.AddSuccess(response)),
       catchError(error => of(new fromPresentations.AddFailure(error)))
     )
 ;
