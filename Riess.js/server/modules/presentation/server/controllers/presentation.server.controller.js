@@ -159,182 +159,39 @@ exports.presentationByID = function(req, res, next, id) {
 exports.search = function(req, res) {
   var pageIndex = parseInt(req.query.pageIndex ,10);
   var pageSize = parseInt(req.query.pageSize ,10);
-  var request = null;
-  var regexS = new RegExp((req.query.title) || '');
-  if (req.query.state === 'Public') {
-    if (req.query.favorite === 'favorite') {
-      request = Presentation.find({
-          $and: [{
-            $or: [{
-              'title': regexS
-            }, {
-              'tags': regexS
-            }]
-          }, {
-            'public': true
-          }, {
-            'favorite': true
-          }]
-        });
-    } else if (req.query.favorite === 'notFavorite') {
-      request = Presentation.find({
-        $and: [{
-          $or: [{
-            'title': regexS
-          }, {
-            'tags': regexS
-          }]
-        }, {
-          'public': true
-        }, {
-          'favorite': false
-        }]
-      });
-    } else {
-      request = Presentation.find({
-          $and: [{
-            $or: [{
-              'title': regexS
-            }, {
-              'tags': regexS
-            }]
-          }, {
-            'public': true
-          }]
-        });
-    }
-  } else if (req.query.state === 'Private') {
-    if (req.query.favorite === 'favorite') {
-      request = Presentation.find({
-          $and: [{
-            $or: [{
-              'title': regexS
-            }, {
-              'tags': regexS
-            }]
-          }, {
-            'author.username': req.query.username
-          }, {
-            'public': false
-          }, {
-            'favorite': true
-          }]
-        });
-    } else if (req.query.favorite === 'notFavorite') {
-      request = Presentation.find({
-          $and: [{
-            $or: [{
-              'title': regexS
-            }, {
-              'tags': regexS
-            }]
-          }, {
-            'author.username': req.query.username
-          }, {
-            'public': false
-          }, {
-            'favorite': false
-          }]
-        });
-    }
-    else {
-      request = Presentation.find({
-        $and: [{
-          $or: [{
-            'title': regexS
-          }, {
-            'tags': regexS
-          }]
-        }, {
-          'author.username': req.query.username
-        }, {
-          'public': false
-        }]
-      });
-    }
-  } else {
-    if (req.query.favorite === 'favorite') {
-      request = Presentation.find({
-        $and: [{
-          $or: [{
-            'title': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }, {
-            'tags': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }]
-        }, {
-          $or: [{
-            'author.username': req.query.username
-          }, {
-            'public': true
-          }]
-        }, {
-          'favorite': true
-        }]
-      });
-    } else if (req.query.favorite === 'notFavorite') {
-      request = Presentation.find({
-        $and: [{
-          $or: [{
-            'title': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }, {
-            'tags': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }]
-        }, {
-          $or: [{
-            'author.username': req.query.username
-          }, {
-            'public': true
-          }]
-        }, {
-          'favorite': false
-        }]
-      });
-    } else {
-      request = Presentation.find({
-        $and: [{
-          $or: [{
-            'title': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }, {
-            'tags': {
-              $regex: regexS,
-              $options: "i"
-            }
-          }]
-        }, {
-          $or: [{
-            'author.username': req.query.username
-          }, {
-            'public': true
-          }]
-        }]
-      });
-    }
+  var regexS = new RegExp(req.query.title);
+
+  var request = {
+    $and: [{
+      $or: [{
+        'title': regexS
+      }, {
+        'tags': regexS
+      }]
+    }]
   }
-  var order = '';
-  if (req.query.order === 'date') {
-    order = '-createdAt';
-  } else {
-    order = { 'title': 1 };
+
+  if (req.query.public !== 'indeterminate') {
+    request.$and.push({
+      'public': req.query.public
+    })
   }
-  request
-  .sort(order)
+
+  if (req.query.favorite !== 'indeterminate') {
+    request.$and.push({
+      'favorite': req.query.favorite
+    })
+  }
+
+  var order = (req.query.order === 'date')
+  ? '-createdAt'
+  : { 'title': 1 };
+
+  var presentations = Presentation
+  .find(request)
   .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
   .limit(pageSize)
+  .sort(order)
   .exec()
   .then(function(presentations) {
     res.json({

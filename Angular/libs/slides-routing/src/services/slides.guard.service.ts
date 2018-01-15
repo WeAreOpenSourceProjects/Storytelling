@@ -12,7 +12,9 @@ export class SlidesGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     this.store.dispatch(new fromPresentations.Load({
       pageIndex: 0, pageSize: 10, search: {
-        title: ''
+        title: '',
+        favorite: 'indeterminate',
+        public: 'indeterminate'
       }}))
     return this.store.select(selectPresentationsLoaded).pipe(filter(loaded => loaded));
   }

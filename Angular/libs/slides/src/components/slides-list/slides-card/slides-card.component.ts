@@ -101,13 +101,13 @@ export class SlidesCardComponent implements OnInit {
       //            error => this.notifBarService.showNotif("fail to set upload status, error is " + error)
       event.preventDefault();
       event.stopPropagation();
-      this.publishChange.emit(this.presentation.id)
+      this.publishChange.emit(this.presentation)
   }
   /*set like/dislike presentation*/
   public toggleFavorite(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.favoriteChange.emit(this.presentation.id)
+    this.favoriteChange.emit(this.presentation)
   }
   /*delete the whole presentation*/
   deleteSlides(event) {
@@ -126,7 +126,7 @@ export class SlidesCardComponent implements OnInit {
   duplicateSlides(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.duplicateslidesOpt.emit(this.presentation.id);
+    this.duplicateslidesOpt.emit(this.presentation);
     // this.notifBarService.showNotif("presentation has been copied");
     // this.notifBarService.showNotif("Opps! fail to copy the presentation. error :" + error);
 

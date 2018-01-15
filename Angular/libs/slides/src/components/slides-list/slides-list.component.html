@@ -3,7 +3,7 @@
 </div>
 
 <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-  <div *ngFor="let presentation of presentations$ | async"
+  <div *ngFor="let presentation of presentations$ | async; trackBy:trackById"
     [class.display-div]="!(loggedIn$|async) && presentation.public"
     fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
     <app-slides-card
@@ -18,9 +18,7 @@
   </div>
 </div>
 
-<div class="error">
-  <p>{{message$ | async}}</p>
-</div>
+<div class="error" [innerHTML]="message$ | async"></div>
 
 <mat-paginator
   [length]="presentationsCount$ | async"

@@ -31,9 +31,9 @@ export class SlidesSearchComponent implements ControlValueAccessor {
 
   ngOnInit() {
     this.searchForm = this.formBuilder.group({
-      title: '',
-      favorite: false,
-      public: false,
+      title: [],
+      favorite: [],
+      public: [],
     });
 
     this.searchForm.valueChanges

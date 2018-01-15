@@ -32,47 +32,31 @@ import { map } from 'rxjs/operators/map';
   styleUrls: ['./slides-list.component.scss']
 })
 export class SlidesListComponent implements OnInit {
-  //    @select(['session', 'token']) loggedIn$: Observable<string>;
-  public loggedIn$ = this.store.select(selectIsLoggedIn);
-  public user$ = this.store.select(selectUser);
 
-  loading = true;
-  listCopy = [];
-  next: number = 0;
+
+  //next: number = 0;
 
   public searchControl = new FormControl({
     title: '',
-    favorite: false,
-    public: false,
+    favorite: 'indeterminate',
+    public: 'indeterminate',
   });
 
-  public presentations$ = this.store.select(selectAllPresentations);
-  public presentationsCount$ = this.store.select(selectPresentationsTotal);
-  public presentationsError$ = this.store.select(selectPresentationsError);
   public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
   public delete$ = new Subject();
   public duplicate$ = new Subject();
+
+  public loggedIn$ = this.store.select(selectIsLoggedIn);
+  public user$ = this.store.select(selectUser);
+  public presentations$ = this.store.select(selectAllPresentations);
+  public presentationsCount$ = this.store.select(selectPresentationsTotal);
+  public presentationsError$ = this.store.select(selectPresentationsError);
   public message$ = this.searchControl.valueChanges
     .pipe(
       startWith({title: '', public: 'indeterminate', favorite: 'indeterminate'}),
-      combineLatest(this.presentationsCount$, (search, presentationCount) => {
-        let message = '';
-        let isEmpty = presentationCount === 0
-        if (isEmpty) {
-          if (search.title) {
-            message = 'Oops, no result for these key words'
-          } else if (search.public) {
-            message = `Sorry, no one publish slides yet! <br>Would you want to be the pioneer?</p>`
-          } else if (!search.public) {
-            message = `Sorry, you don't have any slides yet!`
-          } else if (search.favorite) {
-            message = `Sorry, you don't have any slides yet!`
-          }
-        }
-        return message;
-      })
+      combineLatest(this.presentationsCount$, (search, presentationCount) => this.emptyMessage(search, presentationCount))
     )
 
   constructor(
@@ -84,7 +68,7 @@ export class SlidesListComponent implements OnInit {
   ngOnInit() {
 
     this.searchControl.valueChanges
-    .pipe(debounceTime(500))
+    .pipe(debounceTime(500), tap(console.log))
     .subscribe(search => this.store.dispatch(new fromPresentations.Load({ pageIndex: 0, pageSize: 10, search})))
 
     this.nextPage$
@@ -92,44 +76,34 @@ export class SlidesListComponent implements OnInit {
     .subscribe(([pageEvent, search]: [PageEvent, any]) => this.store.dispatch(new fromPresentations.Load({ pageIndex: pageEvent.pageIndex, pageSize: 10, search})));
 
     this.togglePublish$
-    .pipe(
-      withLatestFrom(
-        this.store.select(selectPresentationsEntities),
-        (presentationId: number, presentationEntities) => presentationEntities[presentationId]
-      ),
-    )
-    .subscribe((presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { public: !presentation.public }})));
+    .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { public: !presentation.public }})));
 
     this.toggleFavorite$
-    .pipe(
-      withLatestFrom(
-        this.store.select(selectPresentationsEntities),
-        (presentationId: number, presentationEntities) => presentationEntities[presentationId]
-      ),
-    )
-    .subscribe((presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { favorite: !presentation.favorite }})));
+    .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { favorite: !presentation.favorite }})));
 
     this.duplicate$
-    .pipe(
-      withLatestFrom(
-        this.store.select(selectPresentationsEntities),
-        (presentationId: number, presentationEntities) => presentationEntities[presentationId]
-      )
-    )
-    .subscribe((presentation) => this.store.dispatch(new fromPresentations.Add(presentation)));
+    .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Add(presentation)));
 
     this.delete$
     .subscribe((presentationId: number) => this.store.dispatch(new fromPresentations.Delete(presentationId)));
 
   }
 
-  deletedSlides(id) {/*
-    this.presentations.forEach((presentation, i) => {
-      if (presentation.id === id) {
-        this.presentations.splice(i, 1);
+  emptyMessage(search, presentationCount) {
+    let message = '';
+    let isEmpty = presentationCount === 0
+    if (isEmpty) {
+      if (search.title) {
+        message = '<p> Oops, no result for these key words <p>'
+      } else if (search.public) {
+        message = `<p>Sorry, no one publish slides yet!<br> Would you want to be the pioneer ?</p>`
+      } else if (!search.public) {
+        message = `<p>Sorry, you don't have any slides yet!</p>`
+      } else if (search.favorite) {
+        message = `<p>Sorry, you don't have any slides yet!</p>`
       }
-    });*/
-    this.store.dispatch(new fromPresentations.Delete(id))
+    }
+    return message;
   }
 
   createSlides(){/*
@@ -141,5 +115,9 @@ export class SlidesListComponent implements OnInit {
       this.slidesService.add(presentation).subscribe(presentation => {
        this.presentations.push(presentation)
       })*/
+  }
+
+  trackById(presentation) {
+    return presentation.id
   }
 }
