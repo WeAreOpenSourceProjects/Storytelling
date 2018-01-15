@@ -3,6 +3,7 @@ import * as fromSlides from './slides.actions';
 import { fromAuthentication } from '@labdat/authentication-state';
 
 export const slidesInitialState: SlidesState = slidesAdapter.getInitialState({
+  currentSlideId: null,
   loaded: false,
   loading: false
 });

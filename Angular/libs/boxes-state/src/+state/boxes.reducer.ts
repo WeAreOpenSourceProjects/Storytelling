@@ -3,6 +3,7 @@ import * as fromBoxes from './boxes.actions';
 import { fromAuthentication } from '@labdat/authentication-state';
 
 export const boxesInitialState: BoxesState = boxesAdapter.getInitialState({
+  currentBoxId: null,
   loaded: false,
   loading: false
 });

@@ -10,6 +10,10 @@ var mongoose = require('mongoose'),
  * Box Schema
  */
 var BoxSchema = new Schema({
+  slide: {
+    type: Schema.ObjectId,
+    ref: 'Slide'
+  },
   grid: {
     cols: {
       type: Number,

@@ -9,9 +9,15 @@ const selectSlidesState = createFeatureSelector<SlidesState>('slides');
 export const {
   selectIds: selectSlidesIds,
   selectEntities: selectSlidesEntities,
-  selectAll: selectAllSlidess,
+  selectAll: selectAllSlides,
   selectTotal: selectSlidesTotal,
 } = slidesAdapter.getSelectors(selectSlidesState);
 
 export const selectIsLoading = (state: SlidesState) => state.loading;
 export const selectIsLoaded = (state: SlidesState) => state.loaded;
+
+export const selectCurrentSlideId = createSelector(selectSlidesState, (state: SlidesState) => state.currentSlideId);
+export const selectCurrentSlide = createSelector(selectSlidesEntities, selectCurrentSlideId, (entities, id) => entities[id]);
+
+export const selectCurrentSlideIndex = createSelector(selectCurrentSlide, slide => slide.index);
+export const selectCurrentSlideBoxes = createSelector(selectCurrentSlide, slide => slide.boxes);

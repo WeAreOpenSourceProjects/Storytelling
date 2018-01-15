@@ -3,6 +3,7 @@ import * as fromPresentations from './presentations.actions';
 import { fromAuthentication } from '@labdat/authentication-state';
 
 export const presentationsInitialState: PresentationsState = presentationsAdapter.getInitialState({
+  selectedPresentationId: null,
   loaded: false,
   loading: false
 });
