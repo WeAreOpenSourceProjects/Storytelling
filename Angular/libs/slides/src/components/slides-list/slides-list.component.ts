@@ -40,6 +40,7 @@ export class SlidesListComponent implements OnInit {
     title: '',
     favorite: 'indeterminate',
     public: 'indeterminate',
+    order: 'alpha'
   });
 
   public nextPage$ = new Subject();

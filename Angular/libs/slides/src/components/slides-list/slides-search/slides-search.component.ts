@@ -6,7 +6,7 @@ import {
   EventEmitter,
   forwardRef} from '@angular/core';
 import { FormBuilder, FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox } from '@angular/material';
+import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox, MatSelect } from '@angular/material';
 
 @Component({
   selector: 'app-slides-search',
@@ -34,6 +34,7 @@ export class SlidesSearchComponent implements ControlValueAccessor {
       title: [],
       favorite: [],
       public: [],
+      order: [],
     });
 
     this.searchForm.valueChanges
@@ -57,16 +58,18 @@ export class SlidesSearchComponent implements ControlValueAccessor {
   onClick(checkbox: MatCheckbox, name) {
     if (checkbox.indeterminate) {
       checkbox.indeterminate = false;
-      this.searchForm.controls[name].setValue(true)
+      this.searchForm.controls[name].setValue(true);
+    } else if (this.searchForm.controls[name].value) {
+      this.searchForm.controls[name].setValue(false);
       return;
-    }
-    if (this.searchForm.controls[name].value) {
-      this.searchForm.controls[name].setValue(false)
-      return;
-    }
+    } else {
     checkbox.indeterminate = true;
-    this.searchForm.controls[name].setValue('indeterminate')
-    return;
+    this.searchForm.controls[name].setValue('indeterminate');
+    }
+  }
+
+  onChange(select: MatSelect) {
+    this.searchForm.controls['order'].setValue(select.value);
   }
 }
 /*
