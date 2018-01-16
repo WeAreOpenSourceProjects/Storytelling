@@ -52,8 +52,8 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
    */
   drawChart() {
     let element = this.chartContainer.nativeElement;
-    let width = element.offsetWidth - this.margin.left - this.margin.right;
-    let height = element.offsetHeight - this.margin.top - this.margin.bottom;
+    let width = element.offsetWidth;
+    let height = element.offsetHeight ;
 
     let svg = d3
       .select(element)

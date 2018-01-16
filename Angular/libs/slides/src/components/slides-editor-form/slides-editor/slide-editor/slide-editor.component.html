@@ -1,6 +1,6 @@
 <ng-template #menubar ></ng-template>
 <gridster [options]="gridConfig">
-  <gridster-item [item]="box"  *ngFor="let box of slide?.boxes; let i = index">
+  <gridster-item [item]="box" (dblclick)="enableEdit()" *ngFor="let box of slide?.boxes; let i = index">
         <div class="delete box-header-btns pull-right">
           <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
         </div>

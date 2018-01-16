@@ -34,8 +34,8 @@ export class HierarchicalEdgeBundlingComponent extends Chart implements OnInit {
   }
 
   init() {
-    this.width = this.element.offsetWidth - this.margin.left - this.margin.right;
-    this.height = this.element.offsetHeight - this.margin.top - this.margin.bottom;
+    this.width = this.element.offsetWidth ;
+    this.height = this.element.offsetHeight;
     this.diameter = this.height - this.margin.top - this.margin.bottom;
     //this.radius = this.diameter / 2;
     this.radius = Math.min(this.width, this.height) / 2;
