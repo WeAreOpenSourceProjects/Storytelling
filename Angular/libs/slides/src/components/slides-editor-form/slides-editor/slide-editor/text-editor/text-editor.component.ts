@@ -7,10 +7,9 @@ import { environment } from '../../../../../../../../apps/default/src/environmen
   templateUrl: './text-editor.component.html',
   styleUrls: ['./text-editor.component.scss']
 })
-export class TextEditorComponent implements OnInit {
+export class TextEditorComponent {
   @HostListener('dblclick', ['$event']) onDblClick(event) {
     $(this.froalaEditor.nativeElement).froalaEditor('events.focus');
-
   }
   @HostListener('window:click', ['$event']) onClickOut(event) {
     $(this.froalaEditor.nativeElement).froalaEditor('events.trigger', 'blur', [], true);
