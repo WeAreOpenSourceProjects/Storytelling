@@ -32,7 +32,8 @@ export class SlideEditorComponent implements OnInit{
   isOpened = false;
   id: any;
   idSlides: any;
-  gridConfig:GridsterConfig;
+  gridConfig:any;
+  options;
   constructor(
     private dialog: MatDialog,
     private slideService : SlideService,
@@ -42,11 +43,24 @@ export class SlideEditorComponent implements OnInit{
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
-
-enableEdit(){
-  this.editMode= true;
+enableEdit(box){
+  if(box.text){
+    this.editMode= true;
+  } else if(box.chart){
+    console.log(box)
+    const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
+    dialog.componentInstance.inputOptions = box.chart.chartOptions;
+    dialog.componentInstance.inputData = box.chart.data;
+    dialog.afterClosed().subscribe(result => {
+      if (result !== 'CANCEL') {
+        console.log('The dialog was closed');
+        box.chart = result;
+        box.width = box.cols *25;
+        box.height = box.cols *25;
+        }
+    });
+  }
 }
-
 emptyCellClick(event, item) {
   let componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
   if (this.menubar) {
@@ -57,20 +71,20 @@ emptyCellClick(event, item) {
   (<MenuBarComponent>componentRef.instance).left = event.clientX-50;
   (<MenuBarComponent>componentRef.instance).isOpen.subscribe((type)=>{
     let componentEditorRef;
-    this.texteditor.changes.subscribe((a)=>{
     if(type==='text'){
-      for (let i = 0; i < this.texteditor.toArray().length; i++) {
-        if(i===this.slide.boxes.length-1 && !componentEditorRef){
-           let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
-           componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-           (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
-             item.text = text;
-           });
+      this.texteditor.changes.subscribe((a)=>{
+        for (let i = 0; i < this.texteditor.toArray().length; i++) {
+          if(i===this.slide.boxes.length-1 && !componentEditorRef){
+             let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+             componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
+             (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
+               item.text = text;
+             });
 
+           }
          }
-       }
-     }
-   })
+     })
+   }
    if (type==='chart'){
      item.cols= 5;
      item.rows =5;
@@ -82,8 +96,8 @@ emptyCellClick(event, item) {
         }
     });
    }
-    this.menubar.clear();
-    this.slide.boxes.push(item);
+   this.menubar.clear();
+   this.slide.boxes.push(item);
   });
 }
 
@@ -193,4 +207,5 @@ removeItem($event, item) {
           this.router.navigate(['/slides/display/', this.idSlides])
         });
   }
+
 }
