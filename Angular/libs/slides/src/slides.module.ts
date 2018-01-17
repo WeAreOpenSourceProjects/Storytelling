@@ -88,7 +88,7 @@ import { KeySwitchDirective } from './components/slides-view/key-switch.directiv
 import { SlidesListComponent } from './components/slides-list/slides-list.component';
 export { SlidesListComponent };
 import { SlidesCardComponent } from './components/slides-list/slides-card/slides-card.component';
-import { DeleteDialogComponent } from './components/slides-list/slides-card/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from './components/slides-list/delete-dialog/delete-dialog.component';
 import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
 
 import { ValidateOnBlurDirective } from './components/slides-editor-form/slides-editor/slides-setting/validate-on-blur.directive';

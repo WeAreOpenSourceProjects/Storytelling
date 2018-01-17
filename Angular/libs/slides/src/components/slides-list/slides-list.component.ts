@@ -3,7 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { SlidesService, ImagesService } from '../../services/index';
 import { Slides, SlidesSetting } from '../../models/index';
 //import {NotifBarService} from "app/core";
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 import {  } from '@labdat/presentations-state';
 import { Presentation } from '@labdat/data-models';
 import { FormControl } from '@angular/forms';
@@ -25,6 +26,7 @@ import { Subject } from 'rxjs/Subject';
 import { combineLatest } from 'rxjs/operators/combineLatest';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-slides-list',
@@ -32,9 +34,6 @@ import { map } from 'rxjs/operators/map';
   styleUrls: ['./slides-list.component.scss']
 })
 export class SlidesListComponent implements OnInit {
-
-
-  //next: number = 0;
 
   public searchControl = new FormControl({
     title: '',
@@ -46,24 +45,25 @@ export class SlidesListComponent implements OnInit {
   public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
+  public copy$ = new Subject();
   public delete$ = new Subject();
-  public duplicate$ = new Subject();
+  public add$ = new Subject();
 
   public loggedIn$ = this.store.select(selectIsLoggedIn);
   public user$ = this.store.select(selectUser);
   public presentations$ = this.store.select(selectAllPresentations);
   public presentationsCount$ = this.store.select(selectPresentationsTotal);
   public presentationsError$ = this.store.select(selectPresentationsError);
-  public message$ = this.searchControl.valueChanges
-    .pipe(
-      startWith({title: '', public: 'indeterminate', favorite: 'indeterminate'}),
-      combineLatest(this.presentationsCount$, (search, presentationCount) => this.emptyMessage(search, presentationCount))
-    )
+  public message$ = this.searchControl.valueChanges.pipe(
+    startWith({title: '', public: 'indeterminate', favorite: 'indeterminate'}),
+    combineLatest(this.presentationsCount$, (search, presentationCount) => this.emptyMessage(search, presentationCount))
+  )
 
   constructor(
     private slidesService: PresentationsApiService,
     private imagesService: ImagesService,
-    private store: Store<PresentationsState> ) { }
+    private store: Store<PresentationsState>,
+    private dialog: MatDialog ) { }
     /*        private notifBarService: NotifBarService */
 
   ngOnInit() {
@@ -82,18 +82,30 @@ export class SlidesListComponent implements OnInit {
     this.toggleFavorite$
     .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { favorite: !presentation.favorite }})));
 
-    this.duplicate$
-    .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Add(presentation)));
+    this.copy$
+    .subscribe((presentationId: string) => this.store.dispatch(new fromPresentations.Copy(presentationId)));
 
-    this.delete$
-    .subscribe((presentationId: number) => this.store.dispatch(new fromPresentations.Delete(presentationId)));
+    this.add$
+    .pipe(withLatestFrom(this.user$, (click, user) => user))
+    .subscribe((user) => {
+      const presentation = new Presentation();
+      console.log(user.id)
+      presentation.authorId = user.id;
+      this.store.dispatch(new fromPresentations.Add(presentation));
+    });
+
+    this.delete$.pipe(switchMap(presentationId => this.dialog.open(DeleteDialogComponent, { height: '20%', width: '20%', data: { presentationId } }).afterClosed()))
+    .subscribe(result => {
+      if (result.delete) {
+        this.store.dispatch(new fromPresentations.Delete(result.presentationId))
+      }
+    });
 
   }
 
   emptyMessage(search, presentationCount) {
     let message = '';
-    let isEmpty = presentationCount === 0
-    if (isEmpty) {
+    if (presentationCount === 0) {
       if (search.title) {
         message = '<p> Oops, no result for these key words <p>'
       } else if (search.public) {
@@ -105,17 +117,6 @@ export class SlidesListComponent implements OnInit {
       }
     }
     return message;
-  }
-
-  createSlides(){/*
-      var presentation
-      presentation.slidesSetting = new SlidesSetting();
-      if (this.presentations.length>0 && this.presentations[this.presentations.length -1]){
-//        presentation.slidesSetting.index =  this.presentations[this.presentations.length -1].slidesSetting.index+1
-      }
-      this.slidesService.add(presentation).subscribe(presentation => {
-       this.presentations.push(presentation)
-      })*/
   }
 
   trackById(presentation) {

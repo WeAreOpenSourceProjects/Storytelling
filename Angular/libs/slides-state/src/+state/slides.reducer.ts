@@ -23,7 +23,8 @@ export function slidesReducer(state: SlidesState = slidesInitialState, action: f
     case fromSlides.DELETE_SUCCESS: {
       return slidesAdapter.removeMany(action.payload.slideIds, state);
     }
-    case fromPresentations.LOAD_SUCCESS: {
+    case fromPresentations.LOAD_SUCCESS:
+    case fromPresentations.COPY_SUCCESS: {
       slidesAdapter.removeAll(state);
       return slidesAdapter.addMany(action.payload.slides, { ...state, loaded: true});
     }

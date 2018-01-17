@@ -7,6 +7,9 @@ export const LOAD_FAILURE = '[Presentations] Load Failure';
 export const ADD = '[Presentations] Add';
 export const ADD_SUCCESS = '[Presentations] Add Success';
 export const ADD_FAILURE = '[Presentations] Add Failure';
+export const COPY = '[Presentations] Copy';
+export const COPY_SUCCESS = '[Presentations] Copy Success';
+export const COPY_FAILURE = '[Presentations] Copy Failure';
 export const UPDATE = '[Presentations] Update';
 export const UPDATE_SUCCESS = '[Presentations] Update Success';
 export const UPDATE_FAILURE = '[Presentations] Update Failure';
@@ -21,6 +24,9 @@ export type Actions =
 | Add
 | AddSuccess
 | AddFailure
+| Copy
+| CopySuccess
+| CopyFailure
 | Update
 | UpdateSuccess
 | UpdateFailure
@@ -65,12 +71,12 @@ export class AddFailure implements Action {
 
 export class Update implements Action {
   readonly type = UPDATE;
-  constructor(public payload: { id: number, changes: any }) {}
+  constructor(public payload: { id: string, changes: any }) {}
 }
 
 export class UpdateSuccess implements Action {
   readonly type = UPDATE_SUCCESS;
-  constructor(public payload: { id: number, changes: any }) {}
+  constructor(public payload: { id: string, changes: any }) {}
 }
 
 export class UpdateFailure implements Action {
@@ -80,15 +86,38 @@ export class UpdateFailure implements Action {
 
 export class Delete implements Action {
   readonly type = DELETE;
-  constructor(public payload: number) {}
+  constructor(public payload: string) {}
 }
 
 export class DeleteSuccess implements Action {
   readonly type = DELETE_SUCCESS;
-  constructor(public payload: { presentationId: string }) {}
+  constructor(public payload: {
+    presentationId: string,
+    slideIds: string[],
+    boxIds: string[]
+  }) { }
 }
 
 export class DeleteFailure implements Action {
   readonly type = DELETE_FAILURE;
   constructor(public payload: { error: any }) {}
+}
+
+export class Copy implements Action {
+  readonly type = COPY;
+  constructor(public payload: string) {}
+}
+
+export class CopySuccess implements Action {
+  readonly type = COPY_SUCCESS;
+  constructor(public payload: {
+    presentation: Presentation,
+    slides: Slide[],
+    boxes: Box[]
+  }) {}
+}
+
+export class CopyFailure implements Action {
+  readonly type = COPY_FAILURE;
+  constructor(public payload: any) {}
 }

@@ -17,11 +17,20 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
     case fromPresentations.LOAD: {
       return { ...state, loading: true };
     }
+    case fromPresentations.LOAD_FAILURE: {
+      return presentationsAdapter.removeAll({...state, error: action.payload.error });
+    }
     case fromPresentations.LOAD_SUCCESS: {
       return presentationsAdapter.addAll(action.payload.presentations, { ...state, loaded: true, loading: false });
     }
-    case fromPresentations.LOAD_FAILURE: {
-      return presentationsAdapter.removeAll({...state, error: action.payload.error });
+    case fromPresentations.ADD_SUCCESS: {
+      return presentationsAdapter.addOne(action.payload, state);
+    }
+    case fromPresentations.COPY_SUCCESS: {
+      return presentationsAdapter.addOne(action.payload.presentation, state);
+    }
+    case fromPresentations.DELETE_SUCCESS: {
+      return presentationsAdapter.removeOne(action.payload.presentationId, state);
     }
     case fromPresentations.UPDATE_SUCCESS: {
       return presentationsAdapter.updateOne(action.payload, state);

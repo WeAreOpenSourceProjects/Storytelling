@@ -14,7 +14,7 @@ var SlideSchema = new Schema({
     type: Number,
     default: 1
   },
-  boxeIds: [{
+  boxIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Box',
     required: false

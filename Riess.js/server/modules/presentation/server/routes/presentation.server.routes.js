@@ -23,14 +23,18 @@ module.exports = function(app) {
 //  .all(presentationPolicy.isAllowed)
   .get(presentation.search);
 
+  app.route('/api/presentations/copy')
+//  .all(presentationPolicy.isAllowed)
+  .post(presentation.copy);
+
   // Single presentation routes
   app.param('presentationId', presentation.presentationByID)
   .route('/api/presentations/:presentationId')
-  .all(presentationPolicy.isAllowed)
+//  .all(presentationPolicy.isAllowed)
   .get(presentation.read)
 
   app.route('/api/presentations/:presentationId')
-  .all(presentationPolicy.isAllowed)
+//  .all(presentationPolicy.isAllowed)
   .patch(presentation.update)
   .delete(presentation.delete);
 

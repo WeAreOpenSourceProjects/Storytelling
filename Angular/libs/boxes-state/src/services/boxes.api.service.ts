@@ -46,7 +46,7 @@ export class BoxesApiService {
     return this.http.put(backendURL, boxe).map((response: Response) => response.json());
   }
   delete(id): Observable<any> {
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.boxes}/${id}`;
-    return this.http.delete(backendURL).map((response: Response) => response.json());
+    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.boxes}/${id}`;
+    return this.http.delete(backendURL);
   }
 }

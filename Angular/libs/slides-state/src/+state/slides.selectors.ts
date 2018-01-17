@@ -18,4 +18,4 @@ export const selectSlidesLoaded = createSelector(selectSlidesState, (state: Slid
 export const selectCurrentSlideId = createSelector(selectSlidesState, (state: SlidesState) => state.currentSlideId);
 export const selectCurrentSlide = createSelector(selectSlidesEntities, selectCurrentSlideId, (entities, id) => entities[id]);
 export const selectCurrentSlideIndex = createSelector(selectCurrentSlide, slide => slide.index);
-export const selectCurrentSlideBoxes = createSelector(selectCurrentSlide, slide => slide.boxes);
+export const selectCurrentSlideBoxes = createSelector(selectCurrentSlide, slide => slide.boxIds);

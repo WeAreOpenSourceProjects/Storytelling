@@ -53,9 +53,18 @@ export class PresentationsApiService {
   }
 
   add(presentation: Presentation): Observable<any> {
-    presentation.author = this.user.username;
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.presentations}`;
-    return this.http.post(backendURL, presentation);
+    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}`;
+    return this.http.post(backendURL, presentation).pipe(map((presentation: Presentation) => ({...presentation, id: presentation._id})));
+  }
+
+  copy(presentationId: number): Observable<any> {
+    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}/copy`;
+    return this.http.post(backendURL, { presentationId })
+    .pipe(map((result: any) => ({
+      presentation: { ...result.presentation, id: result.presentation._id },
+      slides: result.slides.map(slide => ({ ...slide, id: slide._id })),
+      boxes: result.boxes.map(box => ({ ...box, id: box._id }))
+    })));
   }
 
   getAll(pageIndex, pageSize): Observable<any> {
@@ -74,15 +83,16 @@ export class PresentationsApiService {
     return this.http.get(backendURL);
   }
 
-  update(presentation, id): Observable<any> {
+  update({id, changes}): Observable<any> {
     const backendURL = `${this.baseUrl}/${this.endpoints.presentations}/${id}`;
-    return this.http.patch(backendURL, presentation);
+    return this.http.patch(backendURL, changes);
   }
 
-  delete(id): Observable<any> {
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.presentations}/${id}`;
+  delete(presentationId): Observable<any> {
+    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}/${presentationId}`;
     return this.http.delete(backendURL);
   }
+
 
   search(pageIndex, pageSize, search?): Observable<any> {
     const backendURL = `${this.baseUrl}/presentations/search`;

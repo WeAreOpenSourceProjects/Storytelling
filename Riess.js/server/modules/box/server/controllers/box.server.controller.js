@@ -30,20 +30,15 @@ var path = require('path'),
  * Create an box
  */
 exports.create = function(req, res) {
-  Box.create(req.body, function(err, box) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
+  Box.create(req.body)
+  .then(function(box) {
       res.json(box);
-    }
+  })
+  .catch(function(err) {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage(err)
+    });
   });
-};
-
-exports.read = function(req, res) {
-  var box = req.box ? req.box.toJSON() : {};
-  res.json(box);
 };
 
 exports.update = function(req, res) {
@@ -61,7 +56,7 @@ exports.update = function(req, res) {
 
 /**
  * Delete a box
- */
+ */ 
 exports.delete = function(req, res) {
   Box.findByIdAndRemove(req.params.boxId)
   .exec()

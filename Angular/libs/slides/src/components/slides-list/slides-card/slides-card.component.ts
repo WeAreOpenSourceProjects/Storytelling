@@ -5,7 +5,6 @@ import { map, filter } from 'rxjs/operators';
 import { Presentation } from '@labdat/data-models';
 import { SlidesService, ImagesService } from '../../../services';
 import { MatDialog } from '@angular/material';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 //import { NotifBarService } from 'app/core';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { selectUser, selectIsLoggedIn, AuthenticationState } from '@labdat/authentication-state';
@@ -59,7 +58,7 @@ export class SlidesCardComponent implements OnInit {
   public user: User;
 
   @Output()
-  public deletedSlides = new EventEmitter();
+  public delete = new EventEmitter();
 
   @Output()
   public publishChange = new EventEmitter();
@@ -68,9 +67,7 @@ export class SlidesCardComponent implements OnInit {
   public favoriteChange = new EventEmitter();
 
   @Output()
-  public duplicateslidesOpt = new EventEmitter();
-  //    @select(['session', 'token']) loggedIn$: Observable<string>;
-  //    @select(['session', 'user', 'username']) username$: Observable<Object>;
+  public copy = new EventEmitter();
 
   public loggedIn$: Observable<boolean> = this.store.select(selectIsLoggedIn);
   public userName$ = this.store.select(selectUser)
@@ -113,20 +110,13 @@ export class SlidesCardComponent implements OnInit {
   deleteSlides(event) {
     event.preventDefault();
     event.stopPropagation();
-    const dialog = this.dialog.open(DeleteDialogComponent, { height: '20%', width: '20%' });
-    dialog.afterClosed().subscribe(result => {
-      if (result === 'YES') {
-        // this.notifBarService.showNotif("the presentation has been deleted successfully!");
-        // error => this.notifBarService.showNotif("fail to delete the presentation, error is " + error)
-        this.deletedSlides.emit(this.presentation.id);
-      }
-    });
+    this.delete.emit(this.presentation.id)
   }
   /*duplicate presentation*/
-  duplicateSlides(event) {
+  copySlides(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.duplicateslidesOpt.emit(this.presentation);
+    this.copy.emit(this.presentation.id);
     // this.notifBarService.showNotif("presentation has been copied");
     // this.notifBarService.showNotif("Opps! fail to copy the presentation. error :" + error);
 
@@ -136,6 +126,6 @@ export class SlidesCardComponent implements OnInit {
     return this.loggedIn
     && this.editable
     && this.presentation
-    && this.presentation.author === this.user.id;
+    && this.presentation.authorId === this.user.id;
   }
 }

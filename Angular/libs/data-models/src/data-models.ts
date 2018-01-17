@@ -6,7 +6,7 @@ export interface Authenticate {
 }
 
 export interface User {
-  id: number
+  id?: string
   firstName: string;
   lastName: string;
   username?: string;
@@ -44,29 +44,6 @@ export class SlidesSetting {
   }
 }
 
-export class Slide {
-  id: string;
-  boxes: [{
-    config: NgGridItemConfig;
-    text: any;
-    chart: any;
-    width: number;
-    height: number;
-  }] = [{
-    config: {},
-    text: '',
-    chart: '',
-    width: 0,
-    height: 0
-  }];
-  title: string = '';
-  index: number = 1;
-  isValid: boolean = false;
-  constructor(index?: number) {
-    if (index) this.index = index;
-  }
-}
-
 export class Slides {
   _id: string;
   id: string;
@@ -84,7 +61,8 @@ export class Slides {
 }
 
 export interface Box {
-  id: number,
+  _id?: string,
+  id?: string,
   grid: {
     width: Number,
     height:  Number,
@@ -96,20 +74,40 @@ export interface Box {
 }
 
 export interface Presentation {
-  _id?: number,
-  id: number,
+  _id?: string,
+  id?: string,
   title: string
   public: boolean,
   favorite: boolean,
   description: string,
   tags: string[],
-  author: number,
+  authorId: string,
   banner: any,
-  slides: string[]
+  slideIds: string[]
+}
+
+export interface PresentationI {
+  _id?: string,
+  id?: string,
+  title?: string
+  public?: boolean,
+  favorite?: boolean,
+  description?: string,
+  tags?: string[],
+  authorId?: string,
+  banner?: any,
+  slideIds?: string[]
+}
+
+export class Presentation implements PresentationI {
+  constructor() {
+    this.title = 'New Presentation';
+  }
 }
 
 export interface Slide {
-  id: string;
+  _id?: string;
+  id?: string;
   index:number;
-  boxeIds: Box[];
+  boxIds: Box[];
 }

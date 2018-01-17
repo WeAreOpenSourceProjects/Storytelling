@@ -7,8 +7,8 @@
     [class.display-div]="!(loggedIn$|async) && presentation.public"
     fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
     <app-slides-card
-      (deletedSlides)="deletedSlides$.next($event)"
-      (duplicateslidesOpt)="duplicate$.next($event)"
+      (delete)="delete$.next($event)"
+      (copy)="copy$.next($event)"
       (publishChange)="togglePublish$.next($event)"
       (favoriteChange)="toggleFavorite$.next($event)"
       [presentation]="presentation"
@@ -26,15 +26,10 @@
   (page)="nextPage$.next($event)">
 </mat-paginator>
 
-<button class="buttonBottom" *ngIf="loggedIn$|async" (click)="createSlides()" mat-fab>
-  <mat-icon svgIcon="content:ic_add_24px"></mat-icon>
-</button>
-
 <button
   class="buttonBottom"
-  *ngIf="!(loggedIn$|async)"
-  [routerLink]="['/user/login']"
-  [queryParams]="{returnUrl: '/slides/createSlides'}"
+  *ngIf="loggedIn$ | async"
+  (click)="add$.next($event)"
   mat-fab>
   <mat-icon svgIcon="content:ic_add_24px"></mat-icon>
 </button>

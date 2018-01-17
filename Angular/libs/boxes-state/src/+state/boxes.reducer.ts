@@ -21,9 +21,10 @@ export function boxesReducer(state: BoxesState = boxesInitialState, action: from
       return boxesAdapter.addAll(action.payload.boxes, { ...state, loaded: true, loading: false });
     }
     case fromBoxes.DELETE_SUCCESS: {
-      return boxesAdapter.removeMany(action.payload.boxeIds, state);
+      return boxesAdapter.removeMany(action.payload.boxIds, state);
     }
-    case fromPresentations.LOAD_SUCCESS: {
+    case fromPresentations.LOAD_SUCCESS:
+    case fromPresentations.COPY_SUCCESS: {
       boxesAdapter.removeAll(state);
       return boxesAdapter.addMany(action.payload.boxes, { ...state, loaded: true });
     }

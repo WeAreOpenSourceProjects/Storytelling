@@ -20,18 +20,88 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   var presentation = new Presentation(req.body);
-  presentation.user = req.user;
-  presentation.title += ' '
-  presentation.save(function(err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(presentation);
-    }
+
+  Presentation
+  .create(presentation)
+  .then(function(presentation) {
+    return res.json(presentation);
+  })
+  .catch(function(err) {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage(err)
+    });
   });
 };
+
+exports.copy = function(req, res) {
+
+  var presentation = Presentation.findOne({ _id: req.body.presentationId })
+
+  var newPresentation = presentation
+  .then(function(presentation) {
+    var presentation = presentation.toObject();
+    delete presentation._id;
+    presentation.user = req.user;
+    presentation.title += ' copy';
+    return Presentation.create(presentation);
+  })
+
+  var slides = presentation
+  .then(function(presentation) {
+    console.log('presentationb')
+    return Slide.find({_id: { $in: presentation.slideIds } }).exec()
+  })
+
+  var newSlides = slides
+  .then(function(slides) {
+    if (slides.length === 0) {
+      return { ops: [] };
+    }
+    return Slide.collection.insert(slides.map(function(slide) {
+      var slide = slide.toObject();
+      delete slide._id;
+      return slide;
+    }))
+  })
+  .then(function(slides) {
+    console.log('slides', slides.ops)
+    return slides.ops;
+  })
+
+  var newBoxes = slides
+  .then(function(slides) {
+    return Box.find({_id: { $in: [].concat.apply([], slides.map(slide => slide.boxIds)) } }).exec()
+  })
+  .then(function(boxes) {
+    if (boxes.length === 0) {
+      return { ops: [] };
+    }
+    return Box.collection.insert(boxes.map(function(box) {
+      var box = box.toObject();
+      delete box._id;
+      return box;
+    }))
+  })
+  .then(function(boxes) {
+    console.log('boxes', boxes.ops)
+    return boxes.ops;
+  })
+
+  return Promise.all([newPresentation, newSlides, newBoxes])
+  .then(function(result) {
+    return res.json({
+      presentation: result[0],
+      slides: result[1],
+      boxes: result[2]
+    })
+  })
+  .catch(function(err) {
+    console.log(err)
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage(err)
+    });
+  });
+}
 
 /**
  * Show the current presentation
@@ -48,7 +118,6 @@ exports.read = function(req, res) {
 exports.update = function(req, res, next) {
   //transfer image object to id string
   //if (presentation.presentation.slideImage && presentation.presentation.slideImage._id) presentation.presentation.slideImage = presentation.presentation.slideImage._id;
-console.log(req.body)
   Presentation.findByIdAndUpdate(req.params.presentationId, req.body)
   .exec()
   .then(function(presentation) {
@@ -78,15 +147,35 @@ console.log(req.body)
  * Delete an presentation
  */
 exports.delete = function(req, res) {
-  Presentation.findOneById(req.params.presentationId, function(err, customer) {
-    Presentation.remove();
+  Presentation
+  .findOne({ _id: req.params.presentationId })
+  .populate({
+    path: 'slideIds',
+    populate: { path: 'boxIds' }
   })
-//  Presentation.findByIdAndRemove(req.params.presentationId)
   .exec()
   .then(function(presentation) {
-    res.json(presentation);
+    var slides = [].concat.apply([], presentation.slideIds);
+    console.log(presentation)
+    var slideIds = slides.map(function(slide) { return slide._id })
+    var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
+    var boxIds = boxes.map(function(box) { return box._id })
+    return Promise.all([
+      Promise.resolve({
+        presentationId: presentation.id,
+        slideIds: slideIds,
+        boxIds: boxIds
+      }),
+      presentation.remove(),
+      Slide.remove({ _id: { $in: slideIds } }),
+      Box.remove({ _id: { $in: boxIds } })
+    ])
+  })
+  .then(function(result) {
+    res.json(result[0]);
   })
   .catch(function(err) {
+    console.log(err)
     return res.status(422).send({
       message: errorHandler.getErrorMessage(err)
     });
@@ -163,6 +252,8 @@ exports.search = function(req, res) {
   var pageSize = parseInt(req.query.pageSize ,10);
   var regexS = new RegExp(req.query.title);
 
+//  console.log(mongoose.connection.db.collection('Box'))
+
   var request = {
     $and: [{
       $or: [{
@@ -189,36 +280,29 @@ exports.search = function(req, res) {
   ? '-createdAt'
   : { 'title': 1 };
 
-  var presentations = Presentation
+  Presentation
   .find(request)
+  .populate({
+    path: 'slideIds',
+    populate: { path: 'boxIds' }
+  })
   .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
   .limit(pageSize)
   .sort(order)
   .exec()
-
-  var slides = presentations
   .then(function(presentations) {
-    return Slide.find({_id: { $in: [].concat.apply([], presentations.map(presentation => presentation.slideIds)) } })
-  })
-
-  var boxes = slides
-  .then(function(slides) {
-    return Box.find({_id: { $in: [].concat.apply([], slides.map(slide => slide.boxeIds)) } })
-  })
-
-  Promise.all([presentations, slides, boxes])
-  .then(function(result) {
+    var slides = [].concat.apply([], presentations.map(function(presentation) { return presentation.slideIds }));
+    var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     res.json({
-      presentations: result[0],
-      slides: result[1],
-      boxes: result[2]
+      presentations: presentations,
+      slides: slides,
+      boxes: boxes
     });
   })
   .catch(function(err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    }
+    console.log(err)
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage(err)
+    });
   });
 };

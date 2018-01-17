@@ -16,6 +16,7 @@ import { fromAuthentication } from '@labdat/authentication-state';
 import { fromSlides } from '@labdat/slides-state';
 import { fromBoxes } from '@labdat/boxes-state';
 import { mapTo } from 'rxjs/operators/mapTo';
+import { Presentation } from '@labdat/data-models';
 
 @Injectable()
 export class PresentationsEffects {
@@ -43,16 +44,26 @@ export class PresentationsEffects {
     .ofType(fromPresentations.ADD)
     .pipe(
       map(toPayload),
-      switchMap((payload) => this.presentationsApiService.add(payload.presentations)),
-      map((response: any) => new fromPresentations.AddSuccess(response)),
+      switchMap((presentation) => this.presentationsApiService.add(presentation)),
+      map((response: Presentation) => new fromPresentations.AddSuccess(response)),
       catchError(error => of(new fromPresentations.AddFailure(error)))
-    )
-;
+    );
+
+  @Effect()
+  copy = this.actions
+    .ofType(fromPresentations.COPY)
+    .pipe(
+      map(toPayload),
+      switchMap((payload) => this.presentationsApiService.copy(payload)),
+      map((response: any) => new fromPresentations.CopySuccess(response)),
+      catchError(error => of(new fromPresentations.CopyFailure(error)))
+    );
 
   @Effect()
   update = this.dataPersistence.optimisticUpdate(fromPresentations.UPDATE, {
     run: (action: fromPresentations.Update, state: PresentationsState) => {
-      return new fromPresentations.UpdateSuccess(action.payload);
+      return this.presentationsApiService.update(action.payload)
+        .pipe(map(() => new fromPresentations.UpdateSuccess(action.payload)))
     },
     undoAction: (action: fromPresentations.Update, error) => {
       console.error('Error', error);
@@ -60,16 +71,13 @@ export class PresentationsEffects {
     }
   });
 
+  @Effect()
   delete$ = this.actions
     .ofType(fromPresentations.DELETE)
     .pipe(
       map(toPayload),
-      switchMap((payload) => this.presentationsApiService.delete(payload.presentationId)),
-      map((response: any) => from([
-        new fromPresentations.DeleteSuccess({presentationId: response.presentationId}),
-        new fromSlides.DeleteSuccess({slideIds: response.slideIds}),
-        new fromBoxes.DeleteSuccess({boxeIds: response.boxeIds})
-      ])),
+      switchMap(presentationId => this.presentationsApiService.delete(presentationId)),
+      map((response: any) => new fromPresentations.DeleteSuccess(response)),
       catchError(error => of(new fromPresentations.DeleteFailure(error)))
     )
 
