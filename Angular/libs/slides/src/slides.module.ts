@@ -145,7 +145,9 @@ import { environment } from '../../../apps/default/src/environments/environment'
         SlideEditorComponent,
         TextEditorComponent,
         ChartsBuilderComponent,
-        MenuBarComponent
+        MenuBarComponent,
+        GraphComponent
+
       ],
 
     declarations: [

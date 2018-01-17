@@ -1,11 +1,11 @@
 
 :host /deep/{
   width: 100%;
+  height: 100%;
 
   .d3-chart {
     width: 100%;
     height: 100%;
-    margin-top: 15vh;
   }
 
   .node circle {

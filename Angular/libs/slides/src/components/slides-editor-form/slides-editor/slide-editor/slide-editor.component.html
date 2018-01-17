@@ -1,13 +1,13 @@
 <ng-template #menubar ></ng-template>
 <gridster [options]="gridConfig">
-  <gridster-item [item]="box" *ngFor="let box of slide?.boxes; let i = index">
+  <gridster-item [item]="box" (dblclick)="enableEdit()" *ngFor="let box of slide?.boxes; let i = index">
         <div class="delete box-header-btns pull-right">
-          <a title="Save" (click)="saveItem($event, box)" *ngIf="editMode"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>
           <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
         </div>
-        <ng-template #texteditor ></ng-template>
-        <app-text *ngIf="box.text" class="text-box" [text]="box.text"></app-text>
+        <div [ngClass]="{'gridster-item-content' : editMode}">
+          <ng-template  #texteditor ></ng-template>
+        </div>
         <app-graph [width]="box.width" [height]="box.height" *ngIf="box.chart" [chart]="box.chart"></app-graph>
   </gridster-item>
 </gridster>
-<a type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>
+<a class="fixed" mat-fab  type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>
