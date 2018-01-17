@@ -91,8 +91,8 @@ export class BarChartComponent extends Chart implements OnInit, OnChanges {
    */
   drawChart() {
     const element = this.chartContainer.nativeElement;
-    this.width = element.offsetWidth - this.margin.left - this.margin.right;
-    this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
+    this.width = element.offsetWidth ;
+    this.height = element.offsetHeight;
 
     const svg = d3
       .select(element)

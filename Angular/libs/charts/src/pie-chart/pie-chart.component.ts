@@ -39,9 +39,15 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
   }
 
   init() {
-    if (this.configInput != null) this.data = PieChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
-    else this.data = this.dataInput;
+    if (this.configInput != null) {
+      this.data = PieChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+      console.log('this.configInput',this.data);
+    }
+    else {
+      this.data = this.dataInput;
+      console.log('this.dataInput',this.data);
 
+    }
     this.drawChart();
   }
 

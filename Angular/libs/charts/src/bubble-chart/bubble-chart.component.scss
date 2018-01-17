@@ -1,11 +1,11 @@
 $axisColor:#4c4c4c;
 :host {
     width: 100%;
+    height: 100%;
 
     .d3-chart {
         width: 100%;
         height: 100%;
-        margin-top: 5vh;
         font-family: Georgia,Times,serif;
         font-size: 10px;
         text-anchor: middle

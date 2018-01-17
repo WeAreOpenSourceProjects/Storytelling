@@ -12,7 +12,8 @@ import {
     MatChipsModule,
     MatToolbarModule,
     MatDialogModule,
-    MatCheckboxModule } from '@angular/material';
+    MatCheckboxModule,
+    MatStepperModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 
@@ -98,7 +99,6 @@ import {
   ChartsBuilderComponent,
   GraphComponent,
   TextEditorComponent,
-  TextComponent,
   ImageUploadComponent
 } from './components/slides-editor-form/slides-editor/slide-editor';
 import { environment } from '../../../apps/default/src/environments/environment';
@@ -132,8 +132,8 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
         HttpModule,
         MatDialogModule,
         RouterModule,
-        GridsterModule
-          ],
+        GridsterModule,
+        MatStepperModule ],
     entryComponents: [
         BarChartComponent,
         LineChartComponent,
@@ -156,7 +156,9 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
         SlideEditorComponent,
         TextEditorComponent,
         ChartsBuilderComponent,
-        MenuBarComponent
+        MenuBarComponent,
+        GraphComponent
+
       ],
 
     declarations: [
@@ -197,7 +199,6 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
         SlideEditorComponent,
         GraphComponent,
         TextEditorComponent,
-        TextComponent,
         ImageUploadComponent,
         MenuBarComponent,
         DisableControlDirective
