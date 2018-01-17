@@ -224,23 +224,27 @@ exports.myList = function(req, res) {
 /**
  * presentation middleware
  */
-exports.presentationByID = function(req, res, next, id) {
+exports.findOneByID = function(req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'presentation is invalid'
     });
   }
 
-  Presentation.findById(id).exec(function(err, presentation) {
-    if (err) {
-      return next(err);
-    } else if (!presentation) {
+  Presentation.findOneById(id)
+  .exec()
+  .then(function(presentation) {
+    if (!presentation) {
       return res.status(404).send({
         message: 'No presentation with that identifier has been found'
       });
     }
-    req.presentation = presentation;
-    next();
+    return res.json(presentation);
+  })
+  .catch(function(err) {
+    return res.status(422).send({
+      message: err
+    });
   });
 };
 

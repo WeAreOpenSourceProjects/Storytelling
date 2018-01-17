@@ -11,14 +11,14 @@ export {
   selectPresentationsLoading,
   selectPresentationsLoaded,
   selectPresentationsError,
-  selectedPresentationId,
-  selectSelectedPresentation,
+  selectCurrentPresentationId,
+  selectCurrentPresentation,
   selectCurrentPresentationTitle,
   selectCurrentPresentationIsPublic,
   selectCurrentPresentationIsFavorite,
   selectCurrentPresentationDescription,
   selectCurrentPresentationTags,
-  selectCurrentPresentationAuthor,
+  selectCurrentPresentationAuthorId,
   selectCurrentPresentationBanner,
-  selectCurrentPresentationSlides
+  selectCurrentPresentationSlideIds
 } from './src/+state/presentations.selectors'

@@ -45,6 +45,15 @@ import { User } from '@labdat/data-models';
   ]
 })
 export class SlidesCardComponent implements OnInit {
+
+  @HostListener('click', ['$event'])
+  onClick (event) {
+    this.select.emit(this.prensetation.id)
+  }
+
+  @Output()
+  select = new EventEmitter<string>();
+
   @Input()
   public presentation: Presentation;
 

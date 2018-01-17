@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SlidesService } from '../../services/slides.service';
+import { PresentationsApiService } from '@labdat/presentations-state';
 import { ValidService } from '../../services/valid.service';
-import { Slides } from '../../models/slides';
+import { Presentation } from '@labdat/data-models';
 import { SlidesEditorComponent } from './slides-editor/slides-editor.component';
 //import { NotifBarService } from 'app/core';
 import { forEach } from '@angular/router/src/utils/collection';
@@ -12,29 +12,30 @@ import { forEach } from '@angular/router/src/utils/collection';
   selector: 'app-slides-editor-form',
   templateUrl: './slides-editor-form.component.html',
   styleUrls: ['./slides-editor-form.component.scss'],
-  providers: [SlidesService, ValidService]
+  providers: [PresentationsApiService, ValidService]
 })
 export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
   private id: string; //slides id in database
-  private slider: Slides = new Slides(); //corresponding slides
+  private slider: Presentation = new Presentation(); //corresponding slides
   private editorValid: Subscription; //validation of slide editor
   private errorMsg; //error
   private mode = ''; //SAVE mode or CREATE mode
   private isRequired = false;
   private isInShuffle = false;
   loading = true;
+  private currentSlides$ = this.store.select(selectCurrentSlide);
   @ViewChild('editor') _editor: SlidesEditorComponent;
 
   constructor(
     private router: Router,
-    private slidesService: SlidesService,
+    private presentationsApiService: PresentationsApiService,
     private validService: ValidService,
     private route: ActivatedRoute,
     //        private notifBarService: NotifBarService,
     private cdRef: ChangeDetectorRef
   ) {
     this.id = null;
-    this.slider = new Slides();
+    this.slider = new Presentation();
     this.errorMsg = [];
   }
 
@@ -50,7 +51,7 @@ export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
     });
     if (this.id) {
       this.mode = 'SAVE';
-      this.slidesService.getSlides(this.id).subscribe(
+      this.presentationsApiService.findOneById(this.id).subscribe(
         slides => {
           this.slider = slides;
         },
@@ -61,7 +62,7 @@ export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
       );
     } else {
       this.mode = 'CREATE';
-      this.slider = new Slides();
+      this.slider = new Presentation();
       this.loading = false;
     }
   }
@@ -81,7 +82,7 @@ export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
 
   saveSlides(id) {
     if (id) {
-      this.slidesService.updateSlide(this.slider, this.slider._id).subscribe(
+      this.presentationsApiService.update({ id: this.slider, changes: this.slider._id }).subscribe(
         () => {
           //                    this.notifBarService.showNotif('your changes in slides has been saved.');
           this.router.navigate(['/slides']);
@@ -90,7 +91,7 @@ export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
       );
     } else {
       this.slider = this._editor.slider;
-      this.editorValid = this.slidesService.submitSlides(this.slider).subscribe(
+      this.presentationsApiService.add(this.slider).subscribe(
         () => {
           //                    this.notifBarService.showNotif('create slides successfully!');
           this.router.navigate(['/slides']);

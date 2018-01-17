@@ -20,7 +20,8 @@ import {
   PresentationsApiService,
   fromPresentations,
   selectPresentationsTotal,
-  selectPresentationsEntities } from '@labdat/presentations-state';
+  selectPresentationsEntities,
+  selectCurrentPrenstation } from '@labdat/presentations-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
 import { combineLatest } from 'rxjs/operators/combineLatest';
@@ -48,12 +49,14 @@ export class SlidesListComponent implements OnInit {
   public copy$ = new Subject();
   public delete$ = new Subject();
   public add$ = new Subject();
+  public select$ = new Subject();
 
   public loggedIn$ = this.store.select(selectIsLoggedIn);
   public user$ = this.store.select(selectUser);
   public presentations$ = this.store.select(selectAllPresentations);
   public presentationsCount$ = this.store.select(selectPresentationsTotal);
   public presentationsError$ = this.store.select(selectPresentationsError);
+  public currentPresentation$ = this.store.select(currentPrenstation)
   public message$ = this.searchControl.valueChanges.pipe(
     startWith({title: '', public: 'indeterminate', favorite: 'indeterminate'}),
     combineLatest(this.presentationsCount$, (search, presentationCount) => this.emptyMessage(search, presentationCount))
@@ -89,17 +92,25 @@ export class SlidesListComponent implements OnInit {
     .pipe(withLatestFrom(this.user$, (click, user) => user))
     .subscribe((user) => {
       const presentation = new Presentation();
-      console.log(user.id)
       presentation.authorId = user.id;
       this.store.dispatch(new fromPresentations.Add(presentation));
     });
 
-    this.delete$.pipe(switchMap(presentationId => this.dialog.open(DeleteDialogComponent, { height: '20%', width: '20%', data: { presentationId } }).afterClosed()))
+    this.delete$
+    .pipe(switchMap(presentationId => this.dialog.open(DeleteDialogComponent, { height: '20%', width: '20%', data: { presentationId } }).afterClosed()))
     .subscribe(result => {
       if (result.delete) {
         this.store.dispatch(new fromPresentations.Delete(result.presentationId))
       }
     });
+
+    this.select$
+    .subscribe(presentationId=> this.store.dispatch(new fromPresetations.Select(presentationId)))
+
+    this.currentPrenstation
+    .subscribe(console.log);
+
+    
 
   }
 

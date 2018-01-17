@@ -78,7 +78,7 @@ export class PresentationsApiService {
       .get(backendURL)
   }
 
-  getOne(id): Observable<any> {
+  findOneById(id): Observable<any> {
     const backendURL = `${this.baseUrl}/${this.endpoints.presentations}/${id}`;
     return this.http.get(backendURL);
   }

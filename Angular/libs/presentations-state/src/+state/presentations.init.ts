@@ -3,7 +3,7 @@ import { Presentation } from '@labdat/data-models';
 
 
 export const presentationsInitialState: PresentationsState = presentationsAdapter.getInitialState({
-  selectedPresentationId: null,
+  currentPresentationId: null,
   loaded: false,
   loading: false,
   error: '',

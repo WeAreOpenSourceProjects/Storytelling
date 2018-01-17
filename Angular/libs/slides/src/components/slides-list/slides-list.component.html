@@ -11,6 +11,7 @@
       (copy)="copy$.next($event)"
       (publishChange)="togglePublish$.next($event)"
       (favoriteChange)="toggleFavorite$.next($event)"
+      (select)="select$.next($event)"
       [presentation]="presentation"
       [loggedIn]="loggedIn$ | async"
       [user]="user$ | async"

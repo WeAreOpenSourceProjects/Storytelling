@@ -16,15 +16,15 @@ export const selectPresentationsLoading = createSelector(selectPresentationsStat
 export const selectPresentationsLoaded = createSelector(selectPresentationsState, (state: PresentationsState) => state.loaded);
 export const selectPresentationsError = createSelector(selectPresentationsState, (state: PresentationsState) => state.error);
 
-export const selectedPresentationId = createSelector(selectPresentationsState, (state: PresentationsState) => state.selectedPresentationId);
-export const selectSelectedPresentation = createSelector(selectPresentationsEntities, selectedPresentationId, (presentationsEntities, presentationId) => selectPresentationsEntities[presentationId]);
+export const selectCurrentPresentationId = createSelector(selectPresentationsState, (state: PresentationsState) => state.currentPresentationId);
+export const selectCurrentPresentation = createSelector(selectPresentationsEntities, selectCurrentPresentationId, (presentationsEntities, presentationId) => presentationsEntities[presentationId]);
 
-export const selectCurrentPresentationTitle = createSelector(selectSelectedPresentation, presentation => presentation.title);
-export const selectCurrentPresentationIsPublic = createSelector(selectSelectedPresentation, presentation => presentation.isPublic);
-export const selectCurrentPresentationIsFavorite = createSelector(selectSelectedPresentation, presentation => presentation.isFavorite);
-export const selectCurrentPresentationDescription = createSelector(selectSelectedPresentation, presentation => presentation.description);
-export const selectCurrentPresentationTags = createSelector(selectSelectedPresentation, presentation => presentation.tags);
-export const selectCurrentPresentationAuthor = createSelector(selectSelectedPresentation, presentation => presentation.author);
-export const selectCurrentPresentationBanner = createSelector(selectSelectedPresentation, presentation => presentation.banner);
-export const selectCurrentPresentationSlides = createSelector(selectSelectedPresentation, presentation => presentation.slides);
+export const selectCurrentPresentationTitle = createSelector(selectCurrentPresentation, presentation => presentation.title);
+export const selectCurrentPresentationIsPublic = createSelector(selectCurrentPresentation, presentation => presentation.public);
+export const selectCurrentPresentationIsFavorite = createSelector(selectCurrentPresentation, presentation => presentation.favorite);
+export const selectCurrentPresentationDescription = createSelector(selectCurrentPresentation, presentation => presentation.description);
+export const selectCurrentPresentationTags = createSelector(selectCurrentPresentation, presentation => presentation.tags);
+export const selectCurrentPresentationAuthorId = createSelector(selectCurrentPresentation, presentation => presentation.authorId);
+export const selectCurrentPresentationBanner = createSelector(selectCurrentPresentation, presentation => presentation.banner);
+export const selectCurrentPresentationSlideIds = createSelector(selectCurrentPresentation, presentation => presentation.slideIds);
 

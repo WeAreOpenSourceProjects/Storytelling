@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { Presentation, Box, Slide } from '@labdat/data-models';
 
 export const LOAD = '[Presentations] Load';
+export const SELECT = '[Presentations] Select';
 export const LOAD_SUCCESS = '[Presentations] Load Success';
 export const LOAD_FAILURE = '[Presentations] Load Failure';
 export const ADD = '[Presentations] Add';
@@ -21,6 +22,7 @@ export type Actions =
 | Load
 | LoadSuccess
 | LoadFailure
+| Select
 | Add
 | AddSuccess
 | AddFailure
@@ -52,6 +54,11 @@ export class LoadSuccess implements Action {
 export class LoadFailure implements Action {
   readonly type = LOAD_FAILURE;
   constructor(public payload: { error: any }) {}
+}
+
+export class Select implements Action {
+  readonly type = SELECT;
+  constructor(public payload: string) {}
 }
 
 export class Add implements Action {

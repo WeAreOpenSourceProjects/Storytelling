@@ -70,14 +70,7 @@ exports.delete = function(req, res) {
   });
 };
 
-exports.boxByID = function(req, res, next, id) {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Box is invalid'
-    });
-  }
-
-  Box.findById(id)
+Box.findById(id)
   .exec()
   .then(function(box) {
     if (!box) {

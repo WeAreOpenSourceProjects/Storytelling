@@ -31,7 +31,7 @@ module.exports = function(app) {
   app.param('presentationId', presentation.presentationByID)
   .route('/api/presentations/:presentationId')
 //  .all(presentationPolicy.isAllowed)
-  .get(presentation.read)
+  .get(presentation.findOneById)
 
   app.route('/api/presentations/:presentationId')
 //  .all(presentationPolicy.isAllowed)

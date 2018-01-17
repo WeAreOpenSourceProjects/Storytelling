@@ -3,13 +3,13 @@ import * as fromPresentations from './presentations.actions';
 import { fromAuthentication } from '@labdat/authentication-state';
 
 export const presentationsInitialState: PresentationsState = presentationsAdapter.getInitialState({
-  selectedPresentationId: null,
+  currentPresentationId: null,
   loaded: false,
   loading: false,
   error: '',
 });
 
-export function presentationsReducer(state: PresentationsState = presentationsInitialState, action: fromPresentations.Actions | fromAuthentication.Actions): PresentationsState {
+export function presentationsReducer(state: PresentationsState = presentationsInitialState, action: fromPresentations.Actions | fromAuthentication.Actions ): PresentationsState {
   switch (action.type) {
     case fromAuthentication.LOGOUT: {
       return presentationsInitialState;
@@ -34,6 +34,9 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
     }
     case fromPresentations.UPDATE_SUCCESS: {
       return presentationsAdapter.updateOne(action.payload, state);
+    }
+    case fromPresentations.SELECT: {
+      return { ...state, currentPresentationId: action.payload };
     }
     default: {
       return state;
