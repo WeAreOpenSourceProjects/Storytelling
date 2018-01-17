@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, DoCheck, ChangeDetectionStrategy } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import * as shape from 'd3-shape';
 import * as babyparse from 'babyparse';
@@ -59,6 +60,8 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   theme: string;
   dataDims: string[][];
   chartOptions: any;
+  firstFormGroup: FormGroup;
+
   @Output() configGraph = new EventEmitter();
   warnMsg: string; //to tell the user which part isn't validated
   _dataText: string;
@@ -151,6 +154,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
       this.clearAll();
     }
   }
+
   ngDoCheck() {
     this.validForm.emit(this.isValidSlide);
   }
@@ -166,12 +170,11 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     if (this.inputOptions) {
       this.headerValues = this.inputOptions.headerValues;
       this.dataDims = this.inputOptions.dataDims;
-      this.chartType = this.chartTypes.find(chart => chart.name === this.inputOptions.chartType.name);
-      this.data = [];
-      this.errors = [];
-      this._dataText = babyparse.unparse(this.inputData);
       this.rawData = this.inputData;
-      this.chartOptions = { ...defaultOptions };
+      this.errors = []
+      this.chartOptions = this.inputOptions ;
+      this._dataText = babyparse.unparse(this.inputData);
+      this.chartType = this.inputOptions.chartType;
 
       this.processData();
     }

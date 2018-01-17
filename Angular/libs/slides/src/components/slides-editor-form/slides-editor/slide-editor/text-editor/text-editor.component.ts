@@ -18,8 +18,6 @@ export class TextEditorComponent {
   @ViewChild('froalaEditor') froalaEditor: ElementRef;
 
   private editorOptions: Object;//option of the text editor
-  @Input() width: number;
-  @Input() height: number;
   @Input() editorContent : any;
   @Output() textTosave: EventEmitter<string> = new EventEmitter();
   constructor() {
