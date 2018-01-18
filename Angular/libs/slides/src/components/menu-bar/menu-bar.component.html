@@ -1,0 +1,14 @@
+<ul class="menuBar" *ngIf="isOpened" #menubar>
+  <li> <a mat-fab (click)="open('text')"> <mat-icon svgIcon="content:ic_font_download_24px"></mat-icon> </a></li>
+  <li>
+    <a mat-fab (click)="open('chart')">
+      <mat-icon svgIcon="editor:ic_multiline_chart_24px"></mat-icon>
+
+    </a>
+  </li>
+  <li>
+    <a mat-fab (click)="closeMenu()">
+      <mat-icon class="check-icon" svgIcon="navigation:ic_close_24px"></mat-icon>
+    </a>
+  </li>
+</ul>

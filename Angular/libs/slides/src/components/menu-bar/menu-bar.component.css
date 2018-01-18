@@ -1,0 +1,15 @@
+:host {
+  position: absolute;
+  z-index: 10000;
+}
+
+ul{
+
+}
+
+li{
+  display: inline;
+}
+.close {
+  cursor: pointer;
+}

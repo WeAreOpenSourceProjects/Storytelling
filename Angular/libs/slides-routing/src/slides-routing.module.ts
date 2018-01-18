@@ -1,31 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// SlidesViewComponent
-import { PresentationsListComponent } from '@labdat/presentations/src/containers/presentations-list/presentations-list.component';
-import { PresentationDetailComponent } from '@labdat/presentations/src/containers/presentation-detail/presentation-detail.component';
 
-import { PresentationsGuardService } from './services/presentations.guard.service';
-export { PresentationsGuardService }
+import {
+  SlidesListComponent,
+  SlideDetailComponent
+} from '@labdat/slides';
 
 
-const prenstationsRoutes: Routes = [
+const slidesRoutes: Routes = [
   {
     path: '',
-    component: PresentationsListComponent,
-    canActivate: [ PresentationsGuardService ],
+    component: SlidesListComponent,
+    canActivate: [ SlidesGuardService ],
     data: {
       roles: ['user', 'admin'],
-      title: 'Presentations List'
+      title: 'Slides List'
     },
     pathMatch: 'full'
   },
   {
     path: ':id',
-    component: PresentationDetailComponent,
-    canActivate: [ PresentationsGuardService ],
+    component: SlideDetailComponent,
+    // canActivate: [ SlidesGuardService ],
     data: {
       roles: ['user', 'admin'],
-      title: 'Presentation Detail'
+      title: 'Slide Detail'
     }
   },
 /*
@@ -59,17 +58,16 @@ const prenstationsRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(prenstationsRoutes)],
+  imports: [RouterModule.forChild(slidesRoutes)],
   exports: [RouterModule]
 })
-export class PresentationsRoutingModule {}
+export class SlidesRoutingModule {}
 
 @NgModule({})
-export class RootPresentationsRoutingModule {
+export class RootSlidesRoutingModule {
 public static forRoot() {
   return {
-      ngModule: RootPresentationsRoutingModule,
-      providers: [ PresentationsGuardService ]
+      ngModule: RootSlidesRoutingModule
     }
   };
 }
