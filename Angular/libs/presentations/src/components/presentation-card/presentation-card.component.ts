@@ -90,9 +90,9 @@ export class PresentationCardComponent implements OnInit {
   ngOnInit() {
     /*after load presentation info, load presentation banner*/
     if (this.presentation.banner) {
-      this.imagesService.getImage(this.presentation.banner).subscribe(_banner => {
-        this.banner = _banner;
-      });
+//      this.imagesService.getImage(this.presentation.banner).subscribe(_banner => {
+//        this.banner = _banner;
+//      });
     }
   }
 

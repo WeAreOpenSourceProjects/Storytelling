@@ -13,8 +13,8 @@ import { PresentationsState, selectCurrentPresentation } from '@labdat/presentat
 
 @Component({
   selector: 'app-slides-editor-form',
-  templateUrl: './presentations-detail.component.html',
-  styleUrls: ['./presentations-detail.component.scss'],
+  templateUrl: './presentation-detail.component.html',
+  styleUrls: ['./presentation-detail.component.scss'],
   providers: [PresentationsApiService, ValidService]
 })
 export class PresentationDetailComponent implements OnInit, AfterViewChecked {

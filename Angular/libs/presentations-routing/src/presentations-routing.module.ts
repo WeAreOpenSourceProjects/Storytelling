@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import {
-//  SlidesViewComponent,
-  PresentationsListComponent,
-  PresentationDetailComponent
-} from '@labdat/presentations';
+// SlidesViewComponent
+import { PresentationsListComponent } from '@labdat/presentations/src/containers/presentations-list/presentations-list.component';
+import { PresentationDetailComponent } from '@labdat/presentations/src/containers/presentation-detail/presentation-detail.component';
 
 import { PresentationsGuardService } from './services/presentations.guard.service';
 export { PresentationsGuardService }

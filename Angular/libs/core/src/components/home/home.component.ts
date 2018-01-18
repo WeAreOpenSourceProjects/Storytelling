@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { AuthenticationState, selectIsLoggedIn } from '@labdat/authentication-state';
 
-import { SlidesService, Slides } from '@labdat/slides';
+//import { SlidesService, Slides } from '@labdat/slides';
 import { PageEvent } from '@angular/material';
 import { Presentation } from '@labdat/data-models';
 
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   private toSearch;
   private pageIndex = 0;
 
-  constructor(private slidesService: SlidesService, private store: Store<AuthenticationState>) {}
+  constructor(/*private presentationsApiService: PresentationsApiService, */private store: Store<AuthenticationState>) {}
 
   ngOnInit() {
     this.showSlidesList = false;
@@ -37,33 +37,36 @@ export class HomeComponent implements OnInit {
     //show slides and hide logo
     this.showSlidesList = true;
     //get search result
-    this.toSearch.title = searchText;
+    this.toSearch.title = searchText;/*
     this.slidesService
     .getSlideToSearch(this.toSearch, this.pageIndex, this.pageSize)
     .subscribe(presentations => {
       this.presentations = presentations;
       this.noResult = (this.presentations.length === 0) ? true : false;
-    });
+    });*/
   }
 
   getAllslides() {
     this.showSlidesList = true;
     this.toSearch.title = '';
+    /*
     this.slidesService
     .getSlideToSearch(this.toSearch, this.pageIndex, this.pageSize)
     .subscribe(presentations => {
       this.presentations = presentations;
       this.noPublish = (this.presentations.length === 0) ? true : false
 
-    });
+    });*/
   }
 
   nextPage($event) {
     this.pageIndex = $event.pageIndex;
+    /*
     this.slidesService
     .getSlideToSearch(this.toSearch, this.pageIndex, this.pageSize)
     .subscribe(presentations => {
       this.presentations = presentations;
     });
+    */
   }
 }

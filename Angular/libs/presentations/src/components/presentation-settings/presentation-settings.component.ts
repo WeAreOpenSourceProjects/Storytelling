@@ -1,13 +1,13 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { ValidService } from '../../services/valid.service';
 @Component({
   selector: 'app-slides-setting',
-  templateUrl: './presention-settings.component.html',
-  styleUrls: ['./presention-settings.component.scss'],
+  templateUrl: './presentation-settings.component.html',
+  styleUrls: ['./presentation-settings.component.scss'],
   providers: []
 })
-export class PresentationSettingsComponent implements OnInit, OnChanges {
+export class PresentationSettingsComponent implements OnInit {
 
   @Input()
   public settings: any;
@@ -20,9 +20,8 @@ export class PresentationSettingsComponent implements OnInit, OnChanges {
   public slidesSetting: any;
 
   constructor(private formBuilder: FormBuilder, private validService: ValidService) {
-    this.form = this._buildForm();
   }
-  
+
   /*
   ngOnChanges(changes) {
     if (changes.hasOwnProperty('setting') && this.setting) {
@@ -35,7 +34,7 @@ export class PresentationSettingsComponent implements OnInit, OnChanges {
     }
   }
   */
-  private ngOnInit() {
+  ngOnInit() {
     return this.formBuilder.group({
       title: [],
       description: [],

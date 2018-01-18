@@ -6,7 +6,7 @@ import {
   EventEmitter,
   forwardRef} from '@angular/core';
 import { FormBuilder, FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox, MatSelect } from '@angular/material/checkbox';
+import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox } from '@angular/material/checkbox';
 import { MatSelect } from '@angular/material/select';
 
 @Component({
@@ -15,7 +15,7 @@ import { MatSelect } from '@angular/material/select';
   styleUrls: ['./presentations-search.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => SlidesSearchComponent),
+    useExisting: forwardRef(() => PresentationsSearchComponent),
     multi: true
   }, {
     provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'noop'
