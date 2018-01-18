@@ -61,8 +61,8 @@ export class HomeComponent implements OnInit {
       map(result => result.presentations)
     )
     .subscribe(result => {
-      this.presentations = result.presentations;
-      this.noResult = (this.presentations.length === 0) ? true : false;
+//      this.presentations = result.presentations;
+//      this.noResult = (this.presentations.length === 0) ? true : false;
     });
 
 
@@ -76,8 +76,8 @@ export class HomeComponent implements OnInit {
     this.presentationsApiService
     .search(this.toSearch, this.pageIndex, this.pageSize)
     .subscribe(presentations => {
-      this.presentations = presentations;
-      this.noResult = (this.presentations.length === 0) ? true : false;
+//      this.presentations = presentations;
+//      this.noResult = (this.presentations.length === 0) ? true : false;
     });
   }
 
@@ -87,8 +87,8 @@ export class HomeComponent implements OnInit {
     this.presentationsApiService
     .search(this.toSearch, this.pageIndex, this.pageSize)
     .subscribe(presentations => {
-      this.presentations = presentations;
-      this.noPublish = (this.presentations.length === 0) ? true : false
+//      this.presentations = presentations;
+//      this.noPublish = (this.presentations.length === 0) ? true : false
     });
   }
 
@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit {
     this.presentationsApiService
     .search(this.toSearch, this.pageIndex, this.pageSize)
     .subscribe(presentations => {
-      this.presentations = presentations;
+//      this.presentations = presentations;
     });
   }
 }

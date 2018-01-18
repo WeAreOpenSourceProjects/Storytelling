@@ -80,7 +80,7 @@ export class PresentationCardComponent implements OnInit {
   public banner: string; // banner picture of the presentation card
 
   constructor(
-    private slidesService: PresentationsApiService,
+//    private slidesService: PresentationsApiService,
     private dialog: MatDialog,
     private store: Store<AuthenticationState>
    /*        private notifBarService: NotifBarService */ ) {
