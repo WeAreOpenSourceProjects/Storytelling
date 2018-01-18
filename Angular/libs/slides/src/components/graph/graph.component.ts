@@ -12,8 +12,8 @@ import {
   ComponentRef
 } from '@angular/core';
 
-import { Chart } from '../../../../../../../charts/src/chart.class';
-import { ChartsService } from '../../../../../services';
+import { Chart } from '@labdat/charts/src/chart.class';
+import { ChartsService } from '@labdat/charts/src/services/charts.service';;
 
 @Component({
   selector: 'app-graph',
@@ -28,7 +28,9 @@ export class GraphComponent implements OnInit, AfterContentInit, OnChanges {
   @ViewChild('parent', { read: ViewContainerRef })
   parent: ViewContainerRef;
   componentRef: ComponentRef<any>;
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private chartsService: ChartsService) {}
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver,
+   private chartsService: ChartsService
+   ) {}
 
   ngOnInit() {}
 

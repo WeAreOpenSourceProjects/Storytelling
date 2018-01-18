@@ -1,3 +1,3 @@
-// export * from './services';
-export * from './models';
-export * from './slides.module';
+export { SlidesModule } from './src/slides.module'
+export { SlidesListComponent } from './src/containers/slides-list/slides-list.component';
+export { SlideDetailComponent } from './src/containers/slide-detail/slide-detail.component';

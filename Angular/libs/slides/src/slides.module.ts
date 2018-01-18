@@ -15,12 +15,50 @@ import {
   MatCheckboxModule,
   MatStepperModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  BarChartComponent,
+  LineChartComponent,
+  ForceDirectedGraphComponent,
+  HierarchicalEdgeBundlingComponent,
+  PieChartComponent,
+  PieGridChartComponent,
+  NumberCardComponent,
+  GaugeChartComponent,
+  AdvancedPieChartComponent,
+  DendogramComponent,
+  NgGraphComponent,
+  TreemapChartComponent,
+  ZoomableTreemapChartComponent,
+  BubbleChartComponent,
+  WordCloudComponent,
+  SunburstChartComponent,
+  AreaChartComponent
+} from '@labdat/charts'
 
-import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
+import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
+
+// NGX-CHARTS MODULE
+import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
+
+// DRAG & DROP MODULE
+import { CodemirrorModule } from 'ng4-codemirror/src';
+import { DndModule } from 'ng2-dnd';
+
+// HANDSONTABLE MODULE
+import { HotTableModule } from 'angular-handsontable';
+
+// import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
+import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
 
 import { SlidesListComponent } from './containers/slides-list/slides-list.component';
 import { SlideDetailComponent } from './containers/slide-detail/slide-detail.component';
 import { SlideCardComponent } from './components/slide-card/slide-card.component';
+import { TextEditorComponent } from './components/text-editor/text-editor.component';
+import { ChartsBuilderComponent } from './components/charts-builder/charts-builder.component';
+import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
+import { GraphComponent } from './components/graph/graph.component';
+import { GridsterModule } from 'angular-gridster2';
+
 // SLIDES ROUTES MODULE
 import { SlidesRoutingModule } from '@labdat/slides-routing';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -38,7 +76,6 @@ import { environment } from '../../../apps/default/src/environments/environment'
         MatCheckboxModule,
         FormsModule,
         ReactiveFormsModule,
-        DragulaModule,
         PieChartModule,
         GaugeModule,
         NgxChartsModule,
@@ -71,7 +108,6 @@ import { environment } from '../../../apps/default/src/environments/environment'
         NumberCardComponent,
         GaugeChartComponent,
         AdvancedPieChartComponent,
-        DeleteDialogComponent,
         DendogramComponent,
         NgGraphComponent,
         TreemapChartComponent,
@@ -80,7 +116,6 @@ import { environment } from '../../../apps/default/src/environments/environment'
         WordCloudComponent,
         SunburstChartComponent,
         AreaChartComponent,
-        SlideEditorComponent,
         TextEditorComponent,
         ChartsBuilderComponent,
         MenuBarComponent,
@@ -89,8 +124,8 @@ import { environment } from '../../../apps/default/src/environments/environment'
       ],
 
     declarations: [
-      SlidesListComponent
-      SlideDetailComponent
+      SlidesListComponent,
+      SlideDetailComponent,
       SlideCardComponent
         // KeySwitchDirective,
         // SlidesViewComponent,

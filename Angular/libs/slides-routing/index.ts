@@ -1,1 +1,1 @@
-export { SlidesRoutingModule, RootSlidesRoutingModule, SlidessGuardService } from './src/slides-routing.module';
+export { SlidesRoutingModule, RootSlidesRoutingModule } from './src/slides-routing.module';

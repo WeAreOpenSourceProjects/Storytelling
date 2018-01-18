@@ -36,13 +36,13 @@ export class SlideCardComponent {
   @Output() deleteSlide: EventEmitter<number> = new EventEmitter(); //event:delete a page of slide
   id: any;
 
-  constructor(private dialog: MatDialog, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
       this.id = params['id'];
     });
   }
   /*delete slide*/
-  deleteSlide(event: Event) {
+  deleteSlideFn(event: Event) {
     event.preventDefault();
     this.deleteSlide.emit();
   }
