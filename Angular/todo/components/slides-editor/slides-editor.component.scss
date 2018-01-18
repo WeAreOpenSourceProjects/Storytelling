@@ -1,0 +1,53 @@
+.tips{
+  background-color: white;
+  margin-bottom: 0px !important;
+  padding-left: 15px;
+}
+
+.gu-mirror {
+  margin: 0 !important;
+  opacity: .8;
+  position: fixed!important;
+  z-index: 9999!important;
+
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';
+  filter: alpha(opacity=80);
+}
+
+.gu-hide {
+  display: none!important;
+}
+
+.gu-unselectable {
+  -webkit-user-select: none!important;
+  -moz-user-select: none!important;
+  -ms-user-select: none!important;
+  user-select: none!important;
+}
+
+.gu-transit {
+  opacity: .2;
+
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=20)';
+  filter: alpha(opacity=20);
+}
+
+.ex-over {
+  .slide-creator {
+    opacity: .5 !important;
+  }
+}
+
+a.mat-fab {
+  margin: 5px;
+}
+
+.button-toggle-group {
+  float : right;
+  margin : 2%;
+}
+.fixed {
+  bottom: 20px;
+  position: fixed;
+  right: 20px
+}

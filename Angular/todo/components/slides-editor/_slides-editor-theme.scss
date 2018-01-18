@@ -1,0 +1,21 @@
+@mixin slides-editor-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .tips{
+    color: mat-color($primary,400);
+  }
+
+  .slide-creator {
+    background:mat-color($accent);
+  }
+
+  .ex-moved {
+    .slide-creator {
+      .section-title {
+        color: mat-color($warn) !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@mixin charts-builder-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .sub-title-bar{
+    .fa {
+      &.checked {
+        color: mat-color($accent);
+      }
+    }
+    .warnMsg{
+      color: mat-color($warn);
+    }
+  }
+  .dimension {
+    ul li {
+      &.error{
+        background-color: mat-color($warn);
+        color: mat-color($primary,50);
+      }
+    }
+  }
+}

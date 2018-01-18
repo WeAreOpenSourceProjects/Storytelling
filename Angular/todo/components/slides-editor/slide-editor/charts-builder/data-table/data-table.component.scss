@@ -1,0 +1,17 @@
+:host {
+    div{
+        width: 100%;
+        border: 1px solid #eee;
+        font-size: 13px;
+        margin-top: 20px;
+        // overflow: auto;
+        /deep/ .handsontable table.htCore {
+            width: calc(100vw - 180px);
+             overflow-y: auto;
+        }
+        /deep/ .handsontable {
+            overflow-y: auto;
+            height: 256px;
+        }
+    }
+}

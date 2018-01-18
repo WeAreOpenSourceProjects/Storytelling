@@ -16,14 +16,14 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { metaReducers } from './+state/app.reducer';
 import { coreConfiguration } from '@labdat/core';
-import { slidesConfiguration, SlidesModule } from '@labdat/slides';
+import { slidesConfiguration, SlidesModule } from '@labdat/presentations';
 import { environment } from '../environments/environment';
 import { RouterStateModule } from '@labdat/router-state';
 import { SlidesStateModule } from '@labdat/slides-state';
 import "froala-editor/js/froala_editor.pkgd.min.js";
 import { PresentationsStateModule } from '@labdat/presentations-state';
 import { BoxesStateModule } from '@labdat/boxes-state';
-import { RootSlidesRoutingModule } from '@labdat/slides-routing';
+import { RootPresentationsRoutingModule } from '@labdat/presentations-routing';
 
 @NgModule({
   imports: [

@@ -1,0 +1,60 @@
+@mixin slide-editor-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  slide-editor /deep/ .text-container td {
+    border: solid mat-color($primary,50) 1px;
+  }
+  .sidenav {
+    background: mat-color($primary,50);
+  }
+  .sidenav .sidebar-nav .user a {
+    color: mat-color($primary, 50);
+    .active-link {
+      background-color:mat-color($primary,900);
+      color: mat-color($primary,50);
+    }
+  }
+  .sidenav .sidebar-nav {
+    .active-link {
+      background-color:mat-color($primary,900);
+    }
+
+    .user:hover {
+      background-color: mat-color($primary,900);
+    }
+  }
+  .dropdown-toggle {
+    color: mat-color($primary, 50);
+  }
+  .layout-selector,
+  .text-vertical-align,
+  .image-layout {
+    input[type="radio"] {
+      & + label {
+        &:hover {
+          a {
+            background-color: mat-color($accent);
+          }
+        }
+      }
+
+      &:checked {
+        & + label {
+          a {
+            background-color: mat-color($accent);
+          }
+        }
+      }
+    }
+  }
+
+  .sub-title-bar {
+    .fa {
+      &.checked {
+        color: mat-color($accent);
+      }
+    }
+  }
+}
