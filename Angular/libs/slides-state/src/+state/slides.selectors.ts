@@ -2,7 +2,6 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { SlidesState, slidesAdapter } from './slides.interfaces';
 import * as fromSlides from './slides.actions';
 import { isEmpty } from 'lodash';
-import { Slides } from '@labdat/data-models';
 
 const selectSlidesState = createFeatureSelector<SlidesState>('slides');
 

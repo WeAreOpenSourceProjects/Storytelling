@@ -6,7 +6,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
-import { Slides } from '@labdat/data-models';
+import { Slide } from '@labdat/data-models';
 import { selectUser, AuthenticationState } from '@labdat/authentication-state';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
@@ -25,7 +25,7 @@ export class SlidesApiService {
     this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
   }
 
-  add(slides: Slides): Observable<any> {
+  add(slides: Slide[]): Observable<any> {
     const backendURL = `${this.baseUrl}/slide`;
     return this.http.post(backendURL, slides);
   }

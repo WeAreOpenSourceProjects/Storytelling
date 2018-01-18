@@ -1,0 +1,17 @@
+<mat-card-content>
+  <app-slides-setting
+    (onSettingChange)="slidesSettingChange($event)"
+    (formValidateChange)="settingValidateChange($event)"
+    [settings]="currentPrensentationSettings$ | async">
+  </app-slides-setting>
+  <app-slides-editor #editor (errorsHandle)="errorsHandle($event)" (onShuffle)="onShuffle($event, slider)"></app-slides-editor>
+</mat-card-content>
+<div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+  <div class="base dark">
+    <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+      <button mat-raised-button type="button" color="primary" [disabled]="isInShuffle"  type="submit" (click)="saveSlides(id)">{{mode}}</button>
+      <button mat-raised-button type="button" class="secondery" [routerLink]="['/slides']">CANCEL</button>
+    </mat-card-actions>
+    <p *ngFor="let msg of errorMsg" class="error">*{{msg.msg}}</p>
+  </div>
+</div>

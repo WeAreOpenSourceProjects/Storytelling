@@ -70,7 +70,8 @@ exports.delete = function(req, res) {
   });
 };
 
-Box.findById(id)
+exports.findOneById = function(id) {
+  Box.findById(id)
   .exec()
   .then(function(box) {
     if (!box) {
@@ -84,4 +85,4 @@ Box.findById(id)
   .catch(function(err) {
     return next(err);
   });
-};
+}

@@ -20,11 +20,12 @@ export const selectCurrentPresentationId = createSelector(selectPresentationsSta
 export const selectCurrentPresentation = createSelector(selectPresentationsEntities, selectCurrentPresentationId, (presentationsEntities, presentationId) => presentationsEntities[presentationId]);
 
 export const selectCurrentPresentationTitle = createSelector(selectCurrentPresentation, presentation => presentation.title);
-export const selectCurrentPresentationIsPublic = createSelector(selectCurrentPresentation, presentation => presentation.public);
-export const selectCurrentPresentationIsFavorite = createSelector(selectCurrentPresentation, presentation => presentation.favorite);
+export const selectCurrentPresentationIsPublic = createSelector(selectCurrentPresentation, presentation => presentation.isPublic);
+export const selectCurrentPresentationIsFavorite = createSelector(selectCurrentPresentation, presentation => presentation.isFavorite);
 export const selectCurrentPresentationDescription = createSelector(selectCurrentPresentation, presentation => presentation.description);
 export const selectCurrentPresentationTags = createSelector(selectCurrentPresentation, presentation => presentation.tags);
 export const selectCurrentPresentationAuthorId = createSelector(selectCurrentPresentation, presentation => presentation.authorId);
 export const selectCurrentPresentationBanner = createSelector(selectCurrentPresentation, presentation => presentation.banner);
 export const selectCurrentPresentationSlideIds = createSelector(selectCurrentPresentation, presentation => presentation.slideIds);
+export const selectCurrentPresentationSlides = createSelector(selectCurrentPresentationSlideIds, selectPresentationsEntities, (slideIds, slideEntities) => slideIds.map(slideId => slideEntities[slideId]));
 

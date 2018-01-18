@@ -21,7 +21,7 @@ export interface MenuItem {
   icon: string;
   roles?: string[];
 }
-
+/*
 export class SlidesSetting {
   title: String = 'Slides '
   description: String = '';
@@ -59,6 +59,7 @@ export class Slides {
     }
   }
 }
+*/
 
 export interface Box {
   _id?: string,
@@ -73,20 +74,7 @@ export interface Box {
   content: any
 }
 
-export interface Presentation {
-  _id?: string,
-  id?: string,
-  title: string
-  public: boolean,
-  favorite: boolean,
-  description: string,
-  tags: string[],
-  authorId: string,
-  banner: any,
-  slideIds: string[]
-}
-
-export interface PresentationI {
+export interface IPresentation {
   _id?: string,
   id?: string,
   title?: string
@@ -99,15 +87,35 @@ export interface PresentationI {
   slideIds?: string[]
 }
 
-export class Presentation implements PresentationI {
-  constructor() {
+export class Presentation {
+  constructor(
+    public _id?: string,
+    public id?: string,
+    public title?: string,
+    public isPublic?: boolean,
+    public isFavorite?: boolean,
+    public description?: string,
+    public tags?: string[],
+    public authorId?: string,
+    public banner?: any,
+    public slideIds?: string[]
+  ) {
     this.title = 'New Presentation';
   }
 }
 
-export interface Slide {
+export interface ISlide {
   _id?: string;
   id?: string;
-  index:number;
-  boxIds: Box[];
+  index?:number;
+  boxIds?: Box[];
+}
+
+export class Slide implements ISlide {
+  constructor(
+    public _id?: string,
+    public id?: string,
+    public index?:number,
+    public boxIds?: Box[]
+  ) { }
 }

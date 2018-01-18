@@ -57,7 +57,7 @@
 @import '../../../../libs/slides/src/components/slides-editor-form/slides-editor/slides-editor-theme';
 @include slides-editor-theme($default-light-theme);
 
-@import '../../../../libs/slides/src/components/slides-editor-form/slides-editor/slides-setting/slides-setting-theme';
+@import '../../../../libs/slides/src/components/slides-editor-form/slides-setting/slides-setting-theme';
 @include slides-setting-theme($default-light-theme);
 
 @import '../../../../libs/slides/src/components/slides-list/slides-card/slides-card-theme';

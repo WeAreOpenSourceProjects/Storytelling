@@ -224,7 +224,7 @@ exports.myList = function(req, res) {
 /**
  * presentation middleware
  */
-exports.findOneByID = function(req, res, next, id) {
+exports.findOneById = function(req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'presentation is invalid'
@@ -268,15 +268,15 @@ exports.search = function(req, res) {
     }]
   }
 
-  if (req.query.public !== 'indeterminate') {
+  if (req.query.isPublic !== 'indeterminate') {
     request.$and.push({
-      'public': req.query.public
+      'isPublic': req.query.isPublic
     })
   }
 
-  if (req.query.favorite !== 'indeterminate') {
+  if (req.query.isFavorite !== 'indeterminate') {
     request.$and.push({
-      'favorite': req.query.favorite
+      'isFavorite': req.query.isFavorite
     })
   }
 

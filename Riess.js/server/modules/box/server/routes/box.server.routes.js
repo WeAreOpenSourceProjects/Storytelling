@@ -13,11 +13,13 @@ module.exports = function(app) {
   .post(box.create);
 
   // Single box routes
-  app.route('/api/boxes/:boxId').all(boxPolicy.isAllowed)
+  app.route('/api/boxes/:boxId')
+  //.all(boxPolicy.isAllowed)
+  .get(box.findOneById)
     .patch(box.update)
     .delete(box.delete);
 
-    app.param('boxId', box.boxByID)
-    .route('/api/boxes/:boxId').all(boxPolicy.isAllowed)
-    .get(box.read)
+    app.route('/api/boxes/:boxId')
+//    .all(boxPolicy.isAllowed)
+
 };

@@ -20,5 +20,6 @@ export {
   selectCurrentPresentationTags,
   selectCurrentPresentationAuthorId,
   selectCurrentPresentationBanner,
-  selectCurrentPresentationSlideIds
+  selectCurrentPresentationSlideIds,
+  selectCurrentPresentationSlides,
 } from './src/+state/presentations.selectors'

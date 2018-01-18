@@ -16,12 +16,12 @@ var PresentationSchema = new Schema({
     trim: true,
     required: 'Title cannot be blank'
   },
-  public: {
+  isPublic: {
     type: Boolean,
     default: false,
     trim: true
   },
-  favorite: {
+  isFavorite: {
     type: Boolean,
     default: false,
     trim: true

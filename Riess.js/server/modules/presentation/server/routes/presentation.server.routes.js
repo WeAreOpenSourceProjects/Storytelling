@@ -28,10 +28,11 @@ module.exports = function(app) {
   .post(presentation.copy);
 
   // Single presentation routes
-  app.param('presentationId', presentation.presentationByID)
+  app
+  //.param('presentationId', presentation.presentationByID)
   .route('/api/presentations/:presentationId')
 //  .all(presentationPolicy.isAllowed)
-  .get(presentation.findOneById)
+  .get(presentation.findOneById);
 
   app.route('/api/presentations/:presentationId')
 //  .all(presentationPolicy.isAllowed)

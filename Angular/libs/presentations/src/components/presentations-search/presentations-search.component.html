@@ -1,0 +1,37 @@
+<form fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around" [formGroup]="searchForm">
+  <mat-form-field *ngIf="kind === 'advanced'" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="60">
+    <mat-placeholder>
+      <mat-icon svgIcon="action:ic_search_24px"></mat-icon>
+    </mat-placeholder>
+    <input matInput formControlName="title">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="kind !== 'advanced'" fxFlex="100">
+    <mat-placeholder>
+      <mat-icon svgIcon="action:ic_search_24px"></mat-icon>
+    </mat-placeholder>
+    <input matInput formControlName="title">
+  </mat-form-field>
+  <div *ngIf="kind === 'advanced'" class="filter-container" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="40">
+    <mat-checkbox
+      #favorite
+      formControlName="isFavorite"
+      (click)="onClick(favorite, 'isFavorite')"
+      [indeterminate]="true">Favorite</mat-checkbox>
+    <mat-checkbox
+      #public
+      formControlName="isPublic"
+      (click)="onClick(public, 'isPublic')"
+      [indeterminate]="true">Public</mat-checkbox>
+      <mat-form-field>
+        <mat-select
+        #order
+        formControlName="order"
+        placeholder="Sorted"
+        (change)="onChange(order)">
+          <mat-option value="date">by date</mat-option>
+          <mat-option value="alphabetically">alphabetically</mat-option>
+        </mat-select>
+      </mat-form-field>
+  </div>
+</form>
