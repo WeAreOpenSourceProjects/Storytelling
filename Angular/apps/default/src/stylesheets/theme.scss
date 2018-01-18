@@ -45,8 +45,9 @@
 
 @include mat-list-theme($default-dark-theme);
 
-//@import '../../../../libs/presentations/src/components/presentation-card/presentation-card-theme';
-//@include slide-card-theme($default-light-theme);
+
+// @import '../../../../libs/presentations/src/components/presentation-card/presentation-card-theme';
+// @include slide-card-theme($default-light-theme);
 
 //@import '../../../../libs/slides/src/components/slides-editor-form/slides-editor/slide-editor/charts-builder/charts-builder-theme';
 //@include charts-builder-theme($default-light-theme);
@@ -57,8 +58,9 @@
 //@import '../../../../libs/slides/src/components/slides-editor-form/slides-editor/slides-editor-theme';
 //@include slides-editor-theme($default-light-theme);
 
-@import '../../../../libs/presentations/src/components/presentation-settings/presentation-settings-theme';
-@include slides-setting-theme($default-light-theme);
+
+// @import '../../../../libs/slides/src/components/presentations-settings/presentation-settings-theme';
+// @include slides-setting-theme($default-light-theme);
 
 @import '../../../../libs/presentations/src/components/presentation-card/presentation-card-theme';
 @include slides-card-theme($default-light-theme);

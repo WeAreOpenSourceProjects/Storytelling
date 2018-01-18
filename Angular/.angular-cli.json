@@ -104,6 +104,12 @@
       "appRoot": ""
     },
     {
+      "name": "slides",
+      "root": "libs/slides/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    },
+    {
       "name": "slides-routing",
       "root": "libs/slides-routing/src",
       "test": "../../../test.js",
