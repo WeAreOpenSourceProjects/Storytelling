@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER, ModuleWithProviders } from '@angular/core';
+import { NgModule, APP_INITIALIZER, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -12,7 +12,8 @@ import {
   MatChipsModule,
   MatToolbarModule,
   MatDialogModule,
-  MatCheckboxModule } from '@angular/material';
+  MatCheckboxModule,
+  MatPaginatorModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -48,6 +49,7 @@ import { environment } from '../../../apps/default/src/environments/environment'
     MatToolbarModule,
     MatInputModule,
     MatDialogModule,
+    MatPaginatorModule,
     RouterModule
   ],
   entryComponents: [
@@ -61,12 +63,12 @@ import { environment } from '../../../apps/default/src/environments/environment'
     PresentationSettingsComponent,
     PresentationsSearchComponent
   ],
-    exports: [
-      PresentationsListComponent,
-      PresentationDetailComponent,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    providers: []
+  exports: [
+    PresentationsListComponent,
+    PresentationDetailComponent,
+    PresentationsSearchComponent,
+    PresentationCardComponent,
+  ]
 })
 export class PresentationsModule { }
 
