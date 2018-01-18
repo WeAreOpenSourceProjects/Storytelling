@@ -1,17 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import {
-  SlidesListComponent,
-  SlideDetailComponent
-} from '@labdat/slides';
-
+import { SlidesListComponent } from '@labdat/slides/src/containers/slides-list/slides-list.component';
+import { SlideDetailComponent } from '@labdat/slides/src/containers/slide-detail/slide-detail.component';
 
 const slidesRoutes: Routes = [
   {
     path: '',
     component: SlidesListComponent,
-    canActivate: [ SlidesGuardService ],
+    // canActivate: [ SlidesGuardService ],
     data: {
       roles: ['user', 'admin'],
       title: 'Slides List'

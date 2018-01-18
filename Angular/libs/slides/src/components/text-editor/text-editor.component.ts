@@ -1,6 +1,6 @@
 
 import { Component, Input, Inject, HostListener, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
-import { environment } from '../../../../../../../../apps/default/src/environments/environment';
+import { environment } from '../../../../../apps/default/src/environments/environment';
 
 @Component({
   selector: 'app-text-editor',

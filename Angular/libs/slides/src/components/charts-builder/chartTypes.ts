@@ -16,7 +16,7 @@ import {
   SunburstChartComponent,
   WordCloudComponent,
   NumberCardComponent
-} from '../../../../../../../charts';
+} from '@labdat/charts';
 
 function createChartType({ title, ...obj }) {
   return {

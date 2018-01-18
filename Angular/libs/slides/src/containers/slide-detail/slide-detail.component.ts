@@ -1,25 +1,26 @@
 
 import {Component, ViewEncapsulation, ViewChildren,OnInit, ViewChild, ElementRef, QueryList, HostListener, ChangeDetectionStrategy, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
 
-import { Slide } from '../../../../models/slide';
+// import { Slide } from '../../../../models/slide';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-import {SlideService} from '../../../../services';
-import {ChartsBuilderComponent} from './charts-builder';
-import {TextEditorComponent} from './text-editor/text-editor.component';
-import {Chart} from '../../../../../../charts';
+// import {SlideService} from '../../../../services';
+import {ChartsBuilderComponent} from '../../components/charts-builder';
+import {TextEditorComponent} from '../../components/text-editor/text-editor.component';
+import {Chart} from '@labdat/charts';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { GridsterConfig, GridsterItem  }  from 'angular-gridster2';
-import { MenuBarComponent } from '../../../menu-bar/menu-bar.component'
-import {GraphComponent} from './graph/graph.component'
+import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component'
+import {GraphComponent} from '../../components/graph/graph.component'
 @Component({
-  selector: 'app-slides-drag-drop',
-  templateUrl: './slide-editor.component.html',
-  styleUrls: ['./slide-editor.component.scss'],
-  providers: [SlideService],
+  selector: 'app-slide-detail',
+  templateUrl: './slide-detail.component.html',
+  styleUrls: ['./slide-detail.component.scss'],
+  // providers: [SlideService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SlideEditorComponent implements OnInit{
+export class SlideDetailComponent implements OnInit{
   @ViewChild('menubar', { read: ViewContainerRef }) menubar: ViewContainerRef;
   @ViewChildren('texteditor', {read: ViewContainerRef}) public texteditor: QueryList<ViewContainerRef>;
 
@@ -36,7 +37,7 @@ export class SlideEditorComponent implements OnInit{
   options;
   constructor(
     private dialog: MatDialog,
-    private slideService : SlideService,
+    // private slideService : SlideService,
     private route : ActivatedRoute,
     private router: Router,
     private element: ElementRef,
@@ -139,9 +140,9 @@ ngOnInit() {
     enableEmptyCellContextMenu: false,
     enableEmptyCellDrop: false,
     enableEmptyCellDrag: false,
-    itemResizeCallback: SlideEditorComponent.itemResize,
+    itemResizeCallback: SlideDetailComponent.itemResize,
     emptyCellClickCallback: this.emptyCellClick.bind(this),
-    itemChangeCallback: SlideEditorComponent.itemChange,
+    itemChangeCallback: SlideDetailComponent.itemChange,
     emptyCellDragMaxCols: 50,
     emptyCellDragMaxRows: 50,
     draggable: {
@@ -201,11 +202,11 @@ removeItem($event, item) {
 }
 
   confirmSlide(slide){
-    this.slideService.confirmSlides(slide, this.id, this.idSlides)
-      .subscribe(
-        res => {
-          this.router.navigate(['/slides/display/', this.idSlides])
-        });
+    // this.slideService.confirmSlides(slide, this.id, this.idSlides)
+    //   .subscribe(
+    //     res => {
+    //       this.router.navigate(['/slides/display/', this.idSlides])
+    //     });
   }
 
 }
