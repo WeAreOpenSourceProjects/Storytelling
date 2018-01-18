@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -45,6 +46,7 @@ const MATERIAL_MODULES = [
     CommonModule,
     RouterModule,
     SharedModule,
+    ReactiveFormsModule,
     AuthenticationModule,
     ...MATERIAL_MODULES,
     FlexLayoutModule,

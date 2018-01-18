@@ -4,15 +4,18 @@
     </div>
     <div class="search-block" [class.center-mode]="!showSlidesList" [class.side-mode]="showSlidesList">
       <div class="search-wrap">
-        <app-slides-search kind="generic"></app-slides-search>
+        <app-slides-search kind="generic" [formControl]="searchControl"></app-slides-search>
       </div>
       <button *ngIf="!showSlidesList" class="buttonBottom floating" (click)="getAllslides()" mat-fab><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
     </div>
   </div>
 
   <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-    <div *ngFor="let presentation of presentations" [class.display-div]="!(loggedIn$|async) && !s.public" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
-      <app-slides-card [presentation]="presentation" [editable]="false"></app-slides-card>
+    <div
+      *ngFor="let presentation of presentations$ | async"
+      [class.display-div]="!(loggedIn$ | async) && !presentation.isPublic"
+      fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
+      <app-slides-card [presentation]="presentation" [editable]="false" [loggedIn]="false"></app-slides-card>
     </div>
   </div>
   <mat-paginator
