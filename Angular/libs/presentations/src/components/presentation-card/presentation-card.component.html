@@ -1,4 +1,4 @@
-<a class="card-container" *ngIf="loggedIn || presentation.public" [routerLink]="['/slides/slidesPresentation', presentation._id]">
+<a class="card-container" *ngIf="loggedIn || presentation.isPublic" [routerLink]="['/slides/slidesPresentation', presentation.id]">
   <mat-card  [@flyInOut]="'in'"  class="prez-list-card" >
     <h2 class="slides-title">{{presentation.title}}</h2>
     <div class="mat-card-image" style="background-image:url('assets/logo_full_banner.png');">
@@ -43,7 +43,7 @@
     </div>
     <mat-card-content class="card-content">
       <p class="description" *ngIf="presentation">{{presentation.description}}</p>
-      <p class="author" *ngIf="presentation">{{user.username}}</p>
+      <p class="author" *ngIf="presentation">{{presentation.authorId.username}}</p>
     </mat-card-content>
   </mat-card>
 </a>

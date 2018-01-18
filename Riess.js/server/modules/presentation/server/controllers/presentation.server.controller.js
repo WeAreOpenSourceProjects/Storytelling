@@ -290,6 +290,9 @@ exports.search = function(req, res) {
     path: 'slideIds',
     populate: { path: 'boxIds' }
   })
+  .populate({
+    path: 'authorId'
+  })
   .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
   .limit(pageSize)
   .sort(order)

@@ -12,6 +12,9 @@ import { Subject } from 'rxjs/Subject';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { map } from 'rxjs/operators/map';
 import { of } from 'rxjs/observable/of';
+import { merge } from 'rxjs/observable/merge';
+import { mapTo } from 'rxjs/operators/mapTo';
+import { startWith } from 'rxjs/operators/startWith';
 
 @Component({
   selector: 'app-home',
@@ -19,15 +22,13 @@ import { of } from 'rxjs/observable/of';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public loggedIn$: Observable<boolean>;
+  public loggedIn$ = this.store.select(selectIsLoggedIn);
   public presentations$: Observable<Array<Presentation>> = of([]);
-  public showSlidesList: boolean;
+  public showPublicSlides$ = new Subject<boolean>();
+  public hide$ = of(false);
+  public showAllPresentations$ = new Subject<boolean>();
   public noResult: boolean;
   public noPublish: boolean;
-  public pageSize = 6;
-
-  private toSearch;
-  private pageIndex = 0;
 
   constructor(private presentationsApiService: PresentationsApiService, private store: Store<AuthenticationState>) {}
 
@@ -41,17 +42,17 @@ export class HomeComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.showSlidesList = false;
     this.noResult = false;
     this.noPublish = false;
-    this.toSearch = { title: '', filter: 'isPublic' };
-    this.loggedIn$ = this.store.select(selectIsLoggedIn);
 
     this.presentations$ = this.searchControl.valueChanges
     .pipe(
-      switchMap(search => this.presentationsApiService.search(0, 10, search)),
+      switchMap(search => this.presentationsApiService.search(0, 6, search)),
       map(result => result.presentations)
     )
+
+    this.hide$ = merge(this.searchControl.valueChanges,this.showPublicSlides$)
+    .pipe(mapTo(true))
 
     this.nextPage$
     .pipe(
@@ -70,18 +71,18 @@ export class HomeComponent implements OnInit {
 
   searchSlides(searchText) {
     //show slides and hide logo
-    this.showSlidesList = true;
+  //  this.showSlidesList = true;
     //get search result
-    this.toSearch.title = searchText;
-    this.presentationsApiService
-    .search(this.toSearch, this.pageIndex, this.pageSize)
-    .subscribe(presentations => {
+  //  this.toSearch.title = searchText;
+ //   this.presentationsApiService
+ //   .search(this.toSearch, this.pageIndex, this.pageSize)
+ //   .subscribe(presentations => {
 //      this.presentations = presentations;
 //      this.noResult = (this.presentations.length === 0) ? true : false;
-    });
+ //   });
   }
 
-  getAllslides() {
+  getAllslides() {/*
     this.showSlidesList = true;
     this.toSearch.title = '';
     this.presentationsApiService
@@ -89,15 +90,15 @@ export class HomeComponent implements OnInit {
     .subscribe(presentations => {
 //      this.presentations = presentations;
 //      this.noPublish = (this.presentations.length === 0) ? true : false
-    });
+    });*/
   }
 
-  nextPage($event) {
+  nextPage($event) {/*
     this.pageIndex = $event.pageIndex;
     this.presentationsApiService
     .search(this.toSearch, this.pageIndex, this.pageSize)
     .subscribe(presentations => {
 //      this.presentations = presentations;
-    });
+    });*/
   }
 }

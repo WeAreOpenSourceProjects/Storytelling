@@ -1,3 +1,2 @@
 // export * from './services';
-export * from './models';
-export * from './slides.module';
+export * from './src/slides.module';
