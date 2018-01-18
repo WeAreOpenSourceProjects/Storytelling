@@ -6,7 +6,8 @@ import {
   EventEmitter,
   forwardRef} from '@angular/core';
 import { FormBuilder, FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox, MatSelect } from '@angular/material';
+import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox, MatSelect } from '@angular/material/checkbox';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-slides-search',

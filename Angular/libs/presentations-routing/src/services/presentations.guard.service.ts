@@ -6,7 +6,7 @@ import { fromPresentations, PresentationsState, selectPresentationsLoaded } from
 import { filter } from 'rxjs/operators/filter';
 
 @Injectable()
-export class SlidesGuardService implements CanActivate {
+export class PresentationsGuardService implements CanActivate {
   constructor(private store: Store<PresentationsState>) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {

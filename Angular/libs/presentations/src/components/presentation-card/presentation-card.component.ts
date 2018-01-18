@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 //import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators/map';
+import { filter } from 'rxjs/operators/filter';
 import { Presentation } from '@labdat/data-models';
-import { SlidesService, ImagesService } from '../../../services';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 //import { NotifBarService } from 'app/core';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { selectUser, selectIsLoggedIn, AuthenticationState } from '@labdat/authentication-state';
@@ -44,7 +44,7 @@ import { User } from '@labdat/data-models';
     ])
   ]
 })
-export class PresnetationCardComponent implements OnInit {
+export class PresentationCardComponent implements OnInit {
 
   @Output()
   select = new EventEmitter<string>();
@@ -81,7 +81,6 @@ export class PresnetationCardComponent implements OnInit {
 
   constructor(
     private slidesService: PresentationsApiService,
-    private imagesService: ImagesService,
     private dialog: MatDialog,
     private store: Store<AuthenticationState>
    /*        private notifBarService: NotifBarService */ ) {

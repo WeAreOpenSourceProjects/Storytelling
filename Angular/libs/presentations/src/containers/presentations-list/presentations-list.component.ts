@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { SlidesService, ImagesService } from '../../services/index';
 import { Slides, SlidesSetting } from '../../models/index';
 //import {NotifBarService} from "app/core";
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import {  } from '@labdat/presentations-state';
 import { Presentation } from '@labdat/data-models';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators/debounceTime';
@@ -26,14 +24,14 @@ import { Subject } from 'rxjs/Subject';
 import { combineLatest } from 'rxjs/operators/combineLatest';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { PresentationDialogComponent } from '../../components/presentation-dialog/presentation-dialog.component';
 
 @Component({
   selector: 'app-slides-list',
-  templateUrl: './slides-list.component.html',
-  styleUrls: ['./slides-list.component.scss']
+  templateUrl: './presentations-list.component.html',
+  styleUrls: ['./presentations-list.component.scss']
 })
-export class SlidesListComponent implements OnInit {
+export class PresentationsListComponent implements OnInit {
 
   public searchControl = new FormControl({
     title: '',
@@ -62,7 +60,6 @@ export class SlidesListComponent implements OnInit {
   )
 
   constructor(
-    private imagesService: ImagesService,
     private store: Store<PresentationsState>,
     private dialog: MatDialog ) { }
     /*        private notifBarService: NotifBarService */
@@ -95,7 +92,7 @@ export class SlidesListComponent implements OnInit {
     });
 
     this.delete$
-    .pipe(switchMap(presentationId => this.dialog.open(DeleteDialogComponent, { height: '20%', width: '20%', data: { presentationId } }).afterClosed()))
+    .pipe(switchMap(presentationId => this.dialog.open(PresentationDialogComponent, { height: '20%', width: '20%', data: { presentationId } }).afterClosed()))
     .subscribe(result => {
       if (result.delete) {
         this.store.dispatch(new fromPresentations.Delete(result.presentationId))

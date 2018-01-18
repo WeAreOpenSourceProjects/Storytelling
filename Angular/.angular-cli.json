@@ -22,7 +22,7 @@
         { "glob": "svg-sprite-content.svg", "input": "../../../node_modules/material-design-icons/sprites/svg-sprite/", "output": "assets/" },
         { "glob": "svg-sprite-hardware.svg", "input": "../../../node_modules/material-design-icons/sprites/svg-sprite/", "output": "assets/" },
         { "glob": "*", "input": "../../../libs/core/src/assets/", "output": "assets/" },
-        { "glob": "*", "input": "../../../libs/slides/src/assets/", "output": "assets/" },
+        { "glob": "*", "input": "../../../libs/presentations/src/assets/", "output": "assets/" },
         { "glob": "**/*", "input": "../../../libs/charts/src/assets/img-graph", "output": "assets/img-graph" }
       ],
       "index": "index.html",
@@ -92,8 +92,8 @@
       "appRoot": ""
     },
     {
-      "name": "slides",
-      "root": "libs/slides/src",
+      "name": "presentations",
+      "root": "libs/presentations/src",
       "test": "../../../test.js",
       "appRoot": ""
     },

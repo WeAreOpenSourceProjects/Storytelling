@@ -15,94 +15,25 @@ import {
   MatCheckboxModule,
   MatStepperModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
-
-// NGX-CHARTS MODULE
-import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
-
-// DRAG & DROP MODULE
-import { CodemirrorModule } from 'ng4-codemirror/src';
-import { DndModule } from 'ng2-dnd';
-
-// HANDSONTABLE MODULE
-import { HotTableModule } from 'angular-handsontable';
 
 import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
-// SLIDES COMPONENTS
 
-import {
-  SlidesViewComponent,
-  TitleSlideComponent,
-  SlidesEditorFormComponent,
-  SlideCardComponent,
-  MenuBarComponent,
-  SlideEditorComponent
-} from './components';
-export {
-  SlidesViewComponent,
-  TitleSlideComponent,
-  SlidesEditorFormComponent,
-  SlideCardComponent,
-  MenuBarComponent,
-  SlideEditorComponent
-} from './components';
-
-// SLIDES SERVICES
-import { SlideService, SlideResolve, SlidesService, ImagesService, ValidService, ChartsService } from './services';
+import { PresentationsListComponent } from './containers/presentations-list/presentations-list.component';
+import { PresentationDetailComponent } from './containers/presentation-detail/presentation-detail.component';
+import { PresentationCardComponent } from './components/presentation-card/presentation-card.component';
+import { PresentationDialogComponent } from './components/presentation-dialog/presentation-dialog.component';
+import { PresentationSettingsComponent } from './components/presentation-settings/presentation-settings.component';
+import { PresentationsSearchComponent } from './components/presentations-search/presentations-search.component';
 
 // SLIDES ROUTES MODULE
-import { SlidesRoutingModule } from '@labdat/slides-routing';
+import { PresentationsRoutingModule } from '@labdat/presentations-routing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import {  } from './components/slides-view/key-switch.directive';
+//import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
 
-import { DragulaModule } from 'ng2-dragula';
-import {
-  BarChartComponent,
-  GaugeChartComponent,
-  NgGraphComponent,
-  TreemapChartComponent,
-  ZoomableTreemapChartComponent,
-  PieGridChartComponent,
-  NumberCardComponent,
-  SunburstChartComponent,
-  AdvancedPieChartComponent,
-  ForceDirectedGraphComponent,
-  LineChartComponent,
-  DendogramComponent,
-  PieChartComponent,
-  HierarchicalEdgeBundlingComponent,
-  BubbleChartComponent,
-  WordCloudComponent,
-  AreaChartComponent
-} from '@labdat/charts';
-import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
+//import { ValidateOnBlurDirective } from './components/slides-editor-form/slides-setting/validate-on-blur.directive';
 
-import { SlidesSettingComponent } from './components/slides-editor-form/slides-setting/slides-setting.component';
-import {
-  CodeEditorComponent,
-  DataTableComponent
-} from './components/slides-editor-form/slides-editor/slide-editor/charts-builder';
-import { SlidesEditorComponent } from './components/slides-editor-form/slides-editor/slides-editor.component';
-
-import { KeySwitchDirective } from './components/slides-view/key-switch.directive';
-import { SlidesListComponent } from './components/slides-list/slides-list.component';
-export { SlidesListComponent };
-import { SlidesCardComponent } from './components/slides-list/slides-card/slides-card.component';
-import { DeleteDialogComponent } from './components/slides-list/delete-dialog/delete-dialog.component';
-import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
-
-import { ValidateOnBlurDirective } from './components/slides-editor-form/slides-setting/validate-on-blur.directive';
-import { GridsterModule } from 'angular-gridster2';
-
-import {
-  ChartsBuilderComponent,
-  GraphComponent,
-  TextEditorComponent,
-  ImageUploadComponent
-} from './components/slides-editor-form/slides-editor/slide-editor';
 import { environment } from '../../../apps/default/src/environments/environment';
-import { DisableControlDirective } from './directives/disable-control/disable-control.directive';
 
 @NgModule({
     imports: [

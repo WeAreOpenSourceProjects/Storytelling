@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PresentationsApiService } from '@labdat/presentations-state';
 import { ValidService } from '../../services/valid.service';
 import { Presentation } from '@labdat/data-models';
-import { SlidesEditorComponent } from './slides-editor/slides-editor.component';
+//import { SlidesEditorComponent } from './slides-editor/slides-editor.component';
 //import { NotifBarService } from 'app/core';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Store } from '@ngrx/store';
@@ -13,11 +13,11 @@ import { PresentationsState, selectCurrentPresentation } from '@labdat/presentat
 
 @Component({
   selector: 'app-slides-editor-form',
-  templateUrl: './slides-editor-form.component.html',
-  styleUrls: ['./slides-editor-form.component.scss'],
+  templateUrl: './presentations-detail.component.html',
+  styleUrls: ['./presentations-detail.component.scss'],
   providers: [PresentationsApiService, ValidService]
 })
-export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
+export class PresentationDetailComponent implements OnInit, AfterViewChecked {
   private id: string; //slides id in database
   private slider: Presentation = new Presentation(); //corresponding slides
   private editorValid: Subscription; //validation of slide editor
@@ -28,6 +28,7 @@ export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
   loading = true;
 
   private currentPresentationSettings$ = this.store.select(selectCurrentPresentation)
+
   .pipe(map(presentation => {
     delete presentation.slideIds;
     delete presentation.authorId;
@@ -35,7 +36,8 @@ export class SlidesEditorFormComponent implements OnInit, AfterViewChecked {
   }));
 
   @ViewChild('editor')
-  _editor: SlidesEditorComponent;
+//  _editor: SlidesEditorComponent;
+  _editor: any;
 
   constructor(
     private router: Router,
