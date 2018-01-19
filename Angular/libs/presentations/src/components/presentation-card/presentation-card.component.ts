@@ -124,11 +124,4 @@ export class PresentationCardComponent implements OnInit {
     // this.notifBarService.showNotif("Opps! fail to copy the presentation. error :" + error);
 
   }
-
-  public showOptions(): boolean {
-    return this.loggedIn
-    && this.editable
-    && this.presentation
-    && this.presentation.authorId === this.user.id;
-  }
 }

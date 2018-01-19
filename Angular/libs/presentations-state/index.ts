@@ -18,7 +18,7 @@ export {
   selectCurrentPresentationIsFavorite,
   selectCurrentPresentationDescription,
   selectCurrentPresentationTags,
-  selectCurrentPresentationAuthorId,
+  selectCurrentPresentationAuthor,
   selectCurrentPresentationBanner,
   selectCurrentPresentationSlideIds,
   selectCurrentPresentationSlides,

@@ -36,7 +36,7 @@ var PresentationSchema = new Schema({
     defalut: '',
     trim: true
   },
-  authorId: {
+  author: {
     type: Schema.ObjectId,
     ref: 'User'
   },

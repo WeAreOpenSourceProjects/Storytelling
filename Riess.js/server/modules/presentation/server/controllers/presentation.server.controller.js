@@ -291,7 +291,7 @@ exports.search = function(req, res) {
     populate: { path: 'boxIds' }
   })
   .populate({
-    path: 'authorId'
+    path: 'author'
   })
   .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
   .limit(pageSize)

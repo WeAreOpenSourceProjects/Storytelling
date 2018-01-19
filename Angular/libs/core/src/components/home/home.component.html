@@ -13,7 +13,6 @@
   <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
     <div
       *ngFor="let presentation of presentations$ | async"
-      [class.display-div]="!(loggedIn$ | async) && !presentation.isPublic"
       fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
       <app-slides-card [presentation]="presentation" [editable]="false" [loggedIn]="false"></app-slides-card>
     </div>

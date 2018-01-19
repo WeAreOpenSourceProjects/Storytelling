@@ -3,10 +3,10 @@
 </div>
 
 <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-  <div *ngFor="let presentation of presentations$ | async; trackBy:trackById"
-    [class.display-div]="!(loggedIn$|async) && presentation.public"
-    fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
+  <ng-container  >
     <app-slides-card
+      *ngFor="let presentation of presentations$ | async; trackBy:trackById"
+      fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
       (delete)="delete$.next($event)"
       (copy)="copy$.next($event)"
       (isPublishChange)="togglePublish$.next($event)"
@@ -16,7 +16,7 @@
       [loggedIn]="loggedIn$ | async"
       [user]="user$ | async"
       [editable]="true"></app-slides-card>
-  </div>
+  </ng-container>
 </div>
 
 <div class="error" [innerHTML]="message$ | async"></div>

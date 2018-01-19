@@ -1,6 +1,8 @@
 import { PresentationsState, presentationsAdapter } from './presentations.interfaces';
 import * as fromPresentations from './presentations.actions';
 import { fromAuthentication } from '@labdat/authentication-state';
+import { fromRouter } from '@labdat/router-state';
+import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store'
 
 export const presentationsInitialState: PresentationsState = presentationsAdapter.getInitialState({
   currentPresentationId: null,
@@ -9,7 +11,7 @@ export const presentationsInitialState: PresentationsState = presentationsAdapte
   error: '',
 });
 
-export function presentationsReducer(state: PresentationsState = presentationsInitialState, action: fromPresentations.Actions | fromAuthentication.Actions ): PresentationsState {
+export function presentationsReducer(state: PresentationsState = presentationsInitialState, action: fromPresentations.Actions | fromAuthentication.Actions | RouterNavigationAction ): PresentationsState {
   switch (action.type) {
     case fromAuthentication.LOGOUT: {
       return presentationsInitialState;
@@ -37,6 +39,11 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
     }
     case fromPresentations.SELECT: {
       return { ...state, currentPresentationId: action.payload };
+    }
+    case ROUTER_NAVIGATION: {
+      const match = /\/presentations\/(.*)\/*/.exec(action.payload.routerState.url);
+      const currentPresentationId = match ? match[1] : null;
+      return { ...state, currentPresentationId };
     }
     default: {
       return state;

@@ -6,6 +6,7 @@ export interface Authenticate {
 }
 
 export interface User {
+  _id?: string
   id?: string
   firstName: string;
   lastName: string;
@@ -82,7 +83,7 @@ export interface IPresentation {
   favorite?: boolean,
   description?: string,
   tags?: string[],
-  authorId?: string,
+  author?: User,
   banner?: any,
   slideIds?: string[]
 }
@@ -96,7 +97,7 @@ export class Presentation {
     public isFavorite?: boolean,
     public description?: string,
     public tags?: string[],
-    public authorId?: string,
+    public author?: User,
     public banner?: any,
     public slideIds?: string[]
   ) {

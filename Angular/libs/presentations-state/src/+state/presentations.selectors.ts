@@ -24,7 +24,7 @@ export const selectCurrentPresentationIsPublic = createSelector(selectCurrentPre
 export const selectCurrentPresentationIsFavorite = createSelector(selectCurrentPresentation, presentation => presentation.isFavorite);
 export const selectCurrentPresentationDescription = createSelector(selectCurrentPresentation, presentation => presentation.description);
 export const selectCurrentPresentationTags = createSelector(selectCurrentPresentation, presentation => presentation.tags);
-export const selectCurrentPresentationAuthorId = createSelector(selectCurrentPresentation, presentation => presentation.authorId);
+export const selectCurrentPresentationAuthor = createSelector(selectCurrentPresentation, presentation => presentation.author);
 export const selectCurrentPresentationBanner = createSelector(selectCurrentPresentation, presentation => presentation.banner);
 export const selectCurrentPresentationSlideIds = createSelector(selectCurrentPresentation, presentation => presentation.slideIds);
 export const selectCurrentPresentationSlides = createSelector(selectCurrentPresentationSlideIds, selectPresentationsEntities, (slideIds, slideEntities) => slideIds.map(slideId => slideEntities[slideId]));

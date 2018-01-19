@@ -1,8 +1,8 @@
-<a class="card-container" *ngIf="loggedIn || presentation.isPublic" [routerLink]="['/slides/slidesPresentation', presentation.id]">
+<a class="card-container" *ngIf="loggedIn || presentation.isPublic" [routerLink]="[presentation.id]">
   <mat-card  [@flyInOut]="'in'"  class="prez-list-card" >
     <h2 class="slides-title">{{presentation.title}}</h2>
     <div class="mat-card-image" style="background-image:url('assets/logo_full_banner.png');">
-      <div class="banner-container" *ngIf="presentation && presentation.banner">
+      <div class="banner-container" *ngIf="presentation.banner">
         <img class="banner" [src]="banner">
       </div>
       <div class="banner-mask"><i class="fa fa-play-circle-o fa-5x" aria-hidden="true"></i></div>
@@ -17,7 +17,7 @@
           <mat-icon *ngIf="!presentation.isFavorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_border_24px"></mat-icon>
           <mat-icon *ngIf="presentation.isFavorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_24px"></mat-icon>
         </button>
-        <div *ngIf="showOptions()" class="btn-group">
+        <div *ngIf="loggedIn && editable && presentation.author._id === user.id" class="btn-group">
           <button
             mat-icon-button
             (click)="togglePublish($event)"
@@ -37,13 +37,13 @@
           </button>
         </div>
       </div>
-      <mat-chip-list class="tip-list" *ngIf="presentation">
+      <mat-chip-list class="tip-list">
         <mat-chip class="tip" *ngFor="let tag of presentation.tags">{{tag}}</mat-chip>
       </mat-chip-list>
     </div>
     <mat-card-content class="card-content">
-      <p class="description" *ngIf="presentation">{{presentation.description}}</p>
-      <p class="author" *ngIf="presentation">{{presentation.authorId.username}}</p>
+      <p class="description">{{presentation.description}}</p>
+      <p class="author">{{presentation.author.username}}</p>
     </mat-card-content>
   </mat-card>
 </a>

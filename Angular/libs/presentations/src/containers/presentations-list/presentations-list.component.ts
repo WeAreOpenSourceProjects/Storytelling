@@ -52,7 +52,7 @@ export class PresentationsListComponent implements OnInit {
   public user$ = this.store.select(selectUser);
   public presentations$ = this.store.select(selectAllPresentations);
   public presentationsCount$ = this.store.select(selectPresentationsTotal);
-  public presentationsError$ = this.store.select(selectPresentationsError);s
+  public presentationsError$ = this.store.select(selectPresentationsError);
   public currentPresentation$ = this.store.select(selectCurrentPresentation)
   public message$ = this.searchControl.valueChanges.pipe(
     startWith({title: '', isPublic: 'indeterminate', isFavorite: 'indeterminate'}),
@@ -87,7 +87,7 @@ export class PresentationsListComponent implements OnInit {
     .pipe(withLatestFrom(this.user$, (click, user) => user))
     .subscribe((user) => {
       const presentation = new Presentation();
-      presentation.authorId = user.id;
+      presentation.author = user;
       this.store.dispatch(new fromPresentations.Add(presentation));
     });
 

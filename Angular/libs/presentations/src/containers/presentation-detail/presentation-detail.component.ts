@@ -28,10 +28,8 @@ export class PresentationDetailComponent implements OnInit, AfterViewChecked {
   loading = true;
 
   private currentPresentationSettings$ = this.store.select(selectCurrentPresentation)
-
   .pipe(map(presentation => {
     delete presentation.slideIds;
-    delete presentation.authorId;
     return presentation;
   }));
 
