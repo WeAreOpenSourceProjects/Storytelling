@@ -1,8 +1,7 @@
 <mat-card-content>
   <app-slides-setting
     (onSettingChange)="slidesSettingChange($event)"
-    (formValidateChange)="settingValidateChange($event)"
-    [settings]="currentPrensentationSettings$ | async">
+    (formValidateChange)="settingValidateChange($event)">
   </app-slides-setting>
   <!--app-slides-editor #editor (errorsHandle)="errorsHandle($event)" (onShuffle)="onShuffle($event, slider)"></app-slides-editor-->
 </mat-card-content>
