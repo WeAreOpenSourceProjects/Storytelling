@@ -54,7 +54,9 @@ export class PresentationsApiService {
 
   add(presentation: Presentation): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}`;
-    return this.http.post(backendURL, presentation).pipe(map((presentation: Presentation) => ({...presentation, id: presentation._id})));
+    //console.log(presentation)
+    const payload = { ...presentation, author: presentation.author.id }
+    return this.http.post(backendURL, payload).pipe(map((presentation: Presentation) => ({...presentation, id: presentation._id})));
   }
 
   copy(presentationId: number): Observable<any> {
