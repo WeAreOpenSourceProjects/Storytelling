@@ -18,7 +18,8 @@ var config = require('../config'),
   path = require('path'),
   _ = require('lodash'),
   lusca = require('lusca'),
-  cors = require('cors');
+  cors = require('cors'),
+  passport = require('passport');
 
 /**
  * Initialize local variables
@@ -72,8 +73,10 @@ module.exports.initMiddleware = function (app) {
   app.use(cors({
     origin: ['http://localhost:4200', 'http://localhost:8080'],
     credentials: true,
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }))
+
+  app.use(passport.initialize())
 
 };
 
@@ -208,13 +211,13 @@ module.exports.init = function () {
   this.initMiddleware(app);
 
   // Initialize Helmet security headers
-  this.initHelmetHeaders(app);
+//  this.initHelmetHeaders(app);
 
   // Initialize modules static client routes, before session!
   this.initModulesClientRoutes(app);
 
   // Initialize Express session
-  this.initSession(app);
+//  this.initSession(app);
 
   // Initialize Modules configuration
   this.initModulesConfiguration(app);
@@ -229,7 +232,7 @@ module.exports.init = function () {
   this.initErrorRoutes(app);
 
   // Configure Socket.io
-  app = this.configureSocketIO(app);
+ // app = this.configureSocketIO(app);
 
   return app;
 };

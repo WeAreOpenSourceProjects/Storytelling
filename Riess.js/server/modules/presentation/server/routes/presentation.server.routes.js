@@ -4,7 +4,8 @@
  * Module dependencies
  */
 var presentationPolicy = require('../policies/presentation.server.policy'),
-  presentation = require('../controllers/presentation.server.controller');
+  presentation = require('../controllers/presentation.server.controller'),
+  passport = require('passport');
 
 module.exports = function(app) {
   // users-list all presentations
@@ -25,7 +26,8 @@ module.exports = function(app) {
 
   app.route('/api/presentations/copy')
 //  .all(presentationPolicy.isAllowed)
-  .post(presentation.copy);
+.post(presentation.copy)
+.post(passport.authenticate('jwt'), presentation.copy);
 
   // Single presentation routes
   app

@@ -20,15 +20,12 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   var presentation = new Presentation(req.body);
-  console.log('1', presentation)
   Presentation
   .create(presentation)
   .then(function(presentation) {
-    console.log('2', presentation)
     return presentation.populate('author').execPopulate()
   })
   .then(function(presentation) {
-    console.log('3', presentation)
     return res.json(presentation);
   })
   .catch(function(err) {
@@ -39,14 +36,15 @@ exports.create = function(req, res) {
 };
 
 exports.copy = function(req, res) {
-
+console.log('???', req.cookies)
   var presentation = Presentation.findOne({ _id: req.body.presentationId })
 
   var newPresentation = presentation
   .then(function(presentation) {
     var presentation = presentation.toObject();
     delete presentation._id;
-    presentation.user = req.user;
+    console.log(req.user);
+    presentation.author = req.user;
     presentation.title += ' copy';
     return Presentation.create(presentation);
   })

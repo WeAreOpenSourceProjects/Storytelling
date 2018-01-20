@@ -46,7 +46,7 @@ exports.signin = async function (req, res) {
   const payload = { id, firstName, lastName, email, username };
   const token = jwt.sign(payload, configuration.jwt.secret);
   return res.status(200)
-    .cookie('TOKEN', token)
+    .cookie('TOKEN', token, { maxAge: 900000, httpOnly: true })
     .json({ user: payload, tokenExpiresIn: 10101010101 });
 };
 
@@ -79,7 +79,7 @@ exports.token = async function (req, res, next) {
     // and specify proper expiration, issuer, algorithm, etc.
     const token = jwt.sign(payload, config.jwt.secret)
 
-    res.status(200).cookies('TOKEN', token)
+    res.status(200).cookies('TOKEN', token, { maxAge: 900000, httpOnly: true })
   } catch (err) {
     return next(new ApiError(err.message))
   }
