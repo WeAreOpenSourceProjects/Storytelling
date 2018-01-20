@@ -18,22 +18,20 @@ var PresentationSchema = new Schema({
   },
   isPublic: {
     type: Boolean,
-    default: false,
-    trim: true
+    default: false
   },
   isFavorite: {
     type: Boolean,
-    default: false,
-    trim: true
+    default: false
   },
   description: {
     type: String,
-    defalut: '',
+    default: '',
     trim: true
   },
   tags: {
     type: [String],
-    defalut: '',
+    default: [],
     trim: true
   },
   author: {
@@ -41,9 +39,9 @@ var PresentationSchema = new Schema({
     ref: 'User'
   },
   banner: {
-    type: Schema.ObjectId,
-    ref: 'Image',
-    required: false
+    type: String,
+    defalut: '',
+    trim: true
   },
   slideIds: {
     type: [{

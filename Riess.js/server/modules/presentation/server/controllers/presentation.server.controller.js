@@ -10,7 +10,6 @@ var path = require('path'),
   Presentation = mongoose.model('Presentation'),
   Slide = mongoose.model('Slide'),
   Box = mongoose.model('Box'),
-  Image = mongoose.model('Image'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
   Promise = require('promise');
@@ -53,7 +52,6 @@ exports.copy = function(req, res) {
 
   var slides = presentation
   .then(function(presentation) {
-    console.log('presentationb')
     return Slide.find({_id: { $in: presentation.slideIds } }).exec()
   })
 
@@ -69,7 +67,6 @@ exports.copy = function(req, res) {
     }))
   })
   .then(function(slides) {
-    console.log('slides', slides.ops)
     return slides.ops;
   })
 
@@ -88,7 +85,6 @@ exports.copy = function(req, res) {
     }))
   })
   .then(function(boxes) {
-    console.log('boxes', boxes.ops)
     return boxes.ops;
   })
 
