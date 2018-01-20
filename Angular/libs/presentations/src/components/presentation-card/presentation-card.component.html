@@ -29,7 +29,7 @@
           <button mat-icon-button (click)="deleteSlides($event)" matTooltip="Delete">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_delete_24px"></mat-icon>
           </button>
-          <button mat-icon-button (click)="$event.preventDefault()" [routerLink]="['display', presentation.id]" matTooltip="Edit">
+          <button mat-icon-button (click)="$event.preventDefault()" [routerLink]="[presentation.id, 'edit']" matTooltip="Edit">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="image:ic_edit_24px"></mat-icon>
           </button>
           <button mat-icon-button (click)="copySlides($event); false" matTooltip="Copy">

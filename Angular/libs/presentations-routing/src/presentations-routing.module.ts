@@ -20,7 +20,7 @@ const prenstationsRoutes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: ':id',
+    path: ':id/edit',
     component: PresentationDetailComponent,
     canActivate: [ PresentationsGuardService ],
     data: {

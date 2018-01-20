@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { ValidService } from '../../services/valid.service';
+import { PartialObserver } from 'rxjs/Observer';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-slides-setting',
@@ -13,24 +15,45 @@ export class PresentationSettingsComponent {
   @ViewChild('tagInput')
   public tagInput: ElementRef
 
-  public settingsForm = this.formBuilder.group({
-    title: '',
-    description: '',
-    tags: this.formBuilder.array([])
-  });
+  @Input()
+  public settings: any;
+
+  @Input()
+  public settingsObserver$: PartialObserver<string>;
+
+  public settingsForm: FormGroup;
+
+  private subscriptions: Subscription;
 
   constructor(private formBuilder: FormBuilder) { }
 
+  ngOnInit() {
+    this.settingsForm = this.initSettingsForm(this.settings);
+    this.subscriptions = this.settingsForm
+    .valueChanges
+    .subscribe(this.settingsObserver$);
+  }
+
+  private initSettingsForm(settings) {
+    console.log('J??')
+    const settingsForm = this.formBuilder.group({
+      title: this.formBuilder.control(settings.title),
+      description: this.formBuilder.control(settings.description),
+    });
+    settingsForm.addControl('tags', this.formBuilder.array([]))
+    settings.tags.forEach(tag => (settingsForm.get('tags') as FormArray).push(this.formBuilder.control(tag)));
+    return settingsForm;
+  }
+
   addTag(tag) {
-    const control = <FormArray>this.settingsForm.controls['tags'];
-    control.push(this.formBuilder.group({ tag }));
+    (this.settingsForm.get('tags') as FormArray).push(this.formBuilder.control(tag));
     this.tagInput.nativeElement.value = '';
   }
 
   deleteTag(i) {
-    const control = <FormArray>this.settingsForm.controls['tags'];
-    control.removeAt(i);
+    (this.settingsForm.get('tags') as FormArray).removeAt(i);
   }
+
   setBanner(path) {
   //  this.onSettingChange.emit(this.slidesSetting);
   }
@@ -38,5 +61,9 @@ export class PresentationSettingsComponent {
   upload(image) {
   //  this.slidesSetting.banner = image;
   //  this.onSettingChange.emit(this.slidesSetting);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

@@ -9,7 +9,12 @@ import { Presentation } from '@labdat/data-models';
 //import { NotifBarService } from 'app/core';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Store } from '@ngrx/store';
-import { PresentationsState, selectCurrentPresentation } from '@labdat/presentations-state';
+import { PresentationsState, selectCurrentPresentation, fromPresentations } from '@labdat/presentations-state';
+import { Subject } from 'rxjs/Subject';
+import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
+import { tap } from 'rxjs/operators/tap';
+import { filter } from 'rxjs/operators/filter';
+import { isEmpty } from 'lodash';
 
 @Component({
   selector: 'app-slides-editor-form',
@@ -18,36 +23,39 @@ import { PresentationsState, selectCurrentPresentation } from '@labdat/presentat
   providers: [PresentationsApiService, ValidService]
 })
 export class PresentationDetailComponent implements OnInit, AfterViewChecked {
-  private id: string; //slides id in database
-  private slider: Presentation = new Presentation(); //corresponding slides
+
   private editorValid: Subscription; //validation of slide editor
   private errorMsg; //error
-  private mode = ''; //SAVE mode or CREATE mode
   private isRequired = false;
   private isInShuffle = false;
   loading = true;
 
-  private currentPresentationSettings$ = this.store.select(selectCurrentPresentation)
-  .pipe(map(presentation => {
-    delete presentation.slideIds;
-    return presentation;
-  }));
+  private currentPresentation$ = this.store.select(selectCurrentPresentation)
+  public currentPresentationSettings$ = this.currentPresentation$
+  .pipe(
+    filter((presentation: Presentation) => !isEmpty(presentation)),
+    map(presentation => ({
+      title: presentation.title,
+      description: presentation.description,
+      tags: presentation.tags
+    }))
+  );
+  public update$ = new Subject();
+  public settingsObserver$ = new Subject<any>();
 
-  @ViewChild('editor')
+  private subscriptions: Subscription;
+//  @ViewChild('editor')
 //  _editor: SlidesEditorComponent;
-  _editor: any;
+//  _editor: any;
 
   constructor(
     private router: Router,
-    private presentationsApiService: PresentationsApiService,
     private validService: ValidService,
     private route: ActivatedRoute,
     private store: Store<PresentationsState>,
     //        private notifBarService: NotifBarService,
     private cdRef: ChangeDetectorRef
   ) {
-    this.id = null;
-    this.slider = new Presentation();
     this.errorMsg = [];
   }
 
@@ -56,27 +64,13 @@ export class PresentationDetailComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.id = params['id'];
-      }
-    });
-    if (this.id) {
-      this.mode = 'SAVE';
-      this.presentationsApiService.findOneById(this.id).subscribe(
-        slides => {
-          this.slider = slides;
-        },
-        error => {
-          //                    this.notifBarService.showNotif('fail to load slides users-list. error is ' + error);
-        },
-        () => (this.loading = false)
-      );
-    } else {
-      this.mode = 'CREATE';
-      this.slider = new Presentation();
-      this.loading = false;
-    }
+    this.subscriptions = this.update$.pipe(
+      withLatestFrom(
+        this.settingsObserver$,
+        this.currentPresentation$
+      )
+    )
+    .subscribe(([click, settings, presentation]: [Event, any, Presentation]) => this.store.dispatch(new fromPresentations.Update({ id: presentation.id, changes: settings })))
   }
 
   // TODO rework service, rename in presentatiion
@@ -94,28 +88,6 @@ export class PresentationDetailComponent implements OnInit, AfterViewChecked {
     */
   }
 
-  saveSlides(id) {
-    if (id) {
-      this.presentationsApiService.update({ id: this.slider, changes: this.slider._id }).subscribe(
-        () => {
-          //                    this.notifBarService.showNotif('your changes in slides has been saved.');
-          this.router.navigate(['/slides']);
-        }
-        //                error => this.notifBarService.showNotif('fail to save your changes. the error is ' + error)
-      );
-    } else {
-//      this.slider = this._editor.slider;
-      this.presentationsApiService.add(this.slider).subscribe(
-        () => {
-          //                    this.notifBarService.showNotif('create slides successfully!');
-          this.router.navigate(['/slides']);
-        },
-        error => {
-          //                    this.notifBarService.showNotif('fail to create slides. the error is ' + error);
-        }
-      );
-    }
-  }
   slideDeleted(index) {
     this.errorMsg.forEach((arrayMsg, i) => {
       if (arrayMsg.index === index) {
@@ -138,5 +110,9 @@ export class PresentationDetailComponent implements OnInit, AfterViewChecked {
   settingValidateChange(status) {
 //    this.isValidatedSetting = status;
 //    this.checkValid();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

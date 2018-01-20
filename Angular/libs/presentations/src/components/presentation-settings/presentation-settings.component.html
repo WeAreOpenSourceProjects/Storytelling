@@ -1,16 +1,20 @@
 <form
   novalidate
   [formGroup]="settingsForm"
+  (ngSubmit)="onSubmit()"
   xLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
   <div class="base" fxLayout="row">
     <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
       <input matInput placeholder="Presentation name" formControlName="title" required>
-      <span class="error" *ngIf="settingsForm.controls.title.invalid">Slides Name is required</span>
+      <span class="error" *ngIf="settingsForm?.controls?.title.invalid">Slides Name is required</span>
     </mat-form-field>
     <div class="tag" formArrayName="tags" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
       <div class="tag-group">
         <mat-chip-list>
-          <mat-chip *ngFor="let tag of settingsForm.controls.tags.controls; let i=index" [formGroupName]="i">{{ settingsForm.controls['tags']?.controls[i]?.controls.tag.value }} <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i></mat-chip>
+          <mat-chip *ngFor="let tag of settingsForm?.controls?.tags.controls; index as i">
+            <input [formControlName]="i" style="display: none">{{ tag.value }}
+            <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i>
+          </mat-chip>
         </mat-chip-list>
       </div>
       <mat-form-field fxFlex.xs="100">

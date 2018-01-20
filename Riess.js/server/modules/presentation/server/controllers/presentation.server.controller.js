@@ -121,6 +121,7 @@ exports.read = function(req, res) {
  * Update an presentation
  */
 exports.update = function(req, res, next) {
+  console.log(req.body)
   //transfer image object to id string
   //if (presentation.presentation.slideImage && presentation.presentation.slideImage._id) presentation.presentation.slideImage = presentation.presentation.slideImage._id;
   Presentation.findByIdAndUpdate(req.params.presentationId, req.body)
