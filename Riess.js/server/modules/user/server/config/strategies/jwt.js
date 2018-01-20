@@ -10,7 +10,6 @@ const JwtStrategy = passportJwt.Strategy
 var cookieExtractor = function(req) {
   var token = null;
   if (req && req.cookies) token = req.cookies.TOKEN;
-  console.log('TOKEN', req.cookies)
   return token;
 };
 

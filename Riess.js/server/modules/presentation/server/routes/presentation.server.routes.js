@@ -22,11 +22,10 @@ module.exports = function(app) {
   //search presentation
   app.route('/api/presentations/search')
 //  .all(presentationPolicy.isAllowed)
-  .get(presentation.search);
+  .get(passport.authenticate('jwt'), presentation.search);
 
   app.route('/api/presentations/copy')
 //  .all(presentationPolicy.isAllowed)
-.post(presentation.copy)
 .post(passport.authenticate('jwt'), presentation.copy);
 
   // Single presentation routes

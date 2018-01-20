@@ -36,17 +36,19 @@ exports.create = function(req, res) {
 };
 
 exports.copy = function(req, res) {
-console.log('???', req.cookies)
   var presentation = Presentation.findOne({ _id: req.body.presentationId })
-
   var newPresentation = presentation
   .then(function(presentation) {
     var presentation = presentation.toObject();
     delete presentation._id;
-    console.log(req.user);
-    presentation.author = req.user;
+    const user = { ...req.user, _id: req.user.id };
+    delete user.id;
+    presentation.author = user;
     presentation.title += ' copy';
     return Presentation.create(presentation);
+  })
+  .then(function(presentation) {
+    return presentation.populate('author').execPopulate()
   })
 
   var slides = presentation
