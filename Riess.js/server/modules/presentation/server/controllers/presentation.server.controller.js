@@ -290,6 +290,10 @@ exports.search = function(req, res) {
   ? '-createdAt'
   : { 'title': 1 };
 
+  if (request.$and.length === 0) {
+    delete request.$and;
+  }
+
   Presentation
   .find(request)
   .populate({
