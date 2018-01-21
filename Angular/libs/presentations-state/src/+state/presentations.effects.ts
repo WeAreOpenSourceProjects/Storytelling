@@ -16,7 +16,10 @@ import { fromAuthentication } from '@labdat/authentication-state';
 import { fromSlides } from '@labdat/slides-state';
 import { fromBoxes } from '@labdat/boxes-state';
 import { mapTo } from 'rxjs/operators/mapTo';
+import { tap } from 'rxjs/operators/tap';
 import { Presentation } from '@labdat/data-models';
+import { PresentationsSnackComponent } from '../components/presentations-snack/presentations-snack.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class PresentationsEffects {
@@ -46,6 +49,14 @@ export class PresentationsEffects {
       map(toPayload),
       switchMap((presentation) => this.presentationsApiService.add(presentation)),
       map((response: Presentation) => new fromPresentations.AddSuccess(response)),
+      tap(() =>
+        this.snackBar.openFromComponent(PresentationsSnackComponent, {
+          duration: 1000,
+          data: 'Presentation Add Success',
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        })
+      ),
       catchError(error => of(new fromPresentations.AddFailure(error)))
     );
 
@@ -56,6 +67,14 @@ export class PresentationsEffects {
       map(toPayload),
       switchMap((payload) => this.presentationsApiService.copy(payload)),
       map((response: any) => new fromPresentations.CopySuccess(response)),
+      tap(() =>
+        this.snackBar.openFromComponent(PresentationsSnackComponent, {
+          duration: 1000,
+          data: 'Presentation Copy Success',
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        })
+      ),
       catchError(error => of(new fromPresentations.CopyFailure(error)))
     );
 
@@ -78,11 +97,20 @@ export class PresentationsEffects {
       map(toPayload),
       switchMap(presentationId => this.presentationsApiService.delete(presentationId)),
       map((response: any) => new fromPresentations.DeleteSuccess(response)),
+      tap(() =>
+        this.snackBar.openFromComponent(PresentationsSnackComponent, {
+          duration: 1000,
+          data: 'Presentation Delete Success',
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        })
+      ),
       catchError(error => of(new fromPresentations.DeleteFailure(error)))
     )
 
   constructor(
     private actions: Actions,
     private dataPersistence: DataPersistence<PresentationsState>,
-    private presentationsApiService: PresentationsApiService) {}
+    private presentationsApiService: PresentationsApiService,
+    private snackBar: MatSnackBar ) {}
 }
