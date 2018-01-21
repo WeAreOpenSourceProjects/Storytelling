@@ -28,7 +28,6 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
   private errorMsg; //error
   private isRequired = false;
   private isInShuffle = false;
-  loading = true;
 
   private currentPresentation$ = this.store.select(selectCurrentPresentation)
   public currentPresentationSettings$ = this.currentPresentation$

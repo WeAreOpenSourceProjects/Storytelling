@@ -35,7 +35,6 @@ export class PresentationSettingsComponent {
     this.settingsForm = this.initSettingsForm(this.settings);
     this.subscriptions = this.settingsForm
     .valueChanges
-    .pipe(tap(console.log))
     .subscribe(this.settingsObserver$);
   }
 
