@@ -28,4 +28,5 @@ export const selectCurrentPresentationAuthor = createSelector(selectCurrentPrese
 export const selectCurrentPresentationBanner = createSelector(selectCurrentPresentation, presentation => presentation.banner);
 export const selectCurrentPresentationSlideIds = createSelector(selectCurrentPresentation, presentation => presentation.slideIds);
 export const selectCurrentPresentationSlides = createSelector(selectCurrentPresentationSlideIds, selectPresentationsEntities, (slideIds, slideEntities) => slideIds.map(slideId => slideEntities[slideId]));
+export const selectShowEmptyMessage = createSelector(selectPresentationsLoaded, selectAllPresentations, (loaded, presentations) => loaded && presentations.length === 0);
 

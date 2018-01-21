@@ -17,13 +17,13 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       return presentationsInitialState;
     }
     case fromPresentations.LOAD: {
-      return { ...state, loading: true, loaded: false };
+      return presentationsAdapter.removeAll({ ...state, loading: true, loaded: false });
     }
     case fromPresentations.LOAD_FAILURE: {
-      return presentationsAdapter.removeAll({...state, error: action.payload.error });
+      return presentationsAdapter.removeAll({...state, error: action.payload.error, loading: false, loaded: false });
     }
     case fromPresentations.LOAD_SUCCESS: {
-      return presentationsAdapter.addAll(action.payload.presentations, { ...state, loading: false, loaded: true });
+      return presentationsAdapter.addMany(action.payload.presentations, { ...state, loading: false, loaded: true });
     }
     case fromPresentations.ADD_SUCCESS: {
       return presentationsAdapter.addOne(action.payload, state);

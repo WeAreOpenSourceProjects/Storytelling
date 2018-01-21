@@ -16,7 +16,8 @@ import {
   fromPresentations,
   selectPresentationsTotal,
   selectPresentationsEntities,
-  selectCurrentPresentation } from '@labdat/presentations-state';
+  selectCurrentPresentation,
+  selectShowEmptyMessage } from '@labdat/presentations-state';
 import { fromRouter } from '@labdat/router-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
@@ -28,6 +29,7 @@ import { filter } from 'rxjs/operators/filter';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import { take } from 'rxjs/operators/take';
 import { Subscription } from 'rxjs/Subscription';
+import { zip } from 'rxjs/operators/zip';
 
 @Component({
   selector: 'app-slides-list',
@@ -50,12 +52,18 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   public presentationsError$ = this.store.select(selectPresentationsError);
   public currentPresentation$ = this.store.select(selectCurrentPresentation);
   public searchObserver = new Subject();
-  public message$ = this.presentations$.pipe(
-    filter(presentations => presentations.length === 0),
+  public selectShowEmptyMessage$ = this.store.select(selectShowEmptyMessage);
+  public message$ = this.selectShowEmptyMessage$.pipe(
     withLatestFrom(
-      this.searchObserver.pipe(startWith({ title: '', isPublic: true, isFavorite: 'indeterminate' })),
-      (presentations, search) => this.emptyMessage(search))
-  );
+      this.searchObserver,
+      (showMessage, search) => {
+        if (showMessage) {
+          return this.emptyMessage(search)
+        }
+        return '';
+      }
+    )
+  )
   private subscriptions: Subscription;
 
   constructor(

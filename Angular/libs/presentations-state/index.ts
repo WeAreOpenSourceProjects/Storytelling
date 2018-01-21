@@ -22,4 +22,5 @@ export {
   selectCurrentPresentationBanner,
   selectCurrentPresentationSlideIds,
   selectCurrentPresentationSlides,
+  selectShowEmptyMessage
 } from './src/+state/presentations.selectors'

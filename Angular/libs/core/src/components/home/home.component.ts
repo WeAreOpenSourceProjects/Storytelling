@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { AuthenticationState, selectIsLoggedIn } from '@labdat/authentication-state';
 
-import { PresentationsApiService } from '@labdat/presentations-state';
+import { PresentationsApiService, selectShowEmptyMessage } from '@labdat/presentations-state';
 import { PageEvent } from '@angular/material';
 import { Presentation } from '@labdat/data-models';
 import { FormControl } from '@angular/forms';
@@ -18,12 +18,8 @@ import { startWith } from 'rxjs/operators/startWith';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import {
   selectAllPresentations,
-  selectPresentationsError,
-  PresentationsState,
   fromPresentations,
   selectPresentationsTotal,
-  selectPresentationsEntities,
-  selectPresentationsLoading,
   selectCurrentPresentation } from '@labdat/presentations-state';
 import { skip } from 'rxjs/operators/skip';
 import { Subscription } from 'rxjs/Subscription';
@@ -32,6 +28,7 @@ import { filter } from 'rxjs/operators/filter';
 import { take } from 'rxjs/operators/take';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import { tap } from 'rxjs/operators/tap';
+import { zip } from 'rxjs/operators/zip';
 
 @Component({
   selector: 'app-home',
@@ -41,23 +38,28 @@ import { tap } from 'rxjs/operators/tap';
 export class HomeComponent implements OnInit, OnDestroy {
   public presentations$ = this.store.select(selectAllPresentations).pipe(skip(1));
   public presentationsTotal$ = this.store.select(selectPresentationsTotal);
-  public presentationsLoading$ = this.store.select(selectPresentationsLoading);
   public subscriptions: Subscription;
   public showPublicSlides$ = new Subject<boolean>();
   public showPublicPresentations$ = new Subject<boolean>();
   private nextPage$ = new Subject();
   public searchObserver = new Subject();
-  public message$ = this.presentations$.pipe(
-    filter(presentations => presentations.length === 0),
+  private selectShowEmptyMessage$ = this.store.select(selectShowEmptyMessage);
+  public message$ = this.selectShowEmptyMessage$.pipe(
     withLatestFrom(
       this.searchObserver.pipe(startWith({ title: '', isPublic: true, isFavorite: 'indeterminate' })),
-      (presentations, search) => this.emptyMessage(search))
+      (showMessage, search) => {
+        if (showMessage) {
+          return this.emptyMessage(search)
+        }
+        return '';
+      }
+    )
   )
 
   public hide$ = merge(this.searchObserver,this.showPublicPresentations$)
   .pipe(mapTo(true));
 
-  constructor(private presentationsApiService: PresentationsApiService, private store: Store<AuthenticationState>) {}
+  constructor(private presentationsApiService: PresentationsApiService, private store: Store<any>) {}
 
   ngOnInit() {
     this.subscriptions = merge(
