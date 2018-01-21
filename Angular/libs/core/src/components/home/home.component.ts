@@ -59,13 +59,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptions = this.searchObserver
     .pipe(
       debounceTime(500))
-    .subscribe(search =>
+    .subscribe((search: any) => {
+      search.isPublic = true
       this.store.dispatch(new fromPresentations.Load({
         pageIndex: 0,
         pageSize: 10,
         search
       }))
-    )
+    })
 
     const nextPageSubscription = this.nextPage$
     .pipe(withLatestFrom(this.searchObserver))
