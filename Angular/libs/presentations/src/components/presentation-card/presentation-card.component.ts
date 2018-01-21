@@ -65,6 +65,9 @@ export class PresentationCardComponent implements OnInit {
   public delete = new EventEmitter();
 
   @Output()
+  public edit = new EventEmitter();
+
+  @Output()
   public isPublishChange = new EventEmitter();
 
   @Output()
@@ -109,14 +112,20 @@ export class PresentationCardComponent implements OnInit {
     event.stopPropagation();
     this.isFavoriteChange.emit(this.presentation)
   }
-  /*delete the whole presentation*/
-  deleteSlides(event) {
+
+  editPresentation(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.edit.emit(this.presentation.id)
+  }
+
+  deletePresentation(event) {
     event.preventDefault();
     event.stopPropagation();
     this.delete.emit(this.presentation.id)
   }
   /*duplicate presentation*/
-  copySlides(event) {
+  copyPresentation(event) {
     event.preventDefault();
     event.stopPropagation();
     this.copy.emit(this.presentation.id);

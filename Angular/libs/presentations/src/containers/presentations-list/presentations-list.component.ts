@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Slides, SlidesSetting } from '../../models/index';
-//import {NotifBarService} from "app/core";
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Presentation } from '@labdat/data-models';
@@ -18,6 +17,7 @@ import {
   selectPresentationsTotal,
   selectPresentationsEntities,
   selectCurrentPresentation } from '@labdat/presentations-state';
+import { fromRouter } from '@labdat/router-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
 import { combineLatest } from 'rxjs/operators/combineLatest';
@@ -27,13 +27,14 @@ import { PresentationDialogComponent } from '../../components/presentation-dialo
 import { filter } from 'rxjs/operators/filter';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import { take } from 'rxjs/operators/take';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-slides-list',
   templateUrl: './presentations-list.component.html',
   styleUrls: ['./presentations-list.component.scss']
 })
-export class PresentationsListComponent implements OnInit {
+export class PresentationsListComponent implements OnInit, OnDestroy {
 
   public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
@@ -41,7 +42,7 @@ export class PresentationsListComponent implements OnInit {
   public copy$ = new Subject();
   public delete$ = new Subject();
   public add$ = new Subject();
-
+  public edit$ = new Subject();
   public loggedIn$ = this.store.select(selectIsLoggedIn);
   public user$ = this.store.select(selectUser);
   public presentations$ = this.store.select(selectAllPresentations);
@@ -54,16 +55,16 @@ export class PresentationsListComponent implements OnInit {
     withLatestFrom(
       this.searchObserver.pipe(startWith({ title: '', isPublic: true, isFavorite: 'indeterminate' })),
       (presentations, search) => this.emptyMessage(search))
-  )
+  );
+  private subscriptions: Subscription;
 
   constructor(
     private store: Store<PresentationsState>,
     private dialog: MatDialog ) { }
-    /*        private notifBarService: NotifBarService */
 
   ngOnInit() {
 
-    this.searchObserver
+    this.subscriptions = this.searchObserver
     .pipe(
       debounceTime(500),
       withLatestFrom(this.user$))
@@ -76,18 +77,26 @@ export class PresentationsListComponent implements OnInit {
       this.store.dispatch(new fromPresentations.Load({ pageIndex: 0, pageSize: 10, search}))
     })
 
-    this.nextPage$
+    const nextPageSubscription = this.nextPage$
     .pipe(withLatestFrom(this.searchObserver))
     .subscribe(([pageEvent, search]: [PageEvent, any]) => this.store.dispatch(new fromPresentations.Load({ pageIndex: pageEvent.pageIndex, pageSize: 10, search})));
+    this.subscriptions.add(nextPageSubscription);
 
-    this.togglePublish$
+    const togglePublishSubscription = this.togglePublish$
     .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { isPublic: !presentation.isPublic }})));
+    this.subscriptions.add(togglePublishSubscription);
 
-    this.toggleFavorite$
+    const toggleFavoriteSubscription = this.toggleFavorite$
     .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { isFavorite: !presentation.isFavorite }})));
+    this.subscriptions.add(toggleFavoriteSubscription);
 
-    this.copy$
+    const copySubscription = this.copy$
     .subscribe((presentationId: string) => this.store.dispatch(new fromPresentations.Copy(presentationId)));
+    this.subscriptions.add(copySubscription);
+
+    const editSubscription = this.edit$
+    .subscribe((presentationId: string) => this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'edit'] })));
+    this.subscriptions.add(editSubscription);
 
     this.add$
     .pipe(withLatestFrom(this.user$, (click, user) => user))
@@ -106,7 +115,7 @@ export class PresentationsListComponent implements OnInit {
     });
   }
 
-  emptyMessage(search) {
+  private emptyMessage(search) {
     if (search.title) {
       return '<p> Oops, no result for these key words <p>'
     }
@@ -116,7 +125,11 @@ export class PresentationsListComponent implements OnInit {
     return `<p>Sorry, you don't have any slides yet!</p>`;
   }
 
-  trackById(presentation) {
+  public trackById(presentation) {
     return presentation.id
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
