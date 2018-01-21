@@ -1,34 +1,30 @@
 <div class="base" fxLayout="column" fxLayoutAlign="center center">
-    <div class="logo" [class.hide]="hide$ | async">
-      <img src="assets/logo.png" width="100%">
-    </div>
-    <div class="search-block" [class.center-mode]="!(hide$ | async)" [class.side-mode]="hide$ | async">
-      <div class="search-wrap">
-        <app-slides-search kind="generic" [searchObserver]="searchObserver"></app-slides-search>
-      </div>
-      <button *ngIf="!(hide$ | async)" class="buttonBottom floating" (click)="showAllPresentations$.next()" mat-fab><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
-    </div>
+  <div class="logo" [class.hide]="hide$ | async">
+    <img src="assets/logo.png" width="100%">
   </div>
+  <div class="search-block" [class.center-mode]="!(hide$ | async)" [class.side-mode]="hide$ | async">
+    <div class="search-wrap">
+      <app-slides-search kind="generic" [searchObserver]="searchObserver"></app-slides-search>
+    </div>
+    <button *ngIf="!(hide$ | async)" class="buttonBottom floating" (click)="showPublicPresentations$.next()" mat-fab><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+  </div>
+</div>
 
-  <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-    <div
-      *ngFor="let presentation of presentations$ | async"
-      fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
-      <app-slides-card [presentation]="presentation" [editable]="false" [loggedIn]="false"></app-slides-card>
-    </div>
+<div *ngIf="(hide$ | async)"
+  fxLayout="row" fxLayoutWrap="wrap"
+  fxLayoutAlign="space-around">
+  <div
+    *ngFor="let presentation of presentations$ | async; trackBy:trackById"
+    fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
+    <app-slides-card [presentation]="presentation" [editable]="false" [loggedIn]="false"></app-slides-card>
   </div>
-  <mat-paginator
-    *ngIf="hide$ | async"
-    [length]="presentations?.length"
-    [pageSize]="pageSize"
-    (page)="nextPage($event)">
-  </mat-paginator>
-  <div class="error">
-    <p *ngIf="noPublish">Sorry, no one publish slides yet! <br>Would you want to be the pioneer?
-      <a routerLink="/slides/createSlides">
-        <button mat-button color="accent">Create Now</button>
-      </a>
-    </p>
-    <p *ngIf="noResult">Opps, no result for these key words</p>
-  </div>
+</div>
 
+<mat-paginator
+  *ngIf="(hide$ | async) && (presentationsCount$ | async) > 6"
+  [length]="presentationsCount$ | async"
+  [pageSize]="pageSize"
+  (page)="nextPage($event)">
+</mat-paginator>
+
+<div class="error" [innerHTML]="message$ | async"></div>

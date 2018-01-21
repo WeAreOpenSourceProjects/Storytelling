@@ -24,6 +24,9 @@ import { combineLatest } from 'rxjs/operators/combineLatest';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { PresentationDialogComponent } from '../../components/presentation-dialog/presentation-dialog.component';
+import { filter } from 'rxjs/operators/filter';
+import { mergeMap } from 'rxjs/operators/mergeMap';
+import { take } from 'rxjs/operators/take';
 
 @Component({
   selector: 'app-slides-list',
@@ -42,13 +45,15 @@ export class PresentationsListComponent implements OnInit {
   public loggedIn$ = this.store.select(selectIsLoggedIn);
   public user$ = this.store.select(selectUser);
   public presentations$ = this.store.select(selectAllPresentations);
-  public presentationsCount$ = this.store.select(selectPresentationsTotal);
+  public presentationsTotal$ = this.store.select(selectPresentationsTotal);
   public presentationsError$ = this.store.select(selectPresentationsError);
   public currentPresentation$ = this.store.select(selectCurrentPresentation);
   public searchObserver = new Subject();
-  public message$ = this.searchObserver.pipe(
-    startWith({title: '', isPublic: 'indeterminate', isFavorite: 'indeterminate'}),
-    combineLatest(this.presentationsCount$, (search, presentationCount) => this.emptyMessage(search, presentationCount))
+  public message$ = this.presentations$.pipe(
+    filter(presentations => presentations.length === 0),
+    withLatestFrom(
+      this.searchObserver.pipe(startWith({ title: '', isPublic: true, isFavorite: 'indeterminate' })),
+      (presentations, search) => this.emptyMessage(search))
   )
 
   constructor(
@@ -101,20 +106,14 @@ export class PresentationsListComponent implements OnInit {
     });
   }
 
-  emptyMessage(search, presentationCount) {
-    let message = '';
-    if (presentationCount === 0) {
-      if (search.title) {
-        message = '<p> Oops, no result for these key words <p>'
-      } else if (search.isPublic) {
-        message = `<p>Sorry, no one publish slides yet!<br> Would you want to be the pioneer ?</p>`
-      } else if (!search.isPublic) {
-        message = `<p>Sorry, you don't have any slides yet!</p>`
-      } else if (search.isFavorite) {
-        message = `<p>Sorry, you don't have any slides yet!</p>`
-      }
+  emptyMessage(search) {
+    if (search.title) {
+      return '<p> Oops, no result for these key words <p>'
     }
-    return message;
+    if (search.isPublic) {
+      return '<p>Sorry, no one publish slides yet!<br> Would you want to be the pioneer ?</p>'
+    }
+    return `<p>Sorry, you don't have any slides yet!</p>`;
   }
 
   trackById(presentation) {
