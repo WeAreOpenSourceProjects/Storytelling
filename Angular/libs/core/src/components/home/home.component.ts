@@ -33,7 +33,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public presentations$ = this.store.select(selectAllPresentations);
+  public presentations$ = this.store.select(selectAllPresentations).pipe(skip(1));
   public subscriptions: Subscription;
   public showPublicSlides$ = new Subject<boolean>();
   public hide$ = of(false);
@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     isPublic: true,
     order: 'date'
   });
+  public searchObserver = new Subject();
 
 
   constructor(private presentationsApiService: PresentationsApiService, private store: Store<AuthenticationState>) {}
@@ -55,9 +56,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.noResult = false;
     this.noPublish = false;
 
-    this.subscriptions = this.searchControl.valueChanges
+    this.subscriptions = this.searchObserver
     .pipe(
-      skip(1),
       debounceTime(500))
     .subscribe(search =>
       this.store.dispatch(new fromPresentations.Load({
@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     )
 
     const nextPageSubscription = this.nextPage$
-    .pipe(withLatestFrom(this.searchControl.valueChanges))
+    .pipe(withLatestFrom(this.searchObserver))
     .subscribe(([pageEvent, search]: [PageEvent, any]) =>
       this.store.dispatch(new fromPresentations.Load({
         pageIndex: pageEvent.pageIndex,
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
     this.subscriptions.add(nextPageSubscription)
 
-    this.hide$ = merge(this.searchControl.valueChanges,this.showPublicSlides$)
+    this.hide$ = merge(this.searchObserver,this.showPublicSlides$)
     .pipe(mapTo(true))
   }
 

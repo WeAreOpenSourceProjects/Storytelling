@@ -4,7 +4,7 @@
     </div>
     <div class="search-block" [class.center-mode]="!(hide$ | async)" [class.side-mode]="hide$ | async">
       <div class="search-wrap">
-        <app-slides-search kind="generic" [formControl]="searchControl"></app-slides-search>
+        <app-slides-search kind="generic" [searchObserver]="searchObserver"></app-slides-search>
       </div>
       <button *ngIf="!(hide$ | async)" class="buttonBottom floating" (click)="showAllPresentations$.next()" mat-fab><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
     </div>

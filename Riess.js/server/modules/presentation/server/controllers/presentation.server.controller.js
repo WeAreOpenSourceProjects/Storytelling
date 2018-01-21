@@ -261,22 +261,26 @@ exports.search = function(req, res) {
 //  console.log(mongoose.connection.db.collection('Box'))
 
   var request = {
-    $and: [{
+    $and: []
+  }
+
+  if ('title' in req.query) {
+    request.$and.push({
       $or: [{
         'title': regexS
       }, {
         'tags': regexS
       }]
-    }]
+    })
   }
 
-  if (req.query.isPublic !== 'indeterminate') {
+  if ('isPublic' in req.query) {
     request.$and.push({
       'isPublic': req.query.isPublic
     })
   }
 
-  if (req.query.isFavorite !== 'indeterminate') {
+  if ('isFavorite' in req.query) {
     request.$and.push({
       'isFavorite': req.query.isFavorite
     })

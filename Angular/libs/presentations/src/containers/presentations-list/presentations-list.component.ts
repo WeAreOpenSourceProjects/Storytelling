@@ -5,7 +5,6 @@ import { Slides, SlidesSetting } from '../../models/index';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Presentation } from '@labdat/data-models';
-import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { tap } from 'rxjs/operators/tap';
@@ -33,28 +32,21 @@ import { PresentationDialogComponent } from '../../components/presentation-dialo
 })
 export class PresentationsListComponent implements OnInit {
 
-  public searchControl = new FormControl({
-    title: '',
-    isFavorite: 'indeterminate',
-    isPublic: 'indeterminate',
-    order: 'date'
-  });
-
   public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
   public copy$ = new Subject();
   public delete$ = new Subject();
   public add$ = new Subject();
-  public select$ = new Subject();
 
   public loggedIn$ = this.store.select(selectIsLoggedIn);
   public user$ = this.store.select(selectUser);
   public presentations$ = this.store.select(selectAllPresentations);
   public presentationsCount$ = this.store.select(selectPresentationsTotal);
   public presentationsError$ = this.store.select(selectPresentationsError);
-  public currentPresentation$ = this.store.select(selectCurrentPresentation)
-  public message$ = this.searchControl.valueChanges.pipe(
+  public currentPresentation$ = this.store.select(selectCurrentPresentation);
+  public searchObserver = new Subject();
+  public message$ = this.searchObserver.pipe(
     startWith({title: '', isPublic: 'indeterminate', isFavorite: 'indeterminate'}),
     combineLatest(this.presentationsCount$, (search, presentationCount) => this.emptyMessage(search, presentationCount))
   )
@@ -66,12 +58,21 @@ export class PresentationsListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.searchControl.valueChanges
-    .pipe(debounceTime(500), tap(console.log))
-    .subscribe(search => this.store.dispatch(new fromPresentations.Load({ pageIndex: 0, pageSize: 10, search})))
+    this.searchObserver
+    .pipe(
+      debounceTime(500),
+      withLatestFrom(this.user$))
+    .subscribe(([formSearch, user]) => {
+      const search = {
+        ...formSearch,
+        email: user.email,
+        username: user.username
+      }
+      this.store.dispatch(new fromPresentations.Load({ pageIndex: 0, pageSize: 10, search}))
+    })
 
     this.nextPage$
-    .pipe(withLatestFrom(this.searchControl.valueChanges))
+    .pipe(withLatestFrom(this.searchObserver))
     .subscribe(([pageEvent, search]: [PageEvent, any]) => this.store.dispatch(new fromPresentations.Load({ pageIndex: pageEvent.pageIndex, pageSize: 10, search})));
 
     this.togglePublish$

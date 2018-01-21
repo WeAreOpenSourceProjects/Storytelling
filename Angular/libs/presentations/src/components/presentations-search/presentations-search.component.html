@@ -15,13 +15,15 @@
   <div *ngIf="kind === 'advanced'" class="filter-container" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="40">
     <mat-checkbox
       #favorite
+      name="isFavorite"
       formControlName="isFavorite"
-      (click)="onClick(favorite, 'isFavorite')"
+      (click)="onClick(favorite)"
       [indeterminate]="true">Favorite</mat-checkbox>
     <mat-checkbox
       #public
+      name="isPublic"
       formControlName="isPublic"
-      (click)="onClick(public, 'isPublic')"
+      (click)="onClick(public)"
       [indeterminate]="true">Public</mat-checkbox>
       <mat-form-field>
         <mat-select

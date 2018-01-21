@@ -95,14 +95,28 @@ export class PresentationsApiService {
     return this.http.delete(backendURL);
   }
 
-
   search(pageIndex, pageSize, search?): Observable<any> {
     const backendURL = `${this.baseUrl}/presentations/search`;
 //    return this.http.get(backendURL, { params: params });
+    const cleanSearch = {
+      ...search
+    }
+
+    if (cleanSearch.isFavorite === 'indeterminate') {
+      delete cleanSearch.isFavorite;
+    }
+
+    if (cleanSearch.isPublic === 'indeterminate') {
+      delete cleanSearch.isPublic;
+    }
+
+    if (cleanSearch.title.length === 0) {
+      delete cleanSearch.title;
+    }
+
     return this.http.get(backendURL, {
       params: {
-        ...search,
-        ...this.user,
+        ...cleanSearch,
         pageIndex,
         pageSize
       }
