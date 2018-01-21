@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@ang
 import { ValidService } from '../../services/valid.service';
 import { PartialObserver } from 'rxjs/Observer';
 import { Subscription } from 'rxjs/Subscription';
+import { tap } from 'rxjs/operators/tap'
 
 @Component({
   selector: 'app-slides-setting',
@@ -14,6 +15,9 @@ export class PresentationSettingsComponent {
 
   @ViewChild('tagInput')
   public tagInput: ElementRef
+
+  @ViewChild('banner')
+  public banner: ElementRef
 
   @Input()
   public settings: any;
@@ -31,14 +35,16 @@ export class PresentationSettingsComponent {
     this.settingsForm = this.initSettingsForm(this.settings);
     this.subscriptions = this.settingsForm
     .valueChanges
+    .pipe(tap(console.log))
     .subscribe(this.settingsObserver$);
   }
 
   private initSettingsForm(settings) {
-    console.log('J??')
+    console.log('!!!!', settings)
     const settingsForm = this.formBuilder.group({
       title: this.formBuilder.control(settings.title),
       description: this.formBuilder.control(settings.description),
+      banner: this.formBuilder.control(settings.banner),
     });
     settingsForm.addControl('tags', this.formBuilder.array([]))
     settings.tags.forEach(tag => (settingsForm.get('tags') as FormArray).push(this.formBuilder.control(tag)));
@@ -54,13 +60,24 @@ export class PresentationSettingsComponent {
     (this.settingsForm.get('tags') as FormArray).removeAt(i);
   }
 
-  setBanner(path) {
-  //  this.onSettingChange.emit(this.slidesSetting);
-  }
-
   upload(image) {
   //  this.slidesSetting.banner = image;
   //  this.onSettingChange.emit(this.slidesSetting);
+  }
+
+  onChange(event) {
+    const file = event.target.files[0];
+    const textType = /image.*/;
+    if (file.type.match(textType)) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        this.settingsForm.get('banner').setValue(reader.result);
+        this.banner.nativeElement.src = reader.result;
+      }, false);
+      reader.readAsDataURL(file);
+    } else {
+      //            this.notifBarService.showNotif("sorry, the image format is not supported")
+    }
   }
 
   ngOnDestroy() {

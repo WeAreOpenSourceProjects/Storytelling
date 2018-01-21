@@ -68,37 +68,4 @@ export class HomeComponent implements OnInit {
 
 
   }
-
-  searchSlides(searchText) {
-    //show slides and hide logo
-  //  this.showSlidesList = true;
-    //get search result
-  //  this.toSearch.title = searchText;
- //   this.presentationsApiService
- //   .search(this.toSearch, this.pageIndex, this.pageSize)
- //   .subscribe(presentations => {
-//      this.presentations = presentations;
-//      this.noResult = (this.presentations.length === 0) ? true : false;
- //   });
-  }
-
-  getAllslides() {/*
-    this.showSlidesList = true;
-    this.toSearch.title = '';
-    this.presentationsApiService
-    .search(this.toSearch, this.pageIndex, this.pageSize)
-    .subscribe(presentations => {
-//      this.presentations = presentations;
-//      this.noPublish = (this.presentations.length === 0) ? true : false
-    });*/
-  }
-
-  nextPage($event) {/*
-    this.pageIndex = $event.pageIndex;
-    this.presentationsApiService
-    .search(this.toSearch, this.pageIndex, this.pageSize)
-    .subscribe(presentations => {
-//      this.presentations = presentations;
-    });*/
-  }
 }

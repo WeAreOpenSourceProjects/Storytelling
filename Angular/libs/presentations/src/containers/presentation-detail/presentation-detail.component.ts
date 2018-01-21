@@ -37,7 +37,8 @@ export class PresentationDetailComponent implements OnInit, AfterViewChecked {
     map(presentation => ({
       title: presentation.title,
       description: presentation.description,
-      tags: presentation.tags
+      tags: presentation.tags,
+      banner: presentation.banner
     }))
   );
   public update$ = new Subject();
