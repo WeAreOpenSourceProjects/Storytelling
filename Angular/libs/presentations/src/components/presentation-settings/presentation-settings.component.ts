@@ -40,7 +40,6 @@ export class PresentationSettingsComponent {
   }
 
   private initSettingsForm(settings) {
-    console.log('!!!!', settings)
     const settingsForm = this.formBuilder.group({
       title: this.formBuilder.control(settings.title),
       description: this.formBuilder.control(settings.description),

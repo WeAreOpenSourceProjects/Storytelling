@@ -4,10 +4,12 @@ import {
   Output,
   Input,
   EventEmitter,
-  forwardRef} from '@angular/core';
+  forwardRef,
+  OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox } from '@angular/material/checkbox';
 import { MatSelect } from '@angular/material/select';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-slides-search',
@@ -21,12 +23,13 @@ import { MatSelect } from '@angular/material/select';
     provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'noop'
   }]
 })
-export class PresentationsSearchComponent implements ControlValueAccessor {
+export class PresentationsSearchComponent implements ControlValueAccessor, OnDestroy {
 
   @Input()
   public kind: string;
 
   public searchForm: FormGroup;
+  private subscriptions: Subscription
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -38,7 +41,7 @@ export class PresentationsSearchComponent implements ControlValueAccessor {
       order: [],
     });
 
-    this.searchForm.valueChanges
+    this.subscriptions = this.searchForm.valueChanges
     .subscribe(search => this.propagateChange(search))
   }
 
@@ -71,6 +74,10 @@ export class PresentationsSearchComponent implements ControlValueAccessor {
 
   onChange(select: MatSelect) {
     this.searchForm.controls['order'].setValue(select.value);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
 /*

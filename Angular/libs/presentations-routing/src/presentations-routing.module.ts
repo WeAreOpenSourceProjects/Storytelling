@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // SlidesViewComponent
 import { PresentationsListComponent } from '@labdat/presentations/src/containers/presentations-list/presentations-list.component';
-import { PresentationDetailComponent } from '@labdat/presentations/src/containers/presentation-detail/presentation-detail.component';
+import { PresentationEditComponent } from '@labdat/presentations/src/containers/presentation-edit/presentation-edit.component';
 
 import { PresentationsGuardService } from './services/presentations.guard.service';
 export { PresentationsGuardService }
@@ -21,7 +21,7 @@ const prenstationsRoutes: Routes = [
   },
   {
     path: ':id/edit',
-    component: PresentationDetailComponent,
+    component: PresentationEditComponent,
     canActivate: [ PresentationsGuardService ],
     data: {
       roles: ['user', 'admin'],

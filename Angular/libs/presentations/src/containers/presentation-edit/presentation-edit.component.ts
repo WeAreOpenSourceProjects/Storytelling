@@ -18,11 +18,11 @@ import { isEmpty } from 'lodash';
 
 @Component({
   selector: 'app-slides-editor-form',
-  templateUrl: './presentation-detail.component.html',
-  styleUrls: ['./presentation-detail.component.scss'],
+  templateUrl: './presentation-edit.component.html',
+  styleUrls: ['./presentation-edit.component.scss'],
   providers: [PresentationsApiService, ValidService]
 })
-export class PresentationDetailComponent implements OnInit, AfterViewChecked {
+export class PresentationEditComponent implements OnInit, AfterViewChecked {
 
   private editorValid: Subscription; //validation of slide editor
   private errorMsg; //error

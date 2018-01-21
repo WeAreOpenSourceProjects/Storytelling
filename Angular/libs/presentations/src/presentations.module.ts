@@ -18,7 +18,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { PresentationsListComponent } from './containers/presentations-list/presentations-list.component';
-import { PresentationDetailComponent } from './containers/presentation-detail/presentation-detail.component';
+import { PresentationEditComponent } from './containers/presentation-edit/presentation-edit.component';
 import { PresentationCardComponent } from './components/presentation-card/presentation-card.component';
 import { PresentationDialogComponent } from './components/presentation-dialog/presentation-dialog.component';
 import { PresentationSettingsComponent } from './components/presentation-settings/presentation-settings.component';
@@ -57,7 +57,7 @@ import { environment } from '../../../apps/default/src/environments/environment'
   ],
   declarations: [
     PresentationsListComponent,
-    PresentationDetailComponent,
+    PresentationEditComponent,
     PresentationCardComponent,
     PresentationDialogComponent,
     PresentationSettingsComponent,
@@ -65,7 +65,7 @@ import { environment } from '../../../apps/default/src/environments/environment'
   ],
   exports: [
     PresentationsListComponent,
-    PresentationDetailComponent,
+    PresentationEditComponent,
     PresentationsSearchComponent,
     PresentationCardComponent,
   ]
