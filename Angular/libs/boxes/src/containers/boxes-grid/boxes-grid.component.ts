@@ -4,7 +4,7 @@ import {Component, ViewEncapsulation, ViewChildren,OnInit, ViewChild, ElementRef
 // import { Slide } from '../../../../models/slide';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-// import {SlideService} from '../../../../services';
+import {BoxesApiService} from '../../../../boxes-state/src/services/boxes.api.service';
 import {ChartsBuilderComponent} from '../../components/charts-builder';
 import {TextEditorComponent} from '../../components/text-editor/text-editor.component';
 import {Chart} from '@labdat/charts';
@@ -18,7 +18,7 @@ import {GraphComponent} from '../../components/graph/graph.component';
   selector: 'app-boxes-grid',
   templateUrl: './boxes-grid.component.html',
   styleUrls: ['./boxes-grid.component.scss'],
-  // providers: [SlideService],
+  providers: [BoxesApiService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxesGridComponent implements OnInit{
@@ -38,7 +38,7 @@ export class BoxesGridComponent implements OnInit{
   options;
   constructor(
     private dialog: MatDialog,
-    // private slideService : SlideService,
+    private slideService : BoxesApiService,
     private route : ActivatedRoute,
     private router: Router,
     private element: ElementRef,
@@ -105,10 +105,10 @@ emptyCellClick(event, item) {
 
 ngOnInit() {
   this.route.params.subscribe(params => {
-     this.idSlides = params['idSlides'];
      this.id = params['id'];
    });
-   this.slide = this.route.snapshot.data.slide || {}
+   this.slide = this.route.snapshot.data.boxes || {}
+   console.log(this.route.snapshot)
    this.slide.index = this.id;
    if(!this.slide.boxes) {
      this.slide.boxes = []
@@ -203,11 +203,11 @@ removeItem($event, item) {
 }
 
   confirmSlide(slide){
-    // this.slideService.confirmSlides(slide, this.id, this.idSlides)
-    //   .subscribe(
-    //     res => {
-    //       this.router.navigate(['/slides/display/', this.idSlides])
-    //     });
+  //   this.slideService.confirmSlides(slide, this.id, this.idSlides)
+  //     .subscribe(
+  //       res => {
+  //         this.router.navigate(['/slides/display/', this.idSlides])
+  //       });
   }
 
 }

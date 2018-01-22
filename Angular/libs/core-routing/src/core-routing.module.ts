@@ -1,4 +1,7 @@
-import { HomeComponent, LayoutComponent, NotFoundComponent } from '@labdat/core/core-components';
+import {
+  HomeComponent,
+  LayoutComponent,
+  NotFoundComponent } from '@labdat/core/core-components';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreGuardService } from './services/core.guard.service';
@@ -25,12 +28,6 @@ const coreRoutes: Routes = [
         canActivate: [AuthenticationGuardService]
       },
       {
-        path: 'presentations',
-        canActivate: [AuthenticationGuardService],
-        canLoad: [AuthenticationGuardService],
-        loadChildren: '../../presentations/src/presentations.module#RootPresentationsModule'
-      },
-      {
         path: 'slides',
         canActivate: [AuthenticationGuardService],
         canLoad: [AuthenticationGuardService],
@@ -47,7 +44,6 @@ const coreRoutes: Routes = [
   }
 ];
 //  { path: 'forbiden', component: ForbidenComponent, data: { title: 'Forbiden'} },
-
 @NgModule({
   imports: [RouterModule.forRoot(coreRoutes)],
   providers: [CoreGuardService]

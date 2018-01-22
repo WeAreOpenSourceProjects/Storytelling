@@ -23,6 +23,7 @@ import { SlidesStateModule } from '@labdat/slides-state';
 import { PresentationsStateModule } from '@labdat/presentations-state';
 import { BoxesStateModule } from '@labdat/boxes-state';
 import { RootPresentationsRoutingModule } from '@labdat/presentations-routing';
+import { SlidesRoutingModule } from '@labdat/slides-routing';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { RootPresentationsRoutingModule } from '@labdat/presentations-routing';
     CoreStateModule.forRoot([...coreConfiguration.self, ...presentationsConfiguration.core]),
     BoxesStateModule.forRoot(),
     SlidesStateModule.forRoot(),
-    PresentationsStateModule.forRoot()
+    PresentationsStateModule.forRoot(),
+    SlidesRoutingModule.forRoot()
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]

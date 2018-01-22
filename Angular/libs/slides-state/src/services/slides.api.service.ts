@@ -45,4 +45,9 @@ export class SlidesApiService {
     const backendURL = `${this.baseUrl}/slide/${slideId}`;
     return this.http.delete(backendURL).pipe(map((slide: Slide) => ({...slide, id: slide._id})));
   }
+  getAllBoxes(id): Observable<any> {
+    const params: URLSearchParams = new URLSearchParams();
+    const backendURL = `${this.baseUrl}/slide/${id}`;
+    return this.http.get(backendURL);
+  }
 }

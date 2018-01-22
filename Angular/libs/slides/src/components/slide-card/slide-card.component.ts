@@ -41,7 +41,8 @@ export class SlideCardComponent {
   @Output()
   delete = new EventEmitter<string>();
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {
+  console.log("slides");}
 
   public deleteSlide(event: Event) {
     event.preventDefault();

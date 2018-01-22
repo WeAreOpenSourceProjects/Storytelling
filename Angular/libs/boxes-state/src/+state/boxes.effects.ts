@@ -22,18 +22,18 @@ export class BoxesEffects {
     .ofType(fromAuthentication.LOGIN_SUCCESS)
     .pipe(mapTo(new fromBoxes.Load()))
 
-  @Effect()
-  load = this.dataPersistence.fetch(fromBoxes.LOAD, {
-    run: (action: fromBoxes.Load, state: BoxesState) => {
-      return this.boxesApiService.getAll(0, 10)
-        .map(boxes => boxes.map(boxe => ({ ...boxe, id: boxe._id })))
-        .map(boxes => new fromBoxes.LoadSuccess({ boxes }))
-    },
-    onError: (action: fromBoxes.Load, error) => {
-      console.error('Error', error);
-      return new fromBoxes.LoadFailure(error);
-    }
-  });
+  // @Effect()
+  // load = this.dataPersistence.fetch(fromBoxes.LOAD, {
+  //   run: (action: fromBoxes.Load, state: BoxesState) => {
+  //     return this.boxesApiService.getAll(0, 10)
+  //       .map(boxes => boxes.map(boxe => ({ ...boxe, id: boxe._id })))
+  //       .map(boxes => new fromBoxes.LoadSuccess({ boxes }))
+  //   },
+  //   onError: (action: fromBoxes.Load, error) => {
+  //     console.error('Error', error);
+  //     return new fromBoxes.LoadFailure(error);
+  //   }
+  // });
 
   @Effect()
   add = this.actions

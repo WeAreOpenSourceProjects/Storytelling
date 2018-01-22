@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SlidesListComponent } from '@labdat/slides/src/containers/slides-list/slides-list.component';
 import { BoxesModule } from '@labdat/boxes';
 import { BoxesGridComponent } from '@labdat/boxes';
+import { BoxesResolve } from './services/boxes.resolve'
 
 const slidesRoutes: Routes = [{
   path: ':id',
@@ -12,6 +13,9 @@ const slidesRoutes: Routes = [{
   data: {
     roles: ['user', 'admin'],
     title: 'Slide Detail'
+  },
+  resolve: {
+    boxes: BoxesResolve
   }
 }
 /*
@@ -48,4 +52,16 @@ const slidesRoutes: Routes = [{
   imports: [RouterModule.forChild(slidesRoutes), BoxesModule],
   exports: [RouterModule]
 })
-export class SlidesRoutingModule {}
+export class SlidesRoutingModule {
+  public static forRoot() {
+    return {
+        ngModule: RootSlidesRoutingModule,
+        providers: [ BoxesResolve ]
+      }
+    };
+}
+
+@NgModule({})
+export class RootSlidesRoutingModule {
+
+}

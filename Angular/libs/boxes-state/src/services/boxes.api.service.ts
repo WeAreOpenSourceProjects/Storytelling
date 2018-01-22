@@ -30,7 +30,7 @@ export class BoxesApiService {
     return this.http.post(backendURL, box);
   }
 
-  getAll(pageIndex, pageSize): Observable<any> {
+  getAll(slideId): Observable<any> {
     const params: URLSearchParams = new URLSearchParams();
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
     return this.http.get(backendURL);
