@@ -53,8 +53,11 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
     }
     case ROUTER_NAVIGATION: {
       const match = /\/presentations\/(.*)\/.*/.exec(action.payload.routerState.url);
-      const currentPresentationId = match ? match[1] : null;
-      return { ...state, currentPresentationId };
+      if (match) {
+        return { ...state, currentPresentationId: match[1] };
+      } else {
+        return state;
+      }
     }
     default: {
       return state;

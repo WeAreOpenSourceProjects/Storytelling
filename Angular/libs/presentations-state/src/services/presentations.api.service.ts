@@ -121,7 +121,7 @@ export class PresentationsApiService {
         pageIndex,
         pageSize
       }
-    }).pipe(tap(console.log),map((result: any) => ({
+    }).pipe(map((result: any) => ({
       presentations: result.presentations.map(presentation => ({ ...presentation, id: presentation._id })),
       slides: result.slides.map(slide => ({ ...slide, id: slide._id })),
       boxes: result.boxes.map(box => ({ ...box, id: box._id }))

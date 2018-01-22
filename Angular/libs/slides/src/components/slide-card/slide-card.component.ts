@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
 import { Slide } from '@labdat/data-models';
@@ -43,7 +43,7 @@ export class SlideCardComponent {
 
   constructor(private route: ActivatedRoute) { }
 
-  public deleteSlide() {
+  public deleteSlide(event: Event) {
     event.preventDefault();
     event.stopPropagation();
     console.log(this.slide.id)

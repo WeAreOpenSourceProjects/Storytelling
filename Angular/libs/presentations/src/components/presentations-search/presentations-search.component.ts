@@ -64,6 +64,7 @@ export class PresentationsSearchComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('PresentationsSearchComponent')
     this.subscriptions.unsubscribe();
   }
 }

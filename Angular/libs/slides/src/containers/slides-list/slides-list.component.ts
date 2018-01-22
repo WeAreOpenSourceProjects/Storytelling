@@ -7,7 +7,8 @@ import {
   OnChanges,
   ViewEncapsulation,
   ViewChildren,
-  OnInit
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import { Slide } from '@labdat/data-models';
 import { DragulaService } from 'ng2-dragula';
@@ -31,6 +32,9 @@ import {
 import { fromSlides } from '@labdat/slides-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+import { fromRouter } from '@labdat/router-state';
+
 @Component({
   selector: 'app-slides-list',
   templateUrl: './slides-list.component.html',
@@ -38,7 +42,7 @@ import { Subject } from 'rxjs/Subject';
   providers: [DragulaService],
   encapsulation: ViewEncapsulation.None
 })
-export class SlidesListComponent implements OnInit {
+export class SlidesListComponent implements OnInit, OnDestroy {
   curSlideIndex = 1; // the slide that will be created(the amounts of slides pages +1 )
   isValidated = false;
   isValidatedSlide = true;
@@ -67,6 +71,8 @@ export class SlidesListComponent implements OnInit {
   @Output()
   public onShuffle = new EventEmitter();
 
+  private subscriptions: Subscription;
+
   constructor(
     private dragulaService: DragulaService,
     // private validService: ValidService,
@@ -76,6 +82,7 @@ export class SlidesListComponent implements OnInit {
     this.dragulaService.setOptions('shuffle-bag', {
       moves: (el, source, handle, sibling) => !(this.slideOpendIndex != null && this.slideOpendIndex > 0)
     });
+/*
     this.dragulaService.drag.subscribe(value => {
       console.log(`drag: ${value[0]}`);
       this.onShuffle.emit(true);
@@ -84,8 +91,8 @@ export class SlidesListComponent implements OnInit {
       console.log(`drop: ${value[0]}`);
       this.onShuffle.emit(false);
     });
-
-    this.add$.pipe(
+*/
+    this.subscriptions = this.add$.pipe(
       withLatestFrom(this.currentPresentationId$)
     ).subscribe(([click, presentationId]) => {
         const newSlide = new Slide();
@@ -93,11 +100,15 @@ export class SlidesListComponent implements OnInit {
         this.store.dispatch(new fromSlides.Add(newSlide))
     });
 
-    this.delete$
+    const deleteSubscription = this.delete$
     .subscribe((slideId: string) => {
-      console.log('qsdqsdqsdqsd', slideId)
         this.store.dispatch(new fromSlides.Delete(slideId))
     });
+    this.subscriptions.add(deleteSubscription)
+  }
+
+  onClick(slideId: string) {
+    this.store.dispatch(new fromRouter.Go({ path: ['slides', slideId] }))
   }
 
   slideValidateChange(status) {
@@ -147,5 +158,10 @@ export class SlidesListComponent implements OnInit {
 
   save(result) {
     this.errorsHandle.emit(result);
+  }
+
+  ngOnDestroy() {
+    console.log('SlidesListComponent')
+    this.subscriptions.unsubscribe();
   }
 }

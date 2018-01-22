@@ -1,6 +1,7 @@
 <div [dragula]="'shuffle-bag'" [dragulaModel]='slides' fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
   <app-slide-card fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
     *ngFor="let slide of currentPresentationSlides$ | async"
+    (click)="onClick(slide.id)"
     (delete)="delete$.next($event)"
     [slide]="slide">
   </app-slide-card>

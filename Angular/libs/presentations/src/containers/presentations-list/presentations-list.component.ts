@@ -103,21 +103,23 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     .subscribe((presentationId: string) => this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'edit'] })));
     this.subscriptions.add(editSubscription);
 
-    this.add$
+    const addSubscription = this.add$
     .pipe(withLatestFrom(this.user$, (click, user) => user))
     .subscribe((user) => {
       const presentation = new Presentation();
       presentation.author = user;
       this.store.dispatch(new fromPresentations.Add(presentation));
     });
+    this.subscriptions.add(addSubscription)
 
-    this.delete$
+    const deleteSubscription = this.delete$
     .pipe(switchMap(presentationId => this.dialog.open(PresentationDialogComponent, { height: '20%', width: '20%', data: { presentationId } }).afterClosed()))
     .subscribe(result => {
       if (result.delete) {
         this.store.dispatch(new fromPresentations.Delete(result.presentationId))
       }
     });
+    this.subscriptions.add(deleteSubscription)
   }
 
   private emptyMessage(search) {
@@ -135,6 +137,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('PresentationsListComponent')
     this.subscriptions.unsubscribe();
   }
 }
