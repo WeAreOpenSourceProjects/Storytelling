@@ -56,7 +56,7 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       if (match) {
         return { ...state, currentPresentationId: match[1] };
       } else {
-        return state;
+        return { ...state, currentPresentationId: state.currentPresentationId };;
       }
     }
     default: {
