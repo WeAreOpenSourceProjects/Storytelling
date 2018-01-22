@@ -23,6 +23,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragulaModule } from 'ng2-dragula';
 import { environment } from '../../../apps/default/src/environments/environment';
 import { SlideCardComponent } from './components/slide-card/slide-card.component';
+import { SlideDialogComponent } from './components/slide-dialog/slide-dialog.component';
 
 @NgModule({
     imports: [
@@ -49,12 +50,13 @@ import { SlideCardComponent } from './components/slide-card/slide-card.component
     ],
     declarations: [
       SlidesListComponent,
+      SlideDialogComponent,
       SlideCardComponent
     ],
+    entryComponents: [ SlideDialogComponent ],
     exports: [
       SlidesListComponent
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [OverlayContainer
       //  SlidesService, SlideService, SlideResolve, ChartsService, ValidService
     ]

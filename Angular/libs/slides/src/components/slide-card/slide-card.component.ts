@@ -47,7 +47,6 @@ export class SlideCardComponent {
   public deleteSlide(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    console.log(this.slide.id)
     this.delete.emit(this.slide.id);
   }
 

@@ -82,7 +82,17 @@ export class PresentationsEffects {
   update = this.dataPersistence.optimisticUpdate(fromPresentations.UPDATE, {
     run: (action: fromPresentations.Update, state: PresentationsState) => {
       return this.presentationsApiService.update(action.payload)
-        .pipe(map(() => new fromPresentations.UpdateSuccess(action.payload)))
+      .pipe(
+        tap(() =>
+          this.snackBar.openFromComponent(PresentationsSnackComponent, {
+            duration: 1000,
+            data: 'Presentation Update Success',
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          })
+        ),
+        map(() => new fromPresentations.UpdateSuccess(action.payload))
+      );
     },
     undoAction: (action: fromPresentations.Update, error) => {
       console.error('Error', error);
@@ -112,5 +122,5 @@ export class PresentationsEffects {
     private actions: Actions,
     private dataPersistence: DataPersistence<PresentationsState>,
     private presentationsApiService: PresentationsApiService,
-    private snackBar: MatSnackBar ) {}
+    private snackBar: MatSnackBar ) { }
 }

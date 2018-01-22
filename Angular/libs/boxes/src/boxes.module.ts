@@ -37,14 +37,10 @@ import {
 
 import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 
-// NGX-CHARTS MODULE
 import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
 
-// DRAG & DROP MODULE
 import { CodemirrorModule } from 'ng4-codemirror/src';
 import { DndModule } from 'ng2-dnd';
-
-// HANDSONTABLE MODULE
 import { HotTableModule } from 'angular-handsontable';
 
 import "../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js";
@@ -61,7 +57,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DragulaModule } from 'ng2-dragula';
 //import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
-
 //import { ValidateOnBlurDirective } from './components/slides-editor-form/slides-setting/validate-on-blur.directive';
 
 import { environment } from '../../../apps/default/src/environments/environment';
@@ -123,62 +118,41 @@ import { BoxesGridComponent } from './containers/boxes-grid/boxes-grid.component
 
     declarations: [
       BoxesGridComponent,
-      // KeySwitchDirective,
-      // SlidesViewComponent,
-      // SlidesEditorFormComponent,
-      // SlideCardComponent,
-      // SlidesSearchComponent,
       BarChartComponent,
       ForceDirectedGraphComponent,
       LineChartComponent,
-      // SlidesSettingComponent,
-      // CodeEditorComponent,
-      // DataTableComponent,
-        ChartsBuilderComponent,
-      // SlidesEditorComponent,
-      // SlidesListComponent,
-        GaugeChartComponent,
-        AdvancedPieChartComponent,
-      // TitleSlideComponent,
-        PieChartComponent,
-      // SlidesCardComponent,
-        HierarchicalEdgeBundlingComponent,
-        AreaChartComponent,
-        PieGridChartComponent,
-        NumberCardComponent,
-      // DeleteDialogComponent,
-        NgGraphComponent,
-        TreemapChartComponent,
-        ZoomableTreemapChartComponent,
-        DendogramComponent,
-        BubbleChartComponent,
-        WordCloudComponent,
-        SunburstChartComponent,
-      // KeySwitchDirective,
-      // ToggleFullscreenDirective,
-      // ValidateOnBlurDirective,
-      // SlideEditorComponent,
-        GraphComponent,
-        TextEditorComponent,
-      // ImageUploadComponent,
-        MenuBarComponent,
-      // DisableControlDirective
+      ChartsBuilderComponent,
+      GaugeChartComponent,
+      AdvancedPieChartComponent,
+      PieChartComponent,
+      HierarchicalEdgeBundlingComponent,
+      AreaChartComponent,
+      PieGridChartComponent,
+      NumberCardComponent,
+      NgGraphComponent,
+      TreemapChartComponent,
+      ZoomableTreemapChartComponent,
+      DendogramComponent,
+      BubbleChartComponent,
+      WordCloudComponent,
+      SunburstChartComponent,
+      GraphComponent,
+      TextEditorComponent,
+      MenuBarComponent,
     ],
     exports: [
       BoxesGridComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    providers: [OverlayContainer
-      //  SlidesService, SlideService, SlideResolve, ImagesService, ChartsService, ValidService
-    ]
+    providers: [ OverlayContainer ]
+    //  SlidesService, SlideService, SlideResolve, ImagesService, ChartsService, ValidService
 })
 export class BoxesModule {
   public static forRoot() {
     return {
       ngModule: BoxesModule,
-      providers: [OverlayContainer
-        // , SlidesService, ImagesService, ChartsService, ValidService, SlideResolve
-      ]
+      providers: [ OverlayContainer ]
+      // , SlidesService, ImagesService, ChartsService, ValidService, SlideResolve
     };
   }
 }

@@ -80,7 +80,6 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
 
 
   ngOnDestroy() {
-    console.log('PresentationEditComponent')
     this.subscriptions.unsubscribe();
   }
 }

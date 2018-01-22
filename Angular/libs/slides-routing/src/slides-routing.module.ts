@@ -6,6 +6,7 @@ import { BoxesModule } from '@labdat/boxes';
 import { BoxesGridComponent } from '@labdat/boxes';
 import { BoxesResolve } from './services/boxes.resolve'
 
+
 const slidesRoutes: Routes = [{
   path: ':id',
   component: BoxesGridComponent,

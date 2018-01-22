@@ -14,6 +14,9 @@ import { SlidesApiService } from '../services/slides.api.service';
 import { fromAuthentication } from '@labdat/authentication-state';
 import { mapTo } from 'rxjs/operators/mapTo';
 import { Slide } from '@labdat/data-models';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SlidesSnackComponent } from '../components/slides-snack/slides-snack.component';
+import { tap } from 'rxjs/operators/tap';
 
 @Injectable()
 export class SlidesEffects {
@@ -44,6 +47,14 @@ export class SlidesEffects {
     .pipe(
       map(toPayload),
       switchMap((payload) => this.slidesApiService.add(payload)),
+      tap(() =>
+        this.snackBar.openFromComponent(SlidesSnackComponent, {
+          duration: 1000,
+          data: 'Slide Add Success',
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        })
+      ),
       map((response: any) => new fromSlides.AddSuccess(response)),
       catchError(error => of(new fromSlides.AddFailure(error)))
     )
@@ -51,9 +62,7 @@ export class SlidesEffects {
 
   @Effect()
   update = this.dataPersistence.optimisticUpdate(fromSlides.UPDATE, {
-    run: (action: fromSlides.Update, state: SlidesState) => {
-      return new fromSlides.UpdateSuccess(action.payload);
-    },
+    run: (action: fromSlides.Update, state: SlidesState) => new fromSlides.UpdateSuccess(action.payload),
     undoAction: (action: fromSlides.Update, error) => {
       console.error('Error', error);
       return new fromSlides.UpdateFailure(error);
@@ -66,6 +75,14 @@ export class SlidesEffects {
     .pipe(
       map(toPayload),
       switchMap((payload) => this.slidesApiService.delete(payload)),
+      tap(() =>
+        this.snackBar.openFromComponent(SlidesSnackComponent, {
+          duration: 1000,
+          data: 'Slide Delete Success',
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        })
+      ),
       map(slide => ({ ...slide, id: slide._id })),
       map((slide: Slide) => new fromSlides.DeleteSuccess(slide)),
       catchError(error => of(new fromSlides.DeleteFailure(error)))
@@ -74,5 +91,6 @@ export class SlidesEffects {
   constructor(
     private actions: Actions,
     private dataPersistence: DataPersistence<SlidesState>,
-    private slidesApiService: SlidesApiService) {}
+    private slidesApiService: SlidesApiService,
+    private snackBar: MatSnackBar) {}
 }

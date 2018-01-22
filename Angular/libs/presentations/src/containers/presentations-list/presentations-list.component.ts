@@ -137,7 +137,6 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('PresentationsListComponent')
     this.subscriptions.unsubscribe();
   }
 }
