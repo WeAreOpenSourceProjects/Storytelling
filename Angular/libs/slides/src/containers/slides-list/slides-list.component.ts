@@ -34,6 +34,8 @@ import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromRouter } from '@labdat/router-state';
+import { MatDialog } from '@angular/material/dialog';
+import { SlideDialogComponent } from '../../components/slide-dialog/slide-dialog.component'
 
 @Component({
   selector: 'app-slides-list',
@@ -53,7 +55,6 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   public add$ = new Subject();
   public delete$ = new Subject();
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
-
   public currentPresentationSlides$ = this.store.select(selectCurrentPresentationSlides)
 
   @Output()
@@ -76,6 +77,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   constructor(
     private dragulaService: DragulaService,
     // private validService: ValidService,
+    private dialog: MatDialog,
     private store: Store<PresentationsState>) { }
 
   ngOnInit() {
@@ -101,10 +103,16 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     });
 
     const deleteSubscription = this.delete$
-    .subscribe((slideId: string) => {
-        this.store.dispatch(new fromSlides.Delete(slideId))
+    .pipe(switchMap(slideId => this.dialog.open(SlideDialogComponent, { height: '20%', width: '20%', data: { slideId } }).afterClosed()))
+    .subscribe(result => {
+      if (result.delete) {
+        this.store.dispatch(new fromSlides.Delete(result.slideId))
+      }
     });
     this.subscriptions.add(deleteSubscription)
+
+
+
   }
 
   onClick(slideId: string) {

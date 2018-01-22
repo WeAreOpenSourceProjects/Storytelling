@@ -40,8 +40,7 @@
         "../../../node_modules/codemirror/lib/codemirror.css"
       ],
       "scripts": [
-        "../../../node_modules/jquery/dist/jquery.min.js",
-        "../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js"
+        "../../../node_modules/jquery/dist/jquery.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

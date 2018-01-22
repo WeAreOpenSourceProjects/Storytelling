@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SlidesListComponent } from '@labdat/slides/src/containers/slides-list/slides-list.component';
-import { BoxesModule } from '@labdat/boxes';
-import { BoxesGridComponent } from '@labdat/boxes';
+import { BoxesGridComponent } from '@labdat/boxes/src/containers/boxes-grid/boxes-grid.component';
+import { BoxesModule } from '@labdat/boxes/src/boxes.module';
 
 const slidesRoutes: Routes = [{
   path: ':id',
