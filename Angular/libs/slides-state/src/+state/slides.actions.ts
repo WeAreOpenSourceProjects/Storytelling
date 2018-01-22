@@ -31,6 +31,7 @@ export type Actions =
 
 export class Load implements Action {
   readonly type = LOAD;
+  constructor(public payload: string) {}
 }
 
 export class LoadSuccess implements Action {
@@ -45,12 +46,12 @@ export class LoadFailure implements Action {
 
 export class Add implements Action {
   readonly type = ADD;
-  constructor(public payload: { slide: Slide }) {}
+  constructor(public payload: Slide) {}
 }
 
 export class AddSuccess implements Action {
   readonly type = ADD_SUCCESS;
-  constructor(public payload: { slide: Slide }) {}
+  constructor(public payload: Slide) {}
 }
 
 export class AddFailure implements Action {
@@ -75,12 +76,12 @@ export class UpdateFailure implements Action {
 
 export class Delete implements Action {
   readonly type = DELETE;
-  constructor(public payload: { slideIds: string[] }) {}
+  constructor(public payload: string) {}
 }
 
 export class DeleteSuccess implements Action {
   readonly type = DELETE_SUCCESS;
-  constructor(public payload: { slideIds: string[] }) {}
+  constructor(public payload: Slide) {}
 }
 
 export class DeleteFailure implements Action {

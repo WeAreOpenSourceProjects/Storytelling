@@ -11,6 +11,7 @@ import { selectUser, AuthenticationState } from '@labdat/authentication-state';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators/filter';
+import { map } from 'rxjs/operators/map';
 import { User } from '@labdat/data-models';
 import { environment } from '../../../../apps/default/src/environments/environment'
 
@@ -25,13 +26,13 @@ export class SlidesApiService {
     this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
   }
 
-  add(slides: Slide[]): Observable<any> {
+  add(slide: Slide): Observable<any> {
     const backendURL = `${this.baseUrl}/slide`;
-    return this.http.post(backendURL, slides);
+    return this.http.post(backendURL, slide).pipe(map((slide: Slide) => ({ ...slide, id: slide._id })));
   }
 
-  getAll(): Observable<any> {
-    const backendURL = `${this.baseUrl}/slide`;
+  getPresentationSlides(presentationId: string): Observable<any> {
+    const backendURL = `${this.baseUrl}/presentations/${presentationId}/slides`;
     return this.http.get(backendURL);
   }
 
@@ -40,8 +41,8 @@ export class SlidesApiService {
     return this.http.put(backendURL, slide);
   }
 
-  delete(id): Observable<any> {
-    const backendURL = `${this.baseUrl}/slide/${id}`;
-    return this.http.delete(backendURL);
+  delete(slideId: string): Observable<any> {
+    const backendURL = `${this.baseUrl}/slide/${slideId}`;
+    return this.http.delete(backendURL).pipe(map((slide: Slide) => ({...slide, id: slide._id})));
   }
 }

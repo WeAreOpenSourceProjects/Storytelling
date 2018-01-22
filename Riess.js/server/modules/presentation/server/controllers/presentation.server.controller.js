@@ -308,10 +308,16 @@ exports.search = function(req, res) {
   .sort(order)
   .exec()
   .then(function(presentations) {
+
     var slides = [].concat.apply([], presentations.map(function(presentation) { return presentation.slideIds }));
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     res.json({
-      presentations: presentations,
+      presentations: presentations.map(function(presentation) {
+        presentation.slideIds = presentation.slideIds.map(function(slide) {
+          return slide._id
+        })
+        return presentation
+      }),
       slides: slides,
       boxes: boxes
     });

@@ -26,7 +26,11 @@ import {
   fromPresentations,
   selectPresentationsTotal,
   selectPresentationsEntities,
-  selectCurrentPresentation } from '@labdat/presentations-state';
+  selectCurrentPresentationSlides,
+  selectCurrentPresentationId } from '@labdat/presentations-state';
+import { fromSlides } from '@labdat/slides-state';
+import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-slides-list',
   templateUrl: './slides-list.component.html',
@@ -40,12 +44,13 @@ export class SlidesListComponent implements OnInit {
   isValidatedSlide = true;
   isValidatedSetting = false;
   slideOpendIndex: number;
-/*
-  @Input()
-  public slides: Slide[];
-*/
 
-  public currentPresentationSlides$ = this.store.select(selectCurrentPresentation)
+  public slides: Slide[] = [];
+  public add$ = new Subject();
+  public delete$ = new Subject();
+  private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
+
+  public currentPresentationSlides$ = this.store.select(selectCurrentPresentationSlides)
 
   @Output()
   public submit = new EventEmitter();
@@ -79,6 +84,20 @@ export class SlidesListComponent implements OnInit {
       console.log(`drop: ${value[0]}`);
       this.onShuffle.emit(false);
     });
+
+    this.add$.pipe(
+      withLatestFrom(this.currentPresentationId$)
+    ).subscribe(([click, presentationId]) => {
+        const newSlide = new Slide();
+        newSlide.presentationId = presentationId;
+        this.store.dispatch(new fromSlides.Add(newSlide))
+    });
+
+    this.delete$
+    .subscribe((slideId: string) => {
+      console.log('qsdqsdqsdqsd', slideId)
+        this.store.dispatch(new fromSlides.Delete(slideId))
+    });
   }
 
   slideValidateChange(status) {
@@ -94,7 +113,7 @@ export class SlidesListComponent implements OnInit {
     }
   }
   /*add a new page of slide*/
-  add() {
+
     /*
     let s = new Slide(this.curSlideIndex++);
 //    this.slider.slides.push(s);
@@ -102,7 +121,7 @@ export class SlidesListComponent implements OnInit {
     this.validService.changeSlideValid(false, this.curSlideIndex - 1);
     this.checkValid();
     */
-  }
+
 
   /* delete a page of slide*/
   delete(index) {

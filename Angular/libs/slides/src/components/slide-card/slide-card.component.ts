@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
+import { Slide } from '@labdat/data-models';
 
 @Component({
   selector: 'app-slide-card',
@@ -33,29 +34,20 @@ import { ActivatedRoute } from '@angular/router';
   ]
 })
 export class SlideCardComponent {
-  @Output() deleteSlide: EventEmitter<number> = new EventEmitter(); //event:delete a page of slide
-  id: any;
 
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe(params => {
-      this.id = params['id'];
-    });
-  }
-  /*delete slide*/
-  deleteSlideFn(event: Event) {
+  @Input()
+  public slide: Slide;
+
+  @Output()
+  delete = new EventEmitter<string>();
+
+  constructor(private route: ActivatedRoute) { }
+
+  public deleteSlide() {
     event.preventDefault();
-    this.deleteSlide.emit();
+    event.stopPropagation();
+    console.log(this.slide.id)
+    this.delete.emit(this.slide.id);
   }
 
-  creatSlide() {
-    // const dialog = this.dialog.open(SlideEditorComponent, {  height: '100%', width : '100%'});
-    // dialog.componentInstance.slide = this.slide;
-    // dialog.componentInstance.slideIndex = this.slideIndex;
-    //
-    // dialog.afterClosed().subscribe(result => {
-    //     if (result !== 'CANCEL') {
-    //         this.saveSlide.emit(result);
-    //     }
-    // });
-  }
 }

@@ -3,6 +3,7 @@ import * as fromPresentations from './presentations.actions';
 import { fromAuthentication } from '@labdat/authentication-state';
 import { fromRouter } from '@labdat/router-state';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store'
+import { fromSlides } from '@labdat/slides-state';
 
 export const presentationsInitialState: PresentationsState = presentationsAdapter.getInitialState({
   currentPresentationId: null,
@@ -11,7 +12,7 @@ export const presentationsInitialState: PresentationsState = presentationsAdapte
   error: '',
 });
 
-export function presentationsReducer(state: PresentationsState = presentationsInitialState, action: fromPresentations.Actions | fromAuthentication.Actions | RouterNavigationAction ): PresentationsState {
+export function presentationsReducer(state: PresentationsState = presentationsInitialState, action: fromPresentations.Actions | fromAuthentication.Actions | RouterNavigationAction | fromSlides.Actions ): PresentationsState {
   switch (action.type) {
     case fromAuthentication.LOGOUT: {
       return presentationsInitialState;
@@ -36,6 +37,16 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
     }
     case fromPresentations.UPDATE_SUCCESS: {
       return presentationsAdapter.updateOne(action.payload, state);
+    }
+    case fromSlides.ADD_SUCCESS: {
+      const presentationId = action.payload.presentationId;
+      const slideIds = state.entities[presentationId].slideIds.slice();
+      return presentationsAdapter.updateOne({ id: presentationId, changes: { slideIds:  slideIds.concat(action.payload._id) }}, state);
+    }
+    case fromSlides.DELETE_SUCCESS: {
+      const presentationId = action.payload.presentationId;
+      const slideIds = state.entities[presentationId].slideIds.slice();
+      return presentationsAdapter.updateOne({ id: presentationId, changes: { slideIds:  slideIds.filter(slideId => slideId !== action.payload._id) }}, state);
     }
     case fromPresentations.SELECT: {
       return { ...state, currentPresentationId: action.payload };

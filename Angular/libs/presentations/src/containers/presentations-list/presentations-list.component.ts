@@ -32,7 +32,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { zip } from 'rxjs/operators/zip';
 
 @Component({
-  selector: 'app-slides-list',
+  selector: 'app-presentations-list',
   templateUrl: './presentations-list.component.html',
   styleUrls: ['./presentations-list.component.scss']
 })
@@ -54,16 +54,13 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   public searchObserver = new Subject();
   public selectShowEmptyMessage$ = this.store.select(selectShowEmptyMessage);
   public message$ = this.selectShowEmptyMessage$.pipe(
-    withLatestFrom(
-      this.searchObserver,
-      (showMessage, search) => {
-        if (showMessage) {
-          return this.emptyMessage(search)
-        }
-        return '';
+    withLatestFrom(this.searchObserver, (showMessage, search) => {
+      if (showMessage) {
+        return this.emptyMessage(search)
       }
-    )
-  )
+      return '';
+    })
+  );
   private subscriptions: Subscription;
 
   constructor(

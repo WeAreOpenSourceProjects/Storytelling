@@ -8,19 +8,41 @@ var path = require('path'),
   http = require('http'),
   fs = require('fs'),
   Slide = mongoose.model('Slide'),
+  Presentation = mongoose.model('Presentation'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
   Promise = require('promise');
 
 exports.create = function (req, res) {
-  Slide.create(req.body, function(err, slide) {
+  const slideP = Slide.create(req.body)
+  const presentationP = Presentation.findOne({ _id: req.body.presentationId });
+
+  Promise.all([slideP, presentationP])
+  .then(function(result) {
+    const slide = result[0];
+    const presentation = result[1];
+    presentation.slideIds.push(slide._id)
+    return Presentation.findByIdAndUpdate(presentation.id, presentation);
+  })
+  .then(function(presentation) {
+    console.log(presentation)
+    return slideP;
+  })
+  .then(function(slide) {
+    return res.json(slide);
+  })
+  .catch(function(err) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       })
     }
+  });
+/*
+  .then(function(slide) {
     return res.json(slide)
   })
+*/
 };
 /**
  * Show the current slide
@@ -54,10 +76,22 @@ exports.update = function(req, res, next) {
  * Delete a slide
  */
 exports.delete = function(req, res) {
-  Slide.findByIdAndRemove(req.params.slideId)
-  .exec()
-  .then(slide => {
-    res.json(slide);
+  const slideP = Slide.findByIdAndRemove(req.params.slideId).exec();
+  slideP
+  .then(function(slide) {
+    return Presentation.findOne({ _id: slide.presentationId })
+  })
+  .then(function(presentation) {
+    presentation.slideIds = presentation.slideIds.filter(function(slideId) { return slideId !== req.params.slideId }).slice();
+    return Presentation.findByIdAndUpdate(presentation._id, presentation)
+  })
+  .then(function(presentation) {
+    console.log(4)
+    return slideP
+  })
+  .then(function(slide) {
+    console.log(8)
+    return res.json(slide);
   })
   .catch(function(err) {
     return res.status(422).send({

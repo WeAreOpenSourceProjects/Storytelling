@@ -16,6 +16,7 @@ import {
   MatPaginatorModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SlidesModule } from '@labdat/slides';
 
 import { PresentationsListComponent } from './containers/presentations-list/presentations-list.component';
 import { PresentationEditComponent } from './containers/presentation-edit/presentation-edit.component';
@@ -50,7 +51,8 @@ import { environment } from '../../../apps/default/src/environments/environment'
     MatInputModule,
     MatDialogModule,
     MatPaginatorModule,
-    RouterModule
+    RouterModule,
+    SlidesModule
   ],
   entryComponents: [
     PresentationDialogComponent

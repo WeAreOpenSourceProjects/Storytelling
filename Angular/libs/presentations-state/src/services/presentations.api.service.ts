@@ -14,6 +14,7 @@ import { filter } from 'rxjs/operators/filter';
 import { User } from '@labdat/data-models';
 import { environment } from '../../../../apps/default/src/environments/environment'
 import { map } from 'rxjs/operators/map';
+import { tap } from 'rxjs/operators/tap';
 
 @Injectable()
 export class PresentationsApiService {
@@ -120,7 +121,7 @@ export class PresentationsApiService {
         pageIndex,
         pageSize
       }
-    }).pipe(map((result: any) => ({
+    }).pipe(tap(console.log),map((result: any) => ({
       presentations: result.presentations.map(presentation => ({ ...presentation, id: presentation._id })),
       slides: result.slides.map(slide => ({ ...slide, id: slide._id })),
       boxes: result.boxes.map(box => ({ ...box, id: box._id }))

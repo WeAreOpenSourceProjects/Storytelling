@@ -21,7 +21,10 @@ export function slidesReducer(state: SlidesState = slidesInitialState, action: f
       return slidesAdapter.addAll(action.payload.slides, { ...state, loaded: true, loading: false });
     }
     case fromSlides.DELETE_SUCCESS: {
-      return slidesAdapter.removeMany(action.payload.slideIds, state);
+      return slidesAdapter.removeOne(action.payload.id, state);
+    }
+    case fromSlides.ADD_SUCCESS: {
+      return slidesAdapter.addOne(action.payload, state);
     }
     case fromPresentations.LOAD_SUCCESS:
     case fromPresentations.COPY_SUCCESS: {

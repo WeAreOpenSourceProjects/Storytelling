@@ -108,7 +108,8 @@ export class Presentation {
 export interface ISlide {
   _id?: string;
   id?: string;
-  index?:number;
+  index?: number;
+  presentationId?: string;
   boxIds?: Box[];
 }
 
@@ -116,7 +117,8 @@ export class Slide implements ISlide {
   constructor(
     public _id?: string,
     public id?: string,
-    public index?:number,
+    public index?: number,
+    public presentationId?: string,
     public boxIds?: Box[]
   ) { }
 }
