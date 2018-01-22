@@ -31,6 +31,12 @@ const coreRoutes: Routes = [
         loadChildren: '../../presentations/src/presentations.module#RootPresentationsModule'
       },
       {
+        path: 'slides',
+        canActivate: [AuthenticationGuardService],
+        canLoad: [AuthenticationGuardService],
+        loadChildren: '../../slides/src/slides.module#RootSlidesModule'
+      },
+      {
         path: '**',
         component: NotFoundComponent,
         data: {

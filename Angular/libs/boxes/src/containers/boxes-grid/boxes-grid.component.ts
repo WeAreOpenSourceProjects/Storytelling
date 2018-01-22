@@ -12,15 +12,16 @@ import {Chart} from '@labdat/charts';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GridsterConfig, GridsterItem  }  from 'angular-gridster2';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component'
-import {GraphComponent} from '../../components/graph/graph.component'
+import {GraphComponent} from '../../components/graph/graph.component';
+
 @Component({
-  selector: 'app-slide-detail',
-  templateUrl: './slide-detail.component.html',
-  styleUrls: ['./slide-detail.component.scss'],
+  selector: 'app-boxes-grid',
+  templateUrl: './boxes-grid.component.html',
+  styleUrls: ['./boxes-grid.component.scss'],
   // providers: [SlideService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SlideDetailComponent implements OnInit{
+export class BoxesGridComponent implements OnInit{
   @ViewChild('menubar', { read: ViewContainerRef }) menubar: ViewContainerRef;
   @ViewChildren('texteditor', {read: ViewContainerRef}) public texteditor: QueryList<ViewContainerRef>;
 
@@ -140,9 +141,9 @@ ngOnInit() {
     enableEmptyCellContextMenu: false,
     enableEmptyCellDrop: false,
     enableEmptyCellDrag: false,
-    itemResizeCallback: SlideDetailComponent.itemResize,
+    itemResizeCallback: BoxesGridComponent.itemResize,
     emptyCellClickCallback: this.emptyCellClick.bind(this),
-    itemChangeCallback: SlideDetailComponent.itemChange,
+    itemChangeCallback: BoxesGridComponent.itemChange,
     emptyCellDragMaxCols: 50,
     emptyCellDragMaxRows: 50,
     draggable: {

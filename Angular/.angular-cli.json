@@ -116,6 +116,18 @@
       "appRoot": ""
     },
     {
+      "name": "boxes",
+      "root": "libs/boxes/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    },
+    {
+      "name": "boxes-routing",
+      "root": "libs/boxes-routing/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    },
+    {
       "name": "boxes-state",
       "root": "libs/boxes-state/src",
       "test": "../../../test.js",

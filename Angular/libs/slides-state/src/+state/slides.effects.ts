@@ -13,6 +13,7 @@ import { toPayload } from '@ngrx/effects';
 import { SlidesApiService } from '../services/slides.api.service';
 import { fromAuthentication } from '@labdat/authentication-state';
 import { mapTo } from 'rxjs/operators/mapTo';
+import { Slide } from '@labdat/data-models';
 
 @Injectable()
 export class SlidesEffects {

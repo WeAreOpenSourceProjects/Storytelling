@@ -2,28 +2,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { SlidesListComponent } from '@labdat/slides/src/containers/slides-list/slides-list.component';
-import { SlideDetailComponent } from '@labdat/slides/src/containers/slide-detail/slide-detail.component';
+import { BoxesModule } from '@labdat/boxes';
+import { BoxesGridComponent } from '@labdat/boxes';
 
-const slidesRoutes: Routes = [
-  {
-    path: '',
-    component: SlidesListComponent,
-    // canActivate: [ SlidesGuardService ],
-    data: {
-      roles: ['user', 'admin'],
-      title: 'Slides List'
-    },
-    pathMatch: 'full'
-  },
-  {
-    path: ':id',
-    component: SlideDetailComponent,
-    // canActivate: [ SlidesGuardService ],
-    data: {
-      roles: ['user', 'admin'],
-      title: 'Slide Detail'
-    }
-  },
+const slidesRoutes: Routes = [{
+  path: ':id',
+  component: BoxesGridComponent,
+  // canActivate: [ SlidesGuardService ],
+  data: {
+    roles: ['user', 'admin'],
+    title: 'Slide Detail'
+  }
+}
 /*
   {
     path: 'createSlides',
@@ -55,16 +45,7 @@ const slidesRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(slidesRoutes)],
+  imports: [RouterModule.forChild(slidesRoutes), BoxesModule],
   exports: [RouterModule]
 })
 export class SlidesRoutingModule {}
-
-@NgModule({})
-export class RootSlidesRoutingModule {
-public static forRoot() {
-  return {
-      ngModule: RootSlidesRoutingModule
-    }
-  };
-}
