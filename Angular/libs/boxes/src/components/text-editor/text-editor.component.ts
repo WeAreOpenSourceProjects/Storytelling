@@ -9,10 +9,10 @@ import { environment } from '../../../../../apps/default/src/environments/enviro
 })
 export class TextEditorComponent {
   @HostListener('dblclick', ['$event']) onDblClick(event) {
-    $(this.froalaEditor.nativeElement).froalaEditor('events.focus');
+    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.focus');
   }
   @HostListener('window:click', ['$event']) onClickOut(event) {
-    $(this.froalaEditor.nativeElement).froalaEditor('events.trigger', 'blur', [], true);
+    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'blur', [], true);
   }
 
   @ViewChild('froalaEditor') froalaEditor: ElementRef;

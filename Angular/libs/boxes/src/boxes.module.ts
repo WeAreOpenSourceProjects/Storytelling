@@ -47,6 +47,7 @@ import { DndModule } from 'ng2-dnd';
 // HANDSONTABLE MODULE
 import { HotTableModule } from 'angular-handsontable';
 
+import "../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js";
 // import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
 import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
 
@@ -56,7 +57,6 @@ import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { GridsterModule } from 'angular-gridster2';
 
-// SLIDES ROUTES MODULE
 import { SlidesRoutingModule } from '@labdat/slides-routing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
