@@ -169,7 +169,6 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('SlidesListComponent')
     this.subscriptions.unsubscribe();
   }
 }
