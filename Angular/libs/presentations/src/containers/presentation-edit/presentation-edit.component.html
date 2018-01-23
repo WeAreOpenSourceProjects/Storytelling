@@ -5,15 +5,14 @@
     (onSettingChange)="slidesSettingChange($event)"
     (formValidateChange)="settingValidateChange($event)">
   </app-slides-setting>
-  <!--app-slides-editor #editor (errorsHandle)="errorsHandle($event)" (onShuffle)="onShuffle($event, slider)"></app-slides-editor-->
-  <app-slides-list></app-slides-list>
-</mat-card-content>
-<div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-  <div class="base dark">
-    <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
-      <button mat-raised-button type="button" color="primary" [disabled]="isInShuffle" (click)="update$.next()">UPDATE</button>
-      <button mat-raised-button type="button" class="secondery" (click)="cancel()">CANCEL</button>
-    </mat-card-actions>
-    <p *ngFor="let msg of errorMsg" class="error">*{{msg.msg}}</p>
+  <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+    <div class="base dark">
+      <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button type="button" color="primary" [disabled]="isInShuffle" (click)="update$.next()">UPDATE</button>
+        <button mat-raised-button type="button" class="secondery" (click)="cancel()">CANCEL</button>
+      </mat-card-actions>
+      <p *ngFor="let msg of errorMsg" class="error">*{{msg.msg}}</p>
+    </div>
   </div>
-</div>
+  <app-slides-list [slideIds]="currentPresentationSlideIds$ | async"></app-slides-list>
+</mat-card-content>

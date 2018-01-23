@@ -81,9 +81,11 @@ export class PresentationsApiService {
       .get(backendURL)
   }
 
-  findOneById(id): Observable<any> {
-    const backendURL = `${this.baseUrl}/${this.endpoints.presentations}/${id}`;
-    return this.http.get(backendURL);
+  getOne(presentationId): Observable<any> {
+    const backendURL = `${this.baseUrl}/${this.endpoints.presentations}/${presentationId}`;
+    return this.http.get(backendURL).pipe(
+      map((presentation: Presentation) => ({...presentation, id: presentation._id}))
+    );
   }
 
   update({id, changes}): Observable<any> {

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, OnCh
 import { Subscription } from 'rxjs/Subscription';
 import { map } from 'rxjs/operators/map';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PresentationsApiService } from '@labdat/presentations-state';
+import { PresentationsApiService, selectCurrentPresentationSlideIds } from '@labdat/presentations-state';
 import { ValidService } from '../../services/valid.service';
 import { Presentation } from '@labdat/data-models';
 //import { SlidesEditorComponent } from './slides-editor/slides-editor.component';
@@ -29,7 +29,9 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
   private isRequired = false;
   private isInShuffle = false;
 
-  private currentPresentation$ = this.store.select(selectCurrentPresentation)
+  private currentPresentation$ = this.store.select(selectCurrentPresentation);
+  public currentPresentationSlideIds$ = this.store.select(selectCurrentPresentationSlideIds)
+
   public currentPresentationSettings$ = this.currentPresentation$
   .pipe(
     filter((presentation: Presentation) => !isEmpty(presentation)),
@@ -77,7 +79,6 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
   public cancel() {
     this.store.dispatch(new fromRouter.Go({ path: ['presentations'] }));
   }
-
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();

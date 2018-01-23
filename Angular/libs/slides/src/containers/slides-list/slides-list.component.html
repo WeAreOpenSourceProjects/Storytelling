@@ -1,13 +1,13 @@
 <div [dragula]="'shuffle-bag'" [dragulaModel]='slides' fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
   <app-slide-card fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
-    *ngFor="let slide of currentPresentationSlides$ | async"
-    (click)="onClick(slide.id)"
-    (delete)="delete$.next($event)"
-    [slide]="slide">
+    *ngFor="let slideId of slideIds; let i=index"
+    [index]="i+1"
+    (select)="select$.next(slideId)"
+    (delete)="delete$.next(slideId)">
   </app-slide-card>
 </div>
-<div class="base " fxLayout="row" fxLayoutAlign="center center">
-  <a mat-fab (click)="add$.next()" matTooltip="add a new slide" >
+<div class="base" fxLayout="row" fxLayoutAlign="center center">
+  <a id="add" mat-fab (click)="add$.next()" matTooltip="add a new slide" >
     <mat-icon svgIcon="content:ic_add_24px"></mat-icon>
   </a>
 </div>

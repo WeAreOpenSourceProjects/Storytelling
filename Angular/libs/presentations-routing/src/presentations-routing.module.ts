@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// SlidesViewComponent
 import { PresentationsListComponent } from '@labdat/presentations/src/containers/presentations-list/presentations-list.component';
 import { PresentationEditComponent } from '@labdat/presentations/src/containers/presentation-edit/presentation-edit.component';
 
 import { PresentationsGuardService } from './services/presentations.guard.service';
 export { PresentationsGuardService }
-
+import { PresentationGuardService } from './services/presentation.guard.service';
+export { PresentationGuardService }
 
 const prenstationsRoutes: Routes = [
   {
@@ -22,7 +22,7 @@ const prenstationsRoutes: Routes = [
   {
     path: ':id/edit',
     component: PresentationEditComponent,
-    canActivate: [ PresentationsGuardService ],
+    canActivate: [ PresentationGuardService ],
     data: {
       roles: ['user', 'admin'],
       title: 'Presentation Detail'
@@ -69,7 +69,10 @@ export class RootPresentationsRoutingModule {
 public static forRoot() {
   return {
       ngModule: RootPresentationsRoutingModule,
-      providers: [ PresentationsGuardService ]
+      providers: [
+        PresentationsGuardService,
+        PresentationGuardService
+      ]
     }
   };
 }

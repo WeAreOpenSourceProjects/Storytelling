@@ -36,17 +36,24 @@ import { Slide } from '@labdat/data-models';
 export class SlideCardComponent {
 
   @Input()
-  public slide: Slide;
+  public index: number;
 
   @Output()
   delete = new EventEmitter<string>();
+
+  @Output()
+  select = new EventEmitter();
 
   constructor(private route: ActivatedRoute) { }
 
   public deleteSlide(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    this.delete.emit(this.slide.id);
+    this.delete.emit();
+  }
+
+  public onClick() {
+    this.select.emit();
   }
 
 }

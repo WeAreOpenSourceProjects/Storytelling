@@ -1,8 +1,5 @@
 'use strict';
 
-/**
- * Module dependencies
- */
 var path = require('path'),
   mongoose = require('mongoose'),
   http = require('http'),
@@ -25,37 +22,18 @@ exports.create = function (req, res) {
     return Presentation.findByIdAndUpdate(presentation.id, presentation);
   })
   .then(function(presentation) {
-    console.log(presentation)
     return slideP;
   })
   .then(function(slide) {
     return res.json(slide);
   })
   .catch(function(err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      })
-    }
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage(err)
+    })
   });
-/*
-  .then(function(slide) {
-    return res.json(slide)
-  })
-*/
-};
-/**
- * Show the current slide
- */
-exports.read = function(req, res) {
-  var slide = req.slide ? req.slide.toJSON() : {};
-  slide.isCurrentUserOwner = !!(req.user && slide.user && slide.user._id.toString() === req.user._id.toString());
-  res.json(slide);
 };
 
-/**
- * Update the current slide
- */
 exports.update = function(req, res, next) {
   //transfer image object to id string
   //if (presentation.presentation.slideImage && presentation.presentation.slideImage._id) presentation.presentation.slideImage = presentation.presentation.slideImage._id;
@@ -72,25 +50,24 @@ exports.update = function(req, res, next) {
   })
 }
 
-/**
- * Delete a slide
- */
 exports.delete = function(req, res) {
-  const slideP = Slide.findByIdAndRemove(req.params.slideId).exec();
+  const slideId = req.params.slideId
+  const slideP = Slide.findByIdAndRemove(slideId).exec();
+
   slideP
   .then(function(slide) {
-    return Presentation.findOne({ _id: slide.presentationId })
+    return Presentation.findById(slide.presentationId);
   })
   .then(function(presentation) {
-    presentation.slideIds = presentation.slideIds.filter(function(slideId) { return slideId !== req.params.slideId }).slice();
+    presentation.slideIds = presentation.slideIds.filter(function(slideId) {
+      return slideId.toString() !== req.params.slideId;
+    });
     return Presentation.findByIdAndUpdate(presentation._id, presentation)
   })
   .then(function(presentation) {
-    console.log(4)
     return slideP
   })
   .then(function(slide) {
-    console.log(8)
     return res.json(slide);
   })
   .catch(function(err) {
@@ -100,41 +77,24 @@ exports.delete = function(req, res) {
   });
 };
 
-/**
- * List of slides
- */
-exports.list = function(req, res) {
-  Slide.find().sort('-created').populate('user', 'displayName').exec(function(err, slides) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(slides);
-    }
-  });
-};
+exports.findOneByID = function(req, res) {
 
-/**
- * slide middleware
- */
-exports.slideByID = function(req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'slide is invalid'
     });
   }
 
-  Slide.findById(id).exec(function(err, slide) {
-    if (err) {
-      return next(err);
-    } else if (!slide) {
-      return res.status(404).send({
-        message: 'No slide with that identifier has been found'
-      });
-    }
-    req.slide = slide;
-    next();
+  const slideId = req.params.slideId;
+
+  Slide.findById(slideId)
+  .exec()
+  .then(function(slide) {
+    return req.json(slide);
+  })
+  .catch(function(err) {
+    return res.status(404).send({
+      message: 'No slide with that identifier has been found'
+    });
   });
 };
-

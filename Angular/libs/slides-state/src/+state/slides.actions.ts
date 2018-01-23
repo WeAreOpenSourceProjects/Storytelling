@@ -1,9 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Slide } from '@labdat/data-models';
 
-export const LOAD = '[Slides] Load';
-export const LOAD_SUCCESS = '[Slides] Load Success';
-export const LOAD_FAILURE = '[Slides] Load Failure';
 export const ADD = '[Slides] Add';
 export const ADD_SUCCESS = '[Slides] Add Success';
 export const ADD_FAILURE = '[Slides] Add Failure';
@@ -15,9 +12,6 @@ export const DELETE_SUCCESS = '[Slides] Delete Success';
 export const DELETE_FAILURE = '[Slides] Delete Failure';
 
 export type Actions =
-| Load
-| LoadSuccess
-| LoadFailure
 | Add
 | AddSuccess
 | AddFailure
@@ -28,21 +22,6 @@ export type Actions =
 | DeleteSuccess
 | DeleteFailure
 ;
-
-export class Load implements Action {
-  readonly type = LOAD;
-  constructor(public payload: string) {}
-}
-
-export class LoadSuccess implements Action {
-  readonly type = LOAD_SUCCESS;
-  constructor(public payload: { slides: Slide[]}) {}
-}
-
-export class LoadFailure implements Action {
-  readonly type = LOAD_FAILURE;
-  constructor(public payload: { error: any }) {}
-}
 
 export class Add implements Action {
   readonly type = ADD;

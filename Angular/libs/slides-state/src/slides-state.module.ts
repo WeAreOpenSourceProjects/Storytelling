@@ -4,7 +4,6 @@ import { SlidesApiService } from './services/slides.api.service';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { slidesReducer } from './+state/slides.reducer';
-import { slidesInitialState } from './+state/slides.init';
 import { SlidesEffects } from './+state/slides.effects';
 import { SlidesSnackComponent } from './components/slides-snack/slides-snack.component';
 

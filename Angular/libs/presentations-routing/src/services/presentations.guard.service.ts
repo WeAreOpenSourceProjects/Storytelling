@@ -10,8 +10,8 @@ export class PresentationsGuardService implements CanActivate {
   constructor(private store: Store<PresentationsState>) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    this.store.dispatch(new fromPresentations.Load({
-      pageIndex: 0, pageSize: 10, search: {
+    this.store.dispatch(new fromPresentations.Search({
+      pageIndex: 0, pageSize: 6, search: {
         title: '',
         isFavorite: 'indeterminate',
         isPublic: 'indeterminate'

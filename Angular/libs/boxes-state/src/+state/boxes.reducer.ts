@@ -9,7 +9,7 @@ export const boxesInitialState: BoxesState = boxesAdapter.getInitialState({
   loading: false
 });
 
-export function boxesReducer(state: BoxesState = boxesInitialState, action: fromBoxes.Actions | fromAuthentication.Actions | fromPresentations.Actions): BoxesState {
+export function boxesReducer(state: BoxesState = boxesInitialState, action: fromBoxes.Actions | fromAuthentication.Actions): BoxesState {
   switch (action.type) {
     case fromAuthentication.LOGOUT: {
       return boxesInitialState;
@@ -22,11 +22,6 @@ export function boxesReducer(state: BoxesState = boxesInitialState, action: from
     }
     case fromBoxes.DELETE_SUCCESS: {
       return boxesAdapter.removeMany(action.payload.boxIds, state);
-    }
-    case fromPresentations.LOAD_SUCCESS:
-    case fromPresentations.COPY_SUCCESS: {
-      boxesAdapter.removeAll(state);
-      return boxesAdapter.addMany(action.payload.boxes, { ...state, loaded: true });
     }
     default: {
       return state;

@@ -45,6 +45,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   public delete$ = new Subject();
   public add$ = new Subject();
   public edit$ = new Subject();
+  public select$ = new Subject();
   public loggedIn$ = this.store.select(selectIsLoggedIn);
   public user$ = this.store.select(selectUser);
   public presentations$ = this.store.select(selectAllPresentations);
@@ -79,12 +80,12 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
         email: user.email,
         username: user.username
       }
-      this.store.dispatch(new fromPresentations.Load({ pageIndex: 0, pageSize: 10, search}))
+      this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 10, search}))
     })
 
     const nextPageSubscription = this.nextPage$
     .pipe(withLatestFrom(this.searchObserver))
-    .subscribe(([pageEvent, search]: [PageEvent, any]) => this.store.dispatch(new fromPresentations.Load({ pageIndex: pageEvent.pageIndex, pageSize: 10, search})));
+    .subscribe(([pageEvent, search]: [PageEvent, any]) => this.store.dispatch(new fromPresentations.Search({ pageIndex: pageEvent.pageIndex, pageSize: 10, search})));
     this.subscriptions.add(nextPageSubscription);
 
     const togglePublishSubscription = this.togglePublish$
@@ -110,7 +111,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
       presentation.author = user;
       this.store.dispatch(new fromPresentations.Add(presentation));
     });
-    this.subscriptions.add(addSubscription)
+    this.subscriptions.add(addSubscription);
 
     const deleteSubscription = this.delete$
     .pipe(switchMap(presentationId => this.dialog.open(PresentationDialogComponent, { height: '20%', width: '20%', data: { presentationId } }).afterClosed()))
@@ -119,7 +120,13 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
         this.store.dispatch(new fromPresentations.Delete(result.presentationId))
       }
     });
-    this.subscriptions.add(deleteSubscription)
+    this.subscriptions.add(deleteSubscription);
+
+    const selectSubscription = this.select$
+    .subscribe(presentationId => {
+        this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'view'] }))
+    });
+    this.subscriptions.add(selectSubscription)
   }
 
   private emptyMessage(search) {
