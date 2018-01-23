@@ -8,6 +8,8 @@ var path = require('path'),
   http = require('http'),
   fs = require('fs'),
   Box = mongoose.model('Box'),
+  Slide = mongoose.model('Slide'),
+
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
   Promise = require('promise');
@@ -30,19 +32,42 @@ var path = require('path'),
  * Create an box
  */
 exports.create = function(req, res) {
-  Box.create(req.body)
+  console.log(req.body);
+  const boxP = Box.create(req.body)
+  const slideP = Slide.findOne({ _id: req.body.slideId });
+
+  Promise.all([boxP, slideP])
+  .then(function(result) {
+    console.log("ress", result)
+    const box = result[0];
+    const slide = result[1];
+    slide.boxIds.push(box._id)
+    return Slide.findByIdAndUpdate(slide.id, slide);
+  })
+  .then(function(slide) {
+    console.log(slide)
+    return boxP;
+  })
   .then(function(box) {
-      res.json(box);
+    return res.json(box);
   })
   .catch(function(err) {
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage(err)
-    });
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      })
+    }
   });
+/*
+  .then(function(slide) {
+    return res.json(slide)
+  })
+*/
 };
 
 exports.update = function(req, res) {
-  Box.findOneAndUpdate(req.params.boxId, req.body)
+  console.log(req.params, req.body);
+  Box.findByIdAndUpdate(req.params.boxId, req.body)
   .exec()
   .then(function(box) {
     return res.json(box);
@@ -56,7 +81,7 @@ exports.update = function(req, res) {
 
 /**
  * Delete a box
- */ 
+ */
 exports.delete = function(req, res) {
   Box.findByIdAndRemove(req.params.boxId)
   .exec()

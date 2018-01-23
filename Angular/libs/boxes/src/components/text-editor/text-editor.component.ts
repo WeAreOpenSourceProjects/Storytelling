@@ -13,6 +13,7 @@ export class TextEditorComponent {
   }
   @HostListener('window:click', ['$event']) onClickOut(event) {
     ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'blur', [], true);
+    this.textTosave.emit(this.editorContent);
   }
 
   @ViewChild('froalaEditor') froalaEditor: ElementRef;

@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 
 import { Chart } from '@labdat/charts/src/chart.class';
-import { ChartsService } from '@labdat/charts/src/services/charts.service';;
+import { ChartsService } from '@labdat/charts/src/services/charts.service';
 
 @Component({
   selector: 'app-graph',

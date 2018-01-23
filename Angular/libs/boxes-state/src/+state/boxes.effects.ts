@@ -40,7 +40,7 @@ export class BoxesEffects {
     .ofType(fromBoxes.ADD)
     .pipe(
       map(toPayload),
-      switchMap((payload) => this.boxesApiService.add(payload.boxes)),
+      switchMap((payload) => this.boxesApiService.addBox(payload.boxes)),
       map((response: any) => new fromBoxes.AddSuccess({ boxe: response })),
       catchError(error => of(new fromBoxes.AddFailure(error)))
     )

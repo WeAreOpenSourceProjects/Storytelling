@@ -58,9 +58,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragulaModule } from 'ng2-dragula';
 //import { ToggleFullscreenDirective } from './components/slides-view/toggle-fullscreen.directive';
 //import { ValidateOnBlurDirective } from './components/slides-editor-form/slides-setting/validate-on-blur.directive';
-
 import { environment } from '../../../apps/default/src/environments/environment';
 import { BoxesGridComponent } from './containers/boxes-grid/boxes-grid.component';
+import { ChartsService } from '@labdat/charts/src/services/charts.service';
 
 @NgModule({
     imports: [
@@ -144,7 +144,7 @@ import { BoxesGridComponent } from './containers/boxes-grid/boxes-grid.component
       BoxesGridComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    providers: [ OverlayContainer ]
+    providers: [ OverlayContainer, ChartsService ]
     //  SlidesService, SlideService, SlideResolve, ImagesService, ChartsService, ValidService
 })
 export class BoxesModule {

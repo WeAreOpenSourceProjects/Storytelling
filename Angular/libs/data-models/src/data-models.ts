@@ -65,14 +65,13 @@ export class Slides {
 export interface Box {
   _id?: string,
   id?: string,
-  grid: {
-    width: Number,
-    height:  Number,
-    top: Number,
-    left: Number,
-  },
+  width: Number,
+  height:  Number,
+  top: Number,
+  left: Number,
   mime: String,
-  content: any
+  content: any,
+  slideId: String
 }
 
 export interface IPresentation {

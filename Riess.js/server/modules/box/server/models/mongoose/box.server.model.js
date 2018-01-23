@@ -14,29 +14,33 @@ var BoxSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Slide'
   },
-  grid: {
-    cols: {
-      type: Number,
-      default: '10'
-    },
-    rows: {
-      type: Number,
-      default: '10'
-    },
-    y: {
-      type: Number,
-      default: 50
-    },
-    x: {
-      type: Number,
-      default: 60
-    }
+  cols: {
+    type: Number,
+    default: '10'
+  },
+  rows: {
+    type: Number,
+    default: '10'
+  },
+  y: {
+    type: Number,
+    default: 50
+  },
+  x: {
+    type: Number,
+    default: 60
   },
   mime: {
     type: String
   },
   content: {
-    type: Object
+    type: Object,
+    chart : {
+      type :Object
+    },
+    text: {
+      type : String
+    }
   }
 }, {
   timestamps: true

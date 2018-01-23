@@ -124,8 +124,11 @@ exports.slideByID = function(req, res, next, id) {
       message: 'slide is invalid'
     });
   }
+  console.log('oui');
 
-  Slide.findById(id).exec(function(err, slide) {
+  Slide.findById(id).populate({
+    path: 'boxIds'
+  }).exec(function(err, slide) {
     if (err) {
       return next(err);
     } else if (!slide) {
@@ -137,4 +140,3 @@ exports.slideByID = function(req, res, next, id) {
     next();
   });
 };
-
