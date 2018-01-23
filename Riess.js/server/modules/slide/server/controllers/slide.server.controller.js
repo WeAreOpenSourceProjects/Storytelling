@@ -79,24 +79,23 @@ exports.delete = function(req, res) {
 
 exports.findOneByID = function(req, res) {
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(req.params.slideId)) {
     return res.status(400).send({
       message: 'slide is invalid'
     });
   }
-  console.log('oui');
+  const slideId = req.params.slideId;
 
-  Slide.findById(id).populate({
+  Slide.findById(slideId).populate({
     path: 'boxIds'
-  }).exec(function(err, slide) {
-    if (err) {
-      return next(err);
-    } else if (!slide) {
-      return res.status(404).send({
-        message: 'No slide with that identifier has been found'
-      });
-    }
-    req.slide = slide;
-    next();
+  })
+  .exec()
+  .then(function(slide) {
+    return res.json(slide);
+  })
+  .catch(function(err) {
+    return res.status(404).send({
+      message: 'No slide with that identifier has been found'
+    });
   });
 };
