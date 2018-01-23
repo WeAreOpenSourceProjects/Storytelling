@@ -1,10 +1,12 @@
 import { Action } from '@ngrx/store';
 import { Presentation, Box, Slide } from '@labdat/data-models';
 
-export const LOAD = '[Presentations] Load';
-export const SELECT = '[Presentations] Select';
-export const LOAD_SUCCESS = '[Presentations] Load Success';
-export const LOAD_FAILURE = '[Presentations] Load Failure';
+export const SEARCH = '[Presentations] Search';
+export const SEARCH_SUCCESS = '[Presentations] Search Success';
+export const SEARCH_FAILURE = '[Presentations] Search Failure';
+export const GET_ONE = '[Presentations] Get One';
+export const GET_ONE_SUCCESS = '[Presentations] Get One Success';
+export const GET_ONE_FAILURE = '[Presentations] Get One Failure';
 export const ADD = '[Presentations] Add';
 export const ADD_SUCCESS = '[Presentations] Add Success';
 export const ADD_FAILURE = '[Presentations] Add Failure';
@@ -19,10 +21,12 @@ export const DELETE_SUCCESS = '[Presentations] Delete Success';
 export const DELETE_FAILURE = '[Presentations] Delete Failure';
 
 export type Actions =
-| Load
-| LoadSuccess
-| LoadFailure
-| Select
+| Search
+| SearchSuccess
+| SearchFailure
+| GetOne
+| GetOneSuccess
+| GetOneFailure
 | Add
 | AddSuccess
 | AddFailure
@@ -37,28 +41,34 @@ export type Actions =
 | DeleteFailure
 ;
 
-export class Load implements Action {
-  readonly type = LOAD;
+export class Search implements Action {
+  readonly type = SEARCH;
   constructor(public payload: { pageIndex: number, pageSize: number, search?: any}) {}
 }
 
-export class LoadSuccess implements Action {
-  readonly type = LOAD_SUCCESS;
-  constructor(public payload: {
-    presentations: Presentation[],
-    slides: Slide[],
-    boxes: Box[]
-  }) { }
+export class SearchSuccess implements Action {
+  readonly type = SEARCH_SUCCESS;
+  constructor(public payload: { presentations: Presentation[] }) { }
 }
 
-export class LoadFailure implements Action {
-  readonly type = LOAD_FAILURE;
+export class SearchFailure implements Action {
+  readonly type = SEARCH_FAILURE;
   constructor(public payload: { error: any }) {}
 }
 
-export class Select implements Action {
-  readonly type = SELECT;
-  constructor(public payload: string) {}
+export class GetOne implements Action {
+  readonly type = GET_ONE;
+  constructor(public payload: { presentationId: string }) {}
+}
+
+export class GetOneSuccess implements Action {
+  readonly type = GET_ONE_SUCCESS;
+  constructor(public payload: { presentation: Presentation }) { }
+}
+
+export class GetOneFailure implements Action {
+  readonly type = GET_ONE_FAILURE;
+  constructor(public payload: { error: any }) {}
 }
 
 export class Add implements Action {

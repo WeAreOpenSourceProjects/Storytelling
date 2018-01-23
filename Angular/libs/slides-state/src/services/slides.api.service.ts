@@ -27,22 +27,17 @@ export class SlidesApiService {
   }
 
   add(slide: Slide): Observable<any> {
-    const backendURL = `${this.baseUrl}/slide`;
+    const backendURL = `${this.baseUrl}/slides`;
     return this.http.post(backendURL, slide).pipe(map((slide: Slide) => ({ ...slide, id: slide._id })));
   }
 
-  getPresentationSlides(presentationId: string): Observable<any> {
-    const backendURL = `${this.baseUrl}/presentations/${presentationId}/slides`;
-    return this.http.get(backendURL);
-  }
-
   update(slide, id): Observable<any> {
-    const backendURL = `${this.baseUrl}/slide/${id}`;
+    const backendURL = `${this.baseUrl}/slides/${id}`;
     return this.http.put(backendURL, slide);
   }
 
   delete(slideId: string): Observable<any> {
-    const backendURL = `${this.baseUrl}/slide/${slideId}`;
+    const backendURL = `${this.baseUrl}/slides/${slideId}`;
     return this.http.delete(backendURL).pipe(map((slide: Slide) => ({...slide, id: slide._id})));
   }
   getAllBoxes(id): Observable<any> {

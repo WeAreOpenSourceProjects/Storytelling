@@ -1,8 +1,5 @@
 'use strict';
 
-/**
- * Module dependencies
- */
 var path = require('path'),
   mongoose = require('mongoose'),
   http = require('http'),
@@ -14,9 +11,6 @@ var path = require('path'),
   ObjectId = mongoose.Schema.ObjectId,
   Promise = require('promise');
 
-/**
- * Create an presentation
- */
 exports.create = function(req, res) {
   var presentation = new Presentation(req.body);
   Presentation
@@ -104,20 +98,7 @@ exports.copy = function(req, res) {
   });
 }
 
-/**
- * Show the current presentation
- */
-exports.read = function(req, res) {
-  var presentation = req.presentation ? req.presentation.toJSON() : {};
-  presentation.isCurrentUserOwner = !!(req.user && presentation.user && presentation.user._id.toString() === req.user._id.toString());
-  res.json(presentation);
-};
-
-/**
- * Update an presentation
- */
 exports.update = function(req, res, next) {
-  console.log(req.body)
   //transfer image object to id string
   //if (presentation.presentation.slideImage && presentation.presentation.slideImage._id) presentation.presentation.slideImage = presentation.presentation.slideImage._id;
   Presentation.findByIdAndUpdate(req.params.presentationId, req.body)
@@ -145,9 +126,6 @@ exports.update = function(req, res, next) {
   });*/
 };
 
-/**
- * Delete an presentation
- */
 exports.delete = function(req, res) {
   Presentation
   .findOne({ _id: req.params.presentationId })
@@ -158,7 +136,6 @@ exports.delete = function(req, res) {
   .exec()
   .then(function(presentation) {
     var slides = [].concat.apply([], presentation.slideIds);
-    console.log(presentation)
     var slideIds = slides.map(function(slide) { return slide._id })
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     var boxIds = boxes.map(function(box) { return box._id })
@@ -184,56 +161,15 @@ exports.delete = function(req, res) {
   });
 };
 
-/**
- * List of presentation
- */
-exports.list = function(req, res) {
-  Presentation.find()
-  .sort('-created')
-  .populate('user', 'displayName')
-  .exec()
-  .then(function(presentation) {
-    return res.json(presentation);
-  })
-  .catch(function(err, presentation) {
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage(err)
-    });
-  });
-};
-
-/**
- * List of private presentation
- */
-exports.myList = function(req, res) {
-  Presentation.find({
-      $or: [{
-        'author.username': req.query.username
-      }, {
-        'public': true
-      }]
-    }).sort('-created').exec(function(err, presentation) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.json(presentation);
-      }
-    });
-};
-
-/**
- * presentation middleware
- */
-exports.findOneById = function(req, res, next, id) {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+exports.findOneById = function(req, res) {
+  const presentationId = req.params.presentationId
+  if (!mongoose.Types.ObjectId.isValid(presentationId)) {
     return res.status(400).send({
       message: 'presentation is invalid'
     });
   }
 
-  Presentation.findOneById(id)
+  Presentation.findOne({ _id: presentationId })
   .exec()
   .then(function(presentation) {
     if (!presentation) {
@@ -250,15 +186,10 @@ exports.findOneById = function(req, res, next, id) {
   });
 };
 
-/**
- * search with filter
- */
 exports.search = function(req, res) {
   var pageIndex = parseInt(req.query.pageIndex ,10);
   var pageSize = parseInt(req.query.pageSize ,10);
   var regexS = new RegExp(req.query.title);
-
-//  console.log(mongoose.connection.db.collection('Box'))
 
   var request = {
     $and: []

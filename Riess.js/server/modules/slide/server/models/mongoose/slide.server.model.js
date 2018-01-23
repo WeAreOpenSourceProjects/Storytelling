@@ -1,19 +1,9 @@
 'use strict';
 
-/**
- * Module dependencies
- */
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-/**
- * Slide Schema
- */
 var SlideSchema = new Schema({
-  index: {
-    type: Number,
-    default: 1
-  },
   boxIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Box',

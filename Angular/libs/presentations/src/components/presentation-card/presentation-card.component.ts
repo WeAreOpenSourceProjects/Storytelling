@@ -47,7 +47,7 @@ import { User } from '@labdat/data-models';
 export class PresentationCardComponent implements OnInit {
 
   @Output()
-  select = new EventEmitter<string>();
+  public select = new EventEmitter();
 
   @Input()
   public presentation: Presentation;
@@ -99,6 +99,10 @@ export class PresentationCardComponent implements OnInit {
     }
   }
 
+  public selectPresentation() {
+    this.select.emit()
+  }
+
   public togglePublish(event) {
       //            elm => this.notifBarService.showNotif("set upload status successfully!"),
       //            error => this.notifBarService.showNotif("fail to set upload status, error is " + error)
@@ -113,19 +117,19 @@ export class PresentationCardComponent implements OnInit {
     this.isFavoriteChange.emit(this.presentation)
   }
 
-  editPresentation(event) {
+  public editPresentation(event) {
     event.preventDefault();
     event.stopPropagation();
     this.edit.emit(this.presentation.id)
   }
 
-  deletePresentation(event) {
+  public deletePresentation(event) {
     event.preventDefault();
     event.stopPropagation();
     this.delete.emit(this.presentation.id)
   }
   /*duplicate presentation*/
-  copyPresentation(event) {
+  public copyPresentation(event) {
     event.preventDefault();
     event.stopPropagation();
     this.copy.emit(this.presentation.id);

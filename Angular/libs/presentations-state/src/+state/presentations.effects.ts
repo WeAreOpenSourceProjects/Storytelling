@@ -25,25 +25,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class PresentationsEffects {
 
   @Effect()
-  loginSuccess$ = this.actions
-    .ofType(fromAuthentication.LOGIN_SUCCESS)
-    .pipe(mapTo(new fromPresentations.Load({ pageIndex: 0, pageSize: 10})))
-
-  @Effect()
-  load = this.dataPersistence.fetch(fromPresentations.LOAD, {
-    run: (action: fromPresentations.Load, state: PresentationsState) => {
+  search$ = this.dataPersistence.fetch(fromPresentations.SEARCH, {
+    run: (action: fromPresentations.Search, state: PresentationsState) => {
       const { pageIndex, pageSize, search } = action.payload
       return this.presentationsApiService.search(pageIndex, pageSize, search)
-        .pipe(map(result => new fromPresentations.LoadSuccess(result)))
+        .pipe(map(result => new fromPresentations.SearchSuccess(result)))
     },
-    onError: (action: fromPresentations.Load, error) => {
+    onError: (action: fromPresentations.Search, error) => {
       console.error('Error', error);
-      return new fromPresentations.LoadFailure(error);
+      return new fromPresentations.SearchFailure(error);
     }
   });
 
   @Effect()
-  add = this.actions
+  getOne$ = this.dataPersistence.fetch(fromPresentations.GET_ONE, {
+    run: (action: fromPresentations.GetOne, state: PresentationsState) => {
+      return this.presentationsApiService.getOne(action.payload.presentationId)
+        .pipe(map(result => new fromPresentations.GetOneSuccess({ presentation: result })))
+    },
+    onError: (action: fromPresentations.GetOne, error) => {
+      console.error('Error', error);
+      return new fromPresentations.GetOneFailure(error);
+    }
+  });
+
+  @Effect()
+  add$ = this.actions
     .ofType(fromPresentations.ADD)
     .pipe(
       map(toPayload),
@@ -61,7 +68,7 @@ export class PresentationsEffects {
     );
 
   @Effect()
-  copy = this.actions
+  copy$ = this.actions
     .ofType(fromPresentations.COPY)
     .pipe(
       map(toPayload),
@@ -79,7 +86,7 @@ export class PresentationsEffects {
     );
 
   @Effect()
-  update = this.dataPersistence.optimisticUpdate(fromPresentations.UPDATE, {
+  update$ = this.dataPersistence.optimisticUpdate(fromPresentations.UPDATE, {
     run: (action: fromPresentations.Update, state: PresentationsState) => {
       return this.presentationsApiService.update(action.payload)
       .pipe(

@@ -29,6 +29,7 @@ import { take } from 'rxjs/operators/take';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import { tap } from 'rxjs/operators/tap';
 import { zip } from 'rxjs/operators/zip';
+import { fromRouter } from '@labdat/router-state';
 
 @Component({
   selector: 'app-home',
@@ -42,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public showPublicSlides$ = new Subject<boolean>();
   public showPublicPresentations$ = new Subject<boolean>();
   private nextPage$ = new Subject();
+  public select$ = new Subject();
   public searchObserver = new Subject();
   private selectShowEmptyMessage$ = this.store.select(selectShowEmptyMessage);
   public message$ = this.selectShowEmptyMessage$.pipe(
@@ -68,7 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ).pipe(debounceTime(500))
     .subscribe((search: any) => {
       search.isPublic = true
-      this.store.dispatch(new fromPresentations.Load({
+      this.store.dispatch(new fromPresentations.Search({
         pageIndex: 0,
         pageSize: 6,
         search
@@ -78,12 +80,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     const nextPageSubscription = this.nextPage$
     .pipe(withLatestFrom(this.searchObserver))
     .subscribe(([pageEvent, search]: [PageEvent, any]) =>
-      this.store.dispatch(new fromPresentations.Load({
+      this.store.dispatch(new fromPresentations.Search({
         pageIndex: pageEvent.pageIndex,
         pageSize: 6, search
       }))
     );
-    this.subscriptions.add(nextPageSubscription)
+    this.subscriptions.add(nextPageSubscription);
+
+    const selectSubscription = this.select$
+    .subscribe(presentationId =>
+      this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'view'] }))
+    );
+    this.subscriptions.add(selectSubscription);
+
   }
 
   emptyMessage(search) {

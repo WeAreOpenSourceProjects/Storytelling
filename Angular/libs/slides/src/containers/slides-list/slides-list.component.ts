@@ -45,17 +45,15 @@ import { SlideDialogComponent } from '../../components/slide-dialog/slide-dialog
   encapsulation: ViewEncapsulation.None
 })
 export class SlidesListComponent implements OnInit, OnDestroy {
-  curSlideIndex = 1; // the slide that will be created(the amounts of slides pages +1 )
-  isValidated = false;
-  isValidatedSlide = true;
-  isValidatedSetting = false;
-  slideOpendIndex: number;
 
-  public slides: Slide[] = [];
   public add$ = new Subject();
   public delete$ = new Subject();
+  public select$ = new Subject();
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
   public currentPresentationSlides$ = this.store.select(selectCurrentPresentationSlides)
+
+  @Input()
+  public slideIds: string[]
 
   @Output()
   public submit = new EventEmitter();
@@ -76,13 +74,12 @@ export class SlidesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private dragulaService: DragulaService,
-    // private validService: ValidService,
     private dialog: MatDialog,
     private store: Store<PresentationsState>) { }
 
   ngOnInit() {
     this.dragulaService.setOptions('shuffle-bag', {
-      moves: (el, source, handle, sibling) => !(this.slideOpendIndex != null && this.slideOpendIndex > 0)
+ //     moves: (el, source, handle, sibling) => !(this.slideOpendIndex != null && this.slideOpendIndex > 0)
     });
 /*
     this.dragulaService.drag.subscribe(value => {
@@ -102,8 +99,9 @@ export class SlidesListComponent implements OnInit, OnDestroy {
         this.store.dispatch(new fromSlides.Add(newSlide))
     });
 
-    const deleteSubscription = this.delete$
-    .pipe(switchMap(slideId => this.dialog.open(SlideDialogComponent, { height: '20%', width: '20%', data: { slideId } }).afterClosed()))
+    const deleteSubscription = this.delete$.pipe(
+      switchMap(slideId => this.dialog.open(SlideDialogComponent, { height: '20%', width: '20%', data: { slideId } }).afterClosed())
+    )
     .subscribe(result => {
       if (result.delete) {
         this.store.dispatch(new fromSlides.Delete(result.slideId))
@@ -111,61 +109,11 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(deleteSubscription)
 
-
-
-  }
-
-  onClick(slideId: string) {
-    this.store.dispatch(new fromRouter.Go({ path: ['slides', slideId] }))
-  }
-
-  slideValidateChange(status) {
-    this.isValidatedSlide = status;
-    this.checkValid();
-  }
-
-  checkValid() {
-    if (this.isValidatedSetting && this.isValidatedSlide) {
-      this.isValidated = true;
-    } else {
-      this.isValidated = false;
-    }
-  }
-  /*add a new page of slide*/
-
-    /*
-    let s = new Slide(this.curSlideIndex++);
-//    this.slider.slides.push(s);
-    this.isValidatedSlide = false;
-    this.validService.changeSlideValid(false, this.curSlideIndex - 1);
-    this.checkValid();
-    */
-
-
-  /* delete a page of slide*/
-  delete(index) {
-    /*
-    try {
-      if (index < this.curSlideIndex) {
-//        this.slider.slides.splice(index - 1, 1);
-        /*change slide index
-        this.slider.slides.forEach(s => {
-          if (s.index > index - 1) {
-            s.index--;
-          }
-        });
-        // slide deleted in local
-        this.curSlideIndex--;
-      }
-      this.validService.changeSlideValid(true, index, 'DELETE');
-      this.slideDeleted.emit(this.curSlideIndex);
-    } catch (err) {
-      //            this.notifBarService.showNotif('delete fail : ' + err);
-    }*/
-  }
-
-  save(result) {
-    this.errorsHandle.emit(result);
+    const selectSubscription = this.select$
+    .subscribe(slideId => {
+      this.store.dispatch(new fromRouter.Go({ path: ['slides', slideId] }))
+    });
+    this.subscriptions.add(selectSubscription)
   }
 
   ngOnDestroy() {

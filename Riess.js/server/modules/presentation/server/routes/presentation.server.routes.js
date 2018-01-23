@@ -1,47 +1,26 @@
 'use strict';
 
-/**
- * Module dependencies
- */
 var presentationPolicy = require('../policies/presentation.server.policy'),
   presentation = require('../controllers/presentation.server.controller'),
   passport = require('passport');
 
 module.exports = function(app) {
-  // users-list all presentations
-  app.route('/api/presentations')
-  //  .all(presentationPolicy.isAllowed)
-  .get(presentation.list)
-  .post(presentation.create);
 
-  // users-list private presentation
-  app.route('/api/presentations/me')
-  .all(presentationPolicy.isAllowed)
-  .get(presentation.myList);
-
-  //search presentation
   app.route('/api/presentations/search')
 //  .all(presentationPolicy.isAllowed)
   .get(passport.authenticate('jwt'), presentation.search);
 
   app.route('/api/presentations/copy')
-//  .all(presentationPolicy.isAllowed)
-.post(passport.authenticate('jwt'), presentation.copy);
-
-  // Single presentation routes
-  app
-  //.param('presentationId', presentation.presentationByID)
-  .route('/api/presentations/:presentationId')
-//  .all(presentationPolicy.isAllowed)
-  .get(presentation.findOneById);
+  //  .all(presentationPolicy.isAllowed)
+  .post(passport.authenticate('jwt'), presentation.copy);
 
   app.route('/api/presentations/:presentationId')
 //  .all(presentationPolicy.isAllowed)
+  .get(presentation.findOneById)
   .patch(presentation.update)
   .delete(presentation.delete);
 
-
-  // Finish by binding the presentation middleware
-  //app.param('presentationId', presentation.presentationByID);
-
+  app.route('/api/presentations')
+  //  .all(presentationPolicy.isAllowed)
+  .post(presentation.create);
 };

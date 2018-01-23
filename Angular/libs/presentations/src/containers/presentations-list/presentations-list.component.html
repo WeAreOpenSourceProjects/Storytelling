@@ -7,16 +7,17 @@
     <app-slides-card
       *ngFor="let presentation of presentations$ | async; trackBy:trackById"
       fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
+      (select)="select$.next(presentation.id)"
       (delete)="delete$.next($event)"
       (copy)="copy$.next($event)"
       (edit)="edit$.next($event)"
       (isPublishChange)="togglePublish$.next($event)"
       (isFavoriteChange)="toggleFavorite$.next($event)"
-      (select)="select$.next($event)"
       [presentation]="presentation"
       [loggedIn]="loggedIn$ | async"
       [user]="user$ | async"
-      [editable]="true"></app-slides-card>
+      [editable]="true">
+    </app-slides-card>
   </ng-container>
 </div>
 

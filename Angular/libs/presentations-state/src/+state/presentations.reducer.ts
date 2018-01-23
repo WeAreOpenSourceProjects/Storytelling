@@ -17,14 +17,20 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
     case fromAuthentication.LOGOUT: {
       return presentationsInitialState;
     }
-    case fromPresentations.LOAD: {
+    case fromPresentations.SEARCH: {
       return presentationsAdapter.removeAll({ ...state, loading: true, loaded: false });
     }
-    case fromPresentations.LOAD_FAILURE: {
+    case fromPresentations.SEARCH_FAILURE: {
       return presentationsAdapter.removeAll({...state, error: action.payload.error, loading: false, loaded: false });
     }
-    case fromPresentations.LOAD_SUCCESS: {
+    case fromPresentations.SEARCH_SUCCESS: {
       return presentationsAdapter.addMany(action.payload.presentations, { ...state, loading: false, loaded: true });
+    }
+    case fromPresentations.GET_ONE: {
+      return presentationsAdapter.removeAll({ ...state, loading: true, loaded: false });
+    }
+    case fromPresentations.GET_ONE_SUCCESS: {
+      return presentationsAdapter.addOne(action.payload.presentation, { ...state, loading: false, loaded: true });
     }
     case fromPresentations.ADD_SUCCESS: {
       return presentationsAdapter.addOne(action.payload, state);
@@ -47,9 +53,6 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       const presentationId = action.payload.presentationId;
       const slideIds = state.entities[presentationId].slideIds.slice();
       return presentationsAdapter.updateOne({ id: presentationId, changes: { slideIds:  slideIds.filter(slideId => slideId !== action.payload._id) }}, state);
-    }
-    case fromPresentations.SELECT: {
-      return { ...state, currentPresentationId: action.payload };
     }
     case ROUTER_NAVIGATION: {
       const match = /\/presentations\/(.*)\/.*/.exec(action.payload.routerState.url);
