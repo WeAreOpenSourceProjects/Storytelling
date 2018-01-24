@@ -106,18 +106,17 @@ exports.findOneByPresentationId = function(req, res) {
 
   const presentationId = req.params.presentationId;
 
-console.log(presentationId)
-
   if (!mongoose.Types.ObjectId.isValid(presentationId)) {
     return res.status(400).send({
       message: 'presentationId is invalid'
     });
   }
 
-  Slide.find({ presentationId: presentationId })
+  Presentation.findById(presentationId)
+  .populate('slideIds')
   .exec()
-  .then(function(slides) {
-    return res.json(slides);
+  .then(function(presentation) {
+    return res.json(presentation.slideIds);
   })
   .catch(function(err) {
     console.log(err)
