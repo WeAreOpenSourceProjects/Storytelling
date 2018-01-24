@@ -77,15 +77,15 @@ exports.delete = function(req, res) {
   });
 };
 
-exports.findOneByID = function(req, res) {
+exports.findOneById = function(req, res) {
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  const slideId = req.params.slideId;
+
+  if (!mongoose.Types.ObjectId.isValid(slideId)) {
     return res.status(400).send({
       message: 'slide is invalid'
     });
   }
-
-  const slideId = req.params.slideId;
 
   Slide.findById(slideId)
   .exec()
@@ -93,6 +93,31 @@ exports.findOneByID = function(req, res) {
     return req.json(slide);
   })
   .catch(function(err) {
+    return res.status(404).send({
+      message: 'No slide with that identifier has been found'
+    });
+  });
+};
+
+exports.findOneByPresentationId = function(req, res) {
+
+  const presentationId = req.params.presentationId;
+
+console.log(presentationId)
+
+  if (!mongoose.Types.ObjectId.isValid(presentationId)) {
+    return res.status(400).send({
+      message: 'presentationId is invalid'
+    });
+  }
+
+  Slide.find({ presentationId: presentationId })
+  .exec()
+  .then(function(slides) {
+    return res.json(slides);
+  })
+  .catch(function(err) {
+    console.log(err)
     return res.status(404).send({
       message: 'No slide with that identifier has been found'
     });

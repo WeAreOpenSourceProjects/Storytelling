@@ -24,6 +24,7 @@ import {
 } from '@angular/material';
 import { SharedModule } from '@labdat/shared';
 import { PresentationsModule } from '@labdat/presentations';
+import { PresentationsStateModule } from '@labdat/presentations-state';
 
 export const COMPONENTS = [LayoutComponent, HomeComponent, NotFoundComponent];
 
@@ -64,6 +65,6 @@ export class CoreModule {
 }
 
 @NgModule({
-  imports: [CoreModule, CoreRoutingModule]
+  imports: [CoreModule, CoreRoutingModule, PresentationsStateModule ]
 })
 export class RootCoreModule {}

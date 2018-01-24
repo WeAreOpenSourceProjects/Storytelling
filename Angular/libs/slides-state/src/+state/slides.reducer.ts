@@ -23,6 +23,12 @@ export function slidesReducer(state: SlidesState = slidesInitialState, action: f
     case fromSlides.ADD_SUCCESS: {
       return slidesAdapter.addOne(action.payload, state);
     }
+    case fromSlides.LOAD: {
+      return slidesAdapter.removeAll({ ...state, loaded: false, loading: true });
+    }
+    case fromSlides.LOAD_SUCCESS: {
+      return slidesAdapter.addMany(action.payload.slides, { ...state, loaded: true, loading: false });
+    }
     case ROUTER_NAVIGATION: {
       const match = /\/slides\/(.*)\/.*/.exec(action.payload.routerState.url);
       if (match) {

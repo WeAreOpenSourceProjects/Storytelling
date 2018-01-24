@@ -26,6 +26,12 @@ export class SlidesApiService {
     this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
   }
 
+  getPresentationSlides(presentationId): Observable<any> {
+    const backendURL = `${this.baseUrl}/slides/presentation/${presentationId}`;
+    return this.http.get(backendURL)
+    .pipe(map((slides: Slide[]) => slides.map(slide => ({...slide, id: slide._id}))));
+  }
+
   add(slide: Slide): Observable<any> {
     const backendURL = `${this.baseUrl}/slides`;
     return this.http.post(backendURL, slide).pipe(map((slide: Slide) => ({ ...slide, id: slide._id })));

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { BoxesGridComponent } from '@labdat/boxes/src/containers/boxes-grid/boxes-grid.component';
 import { BoxesModule } from '@labdat/boxes/src/boxes.module';
+import { SlidesGuardService } from '@labdat/slides-routing/src/services/slides.guard.service';
 
 const slidesRoutes: Routes = [{
   path: ':id',
@@ -47,4 +48,14 @@ const slidesRoutes: Routes = [{
   imports: [RouterModule.forChild(slidesRoutes), BoxesModule],
   exports: [RouterModule]
 })
-export class SlidesRoutingModule {}
+export class SlidesRoutingModule {
+  public static forRoot() {
+    return {
+      ngModule: RootSlidesRoutingModule,
+      providers: [ SlidesGuardService ]
+    }
+  }
+}
+
+@NgModule()
+export class RootSlidesRoutingModule { }
