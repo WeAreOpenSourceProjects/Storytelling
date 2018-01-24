@@ -1,5 +1,5 @@
 
-import {Component, ViewEncapsulation, ViewChildren,OnInit, ViewChild, ElementRef, QueryList, HostListener, ChangeDetectionStrategy, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
+import {Component, ViewEncapsulation, ViewChildren,OnInit, ViewChild, ChangeDetectorRef, ElementRef, QueryList, HostListener, ChangeDetectionStrategy, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
 
 // import { Slide } from '../../../../models/slide';
 import { MatDialog, MatDialogRef } from '@angular/material';
@@ -14,6 +14,10 @@ import { GridsterConfig, GridsterItem  }  from 'angular-gridster2';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component'
 import {GraphComponent} from '../../components/graph/graph.component';
 import { Slide } from '@labdat/data-models';
+import { BoxDialogComponent } from '../../components/box-dialog/box-dialog.component'
+import { Store } from '@ngrx/store';
+import {selectCurrentPresentationId, PresentationsState } from '@labdat/presentations-state';
+import { fromRouter } from '@labdat/router-state';
 
 @Component({
   selector: 'app-boxes-grid',
@@ -23,6 +27,7 @@ import { Slide } from '@labdat/data-models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxesGridComponent implements OnInit{
+
   @ViewChild('menubar', { read: ViewContainerRef }) menubar: ViewContainerRef;
   @ViewChildren('texteditor', {read: ViewContainerRef}) public texteditor: QueryList<ViewContainerRef>;
 
@@ -38,7 +43,8 @@ export class BoxesGridComponent implements OnInit{
   idSlides: any;
   gridConfig:any;
   options;
-
+  private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
+  private presentationId: any;
   constructor(
     private dialog: MatDialog,
     private boxesService : BoxesApiService,
@@ -46,7 +52,9 @@ export class BoxesGridComponent implements OnInit{
     private router: Router,
     private element: ElementRef,
     private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private cdr : ChangeDetectorRef,
+    private store : Store<PresentationsState>
   ) {}
 
 enableEdit(box){
@@ -91,9 +99,9 @@ emptyCellClick(event, item) {
                }
 
              });
-
            }
          }
+
      })
    }
    if (type==='chart'){
@@ -131,11 +139,13 @@ for(let i = 0; i<this.slide.length; i++){
   }
 }
 ngOnInit() {
+  this.currentPresentationId$.subscribe((presentationId)=>{
+    this.presentationId = presentationId;
+  })
   this.route.params.subscribe(params => {
      this.id = params['id'];
    });
    this.slide = this.route.snapshot.data.boxes;
-   console.log(this.slide);
    if(!this.slide) {
      this.slide = []
    }
@@ -209,25 +219,38 @@ ngOnInit() {
   };
 }
 
-changedOptions() {
-  if (this.gridConfig.api && this.gridConfig.api.optionsChanged) {
-    this.gridConfig.api.optionsChanged();
+  changedOptions() {
+    if (this.gridConfig.api && this.gridConfig.api.optionsChanged) {
+      this.gridConfig.api.optionsChanged();
+    }
   }
-}
 
-static itemChange(item, itemComponent) {
- }
+  static itemChange(item, itemComponent) {
+   }
 
-static itemResize(item, itemComponent){
-  item.width = itemComponent.width;
-  item.height = itemComponent.height;
-}
+  static itemResize(item, itemComponent){
+    item.width = itemComponent.width;
+    item.height = itemComponent.height;
+  }
 
-removeItem($event, item) {
-  $event.preventDefault();
-  $event.stopPropagation();
-  this.slide.splice(this.slide.indexOf(item), 1);
-}
+  removeItem($event, item) {
+    if(item._id){
+      const dialog = this.dialog.open(BoxDialogComponent);
+      dialog.afterClosed().subscribe(result => {
+        if (result){
+          $event.preventDefault();
+          $event.stopPropagation();
+          this.boxesService.delete(item._id).subscribe((res)=>{
+            console.log('boxe deleted');
+          })
+          this.slide.splice(this.slide.indexOf(item), 1);
+          this.cdr.detectChanges();
+        }
+      })
+    } else {
+      this.slide.splice(this.slide.indexOf(item), 1);
+    }
+  }
 
   confirmSlide(slide){
     for (let i=0 ; i<slide.length; i++){
@@ -242,5 +265,6 @@ removeItem($event, item) {
         })
       }
     }
+    this.router.navigate(['/','presentations',this.presentationId,'edit'])
   }
 }

@@ -61,6 +61,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { environment } from '../../../apps/default/src/environments/environment';
 import { BoxesGridComponent } from './containers/boxes-grid/boxes-grid.component';
 import { ChartsService } from '@labdat/charts/src/services/charts.service';
+import { BoxDialogComponent } from './components/box-dialog/box-dialog.component'
 
 @NgModule({
     imports: [
@@ -113,7 +114,8 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
       TextEditorComponent,
       ChartsBuilderComponent,
       MenuBarComponent,
-      GraphComponent
+      GraphComponent,
+      BoxDialogComponent
       ],
 
     declarations: [
@@ -139,6 +141,7 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
       GraphComponent,
       TextEditorComponent,
       MenuBarComponent,
+      BoxDialogComponent
     ],
     exports: [
       BoxesGridComponent
