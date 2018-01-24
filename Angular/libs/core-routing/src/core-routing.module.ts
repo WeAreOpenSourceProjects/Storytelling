@@ -47,7 +47,6 @@ const coreRoutes: Routes = [
   }
 ];
 //  { path: 'forbiden', component: ForbidenComponent, data: { title: 'Forbiden'} },
-
 @NgModule({
   imports: [RouterModule.forRoot(coreRoutes)],
   providers: [CoreGuardService]

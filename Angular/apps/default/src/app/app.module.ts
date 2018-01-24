@@ -46,11 +46,10 @@ import { SlidesRoutingModule } from '@labdat/slides-routing';
     RouterStateModule.forRoot(),
     AuthenticationStateModule.forRoot(),
     CoreStateModule.forRoot([...coreConfiguration.self, ...presentationsConfiguration.core]),
-
     PresentationsStateModule.forRoot(),
     PresentationsRoutingModule.forRoot(),
     SlidesStateModule.forRoot(),
-    SlidesRoutingModule.forRoot(),
+    SlidesRoutingModule.forRoot()
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]

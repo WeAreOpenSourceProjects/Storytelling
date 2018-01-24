@@ -25,12 +25,12 @@ export class BoxesApiService {
     this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
   }
 
-  add(box: Box): Observable<any> {
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.boxes}`;
+  addBox(box: Box): Observable<any> {
+    const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
     return this.http.post(backendURL, box);
-  }
 
-  getAll(pageIndex, pageSize): Observable<any> {
+  }
+  getAll(slideId): Observable<any> {
     const params: URLSearchParams = new URLSearchParams();
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
     return this.http.get(backendURL);
@@ -43,7 +43,7 @@ export class BoxesApiService {
 
   update(boxe, id): Observable<any> {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/${id}`;
-    return this.http.put(backendURL, boxe).map((response: Response) => response.json());
+    return this.http.patch(backendURL, boxe);
   }
   delete(id): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.boxes}/${id}`;

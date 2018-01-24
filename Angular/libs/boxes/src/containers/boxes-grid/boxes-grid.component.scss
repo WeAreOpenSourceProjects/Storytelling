@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  position: relative;
+  height: 100%;
+}
+
+gridster {
+  background : transparent !important;
+}
+gridster-grid{
+  display: block !important;
+}
+
+.delete {
+  display: none;
+  z-index: 10000;
+}
+gridster-item {
+  border : none !important;
+  &:hover{
+    border : dotted 1px !important;
+    .delete {
+      display: block;
+    }
+  }
+  background: transparent !important;
+}
+
+ul li {
+  margin-bottom: 5%;
+}
+
+gridster-item {
+  position: absolute;
+  border: solid 1px #ccc;
+}
+
+
+.btn {
+  margin-left: 10px;
+}
+
+.box-header-btns {
+  top: 15px;
+  right: 10px;
+  cursor: pointer;
+  position: absolute;
+}
+
+.navbar-default {
+  background: black;
+  border: 0px;
+}
+
+.navbar-default .navbar-brand {
+  color: white;
+}
+
+body {
+  background-color: #f5f2f2;
+}
+.grid-item {
+  border : hidden !important;
+  .handle {
+    border: hidden !important;
+
+  }
+  .box-header-btns {
+    visibility: hidden !important;
+  }
+  &:focus, &:hover, &:active {
+    border : dotted 1px #ccc !important;
+    .handle {
+      box-sizing: border-box;
+    }
+    .box-header-btns {
+      visibility : visible !important;
+    }
+  }
+}
+
+.action-button {
+  display: flex;
+  height: 94%;
+  align-items: flex-end;
+  justify-content: center;
+}
+.fixed {
+  bottom: 20px;
+  position: fixed;
+  right: 20px
+}
+.fixed-1{
+  bottom: 100px;
+}
+.fixed-2{
+  bottom: 180px;
+}
+.fixed-3 {
+  bottom: 260px;
+}

@@ -4,7 +4,7 @@ import {Component, ViewEncapsulation, ViewChildren,OnInit, ViewChild, ElementRef
 // import { Slide } from '../../../../models/slide';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-// import {SlideService} from '../../../../services';
+import {BoxesApiService} from '../../../../boxes-state/src/services/boxes.api.service';
 import {ChartsBuilderComponent} from '../../components/charts-builder';
 import {TextEditorComponent} from '../../components/text-editor/text-editor.component';
 import {Chart} from '@labdat/charts';
@@ -13,12 +13,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GridsterConfig, GridsterItem  }  from 'angular-gridster2';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component'
 import {GraphComponent} from '../../components/graph/graph.component';
+import { Slide } from '@labdat/data-models';
 
 @Component({
   selector: 'app-boxes-grid',
   templateUrl: './boxes-grid.component.html',
   styleUrls: ['./boxes-grid.component.scss'],
-  // providers: [SlideService],
+  providers: [BoxesApiService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxesGridComponent implements OnInit{
@@ -28,6 +29,7 @@ export class BoxesGridComponent implements OnInit{
   @HostListener ('window:click',['$event']) onClick(event){
     this.editMode = false;
   }
+
   editMode =true;
   editors;
   slide: any;
@@ -36,33 +38,36 @@ export class BoxesGridComponent implements OnInit{
   idSlides: any;
   gridConfig:any;
   options;
+
   constructor(
     private dialog: MatDialog,
-    // private slideService : SlideService,
+    private boxesService : BoxesApiService,
     private route : ActivatedRoute,
     private router: Router,
     private element: ElementRef,
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
+
 enableEdit(box){
-  if(box.text){
+  if(box.content && box.content.type === 'text'){
     this.editMode= true;
-  } else if(box.chart){
-    console.log(box)
+  } else if(box.content && box.content.type==='chart'){
     const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
-    dialog.componentInstance.inputOptions = box.chart.chartOptions;
-    dialog.componentInstance.inputData = box.chart.data;
+    dialog.componentInstance.inputOptions = box.content.chart.chartOptions;
+    dialog.componentInstance.inputData = box.content.chart.data;
     dialog.afterClosed().subscribe(result => {
       if (result !== 'CANCEL') {
         console.log('The dialog was closed');
-        box.chart = result;
+        box.content.type='chart';
+        box.content.chart = result;
         box.width = box.cols *25;
         box.height = box.cols *25;
         }
     });
   }
 }
+
 emptyCellClick(event, item) {
   let componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
   if (this.menubar) {
@@ -76,11 +81,15 @@ emptyCellClick(event, item) {
     if(type==='text'){
       this.texteditor.changes.subscribe((a)=>{
         for (let i = 0; i < this.texteditor.toArray().length; i++) {
-          if(i===this.slide.boxes.length-1 && !componentEditorRef){
+          if(i===this.slide.boxIds.length-1 && !componentEditorRef){
              let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
              componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
              (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
-               item.text = text;
+               item.content =  {
+                 'type': 'text',
+                 'text': text
+               }
+
              });
 
            }
@@ -94,25 +103,42 @@ emptyCellClick(event, item) {
     dialog.afterClosed().subscribe(result => {
       if (result !== 'CANCEL') {
         console.log('The dialog was closed');
-        item.chart = result;
+        item.content =  {
+          'type': 'chart',
+          'chart': result
+        }
         }
     });
    }
    this.menubar.clear();
-   this.slide.boxes.push(item);
+   this.slide.boxIds.push(item);
   });
 }
 
+ngAfterViewInit(){
+for(let i = 0; i<this.slide.boxIds.length; i++){
+  if(this.slide.boxIds[i].content.type === 'text'){
+    let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+    let componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
+    (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
+    (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
+      this.slide.boxIds[i].content =  {
+        'type': 'text',
+        'text': text
+      }
+    });
+    }
+  }
+}
 ngOnInit() {
   this.route.params.subscribe(params => {
-     this.idSlides = params['idSlides'];
      this.id = params['id'];
    });
-   this.slide = this.route.snapshot.data.slide || {}
-   this.slide.index = this.id;
-   if(!this.slide.boxes) {
-     this.slide.boxes = []
+   this.slide = this.route.snapshot.data.boxes;
+   if(!this.slide.boxIds) {
+     this.slide.boxIds = []
    }
+
   this.gridConfig = {
     gridType: 'fit',
     compactType: 'none',
@@ -199,15 +225,23 @@ static itemResize(item, itemComponent){
 removeItem($event, item) {
   $event.preventDefault();
   $event.stopPropagation();
-  this.slide.boxes.splice(this.slide.boxes.indexOf(item), 1);
+  this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
 }
 
   confirmSlide(slide){
-    // this.slideService.confirmSlides(slide, this.id, this.idSlides)
-    //   .subscribe(
-    //     res => {
-    //       this.router.navigate(['/slides/display/', this.idSlides])
-    //     });
-  }
 
+    for (let i=0 ; i<slide.boxIds.length; i++){
+      slide.boxIds[i].slideId = this.id;
+      if(slide.boxIds[i]._id){
+        console.log(slide.boxIds[i])
+        this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe((resu) =>{
+          console.log(resu);
+        })
+      } else {
+        this.boxesService.addBox(slide.boxIds[i]).subscribe((resu) =>{
+          console.log(resu);
+        })
+      }
+    }
+  }
 }

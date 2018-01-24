@@ -46,6 +46,7 @@ export class SlideCardComponent {
 
   constructor(private route: ActivatedRoute) { }
 
+
   public deleteSlide(event: Event) {
     event.preventDefault();
     event.stopPropagation();
