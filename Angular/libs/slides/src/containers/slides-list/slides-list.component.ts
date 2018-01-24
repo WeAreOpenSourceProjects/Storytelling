@@ -20,15 +20,8 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { tap } from 'rxjs/operators/tap';
 import { Store } from '@ngrx/store';
 import { selectIsLoggedIn, selectUser } from '@labdat/authentication-state';
-import {
-  selectAllPresentations,
-  selectPresentationsError,
-  PresentationsState,
-  fromPresentations,
-  selectPresentationsTotal,
-  selectPresentationsEntities,
-  selectCurrentPresentationSlides,
-  selectCurrentPresentationId } from '@labdat/presentations-state';
+import { selectSlidesIds } from '@labdat/slides-state';
+import { selectCurrentPresentationId, PresentationsState } from '@labdat/presentations-state';
 import { fromSlides } from '@labdat/slides-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
@@ -50,10 +43,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   public delete$ = new Subject();
   public select$ = new Subject();
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
-  public currentPresentationSlides$ = this.store.select(selectCurrentPresentationSlides)
-
-  @Input()
-  public slideIds: string[]
+  public slideIds$ = this.store.select(selectSlidesIds)
 
   @Output()
   public submit = new EventEmitter();
@@ -81,6 +71,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     this.dragulaService.setOptions('shuffle-bag', {
  //     moves: (el, source, handle, sibling) => !(this.slideOpendIndex != null && this.slideOpendIndex > 0)
     });
+
 /*
     this.dragulaService.drag.subscribe(value => {
       console.log(`drag: ${value[0]}`);

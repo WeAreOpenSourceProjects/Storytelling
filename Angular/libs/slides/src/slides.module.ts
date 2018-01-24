@@ -73,6 +73,6 @@ export class SlidesModule {
 }
 
 @NgModule({
-  imports: [SlidesModule, SlidesRoutingModule]
+  imports: [SlidesModule, SlidesRoutingModule ]
 })
 export class RootSlidesModule {}

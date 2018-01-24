@@ -78,9 +78,12 @@ exports.delete = function(req, res) {
   });
 };
 
-exports.findOneByID = function(req, res) {
+exports.findOneById = function(req, res) {
 
-  if (!mongoose.Types.ObjectId.isValid(req.params.slideId)) {
+  const slideId = req.params.slideId;
+
+  if (!mongoose.Types.ObjectId.isValid(slideId)) {
+
     return res.status(400).send({
       message: 'slide is invalid'
     });
@@ -89,8 +92,33 @@ exports.findOneByID = function(req, res) {
   console.log( mongoose.Types.ObjectId(slideId), slideId)
   Box.find({"slideId": mongoose.Types.ObjectId(slideId)}).exec().then(function(boxes){
       return res.json(boxes);
+
   })
   .catch(function(err) {
+    return res.status(404).send({
+      message: 'No slide with that identifier has been found'
+    });
+  });
+};
+
+exports.findOneByPresentationId = function(req, res) {
+
+  const presentationId = req.params.presentationId;
+
+  if (!mongoose.Types.ObjectId.isValid(presentationId)) {
+    return res.status(400).send({
+      message: 'presentationId is invalid'
+    });
+  }
+
+  Presentation.findById(presentationId)
+  .populate('slideIds')
+  .exec()
+  .then(function(presentation) {
+    return res.json(presentation.slideIds);
+  })
+  .catch(function(err) {
+    console.log(err)
     return res.status(404).send({
       message: 'No slide with that identifier has been found'
     });

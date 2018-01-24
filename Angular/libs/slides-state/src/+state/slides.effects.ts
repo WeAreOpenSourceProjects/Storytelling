@@ -22,6 +22,19 @@ import { tap } from 'rxjs/operators/tap';
 export class SlidesEffects {
 
   @Effect()
+  load = this.dataPersistence.fetch(fromSlides.LOAD, {
+    run: (action: fromSlides.Load, state: SlidesState) => {
+      return this.slidesApiService.getPresentationSlides(action.payload.presentationId).pipe(
+        map(slides => new fromSlides.LoadSuccess({ slides }))
+      )
+    },
+    onError: (action: fromSlides.Load, error) => {
+      console.error('Error', error);
+      return new fromSlides.LoadFailure(error);
+    }
+  });
+
+  @Effect()
   add = this.actions
     .ofType(fromSlides.ADD)
     .pipe(

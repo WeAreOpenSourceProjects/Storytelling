@@ -32,6 +32,8 @@ import { PresentationsRoutingModule } from '@labdat/presentations-routing/src/pr
 //import { ValidateOnBlurDirective } from './components/slides-editor-form/slides-setting/validate-on-blur.directive';
 
 import { environment } from '../../../apps/default/src/environments/environment';
+import { SlidesStateModule } from '@labdat/slides-state';
+import { PresentationsStateModule } from '@labdat/presentations-state';
 
 @NgModule({
   imports: [
@@ -75,6 +77,6 @@ import { environment } from '../../../apps/default/src/environments/environment'
 export class PresentationsModule { }
 
 @NgModule({
-  imports: [ PresentationsModule, PresentationsRoutingModule ]
+  imports: [ PresentationsModule, PresentationsRoutingModule, SlidesStateModule ]
 })
 export class RootPresentationsModule {}

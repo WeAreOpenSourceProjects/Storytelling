@@ -1,6 +1,6 @@
-<div [dragula]="'shuffle-bag'" [dragulaModel]='slides' fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+<div [dragula]="'shuffle-bag'" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
   <app-slide-card fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
-    *ngFor="let slideId of slideIds; let i=index"
+    *ngFor="let slideId of slideIds$ | async; let i=index"
     [index]="i+1"
     (select)="select$.next(slideId)"
     (delete)="delete$.next(slideId)">

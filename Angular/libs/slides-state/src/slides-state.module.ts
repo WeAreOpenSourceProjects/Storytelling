@@ -10,18 +10,24 @@ import { SlidesSnackComponent } from './components/slides-snack/slides-snack.com
 
 @NgModule({
   imports: [
-    HttpClientModule,
     StoreModule.forFeature('slides', slidesReducer),
     EffectsModule.forFeature([ SlidesEffects ])
-  ],
-  declarations: [ SlidesSnackComponent ],
-  entryComponents: [ SlidesSnackComponent ]
+  ]
 })
 export class SlidesStateModule {
   public static forRoot(): ModuleWithProviders {
     return {
-      ngModule: SlidesStateModule,
+      ngModule: RootSlidesStateModule,
       providers: [ SlidesApiService ]
     };
   }
 }
+
+@NgModule({
+  declarations: [ SlidesSnackComponent ],
+  entryComponents: [ SlidesSnackComponent ],
+  imports: [
+    HttpClientModule
+  ]
+})
+export class RootSlidesStateModule { }

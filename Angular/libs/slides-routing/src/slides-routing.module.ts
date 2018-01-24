@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { SlidesListComponent } from '@labdat/slides/src/containers/slides-list/slides-list.component';
-import { BoxesModule } from '@labdat/boxes';
-import { BoxesGridComponent } from '@labdat/boxes';
+import { BoxesGridComponent } from '@labdat/boxes/src/containers/boxes-grid/boxes-grid.component';
+import { BoxesModule } from '@labdat/boxes/src/boxes.module';
+import { SlidesGuardService } from '@labdat/slides-routing/src/services/slides.guard.service';
 import { BoxesResolve } from './services/boxes.resolve'
 
 
@@ -56,13 +55,12 @@ const slidesRoutes: Routes = [{
 export class SlidesRoutingModule {
   public static forRoot() {
     return {
-        ngModule: RootSlidesRoutingModule,
-        providers: [ BoxesResolve ]
-      }
-    };
+      ngModule: RootSlidesRoutingModule,
+      providers: [ SlidesGuardService, BoxesResolve ]
+    }
+  }
 }
 
-@NgModule({})
-export class RootSlidesRoutingModule {
+@NgModule()
+export class RootSlidesRoutingModule { }
 
-}

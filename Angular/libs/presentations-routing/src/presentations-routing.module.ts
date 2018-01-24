@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PresentationsListComponent } from '@labdat/presentations/src/containers/presentations-list/presentations-list.component';
 import { PresentationEditComponent } from '@labdat/presentations/src/containers/presentation-edit/presentation-edit.component';
@@ -6,6 +6,8 @@ import { PresentationEditComponent } from '@labdat/presentations/src/containers/
 import { PresentationsGuardService } from './services/presentations.guard.service';
 export { PresentationsGuardService }
 import { PresentationGuardService } from './services/presentation.guard.service';
+import { SlidesGuardService } from '@labdat/slides-routing/src/services/slides.guard.service';
+import { HttpClientModule } from '@angular/common/http';
 export { PresentationGuardService }
 
 const prenstationsRoutes: Routes = [
@@ -22,7 +24,7 @@ const prenstationsRoutes: Routes = [
   {
     path: ':id/edit',
     component: PresentationEditComponent,
-    canActivate: [ PresentationGuardService ],
+    canActivate: [ PresentationGuardService, SlidesGuardService ],
     data: {
       roles: ['user', 'admin'],
       title: 'Presentation Detail'
@@ -62,17 +64,21 @@ const prenstationsRoutes: Routes = [
   imports: [RouterModule.forChild(prenstationsRoutes)],
   exports: [RouterModule]
 })
-export class PresentationsRoutingModule {}
+export class PresentationsRoutingModule {
+  public static forRoot(): ModuleWithProviders {
+    return {
+        ngModule: RootPresentationsRoutingModule,
+        providers: [
+          PresentationsGuardService,
+          PresentationGuardService
+        ]
+      }
+    };
+}
 
-@NgModule({})
+@NgModule({
+  imports: [ HttpClientModule ],
+})
 export class RootPresentationsRoutingModule {
-public static forRoot() {
-  return {
-      ngModule: RootPresentationsRoutingModule,
-      providers: [
-        PresentationsGuardService,
-        PresentationGuardService
-      ]
-    }
-  };
+
 }
