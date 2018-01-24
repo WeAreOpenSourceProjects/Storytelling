@@ -29,6 +29,14 @@ export function slidesReducer(state: SlidesState = slidesInitialState, action: f
     case fromSlides.LOAD_SUCCESS: {
       return slidesAdapter.addMany(action.payload.slides, { ...state, loaded: true, loading: false });
     }
+    case fromSlides.LOAD_SUCCESS: {
+      return slidesAdapter.addMany(action.payload.slides, { ...state, loaded: true, loading: false });
+    }
+    case fromPresentations.UPDATE_SUCCESS: {
+      return (action.payload.changes.slideIds)
+      ? { ...state, ids: action.payload.changes.slideIds }
+      : state;
+    }
     case ROUTER_NAVIGATION: {
       const match = /\/slides\/(.*)\/.*/.exec(action.payload.routerState.url);
       if (match) {

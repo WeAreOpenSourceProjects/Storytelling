@@ -37,9 +37,9 @@ export class SlidesApiService {
     return this.http.post(backendURL, slide).pipe(map((slide: Slide) => ({ ...slide, id: slide._id })));
   }
 
-  update(slide, id): Observable<any> {
-    const backendURL = `${this.baseUrl}/slides/${id}`;
-    return this.http.put(backendURL, slide);
+  reorder(presentationId, slideIds): Observable<any> {
+    const backendURL = `${this.baseUrl}/presentations/${presentationId}`;
+    return this.http.patch(backendURL, { slideIds });
   }
 
   delete(slideId: string): Observable<any> {
