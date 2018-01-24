@@ -8,7 +8,8 @@ import {
   ViewEncapsulation,
   ViewChildren,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  ViewChild
 } from '@angular/core';
 import { Slide } from '@labdat/data-models';
 import { DragulaService } from 'ng2-dragula';
@@ -21,7 +22,7 @@ import { tap } from 'rxjs/operators/tap';
 import { Store } from '@ngrx/store';
 import { selectIsLoggedIn, selectUser } from '@labdat/authentication-state';
 import { selectSlidesIds } from '@labdat/slides-state';
-import { selectCurrentPresentationId, PresentationsState } from '@labdat/presentations-state';
+import { selectCurrentPresentationId, PresentationsState, fromPresentations } from '@labdat/presentations-state';
 import { fromSlides } from '@labdat/slides-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
@@ -45,6 +46,9 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
   public slideIds$ = this.store.select(selectSlidesIds)
 
+  @ViewChild('container')
+  public container: any;
+
   @Output()
   public submit = new EventEmitter();
 
@@ -57,8 +61,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   @Output()
   public errorsHandle = new EventEmitter();
 
-  @Output()
-  public onShuffle = new EventEmitter();
+  private out$ = new Subject();
 
   private subscriptions: Subscription;
 
@@ -67,21 +70,25 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private store: Store<PresentationsState>) { }
 
-  ngOnInit() {
+  ngOnInit() {/*
     this.dragulaService.setOptions('shuffle-bag', {
  //     moves: (el, source, handle, sibling) => !(this.slideOpendIndex != null && this.slideOpendIndex > 0)
+      moves: (el, source, handle, sibling) => true
+  });
+*/
+
+    this.dragulaService.out
+    .subscribe(value => this.out$.next(value));
+
+    this.out$.pipe(
+      withLatestFrom(this.currentPresentationId$)
+    )
+    .subscribe(([value, presentationId]) => {
+      const cards = Array.from(this.container.nativeElement.querySelectorAll('app-slide-card'));
+      const slideIds = cards.map((card: HTMLElement) => card.id)
+      this.store.dispatch(new fromPresentations.Update({ id: presentationId, changes: { slideIds }}))
     });
 
-/*
-    this.dragulaService.drag.subscribe(value => {
-      console.log(`drag: ${value[0]}`);
-      this.onShuffle.emit(true);
-    });
-    this.dragulaService.out.subscribe(value => {
-      console.log(`drop: ${value[0]}`);
-      this.onShuffle.emit(false);
-    });
-*/
     this.subscriptions = this.add$.pipe(
       withLatestFrom(this.currentPresentationId$)
     ).subscribe(([click, presentationId]) => {
