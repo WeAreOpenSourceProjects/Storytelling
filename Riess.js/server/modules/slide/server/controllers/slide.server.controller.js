@@ -88,8 +88,6 @@ exports.findOneById = function(req, res) {
       message: 'slide is invalid'
     });
   }
-  const slideId = req.params.slideId;
-  console.log( mongoose.Types.ObjectId(slideId), slideId)
   Box.find({"slideId": mongoose.Types.ObjectId(slideId)}).exec().then(function(boxes){
       return res.json(boxes);
 

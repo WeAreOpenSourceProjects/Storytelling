@@ -45,7 +45,7 @@ import { HotTableModule } from 'angular-handsontable';
 
 import "../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js";
 // import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
-import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 import { TextEditorComponent } from './components/text-editor/text-editor.component';
 import { ChartsBuilderComponent } from './components/charts-builder/charts-builder.component';

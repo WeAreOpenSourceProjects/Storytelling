@@ -7,11 +7,10 @@ module.exports = function(app) {
 
   app.route('/api/slides/:slideId').all(slidePolicy.isAllowed)
   .get(slide.findOneById)
-
   .patch(slide.update)
   .delete(slide.delete);
 
-  app.route('/api/slide').all(slidePolicy.isAllowed)
+  app.route('/api/slides').all(slidePolicy.isAllowed)
   .post(slide.create);
 
   app.route('/api/slides/presentation/:presentationId')//.all(slidePolicy.isAllowed)
