@@ -10,7 +10,8 @@ module.exports = function(app) {
   // users-list all box
   app.route('/api/boxes').all(boxPolicy.isAllowed)
   .get(box.list)
-  .post(box.create);
+  .post(box.create)
+  .patch(box.createOrUpdate);
 
   // Single box routes
   app.route('/api/boxes/:boxId')

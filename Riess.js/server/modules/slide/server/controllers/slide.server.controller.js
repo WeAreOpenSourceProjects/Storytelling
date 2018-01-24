@@ -5,6 +5,7 @@ var path = require('path'),
   http = require('http'),
   fs = require('fs'),
   Slide = mongoose.model('Slide'),
+  Box = mongoose.model('Box'),
   Presentation = mongoose.model('Presentation'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
@@ -85,13 +86,9 @@ exports.findOneByID = function(req, res) {
     });
   }
   const slideId = req.params.slideId;
-
-  Slide.findById(slideId).populate({
-    path: 'boxIds'
-  })
-  .exec()
-  .then(function(slide) {
-    return res.json(slide);
+  console.log( mongoose.Types.ObjectId(slideId), slideId)
+  Box.find({"slideId": mongoose.Types.ObjectId(slideId)}).exec().then(function(boxes){
+      return res.json(boxes);
   })
   .catch(function(err) {
     return res.status(404).send({

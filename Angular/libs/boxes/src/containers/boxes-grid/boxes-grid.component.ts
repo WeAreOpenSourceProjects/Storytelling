@@ -81,7 +81,7 @@ emptyCellClick(event, item) {
     if(type==='text'){
       this.texteditor.changes.subscribe((a)=>{
         for (let i = 0; i < this.texteditor.toArray().length; i++) {
-          if(i===this.slide.boxIds.length-1 && !componentEditorRef){
+          if(i===this.slide.length-1 && !componentEditorRef){
              let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
              componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
              (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
@@ -111,18 +111,18 @@ emptyCellClick(event, item) {
     });
    }
    this.menubar.clear();
-   this.slide.boxIds.push(item);
+   this.slide.push(item);
   });
 }
 
 ngAfterViewInit(){
-for(let i = 0; i<this.slide.boxIds.length; i++){
-  if(this.slide.boxIds[i].content.type === 'text'){
+for(let i = 0; i<this.slide.length; i++){
+  if(this.slide[i].content.type === 'text'){
     let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
     let componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-    (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
+    (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide[i].content.text;
     (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
-      this.slide.boxIds[i].content =  {
+      this.slide[i].content =  {
         'type': 'text',
         'text': text
       }
@@ -135,8 +135,9 @@ ngOnInit() {
      this.id = params['id'];
    });
    this.slide = this.route.snapshot.data.boxes;
-   if(!this.slide.boxIds) {
-     this.slide.boxIds = []
+   console.log(this.slide);
+   if(!this.slide) {
+     this.slide = []
    }
 
   this.gridConfig = {
@@ -225,20 +226,18 @@ static itemResize(item, itemComponent){
 removeItem($event, item) {
   $event.preventDefault();
   $event.stopPropagation();
-  this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
+  this.slide.splice(this.slide.indexOf(item), 1);
 }
 
   confirmSlide(slide){
-
-    for (let i=0 ; i<slide.boxIds.length; i++){
-      slide.boxIds[i].slideId = this.id;
-      if(slide.boxIds[i]._id){
-        console.log(slide.boxIds[i])
-        this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe((resu) =>{
+    for (let i=0 ; i<slide.length; i++){
+      slide[i].slideId = this.id;
+      if(slide[i]._id){
+        this.boxesService.update(slide[i], slide[i]._id).subscribe((resu) =>{
           console.log(resu);
         })
       } else {
-        this.boxesService.addBox(slide.boxIds[i]).subscribe((resu) =>{
+        this.boxesService.addBox(slide[i]).subscribe((resu) =>{
           console.log(resu);
         })
       }

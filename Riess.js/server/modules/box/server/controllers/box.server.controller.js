@@ -38,14 +38,12 @@ exports.create = function(req, res) {
 
   Promise.all([boxP, slideP])
   .then(function(result) {
-    console.log("ress", result)
     const box = result[0];
     const slide = result[1];
     slide.boxIds.push(box._id)
-    return Slide.findByIdAndUpdate(slide.id, slide);
+    return Slide.findByIdAndUpdate(req.body.slideId, slide);
   })
   .then(function(slide) {
-    console.log(slide)
     return boxP;
   })
   .then(function(box) {
@@ -64,6 +62,7 @@ exports.create = function(req, res) {
   })
 */
 };
+
 
 exports.update = function(req, res) {
   console.log(req.params, req.body);

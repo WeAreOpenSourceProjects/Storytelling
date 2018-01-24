@@ -35,7 +35,7 @@ export class BoxesApiService {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
     return this.http.get(backendURL);
   }
-
+  
   getOne(id): Observable<any> {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/${id}`;
     return this.http.get(backendURL);
