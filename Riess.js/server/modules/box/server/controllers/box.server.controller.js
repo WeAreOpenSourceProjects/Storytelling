@@ -32,7 +32,6 @@ var path = require('path'),
  * Create an box
  */
 exports.create = function(req, res) {
-  console.log(req.body);
   const boxP = Box.create(req.body)
   const slideP = Slide.findOne({ _id: req.body.slideId });
 
@@ -40,27 +39,29 @@ exports.create = function(req, res) {
   .then(function(result) {
     const box = result[0];
     const slide = result[1];
-    slide.boxIds.push(box._id)
-    return Slide.findByIdAndUpdate(req.body.slideId, slide);
-  })
-  .then(function(slide) {
-    return boxP;
-  })
-  .then(function(box) {
-    return res.json(box);
-  })
-  .catch(function(err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      })
-    }
-  });
-/*
-  .then(function(slide) {
-    return res.json(slide)
-  })
-*/
+    Box.find({"slideId": mongoose.Types.ObjectId(req.body.slideId)}).exec().then(function(boxes){
+      console.log(boxes)
+        for (var item in boxes){
+          if(slide.boxIds.indexOf(boxes[item]._id)===-1)
+            slide.boxIds.push(boxes[item]._id)
+        }
+        return Slide.findByIdAndUpdate(req.body.slideId, slide);
+      });
+    })
+    .then(function(slide) {
+      console.log('slide', slide);
+      return boxP;
+    })
+    .then(function(box) {
+      return res.json(box);
+    })
+    .catch(function(err) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        })
+      }
+    });
 };
 
 

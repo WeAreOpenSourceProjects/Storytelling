@@ -169,7 +169,12 @@ exports.findOneById = function(req, res) {
     });
   }
 
-  Presentation.findOne({ _id: presentationId })
+  Presentation
+  .findOne({ _id: presentationId })
+  .populate({
+    path: 'slideIds',
+    populate: { path: 'boxIds' }
+  })
   .exec()
   .then(function(presentation) {
     if (!presentation) {

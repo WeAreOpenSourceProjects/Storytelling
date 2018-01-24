@@ -1,0 +1,13 @@
+@mixin slides-view-theme($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+
+    .slides-container {
+        .slides {
+            .title-text {
+                color: mat-color($primary);
+            }
+        }
+    }
+}

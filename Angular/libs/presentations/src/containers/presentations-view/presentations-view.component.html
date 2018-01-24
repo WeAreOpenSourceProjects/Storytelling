@@ -1,0 +1,23 @@
+<div [ngStyle]="slideHeight_style" class="slide" *ngIf="curSlideIndex === 0" id="slide-0">
+  <app-title-slide [slideTitle]="slideTitle"> </app-title-slide>
+</div>
+<gridster [options]="gridConfig">
+ <gridster-item [item]="box" *ngFor="let box of currentSlide?.boxIds; let i = index">
+   <div *ngIf="box.content.type ==='text'"  #textContainer [froalaView]="box.content.text" ></div>
+   <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content && box.content.type==='chart'" [chart]="box.content.chart"></app-graph>
+  </gridster-item>
+</gridster>
+
+<!--progress bar-->
+<div class="progress" style="display: block;">
+  <span [style.width]="((curSlideIndex  * 100)/slideNum) + '%'"></span>
+</div>
+<!--control handler-->
+<aside class="controls" style="display: block;">
+  <button class="navigate-left enabled" aria-label="previous slide" [ngClass]="{'fragmented':  curSlideIndex == 0 }" (click)="switchSlide(-1)"></button>
+  <button class="navigate-right enabled" aria-label="next slide" [ngClass]="{'fragmented':  curSlideIndex == slideNum }" (click)="switchSlide(1)"></button>
+  <button class="navigate-center enabled" (click)="onClick()" *ngIf="showFullScreen && !screenfull.isFullscreen" aria-label="above slide"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+
+  <button class="navigate-up" aria-label="above slide"></button>
+  <button class="navigate-down" aria-label="below slide"></button>
+</aside>

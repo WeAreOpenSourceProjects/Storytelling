@@ -32,7 +32,8 @@ import {
   BubbleChartComponent,
   WordCloudComponent,
   SunburstChartComponent,
-  AreaChartComponent
+  AreaChartComponent,
+  ChartsModule
 } from '@labdat/charts'
 
 import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
@@ -50,7 +51,6 @@ import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { TextEditorComponent } from './components/text-editor/text-editor.component';
 import { ChartsBuilderComponent } from './components/charts-builder/charts-builder.component';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
-import { GraphComponent } from './components/graph/graph.component';
 import { GridsterModule } from 'angular-gridster2';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -67,7 +67,6 @@ import { BoxDialogComponent } from './components/box-dialog/box-dialog.component
     imports: [
       DragulaModule,
       CommonModule,
-      MatTooltipModule,
       MatCheckboxModule,
       FormsModule,
       ReactiveFormsModule,
@@ -92,7 +91,19 @@ import { BoxDialogComponent } from './components/box-dialog/box-dialog.component
       MatDialogModule,
       RouterModule,
       GridsterModule,
-      MatStepperModule ],
+      MatStepperModule, ChartsModule ],
+
+
+    declarations: [
+      BoxesGridComponent,
+      TextEditorComponent,
+      MenuBarComponent,
+      BoxDialogComponent,
+      ChartsBuilderComponent
+    ],
+    exports: [
+      BoxesGridComponent
+    ],
     entryComponents: [
       BarChartComponent,
       LineChartComponent,
@@ -111,40 +122,10 @@ import { BoxDialogComponent } from './components/box-dialog/box-dialog.component
       WordCloudComponent,
       SunburstChartComponent,
       AreaChartComponent,
-      TextEditorComponent,
-      ChartsBuilderComponent,
       MenuBarComponent,
-      GraphComponent,
-      BoxDialogComponent
-      ],
-
-    declarations: [
-      BoxesGridComponent,
-      BarChartComponent,
-      ForceDirectedGraphComponent,
-      LineChartComponent,
       ChartsBuilderComponent,
-      GaugeChartComponent,
-      AdvancedPieChartComponent,
-      PieChartComponent,
-      HierarchicalEdgeBundlingComponent,
-      AreaChartComponent,
-      PieGridChartComponent,
-      NumberCardComponent,
-      NgGraphComponent,
-      TreemapChartComponent,
-      ZoomableTreemapChartComponent,
-      DendogramComponent,
-      BubbleChartComponent,
-      WordCloudComponent,
-      SunburstChartComponent,
-      GraphComponent,
       TextEditorComponent,
-      MenuBarComponent,
       BoxDialogComponent
-    ],
-    exports: [
-      BoxesGridComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [ OverlayContainer, ChartsService ]

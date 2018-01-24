@@ -13,6 +13,7 @@
     [legendTitle]="chartOptions.legendTitle"
     [showXAxisLabel]="chartOptions.showXAxisLabel"
     [showYAxisLabel]="chartOptions.showYAxisLabel"
+    matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxisLabel]="chartOptions.xAxisLabel"
     [yAxisLabel]="chartOptions.yAxisLabel"
@@ -29,6 +30,7 @@
     [schemeType]="chartOptions.schemeType"
   [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
+    matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxis]="chartOptions.showXAxis"
     [yAxis]="chartOptions.showYAxis"
@@ -49,6 +51,7 @@
     [schemeType]="chartOptions.schemeType"
     [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
+    matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxis]="chartOptions.showXAxis"
     [yAxis]="chartOptions.showYAxis"
@@ -88,6 +91,7 @@
     [schemeType]="chartOptions.schemeType"
     [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
+    matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxis]="chartOptions.showXAxis"
     [yAxis]="chartOptions.showYAxis"
@@ -108,6 +112,7 @@
     [schemeType]="chartOptions.schemeType"
     [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
+    matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled"
     [xAxis]="chartOptions.showXAxis"
     [yAxis]="chartOptions.showYAxis"
@@ -140,6 +145,7 @@
     [showGridLines]="chartOptions.showGridLines"
     [rangeFillOpacity]="chartOptions.rangeFillOpacity"
     [roundDomains]="chartOptions.roundDomains"
+    matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled"
     [curve]="chartOptions.curveClosed"
     [showSeriesOnHover]="chartOptions.showSeriesOnHover">
@@ -166,7 +172,7 @@
     [rangeFillOpacity]="chartOptions.rangeFillOpacity"
     [roundDomains]="chartOptions.roundDomains"
     [matTooltipDisabled]="chartOptions.tooltipDisabled"
-    [showSeriesOnHover]="chartOptions.showSeriesOnHover">
+    matTooltip>
   </ngx-charts-line-chart>
   <ngx-charts-heat-map fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
@@ -183,6 +189,7 @@
     [xAxisLabel]="chartOptions.xAxisLabel"
     [yAxisLabel]="chartOptions.yAxisLabel"
     xxxinnerPadding="chartOptions.innerPadding"
+    matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled">
   </ngx-charts-heat-map>
   <ngx-charts-bubble-chart fxFlex
@@ -204,6 +211,7 @@
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
     [roundDomains]="chartOptions.roundDomains"
+    matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled"
     [minRadius]="3"
     [maxRadius]="20">

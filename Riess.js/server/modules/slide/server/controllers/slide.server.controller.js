@@ -88,10 +88,13 @@ exports.findOneById = function(req, res) {
       message: 'slide is invalid'
     });
   }
-  Box.find({"slideId": mongoose.Types.ObjectId(slideId)}).exec().then(function(boxes){
-      return res.json(boxes);
-
-  })
+  Slide.findById(slideId).populate({
+    path: 'boxIds'
+   })
+   .exec()
+   .then(function(slide) {
+     return res.json(slide);
+   })
   .catch(function(err) {
     return res.status(404).send({
       message: 'No slide with that identifier has been found'

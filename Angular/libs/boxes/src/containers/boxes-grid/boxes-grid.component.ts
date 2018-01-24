@@ -57,6 +57,89 @@ export class BoxesGridComponent implements OnInit{
     private store : Store<PresentationsState>
   ) {}
 
+  ngOnInit() {
+    this.currentPresentationId$.subscribe((presentationId)=>{
+      this.presentationId = presentationId;
+    })
+    this.route.params.subscribe(params => {
+       this.id = params['id'];
+     });
+     this.slide = this.route.snapshot.data.boxes;
+     console.log(this.slide);
+     this.slide.boxId
+     if(!this.slide.boxIds) {
+       this.slide.boxIds= []
+     }
+
+    this.gridConfig = {
+      gridType: 'fit',
+      compactType: 'none',
+      margin: 5,
+      outerMargin: true,
+      mobileBreakpoint: 640,
+      minCols: 10,
+      maxCols: 20,
+      minRows: 10,
+      maxRows: 20,
+      maxItemCols: 100,
+      minItemCols: 1,
+      maxItemRows: 100,
+      minItemRows: 1,
+      maxItemArea: 2500,
+      minItemArea: 1,
+      defaultItemCols: 1,
+      defaultItemRows: 1,
+      fixedColWidth: 25,
+      fixedRowHeight: 25,
+      keepFixedHeightInMobile: false,
+      keepFixedWidthInMobile: false,
+      scrollSensitivity: 10,
+      scrollSpeed: 20,
+      enableEmptyCellClick: true,
+      enableEmptyCellContextMenu: false,
+      enableEmptyCellDrop: false,
+      enableEmptyCellDrag: false,
+      itemResizeCallback: BoxesGridComponent.itemResize,
+      emptyCellClickCallback: this.emptyCellClick.bind(this),
+      itemChangeCallback: BoxesGridComponent.itemChange,
+      emptyCellDragMaxCols: 50,
+      emptyCellDragMaxRows: 50,
+      draggable: {
+        delayStart: 0,
+        enabled: true,
+        ignoreContentClass: 'gridster-item-content',
+        ignoreContent: false,
+        dragHandleClass: 'drag-handler',
+        stop: undefined
+      },
+      resizable: {
+        delayStart: 0,
+        enabled: true,
+        stop: undefined,
+        handles: {
+          s: true,
+          e: true,
+          n: true,
+          w: true,
+          se: true,
+          ne: true,
+          sw: true,
+          nw: true
+        }
+      },
+       swap: false,
+        pushItems: true,
+        disablePushOnDrag: false,
+        disablePushOnResize: false,
+        pushDirections: {north: true, east: true, south: true, west: true},
+        pushResizeItems: false,
+        disableWindowResize: false,
+        disableWarnings: false,
+        scrollToNewItems: false
+
+    };
+  }
+
 enableEdit(box){
   if(box.content && box.content.type === 'text'){
     this.editMode= true;
@@ -89,7 +172,7 @@ emptyCellClick(event, item) {
     if(type==='text'){
       this.texteditor.changes.subscribe((a)=>{
         for (let i = 0; i < this.texteditor.toArray().length; i++) {
-          if(i===this.slide.length-1 && !componentEditorRef){
+          if(i===this.slide.boxIds.length-1 && !componentEditorRef){
              let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
              componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
              (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
@@ -119,18 +202,18 @@ emptyCellClick(event, item) {
     });
    }
    this.menubar.clear();
-   this.slide.push(item);
+   this.slide.boxIds.push(item);
   });
 }
 
 ngAfterViewInit(){
-for(let i = 0; i<this.slide.length; i++){
-  if(this.slide[i].content.type === 'text'){
+for(let i = 0; i<this.slide.boxIds.length; i++){
+  if(this.slide.boxIds[i].content.type === 'text'){
     let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
     let componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-    (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide[i].content.text;
+    (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
     (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
-      this.slide[i].content =  {
+      this.slide.boxIds[i].content =  {
         'type': 'text',
         'text': text
       }
@@ -138,87 +221,6 @@ for(let i = 0; i<this.slide.length; i++){
     }
   }
 }
-ngOnInit() {
-  this.currentPresentationId$.subscribe((presentationId)=>{
-    this.presentationId = presentationId;
-  })
-  this.route.params.subscribe(params => {
-     this.id = params['id'];
-   });
-   this.slide = this.route.snapshot.data.boxes;
-   if(!this.slide) {
-     this.slide = []
-   }
-
-  this.gridConfig = {
-    gridType: 'fit',
-    compactType: 'none',
-    margin: 5,
-    outerMargin: true,
-    mobileBreakpoint: 640,
-    minCols: 10,
-    maxCols: 20,
-    minRows: 10,
-    maxRows: 20,
-    maxItemCols: 100,
-    minItemCols: 1,
-    maxItemRows: 100,
-    minItemRows: 1,
-    maxItemArea: 2500,
-    minItemArea: 1,
-    defaultItemCols: 1,
-    defaultItemRows: 1,
-    fixedColWidth: 25,
-    fixedRowHeight: 25,
-    keepFixedHeightInMobile: false,
-    keepFixedWidthInMobile: false,
-    scrollSensitivity: 10,
-    scrollSpeed: 20,
-    enableEmptyCellClick: true,
-    enableEmptyCellContextMenu: false,
-    enableEmptyCellDrop: false,
-    enableEmptyCellDrag: false,
-    itemResizeCallback: BoxesGridComponent.itemResize,
-    emptyCellClickCallback: this.emptyCellClick.bind(this),
-    itemChangeCallback: BoxesGridComponent.itemChange,
-    emptyCellDragMaxCols: 50,
-    emptyCellDragMaxRows: 50,
-    draggable: {
-      delayStart: 0,
-      enabled: true,
-      ignoreContentClass: 'gridster-item-content',
-      ignoreContent: false,
-      dragHandleClass: 'drag-handler',
-      stop: undefined
-    },
-    resizable: {
-      delayStart: 0,
-      enabled: true,
-      stop: undefined,
-      handles: {
-        s: true,
-        e: true,
-        n: true,
-        w: true,
-        se: true,
-        ne: true,
-        sw: true,
-        nw: true
-      }
-    },
-     swap: false,
-      pushItems: true,
-      disablePushOnDrag: false,
-      disablePushOnResize: false,
-      pushDirections: {north: true, east: true, south: true, west: true},
-      pushResizeItems: false,
-      disableWindowResize: false,
-      disableWarnings: false,
-      scrollToNewItems: false
-
-  };
-}
-
   changedOptions() {
     if (this.gridConfig.api && this.gridConfig.api.optionsChanged) {
       this.gridConfig.api.optionsChanged();
@@ -243,28 +245,28 @@ ngOnInit() {
           this.boxesService.delete(item._id).subscribe((res)=>{
             console.log('boxe deleted');
           })
-          this.slide.splice(this.slide.indexOf(item), 1);
+          this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
           this.cdr.detectChanges();
         }
       })
     } else {
-      this.slide.splice(this.slide.indexOf(item), 1);
+      this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
     }
   }
 
   confirmSlide(slide){
-    for (let i=0 ; i<slide.length; i++){
-      slide[i].slideId = this.id;
-      if(slide[i]._id){
-        this.boxesService.update(slide[i], slide[i]._id).subscribe((resu) =>{
+    for (let i=0 ; i<slide.boxIds.length; i++){
+      slide.boxIds[i].slideId = this.id;
+      if(slide.boxIds[i]._id){
+        this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe((resu) =>{
           console.log(resu);
         })
       } else {
-        this.boxesService.addBox(slide[i]).subscribe((resu) =>{
+        this.boxesService.addBox(slide.boxIds[i]).subscribe((resu) =>{
           console.log(resu);
         })
       }
     }
-    this.router.navigate(['/','presentations',this.presentationId,'edit'])
+    this.router.navigate(['/','presentations', this.presentationId, 'edit'])
   }
 }
