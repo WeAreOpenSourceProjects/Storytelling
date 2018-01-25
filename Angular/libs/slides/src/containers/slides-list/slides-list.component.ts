@@ -78,12 +78,13 @@ export class SlidesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.slides$.subscribe(slides => {
-      console.log('init', slides)
-      this.slides = slides.slice()
+    this.slides$.pipe(
+      take(1)
+    ).subscribe(slides => {
+      this.slides = slides
     });
 
-    this.dragulaService.drop
+    this.dragulaService.out
     .subscribe(value => this.drop$.next(value));
 
     this.drop$.pipe(

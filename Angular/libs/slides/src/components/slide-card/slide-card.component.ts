@@ -44,10 +44,6 @@ export class SlideCardComponent {
   @Output()
   select = new EventEmitter();
 
-  ngOnChanges(e) {
-    console.log('!!!!!!!!!!!!!!!!!',e)
-  }
-
   constructor(private route: ActivatedRoute) { }
 
   public deleteSlide(event: Event) {
