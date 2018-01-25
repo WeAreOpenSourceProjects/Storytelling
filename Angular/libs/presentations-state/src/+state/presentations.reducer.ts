@@ -50,9 +50,9 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       return presentationsAdapter.updateOne({ id: presentationId, changes: { slideIds:  slideIds.concat(action.payload._id) }}, state);
     }
     case fromSlides.DELETE_SUCCESS: {
-      const presentationId = action.payload.presentationId;
+      const presentationId = action.payload.slide.presentationId;
       const slideIds = state.entities[presentationId].slideIds.slice();
-      return presentationsAdapter.updateOne({ id: presentationId, changes: { slideIds:  slideIds.filter(slideId => slideId !== action.payload._id) }}, state);
+      return presentationsAdapter.updateOne({ id: presentationId, changes: { slideIds:  slideIds.filter(slideId => slideId !== action.payload.slide._id) }}, state);
     }
     case ROUTER_NAVIGATION: {
       const match = /\/presentations\/(.*)\/.*/.exec(action.payload.routerState.url);

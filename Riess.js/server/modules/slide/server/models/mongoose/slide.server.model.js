@@ -4,6 +4,10 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var SlideSchema = new Schema({
+  index: {
+    type: Number,
+    default: 0
+  },
   boxIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Box',

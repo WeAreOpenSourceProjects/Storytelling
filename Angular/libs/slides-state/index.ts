@@ -4,8 +4,9 @@ import * as fromSlides from './src/+state/slides.actions';
 export { SlidesApiService } from './src/services/slides.api.service'
 export { fromSlides };
 export {
-  selectSlidesIds,
-  selectSlidesEntities,
+  selectCurrentPresentationId,
+  selectSlideIds,
+  selectSlideEntities,
   selectAllSlides,
   selectSlidesTotal,
   selectSlidesLoading,

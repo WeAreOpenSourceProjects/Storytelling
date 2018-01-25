@@ -54,11 +54,14 @@ export class SlidesEffects {
 ;
 
   @Effect()
-  update = this.dataPersistence.optimisticUpdate(fromSlides.UPDATE, {
-    run: (action: fromSlides.Update, state: SlidesState) => new fromSlides.UpdateSuccess(action.payload),
-    undoAction: (action: fromSlides.Update, error) => {
+  bulkUpdate = this.dataPersistence.optimisticUpdate(fromSlides.BULK_UPDATE, {
+    run: (action: fromSlides.BulkUpdate, state: SlidesState) =>
+      this.slidesApiService.bulkUpdate(action.payload).pipe(
+        map((result) => new fromSlides.BulkUpdateSuccess(action.payload))
+      ),
+    undoAction: (action: fromSlides.BulkUpdate, error) => {
       console.error('Error', error);
-      return new fromSlides.UpdateFailure(error);
+      return new fromSlides.BulkUpdateFailure(error);
     }
   });
 
@@ -67,7 +70,7 @@ export class SlidesEffects {
     .ofType(fromSlides.DELETE)
     .pipe(
       map(toPayload),
-      switchMap((payload) => this.slidesApiService.delete(payload)),
+      switchMap((payload) => this.slidesApiService.delete(payload.slideId)),
       tap(() =>
         this.snackBar.openFromComponent(SlidesSnackComponent, {
           duration: 1000,
@@ -77,7 +80,7 @@ export class SlidesEffects {
         })
       ),
       map(slide => ({ ...slide, id: slide._id })),
-      map((slide: Slide) => new fromSlides.DeleteSuccess(slide)),
+      map((slide: Slide) => new fromSlides.DeleteSuccess({ slide })),
       catchError(error => of(new fromSlides.DeleteFailure(error)))
     )
 

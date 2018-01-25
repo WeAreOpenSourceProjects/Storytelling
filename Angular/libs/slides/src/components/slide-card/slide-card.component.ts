@@ -36,7 +36,7 @@ import { Slide } from '@labdat/data-models';
 export class SlideCardComponent {
 
   @Input()
-  public index: number;
+  public truc: number;
 
   @Output()
   delete = new EventEmitter<string>();
@@ -44,8 +44,11 @@ export class SlideCardComponent {
   @Output()
   select = new EventEmitter();
 
-  constructor(private route: ActivatedRoute) { }
+  ngOnChanges(e) {
+    console.log('!!!!!!!!!!!!!!!!!',e)
+  }
 
+  constructor(private route: ActivatedRoute) { }
 
   public deleteSlide(event: Event) {
     event.preventDefault();

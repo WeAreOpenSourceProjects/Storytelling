@@ -42,6 +42,11 @@ export class SlidesApiService {
     return this.http.patch(backendURL, { slideIds });
   }
 
+  bulkUpdate(payload): Observable<any> {
+    const backendURL = `${this.baseUrl}/${this.endpoints.slides}`;
+    return this.http.patch(backendURL, payload);
+  }
+
   delete(slideId: string): Observable<any> {
     const backendURL = `${this.baseUrl}/slides/${slideId}`;
     return this.http.delete(backendURL).pipe(map((slide: Slide) => ({...slide, id: slide._id})));

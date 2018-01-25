@@ -54,7 +54,7 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
    * Draw function for D3.js Bar chart
    */
   drawChart() {
-    setTimeout(() =>
+    setTimeout(() => {
       if (this.data === undefined) return;
       let element = this.chartContainer.nativeElement;
       this.width = element.offsetWidth;

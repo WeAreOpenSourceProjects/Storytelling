@@ -24,6 +24,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { environment } from '../../../apps/default/src/environments/environment';
 import { SlideCardComponent } from './components/slide-card/slide-card.component';
 import { SlideDialogComponent } from './components/slide-dialog/slide-dialog.component';
+import { OrderBy } from './pipes/order-by/order-by.pipe';
 
 @NgModule({
     imports: [
@@ -49,6 +50,7 @@ import { SlideDialogComponent } from './components/slide-dialog/slide-dialog.com
       RouterModule
     ],
     declarations: [
+      OrderBy,
       SlidesListComponent,
       SlideDialogComponent,
       SlideCardComponent

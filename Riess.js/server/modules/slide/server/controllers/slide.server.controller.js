@@ -19,32 +19,39 @@ exports.create = function (req, res) {
   .then(function(result) {
     const slide = result[0];
     const presentation = result[1];
-    presentation.slideIds.push(slide._id)
-    return Presentation.findByIdAndUpdate(presentation.id, presentation);
+    slide.index = presentation.slideIds.length + 1;
+    presentation.slideIds.push(slide._id);
+    return Promise.all([Slide.findByIdAndUpdate(slide._id, slide), Presentation.findByIdAndUpdate(presentation.id, presentation)]);
   })
-  .then(function(presentation) {
-    return slideP;
-  })
-  .then(function(slide) {
-    return res.json(slide);
+  .then(function(result) {
+    console.log(result);
+    return res.json(result[0]);
   })
   .catch(function(err) {
+    console.log(err)
     return res.status(422).send({
       message: errorHandler.getErrorMessage(err)
     })
   });
 };
 
-exports.update = function(req, res, next) {
-  //transfer image object to id string
-  //if (presentation.presentation.slideImage && presentation.presentation.slideImage._id) presentation.presentation.slideImage = presentation.presentation.slideImage._id;
+exports.bulkUpdate = function(req, res, next) {
+  const documents = req.body
+  const bulkOps = documents.map(function(document) {
+    return {
+      updateMany: {
+        "filter": { _id: document.id },
+        "update" : { $set: { index: document.changes.index }}
+     }
+    }
+  })
 
-  Slide.findByIdAndUpdate(req.params.slideId, req.body)
-  .exec()
-  .then(function(slide) {
-    res.json(slide);
+  Slide.bulkWrite(bulkOps)
+  .then(function(updates) {
+    res.json(updates);
   })
   .catch(function(err) {
+    console.log(err)
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
     })
@@ -53,25 +60,50 @@ exports.update = function(req, res, next) {
 
 exports.delete = function(req, res) {
   const slideId = req.params.slideId
-  const slideP = Slide.findByIdAndRemove(slideId).exec();
+  Slide.findById(slideId)
+  .then(function(slide) {
+    return Presentation.findById(slide.presentationId)
+    .populate('slideIds')
+    .exec()
+  })
+  .then(function(presentation) {
+    console.log('slideId', JSON.stringify(slideId))
 
-  slideP
-  .then(function(slide) {
-    return Presentation.findById(slide.presentationId);
-  })
-  .then(function(presentation) {
-    presentation.slideIds = presentation.slideIds.filter(function(slideId) {
-      return slideId.toString() !== req.params.slideId;
+    const index = presentation.slideIds
+    .map(function(slide){
+      return slide._id
+    })
+    .findIndex(function(id) {
+      return id.toString() === slideId.toString();
+    })
+    console.log(index)
+
+    const updateSlides = presentation.slideIds
+    .slice(index + 1)
+    .map(function(slide) {
+      slide.index = slide.index - 1;
+      return Slide.findByIdAndUpdate(slide._id, slide.toObject(), { new: true })
     });
-    return Presentation.findByIdAndUpdate(presentation._id, presentation)
+
+    presentation.slideIds.splice(index, 1);
+    presentation.slideIds = presentation.slideIds.map(function(slide){
+      return slide._id
+    })
+
+    return Promise.all(
+      [Slide.findByIdAndRemove(slideId).exec()]
+      .concat(updateSlides)
+      .concat([Presentation.findByIdAndUpdate(presentation._id, presentation)]
+    ))
+    .then(function(result) {
+      return res.json(result[0]);
+    })
   })
-  .then(function(presentation) {
-    return slideP
-  })
-  .then(function(slide) {
-    return res.json(slide);
+  .then(function(updateSlides) {
+
   })
   .catch(function(err) {
+    console.log(err)
     return res.status(422).send({
     message: errorHandler.getErrorMessage(err)
     })

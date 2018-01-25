@@ -2,7 +2,7 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { PresentationsState, presentationsAdapter } from './presentations.interfaces';
 import * as fromPresentations from './presentations.actions';
 import { isEmpty } from 'lodash';
-import { selectSlidesEntities } from '@labdat/slides-state';
+import { selectSlideEntities } from '@labdat/slides-state';
 
 const selectPresentationsState = createFeatureSelector<PresentationsState>('presentations');
 
@@ -28,6 +28,6 @@ export const selectCurrentPresentationTags = createSelector(selectCurrentPresent
 export const selectCurrentPresentationAuthor = createSelector(selectCurrentPresentation, presentation => presentation.author);
 export const selectCurrentPresentationBanner = createSelector(selectCurrentPresentation, presentation => presentation.banner);
 export const selectCurrentPresentationSlideIds = createSelector(selectCurrentPresentation, presentation => (presentation) ? presentation.slideIds : []);
-export const selectCurrentPresentationSlides = createSelector(selectCurrentPresentationSlideIds, selectSlidesEntities, (slideIds, slideEntities) => slideIds.map(slideId => slideEntities[slideId]));
+export const selectCurrentPresentationSlides = createSelector(selectCurrentPresentationSlideIds, selectSlideEntities, (slideIds, slideEntities) => slideIds.map(slideId => slideEntities[slideId]));
 export const selectShowEmptyMessage = createSelector(selectPresentationsLoaded, selectAllPresentations, (loaded, presentations) => loaded && presentations.length === 0);
 

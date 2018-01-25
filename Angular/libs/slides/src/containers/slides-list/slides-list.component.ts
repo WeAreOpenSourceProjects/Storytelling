@@ -21,7 +21,7 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { tap } from 'rxjs/operators/tap';
 import { Store } from '@ngrx/store';
 import { selectIsLoggedIn, selectUser } from '@labdat/authentication-state';
-import { selectSlidesIds } from '@labdat/slides-state';
+import { selectSlideIds, selectAllSlides } from '@labdat/slides-state';
 import { selectCurrentPresentationId, PresentationsState, fromPresentations } from '@labdat/presentations-state';
 import { fromSlides } from '@labdat/slides-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
@@ -30,6 +30,12 @@ import { Subscription } from 'rxjs/Subscription';
 import { fromRouter } from '@labdat/router-state';
 import { MatDialog } from '@angular/material/dialog';
 import { SlideDialogComponent } from '../../components/slide-dialog/slide-dialog.component'
+import { zip } from 'rxjs/observable/zip';
+import { of } from 'rxjs/observable/of';
+import { take } from 'rxjs/operators/take';
+import { SlideCardComponent } from '../../components/slide-card/slide-card.component';
+import { combineLatest } from 'rxjs/operators/combineLatest';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-slides-list',
@@ -44,10 +50,10 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   public delete$ = new Subject();
   public select$ = new Subject();
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
-  public slideIds$ = this.store.select(selectSlidesIds)
+  public slides$ = this.store.select(selectAllSlides)
+  public slides: Slide[];
 
-  @ViewChild('container')
-  public container: any;
+  public slideIds$ = this.store.select(selectSlideIds)
 
   @Output()
   public submit = new EventEmitter();
@@ -61,7 +67,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   @Output()
   public errorsHandle = new EventEmitter();
 
-  private out$ = new Subject();
+  private drop$ = new Subject();
 
   private subscriptions: Subscription;
 
@@ -70,23 +76,40 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private store: Store<PresentationsState>) { }
 
-  ngOnInit() {/*
-    this.dragulaService.setOptions('shuffle-bag', {
- //     moves: (el, source, handle, sibling) => !(this.slideOpendIndex != null && this.slideOpendIndex > 0)
-      moves: (el, source, handle, sibling) => true
-  });
-*/
+  ngOnInit() {
 
-    this.dragulaService.out
-    .subscribe(value => this.out$.next(value));
+    this.slides$.subscribe(slides => {
+      console.log('init', slides)
+      this.slides = slides.slice()
+    });
 
-    this.out$.pipe(
-      withLatestFrom(this.currentPresentationId$)
+    this.dragulaService.drop
+    .subscribe(value => this.drop$.next(value));
+
+    this.drop$.pipe(
+      withLatestFrom(this.slides$)
     )
-    .subscribe(([value, presentationId]) => {
-      const cards = Array.from(this.container.nativeElement.querySelectorAll('app-slide-card'));
-      const slideIds = cards.map((card: HTMLElement) => card.id)
-      this.store.dispatch(new fromPresentations.Update({ id: presentationId, changes: { slideIds }}))
+    .subscribe(([drop, oldSlides]: [any, any[]]) => {
+
+//      const cards = Array.from(this.container.nativeElement.querySelectorAll('app-slide-card'));
+//      console.log(this.slides.toArray())
+
+//      const newSlideIds = cards.map((card: HTMLElement) => card.id);
+
+      const oldSlideIds = oldSlides.map(slide => slide.id);
+      const newSlideIds = this.slides.map(slide => slide.id);
+      console.log(oldSlideIds, newSlideIds)
+      const toUpdate=[]
+      oldSlideIds.forEach((slideId: string, index: number) => {
+        const oldSlideId = slideId;
+        const newSlideId = newSlideIds[index];
+        if (oldSlideId !== newSlideId) {
+          toUpdate.push({id: newSlideId, changes: {index: index + 1}})
+        }
+      })
+      if (toUpdate.length !== 0) {
+        this.store.dispatch(new fromSlides.BulkUpdate(toUpdate));
+      }
     });
 
     this.subscriptions = this.add$.pipe(
@@ -102,7 +125,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     )
     .subscribe(result => {
       if (result.delete) {
-        this.store.dispatch(new fromSlides.Delete(result.slideId))
+        this.store.dispatch(new fromSlides.Delete({ slideId: result.slideId }))
       }
     });
     this.subscriptions.add(deleteSubscription)
@@ -112,6 +135,14 @@ export class SlidesListComponent implements OnInit, OnDestroy {
       this.store.dispatch(new fromRouter.Go({ path: ['slides', slideId] }))
     });
     this.subscriptions.add(selectSubscription)
+  }
+
+  ngAfterViewInit() {
+
+  }
+
+  trackById(slide) {
+    return slide.id
   }
 
   ngOnDestroy() {
