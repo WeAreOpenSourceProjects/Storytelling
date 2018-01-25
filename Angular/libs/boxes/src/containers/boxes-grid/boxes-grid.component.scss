@@ -88,7 +88,8 @@ body {
 .fixed {
   bottom: 20px;
   position: fixed;
-  right: 20px
+  right: 20px;
+  z-index : 10000;
 }
 .fixed-1{
   bottom: 100px;

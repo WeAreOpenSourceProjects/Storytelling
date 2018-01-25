@@ -9,7 +9,7 @@ $axisColor:#4c4c4c;
 	stroke: #fff;
 }
 
-:host {
+:host /deep/{
     width: 100%;
     height: 100%;
 
@@ -23,20 +23,18 @@ $axisColor:#4c4c4c;
       }
     }
 
-    .d3-chart {
+    .d3-chart /deep/ {
         width: 100%;
         height: 100%;
-	.arc {
-		path {
-			stroke: #fff;
-		}
-		text {
-			font: 10px sans-serif;
-			text-anchor: middle;
+				.arc {
+					path {
+						stroke: #fff;
+					}
+					text {
+						font: 10px sans-serif;
+						text-anchor: middle;
+			 		}
+
+				}
  		}
-
-	}
- }
-
-
 }

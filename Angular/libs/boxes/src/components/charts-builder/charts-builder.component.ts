@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, DoCheck, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input,ViewContainerRef,  Output, EventEmitter, DoCheck, ChangeDetectionStrategy } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import * as shape from 'd3-shape';
@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { MatDialogRef } from '@angular/material';
 import { chartTypes } from './chartTypes';
 import { gapminder } from './data';
-
+import { GraphComponent } from '@labdat/charts'
 const defaultOptions = {
   view: [900, 600],
   colorScheme: colorSets.find(s => s.name === 'cool'),
@@ -41,6 +41,8 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   @Input() inputOptions: any;
   @Output() validSlide = new EventEmitter();
   @Output() validForm = new EventEmitter();
+  @ViewChild('viz', { read: ViewContainerRef }) viz: ViewContainerRef;
+
   chartTypes = chartTypes;
 
   config = {
@@ -154,9 +156,13 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
       this.clearAll();
     }
   }
-
+  ngOnChanges(){
+    console.log('change')
+  }
   ngDoCheck() {
-    this.validForm.emit(this.isValidSlide);
+    if(!this.isValidSlide){
+
+    }
   }
   editData(updatedData) {
     this._dataText = babyparse.unparse(updatedData);
@@ -174,7 +180,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
       this.errors = []
       this.chartOptions = this.inputOptions ;
       this._dataText = babyparse.unparse(this.inputData);
-      this.chartType = this.inputOptions.chartType;
+      this.chartType = this.chartTypes.find(chart => chart.name === this.inputOptions.chartType.name);
 
       this.processData();
     }
@@ -211,6 +217,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     if (!this.hasValidBuilder) {
       return;
     }
+    console.log('chartType',this.chartType)
     this.data = this.chartType.convertData(this.dataDims, this.rawData);
     this.configGraph.emit({
       data: this.rawData,

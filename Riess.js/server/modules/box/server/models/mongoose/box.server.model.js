@@ -14,6 +14,14 @@ var BoxSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Slide'
   },
+  width: {
+    type: Number,
+    default: '100'
+  },
+  height: {
+    type: Number,
+    default: '10'
+  },
   cols: {
     type: Number,
     default: '10'

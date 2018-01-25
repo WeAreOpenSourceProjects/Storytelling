@@ -27,7 +27,6 @@ import { PresentationDialogComponent } from './components/presentation-dialog/pr
 import { PresentationSettingsComponent } from './components/presentation-settings/presentation-settings.component';
 import { PresentationsSearchComponent } from './components/presentations-search/presentations-search.component';
 import { TitleSlideComponent } from './components/title-slide/title-slide.component';
-import { GraphComponent } from './components/graph/graph.component';
 import { FroalaViewModule } from 'angular-froala-wysiwyg';
 
 
@@ -50,7 +49,8 @@ import {
   WordCloudComponent,
   SunburstChartComponent,
   AreaChartComponent,
-  ChartsModule
+  ChartsModule,
+  GraphComponent
 } from '@labdat/charts'
 import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
 
