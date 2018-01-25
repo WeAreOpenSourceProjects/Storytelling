@@ -12,7 +12,7 @@ import {Chart} from '@labdat/charts';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GridsterConfig, GridsterItem  }  from 'angular-gridster2';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component'
-import {GraphComponent} from '../../components/graph/graph.component';
+import { GraphComponent } from '@labdat/charts';
 import { Slide } from '@labdat/data-models';
 import { BoxDialogComponent } from '../../components/box-dialog/box-dialog.component'
 import { Store } from '@ngrx/store';
@@ -66,7 +66,6 @@ export class BoxesGridComponent implements OnInit{
      });
      this.slide = this.route.snapshot.data.boxes;
      console.log(this.slide);
-     this.slide.boxId
      if(!this.slide.boxIds) {
        this.slide.boxIds= []
      }

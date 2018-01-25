@@ -12,7 +12,7 @@ import {
   ComponentRef
 } from '@angular/core';
 
-import { Chart } from '@labdat/charts/src/chart.class';
+import { Chart } from '../chart.class';
 import { ChartsService } from '@labdat/charts/src/services/charts.service';
 
 @Component({

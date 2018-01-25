@@ -17,4 +17,4 @@ export {SunburstChartComponent } from './src/sunburst-chart/sunburst-chart.compo
 export {AreaChartComponent } from './src/ngx-charts'
 export {PieGridChartComponent } from './src/ngx-charts'
 export { Chart } from './src/chart.class'
-export {GraphComponent} from './src/graph/graph.component'
+export { GraphComponent } from './src/graph/graph.component'
