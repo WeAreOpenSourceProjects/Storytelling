@@ -1,7 +1,7 @@
 <div dragula [dragulaModel]="slides" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
   <app-slide-card fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
-    *ngFor="let slide of slides; let i=index"
-    [index]="i+1"
+    *ngFor="let slide of slides"
+    [index]="slide.index"
     [attr.id]="slide.id"
     (select)="select$.next(slide.id)"
     (delete)="delete$.next(slide.id)">

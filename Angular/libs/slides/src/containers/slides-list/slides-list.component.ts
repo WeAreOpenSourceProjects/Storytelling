@@ -79,10 +79,16 @@ export class SlidesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.slides$.pipe(
-      take(1)
-    ).subscribe(slides => {
-      this.slides = slides
+    this.subscriptions = this.slides$
+    .subscribe(slides => {
+      if (this.slides) {
+        this.slides = cloneDeep(slides);
+      } else {
+        slides.forEach(slide => {
+          const index = this.slides.findIndex(s => s.id === slide.id );
+          this.slides[index].index = slide.index;
+        })
+      }
     });
 
     this.dragulaService.drag
@@ -91,33 +97,36 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     this.dragulaService.out
     .subscribe(value => this.out$.next(value));
 
-    this.drag$.pipe(
-      switchMap(drag => zip(of(cloneDeep(this.slides)), this.out$)),
-    )
-    .subscribe(([oldSlides, drop]: any[]) => {
+    const dragSubscriptions = this.drag$.pipe(
+      switchMap(drag => zip(
+        of(cloneDeep(this.slides)), this.out$.pipe(take(1))
+        ,(oldSlides, out) => oldSlides),
+    ))
+    .subscribe(oldSlides  => {
       const oldSlideIds = oldSlides.map(slide => slide.id);
       const newSlideIds = this.slides.map(slide => slide.id);
-      console.log(oldSlideIds, newSlideIds)
       const toUpdate=[]
       oldSlideIds.forEach((slideId: string, index: number) => {
         const oldSlideId = slideId;
         const newSlideId = newSlideIds[index];
         if (oldSlideId !== newSlideId) {
-          toUpdate.push({id: newSlideId, changes: {index: index + 1}});
+          toUpdate.push({id: newSlideId, changes: { index: index + 1 }});
         }
       })
       if (toUpdate.length !== 0) {
         this.store.dispatch(new fromSlides.BulkUpdate(toUpdate));
       }
     });
+    this.subscriptions.add(dragSubscriptions)
 
-    this.subscriptions = this.add$.pipe(
+    const addSubscription = this.add$.pipe(
       withLatestFrom(this.currentPresentationId$)
     ).subscribe(([click, presentationId]) => {
         const newSlide = new Slide();
         newSlide.presentationId = presentationId;
         this.store.dispatch(new fromSlides.Add(newSlide))
     });
+    this.subscriptions.add(addSubscription)
 
     const deleteSubscription = this.delete$.pipe(
       switchMap(slideId => this.dialog.open(SlideDialogComponent, { height: '20%', width: '20%', data: { slideId } }).afterClosed())
