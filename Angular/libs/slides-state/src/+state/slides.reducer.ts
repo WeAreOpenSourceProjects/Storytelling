@@ -34,7 +34,6 @@ export function slidesReducer(state: SlidesState = slidesInitialState, action: f
       return slidesAdapter.addMany(action.payload.slides, { ...state, loaded: true, loading: false });
     }
     case fromSlides.BULK_UPDATE_SUCCESS: {
-      console.log('reducer', action.payload)
       return slidesAdapter.updateMany(action.payload, state);
     }
     case ROUTER_NAVIGATION: {

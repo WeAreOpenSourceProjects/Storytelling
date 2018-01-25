@@ -82,12 +82,14 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     this.subscriptions = this.slides$
     .subscribe(slides => {
       if (this.slides) {
-        this.slides = cloneDeep(slides);
-      } else {
         slides.forEach(slide => {
           const index = this.slides.findIndex(s => s.id === slide.id );
-          this.slides[index].index = slide.index;
+          if (index !== undefined) {
+            this.slides[index].index = slide.index;
+          }
         })
+      } else {
+        this.slides = cloneDeep(slides);
       }
     });
 
@@ -106,6 +108,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
       const oldSlideIds = oldSlides.map(slide => slide.id);
       const newSlideIds = this.slides.map(slide => slide.id);
       const toUpdate=[]
+      console.log(oldSlideIds, newSlideIds)
       oldSlideIds.forEach((slideId: string, index: number) => {
         const oldSlideId = slideId;
         const newSlideId = newSlideIds[index];
@@ -143,14 +146,6 @@ export class SlidesListComponent implements OnInit, OnDestroy {
       this.store.dispatch(new fromRouter.Go({ path: ['slides', slideId] }))
     });
     this.subscriptions.add(selectSubscription)
-  }
-
-  ngAfterViewInit() {
-
-  }
-
-  trackById(slide) {
-    return slide.id
   }
 
   ngOnDestroy() {
