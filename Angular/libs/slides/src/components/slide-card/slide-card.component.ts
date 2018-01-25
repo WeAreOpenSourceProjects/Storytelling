@@ -36,7 +36,7 @@ import { Slide } from '@labdat/data-models';
 export class SlideCardComponent {
 
   @Input()
-  public truc: number;
+  public index: number;
 
   @Output()
   delete = new EventEmitter<string>();

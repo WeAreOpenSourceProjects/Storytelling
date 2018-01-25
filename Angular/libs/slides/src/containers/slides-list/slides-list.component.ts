@@ -67,7 +67,8 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   @Output()
   public errorsHandle = new EventEmitter();
 
-  private drop$ = new Subject();
+  private drag$ = new Subject();
+  private out$ = new Subject();
 
   private subscriptions: Subscription;
 
@@ -84,19 +85,16 @@ export class SlidesListComponent implements OnInit, OnDestroy {
       this.slides = slides
     });
 
+    this.dragulaService.drag
+    .subscribe(value => this.drag$.next(value));
+
     this.dragulaService.out
-    .subscribe(value => this.drop$.next(value));
+    .subscribe(value => this.out$.next(value));
 
-    this.drop$.pipe(
-      withLatestFrom(this.slides$)
+    this.drag$.pipe(
+      switchMap(drag => zip(of(cloneDeep(this.slides)), this.out$)),
     )
-    .subscribe(([drop, oldSlides]: [any, any[]]) => {
-
-//      const cards = Array.from(this.container.nativeElement.querySelectorAll('app-slide-card'));
-//      console.log(this.slides.toArray())
-
-//      const newSlideIds = cards.map((card: HTMLElement) => card.id);
-
+    .subscribe(([oldSlides, drop]: any[]) => {
       const oldSlideIds = oldSlides.map(slide => slide.id);
       const newSlideIds = this.slides.map(slide => slide.id);
       console.log(oldSlideIds, newSlideIds)
@@ -105,7 +103,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
         const oldSlideId = slideId;
         const newSlideId = newSlideIds[index];
         if (oldSlideId !== newSlideId) {
-          toUpdate.push({id: newSlideId, changes: {index: index + 1}})
+          toUpdate.push({id: newSlideId, changes: {index: index + 1}});
         }
       })
       if (toUpdate.length !== 0) {
