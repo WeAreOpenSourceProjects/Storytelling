@@ -33,7 +33,7 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    d3.select('PieChartComponent').remove();
+    console.log('ng changes')
   }
 
   ngOnDestroy(){
@@ -69,10 +69,10 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
         .select(element)
         .append('svg')
         .attr('id', 'PieChartComponent')
-        .attr('width', element.offsetWidth)
-        .attr('height', element.offsetHeight)
+        .attr('viewBox', "0 0 400 400")
         .append('g')
         .attr('transform', `translate(${element.offsetWidth / 2},${element.offsetHeight / 2})`);
+
       this.radius = Math.min(element.offsetWidth, element.offsetHeight) / 2;
       const values = this.data.map(data => data.value);
       const pie = d3.pie();

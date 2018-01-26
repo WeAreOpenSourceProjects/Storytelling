@@ -1,5 +1,75 @@
-<h1 md-dialog-title ><i class="fa fa-chevron-left fa-fw" (click)="dialogRef.close('CANCEL')"></i> charts builder</h1>
-<div>
+<mat-horizontal-stepper [linear]="true">
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>Load your data</ng-template>
+    <div class="flex-container">
+      <ul class="data-load-actions" fxFlex="10">
+        <li class="data-load-action">
+          <a (click)="usePast()" class="a-data-load">
+            <mat-icon class="past-icon" svgIcon="content:ic_content_paste_24px"></mat-icon>
+            Paste
+          </a>
+        </li>
+        <li class="data-load-action" >
+          <a  (click)="useExample()" class="a-data-load">
+            <mat-icon class="past-icon" svgIcon="image:ic_assistant_24px"></mat-icon>
+            Try our samples
+          </a>
+        </li>
+      </ul>
+      <div fxFlex="5"></div>
+      <div class="data-container" fxFlex="85">
+        <i class="format fa fa-align-left breath-left" [class.checked]="!formatTable" matTooltip="View as Text" matTooltipPosition="above" (click)="formatTable = !formatTable"></i>
+        <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formatTable = !formatTable"></i>
+        <codemirror *ngIf="formatTable" [(ngModel)]="dataText" [config]="editorConfig">
+        </codemirror>
+        <app-data-table *ngIf="!formatTable" [data]="rawData" [columns]="headerValues" (updatedData)="editData($event)"></app-data-table>
+        <p *ngIf="dataText.length > 1">
+          <span *ngFor="let error of errors" class="text-red">
+            <span *ngIf="error.row">Row {{error.row + 2}}: </span>{{error.message}} <br />
+          </span>
+          <span *ngIf="!errors.length" class="text-green">
+            {{rawData.length}} records have been successfully parsed!
+          </span>
+        </p>
+    </div>
+    </div>
+  </mat-step>
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>Choose a chart</ng-template>
+      <ul>
+        <li><mat-icon class="past-icon" svgIcon="content:ic_content_paste_24px"></mat-icon>Paste</li>
+        <li>Try our samples</li>
+      </ul>
+  </mat-step>
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>Map your dimensions</ng-template>
+      <ul>
+        <li><mat-icon class="past-icon" svgIcon="content:ic_content_paste_24px"></mat-icon>Paste</li>
+        <li>Try our samples</li>
+      </ul>
+  </mat-step>
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>Your visualization</ng-template>
+      <ul>
+        <li><mat-icon class="past-icon" svgIcon="content:ic_content_paste_24px"></mat-icon>Paste</li>
+        <li>Try our samples</li>
+      </ul>
+  </mat-step>
+</mat-horizontal-stepper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div>
   <div class="sub-title-bar">
     <mat-toolbar-row>
       <span><i class="fa fa-check-circle-o fa-fw" [class.checked]="hasValidBuilder"></i>Graph builder* <span class="warnMsg">{{warnMsg}}   </span></span>
@@ -116,4 +186,4 @@
 
     </mat-step>
     </mat-horizontal-stepper>
-</div>
+</div> -->
