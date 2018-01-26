@@ -21,8 +21,8 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { tap } from 'rxjs/operators/tap';
 import { Store } from '@ngrx/store';
 import { selectIsLoggedIn, selectUser } from '@labdat/authentication-state';
-import { selectSlideIds, selectAllSlides } from '@labdat/slides-state';
-import { selectCurrentPresentationId, PresentationsState, fromPresentations } from '@labdat/presentations-state';
+import { selectSlideIds, selectAllSlides, SlidesState } from '@labdat/slides-state';
+import { selectCurrentPresentationId } from '@labdat/slides-state';
 import { fromSlides } from '@labdat/slides-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
@@ -64,7 +64,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   constructor(
     private dragulaService: DragulaService,
     private dialog: MatDialog,
-    private store: Store<PresentationsState>) { }
+    private store: Store<SlidesState>) { }
 
   ngOnInit() {
 
