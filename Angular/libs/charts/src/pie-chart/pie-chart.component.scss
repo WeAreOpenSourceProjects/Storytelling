@@ -9,11 +9,11 @@ $axisColor:#4c4c4c;
 	stroke: #fff;
 }
 
-:host /deep/{
+:host {
     width: 100%;
     height: 100%;
 
-    /deep/ .axis{
+  .axis{
        text {
           fill: $axisColor;
           font-size: 14px;
@@ -23,9 +23,10 @@ $axisColor:#4c4c4c;
       }
     }
 
-    .d3-chart /deep/ {
+    .d3-chart  {
         width: 100%;
         height: 100%;
+
 				.arc {
 					path {
 						stroke: #fff;
@@ -37,4 +38,8 @@ $axisColor:#4c4c4c;
 
 				}
  		}
+}
+svg {
+	width: 100%;
+ 	height: 100%;
 }
