@@ -17,6 +17,7 @@ import { Slide } from '@labdat/data-models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SlidesSnackComponent } from '../components/slides-snack/slides-snack.component';
 import { tap } from 'rxjs/operators/tap';
+import { from } from 'rxjs/observable/from';
 
 @Injectable()
 export class SlidesEffects {
@@ -57,6 +58,14 @@ export class SlidesEffects {
   bulkUpdate = this.dataPersistence.optimisticUpdate(fromSlides.BULK_UPDATE, {
     run: (action: fromSlides.BulkUpdate, state: SlidesState) =>
       this.slidesApiService.bulkUpdate(action.payload).pipe(
+        tap(() =>
+          this.snackBar.openFromComponent(SlidesSnackComponent, {
+            duration: 1000,
+            data: 'Slide Update Success',
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          })
+        ),
         map((result) => new fromSlides.BulkUpdateSuccess(action.payload))
       ),
     undoAction: (action: fromSlides.BulkUpdate, error) => {
@@ -80,7 +89,7 @@ export class SlidesEffects {
         })
       ),
       map(slide => ({ ...slide, id: slide._id })),
-      map((slide: Slide) => new fromSlides.DeleteSuccess({ slide })),
+      switchMap((slide: Slide) => from([new fromSlides.UpdateOnDelete({ slide }), new fromSlides.DeleteSuccess({ slide })])),
       catchError(error => of(new fromSlides.DeleteFailure(error)))
     )
 

@@ -35,7 +35,7 @@ import { of } from 'rxjs/observable/of';
 import { take } from 'rxjs/operators/take';
 import { SlideCardComponent } from '../../components/slide-card/slide-card.component';
 import { combineLatest } from 'rxjs/operators/combineLatest';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, xorBy, remove } from 'lodash';
 
 @Component({
   selector: 'app-slides-list',
@@ -49,23 +49,12 @@ export class SlidesListComponent implements OnInit, OnDestroy {
   public add$ = new Subject();
   public delete$ = new Subject();
   public select$ = new Subject();
-  private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
-  public slides$ = this.store.select(selectAllSlides)
+
+  private currentPresentationId$ = this.store.select(selectCurrentPresentationId);
+  public slides$ = this.store.select(selectAllSlides);
   public slides: Slide[];
 
-  public slideIds$ = this.store.select(selectSlideIds)
-
-  @Output()
-  public submit = new EventEmitter();
-
-  @Output()
-  public bannerImageUpload = new EventEmitter();
-
-  @Output()
-  public slideDeleted = new EventEmitter();
-
-  @Output()
-  public errorsHandle = new EventEmitter();
+  public slideIds$ = this.store.select(selectSlideIds);
 
   private drag$ = new Subject();
   private out$ = new Subject();
@@ -81,15 +70,23 @@ export class SlidesListComponent implements OnInit, OnDestroy {
 
     this.subscriptions = this.slides$
     .subscribe(slides => {
-      if (this.slides) {
-        slides.forEach(slide => {
+      if (this.slides === undefined) {
+        return this.slides = cloneDeep(slides);
+      }
+      if (this.slides.length === slides.length) {
+        return slides.forEach(slide => {
           const index = this.slides.findIndex(s => s.id === slide.id );
           if (index !== undefined) {
             this.slides[index].index = slide.index;
           }
         })
-      } else {
-        this.slides = cloneDeep(slides);
+      }
+      const slide = xorBy(this.slides, slides, 'id')[0];
+      if (this.slides.length < slides.length) {
+        return this.slides.push(cloneDeep(slide));
+      }
+      if (this.slides.length > slides.length) {
+        return remove(this.slides, s => s.id === slide.id )
       }
     });
 
@@ -108,7 +105,6 @@ export class SlidesListComponent implements OnInit, OnDestroy {
       const oldSlideIds = oldSlides.map(slide => slide.id);
       const newSlideIds = this.slides.map(slide => slide.id);
       const toUpdate=[]
-      console.log(oldSlideIds, newSlideIds)
       oldSlideIds.forEach((slideId: string, index: number) => {
         const oldSlideId = slideId;
         const newSlideId = newSlideIds[index];

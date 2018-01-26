@@ -14,6 +14,7 @@ export const BULK_UPDATE_FAILURE = '[Slides] Bulk Update Failure';
 export const DELETE = '[Slides] Delete';
 export const DELETE_SUCCESS = '[Slides] Delete Success';
 export const DELETE_FAILURE = '[Slides] Delete Failure';
+export const UPDATE_ON_DELETE = '[Slides] Update On Delete';
 
 export type Actions =
 | Load
@@ -28,6 +29,7 @@ export type Actions =
 | Delete
 | DeleteSuccess
 | DeleteFailure
+| UpdateOnDelete
 ;
 
 export class Load implements Action {
@@ -84,6 +86,12 @@ export class DeleteSuccess implements Action {
   readonly type = DELETE_SUCCESS;
   constructor(public payload: { slide: Slide }) {}
 }
+
+export class UpdateOnDelete implements Action {
+  readonly type = UPDATE_ON_DELETE;
+  constructor(public payload: { slide: Slide }) {}
+}
+
 
 export class DeleteFailure implements Action {
   readonly type = DELETE_FAILURE;

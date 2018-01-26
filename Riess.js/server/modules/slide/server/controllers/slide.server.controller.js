@@ -21,7 +21,7 @@ exports.create = function (req, res) {
     const presentation = result[1];
     slide.index = presentation.slideIds.length + 1;
     presentation.slideIds.push(slide._id);
-    return Promise.all([Slide.findByIdAndUpdate(slide._id, slide), Presentation.findByIdAndUpdate(presentation.id, presentation)]);
+    return Promise.all([Slide.findByIdAndUpdate(slide._id, slide, { new: true }), Presentation.findByIdAndUpdate(presentation.id, presentation)]);
   })
   .then(function(result) {
     console.log(result);
@@ -148,6 +148,7 @@ exports.findOneByPresentationId = function(req, res) {
   .populate('slideIds')
   .exec()
   .then(function(presentation) {
+    console.log('??', presentation)
     return res.json(presentation.slideIds);
   })
   .catch(function(err) {
