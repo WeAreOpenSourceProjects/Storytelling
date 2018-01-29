@@ -1,3 +1,42 @@
+.data-load-actions{
+  display: flex;
+  flex-direction: column;
+}
+.data-load-action{
+  display: inline-flex;
+  cursor: pointer;
+  &:hover {
+    background: #f5f5f5;
+    border-radius :5px;
+  }
+  &.active {
+    background: red
+  }
+}
+.a-data-load {
+  display: inline-flex;
+  min-height: 40px;
+  margin-top:10%;
+}
+// .data-load-action{
+//   margin: 2px;
+//   display: inline-grid;
+//   min-height: 50%;
+//   min-width: 100%
+// }
+// .flex-container {
+//   display: flex;
+//   flex-direction: row;
+// }
+
+.data-container {
+  border: solid 1px #e8dada;
+}
+
+
+
+
+
 .sub-title-bar {
   .warnMsg {
     margin-left: 20px;
