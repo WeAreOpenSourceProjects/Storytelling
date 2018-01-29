@@ -190,9 +190,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     }
   }
 
-  useExample(event) {
-    event.stopPropagation();
-    event.preventDefault();
+  useExample() {
     this.clear();
     this.dataText = gapminder;
   }
