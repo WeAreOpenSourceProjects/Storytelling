@@ -28,8 +28,11 @@ import { fromRouter } from '@labdat/router-state';
 })
 export class BoxesGridComponent implements OnInit{
 
-  @ViewChild('menubar', { read: ViewContainerRef }) menubar: ViewContainerRef;
-  @ViewChildren('texteditor', {read: ViewContainerRef}) public texteditor: QueryList<ViewContainerRef>;
+  @ViewChild('menubar', { read: ViewContainerRef })
+  public menubar: ViewContainerRef;
+
+  @ViewChildren('texteditor', {read: ViewContainerRef})
+  public texteditor: QueryList<ViewContainerRef>;
 
   @HostListener ('window:click',['$event']) onClick(event){
     this.editMode = false;
@@ -95,16 +98,16 @@ export class BoxesGridComponent implements OnInit{
       scrollSensitivity: 10,
       scrollSpeed: 20,
       enableEmptyCellClick: true,
-      enableEmptyCellContextMenu: false,
+      enableEmptyCellContextMenu: true,
       enableEmptyCellDrop: false,
       enableEmptyCellDrag: false,
       itemResizeCallback: BoxesGridComponent.itemResize,
-      emptyCellClickCallback: this.emptyCellClick.bind(this),
+      emptyCellContextMenuCallback: this.emptyCellContextMenu.bind(this),
       itemChangeCallback: BoxesGridComponent.itemChange,
       emptyCellDragMaxCols: 50,
       emptyCellDragMaxRows: 50,
       draggable: {
-        delayStart: 0,
+        delayStart: 300,
         enabled: true,
         ignoreContentClass: 'gridster-item-content',
         ignoreContent: false,
@@ -158,7 +161,7 @@ enableEdit(box){
   }
 }
 
-emptyCellClick(event, item) {
+emptyCellContextMenu(event, item) {
   let componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
   if (this.menubar) {
         this.menubar.clear();
@@ -208,8 +211,8 @@ emptyCellClick(event, item) {
 ngAfterViewInit(){
 for(let i = 0; i<this.slide.boxIds.length; i++){
   if(this.slide.boxIds[i].content.type === 'text'){
-    let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
-    let componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
+    const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+    const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
     (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
     (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
       this.slide.boxIds[i].content =  {

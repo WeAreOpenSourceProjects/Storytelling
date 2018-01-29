@@ -1,9 +1,23 @@
 import { Component, OnInit, Renderer2, ElementRef, Input, Output, EventEmitter, HostListener} from '@angular/core';
+import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-menu-bar',
   templateUrl: './menu-bar.component.html',
-  styleUrls: ['./menu-bar.component.css']
+  styleUrls: ['./menu-bar.component.css'],
+  animations: [
+    trigger('flyInOut', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(200, style({ opacity: 1 })
+        )
+      ]),
+      transition('* => void', [
+        animate(200, style({ opacity: 0 })
+        )
+      ])
+    ])
+  ]
 })
 export class MenuBarComponent implements OnInit {
   @HostListener('document:click', ['$event']) clickedOutside($event){
