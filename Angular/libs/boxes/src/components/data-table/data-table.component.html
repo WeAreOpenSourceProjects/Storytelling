@@ -1,9 +1,7 @@
-<div fxFlex="100">
-  <hot-table
+  <hot-table #hotTable
     [data]="data"
     (afterChange)="afterChange($event)"
     [colHeaders]="true"
-    [rowHeaders]="false"
-    [columns]="columns">
+    [columns]="columns"
+    [settings]="settings">
   </hot-table>
-</div>

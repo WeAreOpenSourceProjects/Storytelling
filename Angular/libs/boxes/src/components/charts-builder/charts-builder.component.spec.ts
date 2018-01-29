@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChartsBuilderComponent } from './charts-builder.component';
-import { DataTableComponent } from './data-table';
+import { DataTableComponent } from '../data-table';
 import { CodemirrorModule } from 'ng2-codemirror';
 import { FormsModule } from '@angular/forms';
 import { DndModule } from 'ng2-dnd';
