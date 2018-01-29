@@ -43,6 +43,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   @Output() validForm = new EventEmitter();
   @ViewChild('viz', { read: ViewContainerRef }) viz: ViewContainerRef;
 
+
   chartTypes = chartTypes;
 
   config = {
@@ -63,6 +64,8 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   dataDims: string[][];
   chartOptions: any;
   firstFormGroup: FormGroup;
+  width : number;
+  height:  number;
 
   @Output() configGraph = new EventEmitter();
   warnMsg: string; //to tell the user which part isn't validated
@@ -121,7 +124,8 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     theme: 'white',
     mode: {
       name: 'json'
-    }
+    },
+    htmlMode: true
   };
   allowDropFunction(size: number, dimIndex: number): any {
     return (dragData: any) => this.dataDims[dimIndex] == null || this.dataDims[dimIndex].length < size;
@@ -186,10 +190,17 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     }
   }
 
-  useExample() {
+  useExample(event) {
+    event.stopPropagation();
+    event.preventDefault();
     this.clear();
     this.dataText = gapminder;
   }
+  usePast() {
+    console.log('clear here')
+    this.clearAll();
+  }
+
   useExampleDimension() {
     this.dataDims = this.chartType.dimExemple;
     this.processData();

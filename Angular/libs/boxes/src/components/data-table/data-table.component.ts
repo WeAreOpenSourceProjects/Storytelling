@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-data-table',
@@ -11,17 +11,20 @@ export class DataTableComponent implements OnInit {
   @Input() columns: any[] = [];
 
   @Output() updatedData = new EventEmitter();
-
   //  colHeaders: string[];
+  settings;
 
-  constructor() {}
+  options;
+  constructor(private elem : ElementRef) {}
 
   ngOnInit() {
+    this.settings = {
+        stretchH: 'all'
+    }
     //this.colHeaders = this.columns.map((col: any) =>  col.name );
     console.log('----  data  ---->', this.data);
     console.log('---- columns ---->', this.columns);
   }
-
   afterChange(e: any) {
     // tslint:disable-next-line:no-console
     this.updatedData.emit(this.data);
