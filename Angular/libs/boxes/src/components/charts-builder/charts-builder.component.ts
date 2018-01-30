@@ -6,7 +6,7 @@ import * as babyparse from 'babyparse';
 import * as _ from 'lodash';
 import { MatDialogRef } from '@angular/material';
 import { chartTypes } from './chartTypes';
-import { gapminder } from './data';
+import { contries, movies } from './data';
 import { GraphComponent } from '@labdat/charts'
 const defaultOptions = {
   view: [900, 600],
@@ -66,12 +66,16 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   firstFormGroup: FormGroup;
   width : number;
   height:  number;
-
+  samples=[{
+    name:'contries', data:contries
+  }, {
+    name:'movies', data :movies
+  }]
   @Output() configGraph = new EventEmitter();
   warnMsg: string; //to tell the user which part isn't validated
   _dataText: string;
   get dataText() {
-    return this._dataText || ' ';
+    return this._dataText || undefined ;
   }
 
   set dataText(value) {
@@ -164,11 +168,6 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   ngOnChanges(){
     console.log('change')
   }
-  ngDoCheck() {
-    if(!this.isValidSlide){
-
-    }
-  }
   editData(updatedData) {
     this._dataText = babyparse.unparse(updatedData);
     this.rawData = updatedData;
@@ -195,11 +194,17 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     this.clear();
     this.dataText = gapminder;
   }
-  usePast() {
-    console.log('clear here')
-    this.clearAll();
+  useSample(data){
+    this.dataText = data;
   }
-
+  usePast() {
+    this.clearAll();
+    this.useOurSamples =false;
+    this.dataText=' ';
+  }
+get haveData (){
+  return this.dataText === '' || this.dataText.length !==0;
+}
   useExampleDimension() {
     this.dataDims = this.chartType.dimExemple;
     this.processData();

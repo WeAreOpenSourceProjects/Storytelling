@@ -1,4 +1,4 @@
-export const gapminder = `
+export const contries = `
 country	year	gdpPercap	lifeExp	pop	continent
 Australia	1952	10039.59564	69.12	8691212	Oceania
 Australia	1957	10949.64959	70.33	9712569	Oceania
@@ -120,3 +120,31 @@ United States	1992	32003.93224	76.09	256894189	Americas
 United States	1997	35767.43303	76.81	272911760	Americas
 United States	2002	39097.09955	77.31	287675526	Americas
 United States	2007	42951.65309	78.242	301139947	Americas`.trim();
+export const movies = `
+Movie,Genre,Production Budget (millions),Box Office (millions),ROI,Rating IMDB
+Avatar,Action,237,2784,11.7,8.0
+The Blind Side,Drama,29,309,10.7,7.6
+"The Chronicles of Narnia: The Lion, the Witch and the Wardrobe",Adventure,180,745,4.1,6.9
+The Dark Knight,Action,185,1005,5.4,9.0
+ET: The Extra-Terrestrial,Drama,11,793,75.5,7.9
+Finding Nemo,Adventure,94,940,10.0,8.1
+Ghostbusters,Comedy,144,229,1.6,7.8
+The Hunger Games,Thriller/Suspense,78,649,8.3,7.2
+Iron Man 3,Action,178,1215,6.8,7.6
+Jurassic Park,Action,53,1030,19.4,8.0
+King Kong,Adventure,207,551,2.7,7.3
+The Lion King,Adventure,45,968,21.5,8.4
+"Monsters, Inc.",Adventure,115,577,5.0,8.0
+The Twilight Saga: New Moon,Drama,50,710,14.2,4.5
+Oz the Great and Powerful,Adventure,160,493,3.1,6.6
+Pirates of the Caribbean: Dead Man's Chest,Adventure,225,1066,4.7,7.3
+Quantum of Solace,Action,200,586,2.9,6.7
+Raiders of the Lost Ark,Adventure,18,390,21.7,8.7
+Star Wars Ep. I: The Phantom Menace,Adventure,115,1027,8.9,6.5
+Titanic,Thriller/Suspense,200,2187,10.9,7.6
+Up,Adventure,175,735,4.2,8.3
+The Vow,Drama,30,196,6.5,6.7
+The War of the Worlds,Action,132,704,5.3,6.5
+X-Men: The Last Stand,Action,210,459,2.2,6.8
+You've Got Mail,Drama,65,251,3.9,6.3
+Zookeeper,Romantic Comedy,80,170,2.1,5.0`.trim();

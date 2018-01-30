@@ -10,14 +10,21 @@
           </a>
         </li>
         <li class="data-load-action" >
-          <a  (click)="useExample()" class="a-data-load">
+          <a  (click)="useOurSamples = true" class="a-data-load">
             <mat-icon class="past-icon" svgIcon="image:ic_assistant_24px"></mat-icon>
             Try our samples
           </a>
         </li>
       </ul>
+      <ul *ngIf="useOurSamples">
+        <li *ngFor="let sample of samples">
+          <mat-card (click)="useSample(sample.data)">
+            {{sample.name}}
+          </mat-card>
+        </li>
+      </ul>
       <div fxFlex="5"></div>
-      <div class="data-container"  fxFlex="85">
+      <div *ngIf="dataText" class="data-container"  fxFlex="85">
         <i class="format fa fa-align-left breath-left" [class.checked]="!formatTable" matTooltip="View as Text" matTooltipPosition="above" (click)="formatTable = false"></i>
         <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formatTable = true"></i>
         <codemirror *ngIf="!formatTable" [(ngModel)]="dataText" [config]="editorConfig">
