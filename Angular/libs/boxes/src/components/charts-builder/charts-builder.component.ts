@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, Input,ViewContainerRef,  Output, EventEmitter, DoCheck, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input,ViewContainerRef,  Output, EventEmitter, DoCheck } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import * as shape from 'd3-shape';
 import * as babyparse from 'babyparse';
 import * as _ from 'lodash';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { chartTypes } from './chartTypes';
 import { contries, movies } from './data';
 import { GraphComponent } from '@labdat/charts'

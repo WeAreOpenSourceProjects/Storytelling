@@ -1,5 +1,17 @@
-
-import {Component, ViewEncapsulation, ViewChildren,OnInit, ViewChild, ChangeDetectorRef, ElementRef, QueryList, HostListener, ChangeDetectionStrategy, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  ViewChildren,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ChangeDetectorRef,
+  ElementRef,
+  QueryList,
+  HostListener,
+  ChangeDetectionStrategy,
+  ViewContainerRef,
+  ComponentFactoryResolver} from '@angular/core';
 
 // import { Slide } from '../../../../models/slide';
 import { MatDialog, MatDialogRef } from '@angular/material';
@@ -18,6 +30,16 @@ import { BoxDialogComponent } from '../../components/box-dialog/box-dialog.compo
 import { Store } from '@ngrx/store';
 import {selectCurrentPresentationId, PresentationsState } from '@labdat/presentations-state';
 import { fromRouter } from '@labdat/router-state';
+import { GridsterItemComponent } from 'angular-gridster2/dist/gridsterItem.component';
+import { Subject } from 'rxjs/Subject';
+import { map } from 'rxjs/operators/map';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { filter } from 'rxjs/operators/filter';
+import { Observable } from 'rxjs/Observable';
+import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
+import { zip } from 'rxjs/observable/zip';
+import { of } from 'rxjs/observable/of';
+import { tap } from 'rxjs/operators/tap';
 
 @Component({
   selector: 'app-boxes-grid',
@@ -26,7 +48,7 @@ import { fromRouter } from '@labdat/router-state';
   providers: [BoxesApiService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BoxesGridComponent implements OnInit{
+export class BoxesGridComponent implements OnInit, AfterViewInit {
 
   @ViewChild('menubar', { read: ViewContainerRef })
   public menubar: ViewContainerRef;
@@ -34,20 +56,19 @@ export class BoxesGridComponent implements OnInit{
   @ViewChildren('texteditor', {read: ViewContainerRef})
   public texteditor: QueryList<ViewContainerRef>;
 
-  @HostListener ('window:click',['$event']) onClick(event){
-    this.editMode = false;
-  }
-
-  editMode =true;
-  editors;
-  slide: any;
-  isOpened = false;
-  id: any;
-  idSlides: any;
-  gridConfig:any;
-  options;
+  public editMode =true;
+  public editors;
+  public slide: any;
+  public isOpened = false;
+  public id: any;
+  public idSlides: any;
+  public gridConfig:any;
+  public options;
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
   private presentationId: any;
+
+  private emptyCellContextMenu$ = new Subject();
+
   constructor(
     private dialog: MatDialog,
     private boxesService : BoxesApiService,
@@ -61,7 +82,7 @@ export class BoxesGridComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.currentPresentationId$.subscribe((presentationId)=>{
+    this.currentPresentationId$.subscribe((presentationId) => {
       this.presentationId = presentationId;
     })
     this.route.params.subscribe(params => {
@@ -102,8 +123,8 @@ export class BoxesGridComponent implements OnInit{
       enableEmptyCellDrop: false,
       enableEmptyCellDrag: false,
       itemResizeCallback: BoxesGridComponent.itemResize,
+      emptyCellClickCallback: this.emptyCellClick.bind(this),
       emptyCellContextMenuCallback: this.emptyCellContextMenu.bind(this),
-      itemChangeCallback: BoxesGridComponent.itemChange,
       emptyCellDragMaxCols: 50,
       emptyCellDragMaxRows: 50,
       draggable: {
@@ -142,94 +163,112 @@ export class BoxesGridComponent implements OnInit{
     };
   }
 
-enableEdit(box){
-  if(box.content && box.content.type === 'text'){
+public enableEdit(box) {
+  this.editMode= true;
+  if (box.content && box.content.type === 'text') {
     this.editMode= true;
-  } else if(box.content && box.content.type==='chart'){
+
+  } else if (box.content && box.content.type==='chart') {
     const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
     dialog.componentInstance.inputOptions = box.content.chart.chartOptions;
     dialog.componentInstance.inputData = box.content.chart.data;
     dialog.afterClosed().subscribe(result => {
       if (result !== 'CANCEL') {
-        console.log('The dialog was closed');
         box.content.type='chart';
         box.content.chart = result;
-        box.width = box.cols *25;
-        box.height = box.cols *25;
-        }
+        box.width = box.cols * 25;
+        box.height = box.cols * 25;
+      }
     });
   }
+}
+
+emptyCellClick(event, item) {
+  this.editMode = false;
 }
 
 emptyCellContextMenu(event, item) {
-  let componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
-  if (this.menubar) {
-        this.menubar.clear();
-     }
-  let componentRef = this.menubar.createComponent(componentFactory);
-  (<MenuBarComponent>componentRef.instance).top = event.clientY-50;
-  (<MenuBarComponent>componentRef.instance).left = event.clientX-50;
-  (<MenuBarComponent>componentRef.instance).isOpen.subscribe((type)=>{
-    let componentEditorRef;
-    if(type==='text'){
-      this.texteditor.changes.subscribe((a)=>{
-        for (let i = 0; i < this.texteditor.toArray().length; i++) {
-          if(i===this.slide.boxIds.length-1 && !componentEditorRef){
-             let componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
-             componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-             (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
-               item.content =  {
-                 type,
-                 text
-               }
-             });
-           }
-         }
-     })
-     this.slide.boxIds.push(item);
-   }
-   if (type==='chart'){
-     item.cols= 5;
-     item.rows =5;
-    const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
-    dialog.afterClosed().subscribe(chart => {
-      if (chart) {
-        console.log('The dialog was closed');
-        item.content =  {
-          type,
-          chart
-        }
-        this.slide.boxIds.push(item);
-      }
-    });
-   }
-   this.menubar.clear();
-  });
+  this.emptyCellContextMenu$.next({event, item})
 }
 
-ngAfterViewInit(){
-for(let i = 0; i<this.slide.boxIds.length; i++){
-  if(this.slide.boxIds[i].content.type === 'text'){
-    const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
-    const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-    (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
-    (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
-      this.slide.boxIds[i].content =  {
-        'type': 'text',
-        'text': text
+ngAfterViewInit() {
+
+  const addBox$ = this.emptyCellContextMenu$.pipe(
+    map(({event, item}) => {
+      this.editMode = false;
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
+      if (this.menubar) {
+        this.menubar.clear();
       }
+      const componentRef = this.menubar.createComponent(componentFactory);
+      (<MenuBarComponent>componentRef.instance).top = event.clientY - 50;
+      (<MenuBarComponent>componentRef.instance).left = event.clientX - 50;
+      return componentRef.instance;
+    }),
+    switchMap((componentRef: MenuBarComponent) => componentRef.isOpen$)
+  )
+  .share();
+
+  const chartType$ = addBox$.pipe(
+    filter(type => type === 'chart')
+  );
+
+  const textType$ = addBox$.pipe(
+    filter(type => type === 'text')
+  );
+
+
+  textType$.pipe(
+    withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
+    switchMap((item: any) => {
+      console.log('??')
+      this.slide.boxIds.push(item.item);
+      return zip(this.texteditor.changes, of(item));
+    })
+  ).subscribe(([texteditor, item]: [any, any]) => {
+    console.log(item)
+    const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+    const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
+    (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
+      item.content = { type: 'text', text }
     });
+  });
+
+ chartType$.pipe(
+    withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
+    map((item: any) => {
+      item.cols = 5;
+      item.rows = 5;
+      return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
+    }),
+    switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
+  ).subscribe((chart: any) => {
+    if (chart) {
+      this.slide.push({type: 'chart',chart})
     }
+    this.menubar.clear();
+  });
+/*
+  for (let i = 0; i<this.slide.boxIds.length; i++) {
+    if (this.slide.boxIds[i].content.type === 'text') {
+      const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+      const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
+      (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
+      (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
+        this.slide.boxIds[i].content = {
+          'type': 'text',
+          'text': text
+        }
+      });
+    }
+  }*/
   }
-}
+
   changedOptions() {
     if (this.gridConfig.api && this.gridConfig.api.optionsChanged) {
       this.gridConfig.api.optionsChanged();
     }
   }
-
-  static itemChange(item, itemComponent) {
-   }
 
   static itemResize(item, itemComponent){
     item.width = itemComponent.width;
@@ -237,7 +276,7 @@ for(let i = 0; i<this.slide.boxIds.length; i++){
   }
 
   removeItem($event, item) {
-    if(item._id){
+    if (item._id) {
       const dialog = this.dialog.open(BoxDialogComponent);
       dialog.afterClosed().subscribe(result => {
         if (result){

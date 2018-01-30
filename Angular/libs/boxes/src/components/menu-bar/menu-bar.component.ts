@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer2, ElementRef, Input, Output, EventEmitter, HostListener} from '@angular/core';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-menu-bar',
@@ -28,7 +29,11 @@ export class MenuBarComponent implements OnInit {
   el: any;
   @Input() top: any;
   @Input() left: any;
-  @Output() isOpen: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output()
+  public isOpen: EventEmitter<string> = new EventEmitter<string>();
+
+  public isOpen$ = new Subject()
 
   constructor(el: ElementRef, public renderer: Renderer2) {
     this.el = el.nativeElement;
@@ -44,5 +49,6 @@ export class MenuBarComponent implements OnInit {
   }
   open(type){
     this.isOpen.emit(type);
+    this.isOpen$.next(type);
   }
 }

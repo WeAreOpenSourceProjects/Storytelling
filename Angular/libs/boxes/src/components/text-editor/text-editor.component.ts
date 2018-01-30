@@ -8,13 +8,20 @@ import { environment } from '../../../../../apps/default/src/environments/enviro
   styleUrls: ['./text-editor.component.scss']
 })
 export class TextEditorComponent {
-  @HostListener('dblclick', ['$event']) onDblClick(event) {
+
+  @HostListener('dblclick', ['$event'])
+  onDblClick(event) {
+    ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.on');
     ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.focus');
-  }
-  @HostListener('window:click', ['$event']) onClickOut(event) {
-    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'blur', [], true);
-    this.textTosave.emit(this.editorContent);
-  }
+//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'blur', [], true);
+
+}
+
+//  @HostListener('window:click', ['$event'])
+//  onClickOut(event) {
+//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'blur', [], true);
+//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.off');
+//  }
 
   @ViewChild('froalaEditor') froalaEditor: ElementRef;
 
@@ -26,15 +33,26 @@ export class TextEditorComponent {
     if (environment.backend.port) {
       baseURL += `:${environment.backend.port}`;
     }
+
     this.editorOptions = {
       toolbarInline: true,
-      iframe: false,
-      initOnClick :false,
+      initOnClick :true,
       heightMin: 200,
       heightMax: 400,
       widthMax: 1000,
       charCounterMax: 3000,
-      toolbarSticky: false
+      toolbarSticky: false,
+      toolbarBottom: false,
+      toolbarButtons: ['undo', 'redo' , '-', 'bold', 'italic', 'underline']
     };
+  }
+
+  ngAfterViewInit() {
+    ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.off');
+    ($(this.froalaEditor.nativeElement) as any).on('froalaEditor.blur', (e, editor) => {
+      console.log('blur');
+      this.textTosave.emit(this.editorContent);
+      editor.edit.off();
+    });
   }
 }
