@@ -1,119 +1,102 @@
-<h1 md-dialog-title ><i class="fa fa-chevron-left fa-fw" (click)="dialogRef.close('CANCEL')"></i> charts builder</h1>
-<div>
-  <div class="sub-title-bar">
-    <mat-toolbar-row>
-      <span><i class="fa fa-check-circle-o fa-fw" [class.checked]="hasValidBuilder"></i>Graph builder* <span class="warnMsg">{{warnMsg}}   </span></span>
-      <small class="pull-right">
-        <button mat-raised-button type="button" (click)="clearAll()"  color="primary">Reset</button>
-      </small>
-    </mat-toolbar-row>
-  </div>
-  <mat-horizontal-stepper [linear]="true">
-    <mat-step [completed]="false">
-      <ng-template matStepLabel>Your Data</ng-template>
-          <span>Copy and paste your tabular (TSV, CSV) data here.<button class="btn btn-link" (click)="useExample()">(Use example data)</button></span>
-          <i class="format fa fa-align-left breath-left" [class.checked]="!formatTable" matTooltip="View as Text" matTooltipPosition="above" (click)="formatTable = false"></i>
-          <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formatTable = true"></i>
-          <codemirror *ngIf="!formatTable" [(ngModel)]="dataText" [config]="editorConfig">
-          </codemirror>
-
-          <app-data-table *ngIf="formatTable" [data]="rawData" [columns]="headerValues" (updatedData)="editData($event)">
-          </app-data-table>
-
-          <p *ngIf="dataText.length > 1">
-            <span *ngFor="let error of errors" class="text-red">
-              <span *ngIf="error.row">Row {{error.row + 2}}: </span>{{error.message}} <br />
-            </span>
-            <span *ngIf="!errors.length" class="text-green">
-              {{rawData.length}} records have been successfully parsed!
-            </span>
-          </p>
-      <div>
-       <button mat-button matStepperNext [disabled]="!hasValidData">Next</button>
-     </div>
-      </mat-step>
-  <mat-step [optional]="false">
-    <ng-template matStepLabel> Select your Chart</ng-template>
-      <div class="container-fluid">
-        <div fxflex="25" class="card-view" *ngIf="chartType">
-          <mat-card class="chart-card">
-            <mat-card-header>
-              <mat-card-title class="card-sub-header"> Chart selected : </mat-card-title>
-            </mat-card-header>
-            <h2>{{chartType.title}}</h2>
-            <img mat-card-image class="image-selected" [src]="chartType.image">
-            <mat-card-content>
-              <p class="categorie">{{chartType.description}}</p>
-            </mat-card-content>
-          </mat-card>
-
-        </div>
-        <div class="content">
-          <mat-card class="chart-card" (click)="choseChartType(chart)" *ngFor="let chart of chartTypes">
-            <h2>{{chart.title}}</h2>
-            <img mat-card-image [src]="chart.image">
-            <mat-card-content>
-              <mat-chip class="categorie">{{chart.categorie}}</mat-chip>
-            </mat-card-content>
-            <div class="layout-check" [ngClass]="{'selected': chartType===chart} ">
-              <mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon>
-            </div>
-          </mat-card>
-        </div>
-      </div>
-    <div>
-       <button mat-button matStepperNext [disabled]="!hasChartSelected">Next</button>
-       <button mat-button matStepperPrevious>Back</button>
-     </div>
-    </mat-step>
-    <mat-step [completed]="false" >
-      <ng-template matStepLabel> Map your Dimensions</ng-template>
-      <div *ngIf="hasChartSelected" class="section-content">
-         <span>
-            Drag and drop the dimensions of graph
-           <button class="btn btn-link" (click)="useExampleDimension()">(Use example dimension)</button>
+<mat-horizontal-stepper [linear]="true">
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>Load your data</ng-template>
+    <div class="flex-container">
+      <ul class="data-load-actions" fxFlex="10">
+        <li class="data-load-action">
+          <a (click)="usePast()" class="a-data-load">
+            <mat-icon class="past-icon" svgIcon="content:ic_content_paste_24px"></mat-icon>
+            Paste
+          </a>
+        </li>
+        <li class="data-load-action" >
+          <a  (click)="useExample()" class="a-data-load">
+            <mat-icon class="past-icon" svgIcon="image:ic_assistant_24px"></mat-icon>
+            Try our samples
+          </a>
+        </li>
+      </ul>
+      <div fxFlex="5"></div>
+      <div class="data-container"  fxFlex="85">
+        <i class="format fa fa-align-left breath-left" [class.checked]="!formatTable" matTooltip="View as Text" matTooltipPosition="above" (click)="formatTable = false"></i>
+        <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formatTable = true"></i>
+        <codemirror *ngIf="!formatTable" [(ngModel)]="dataText" [config]="editorConfig">
+        </codemirror>
+        <app-data-table *ngIf="formatTable" [data]="rawData" [columns]="headerValues" (updatedData)="editData($event)"></app-data-table>
+        <p *ngIf="dataText.length > 1">
+          <span *ngFor="let error of errors" class="text-red">
+            <span *ngIf="error.row">Row {{error.row + 2}}: </span>{{error.message}} <br />
           </span>
-        <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-          <div class="dimension" fxFlex.xs="50" fxFlex.sm="50" fxFlex.md="33" fxFlex.lg="20" fxFlex.xl="20">
-            <div class="title">Dimensions</div>
-            <ul class="list-unstyled dimensions-list" >
-              <li *ngFor="let dimension of headerValues" dnd-draggable [dragData]="dimension.name">
-                {{dimension.title}}
-                <span class="type">{{dimension.type}}</span>
-                <span class="pull-right"><i class="fa fa-arrow-right"></i></span>
-              </li>
-            </ul>
+          <span *ngIf="!errors.length" class="text-green">
+            {{rawData.length}} records have been successfully parsed!
+          </span>
+        </p>
+    </div>
+    </div>
+    <button class="fixed" mat-fab  type="button" name="button" matStepperNext [disabled]="!hasValidData"><mat-icon svgIcon="hardware:ic_keyboard_arrow_right_24px"></mat-icon></button>
+  </mat-step>
+  <mat-step mat-dialog-content [completed]="false">
+    <ng-template matStepLabel>Choose a chart</ng-template>
+      <div class="content">
+        <mat-card class="chart-card" (click)="choseChartType(chart)" *ngFor="let chart of chartTypes">
+          <h2>{{chart.title}}</h2>
+          <img mat-card-image [src]="chart.image">
+          <mat-card-content>
+            <mat-chip class="categorie">{{chart.categorie}}</mat-chip>
+            <p class="categorie">{{chart.description}}</p>
+          </mat-card-content>
+          <div class="layout-check" [ngClass]="{'selected': chartType===chart} ">
+            <mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon>
           </div>
-
-          <div class="dimension" *ngFor="let dimensionCol of chartType.dimLabels; let dimIndex = index" >
-            <div class="title">{{dimensionCol.column}} (<i *ngFor="let type of dimensionCol.dataType;let i=index"><i *ngIf="i!=0">,</i>{{type}}</i>)</div>
-            <ul class="list-unstyled dimensions-list" dnd-sortable-container [sortableData]="dataDims[dimIndex]">
-              <div class="drop-zone" dnd-droppable [allowDrop]="allowDropFunction(dimensionCol.maxSize, dimIndex)" (onDropSuccess)="addTobox1Items(dimIndex, $event)"></div>
-              <li *ngFor="let dimension of dataDims[dimIndex]; let i = index" dnd-sortable [sortableIndex]="i" [class.error]="dimension.split(' ')[0]=='err'">
-                {{dimension}}
-                <span class="pull-right" (click)="removeItem(dimIndex, dimension)"><i class="fa fa-times"></i></span>
-              </li>
-            </ul>
-          </div>
-          <p class="error" *ngIf="!hasValidDim">*there are items not in the correct data type</p>
-        </div>
+        </mat-card>
       </div>
-    <div>
-       <button mat-button matStepperNext [disabled]="!hasValidDim">Next</button>
-       <button mat-button matStepperPrevious>Back</button>
-     </div>
-</mat-step>
-<mat-step [completed]="false">
-  <ng-template matStepLabel> Your Visualization </ng-template>
+      <button class="fixed" mat-fab  type="button" name="button" matStepperNext [disabled]="!hasChartSelected"><mat-icon svgIcon="hardware:ic_keyboard_arrow_right_24px"></mat-icon></button>
+      <button class="fixed-left" mat-fab  type="button" name="button" matStepperPrevious><mat-icon svgIcon="hardware:ic_keyboard_arrow_left_24px"></mat-icon></button>
+  </mat-step>
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>Map your dimensions</ng-template>
+    <div *ngIf="hasChartSelected" class="section-content">
+       <span>
+          Drag and drop the dimensions of graph
+         <button class="btn btn-link" (click)="useExampleDimension()">(Use example dimension)</button>
+        </span>
+      <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+        <div class="dimension" fxFlex.xs="50" fxFlex.sm="50" fxFlex.md="33" fxFlex.lg="20" fxFlex.xl="20">
+          <div class="title">Dimensions</div>
+          <ul class="list-unstyled dimensions-list" >
+            <li *ngFor="let dimension of headerValues" dnd-draggable [dragData]="dimension.title">
+              {{dimension.title}}
+              <span class="type">{{dimension.type}}</span>
+              <span class="pull-right"><i class="fa fa-arrow-right"></i></span>
+            </li>
+          </ul>
+        </div>
 
+        <div class="dimension" *ngFor="let dimensionCol of chartType.dimLabels; let dimIndex = index" >
+          <div class="title">{{dimensionCol.column}} (<i *ngFor="let type of dimensionCol.dataType;let i=index"><i *ngIf="i!=0">,</i>{{type}}</i>)</div>
+          <ul class="list-unstyled dimensions-list" dnd-sortable-container [sortableData]="dataDims[dimIndex]">
+            <div class="drop-zone" dnd-droppable [allowDrop]="allowDropFunction(dimensionCol.maxSize, dimIndex)" (onDropSuccess)="addTobox1Items(dimIndex, $event)"></div>
+            <li *ngFor="let dimension of dataDims[dimIndex]; let i = index" dnd-sortable [sortableIndex]="i" [class.error]="dimension.split(' ')[0]=='err'">
+              {{dimension}}
+              <span class="pull-right" (click)="removeItem(dimIndex, dimension)"><i class="fa fa-times"></i></span>
+            </li>
+          </ul>
+        </div>
+        <p class="error" *ngIf="!hasValidDim">*there are items not in the correct data type</p>
+      </div>
+    </div>
+  <div>
+    <button class="fixed" mat-fab  type="button" name="button" matStepperNext [disabled]="!hasValidDim"><mat-icon svgIcon="hardware:ic_keyboard_arrow_right_24px"></mat-icon></button>
+    <button class="fixed-left" mat-fab  type="button" name="button" matStepperPrevious><mat-icon svgIcon="hardware:ic_keyboard_arrow_left_24px"></mat-icon></button>
+   </div>
+  </mat-step>
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>Your visualization</ng-template>
     <div class="ng-section viz-container"  *ngIf="isValidSlide">
       <app-graph [chart]="{ data: this.rawData, chartOptions: { chartType: chartType, headerValues: headerValues, dataDims: dataDims }}"></app-graph>
       </div>
-
-    <button mat-button matStepperPrevious>Back</button>
-    <button mat-button (click)="clearAll()" [mat-dialog-close]="{ data: this.rawData, chartOptions: { chartType: chartType, headerValues: headerValues, dataDims: dataDims }}" tabindex="2">Ok</button>
-    <button mat-button [mat-dialog-close]="'CANCEL'" tabindex="-1">No Thanks</button>
-
-    </mat-step>
-    </mat-horizontal-stepper>
-</div>
+      <button class="fixed-close" mat-fab  type="button" name="button"  mat-button mat-dialog-close tabindex="-1"><mat-icon svgIcon="content:ic_clear_24px"></mat-icon></button>
+      <button class="fixed" mat-fab  type="button" name="button" matStepperNext (click)="clearAll()" [mat-dialog-close]="{ data: this.rawData, chartOptions: { chartType: chartType, headerValues: headerValues, dataDims: dataDims }}" tabindex="2"><mat-icon svgIcon="action:ic_done_24px"></mat-icon></button>
+      <button class="fixed-left" mat-fab  type="button" name="button" matStepperPrevious><mat-icon svgIcon="hardware:ic_keyboard_arrow_left_24px"></mat-icon></button>
+  </mat-step>
+</mat-horizontal-stepper>

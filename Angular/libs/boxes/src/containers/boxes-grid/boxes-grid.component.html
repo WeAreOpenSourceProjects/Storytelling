@@ -1,5 +1,6 @@
 <ng-template #menubar ></ng-template>
 <gridster [options]="gridConfig">
+  <img *ngIf="slide.boxIds.length ===0" class="background-mouse" src="assets/right-click.png"/>
   <gridster-item
     *ngFor="let box of slide?.boxIds; let i = index"
     [item]="box"

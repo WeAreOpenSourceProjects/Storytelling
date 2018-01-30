@@ -217,6 +217,7 @@ ngAfterViewInit() {
     filter(type => type === 'text')
   );
 
+
   textType$.pipe(
     withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
     switchMap((item: any) => {

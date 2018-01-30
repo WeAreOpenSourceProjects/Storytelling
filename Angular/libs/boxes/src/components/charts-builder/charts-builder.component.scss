@@ -1,3 +1,57 @@
+.data-load-actions{
+  display: flex;
+  flex-direction: column;
+}
+.data-load-action{
+  display: inline-flex;
+  cursor: pointer;
+  &:hover {
+    background: #f5f5f5;
+    border-radius :5px;
+  }
+  &.active {
+    background: red
+  }
+}
+.a-data-load {
+  display: inline-flex;
+  min-height: 40px;
+  margin-top:10%;
+}
+// .data-load-action{
+//   margin: 2px;
+//   display: inline-grid;
+//   min-height: 50%;
+//   min-width: 100%
+// }
+.flex-container {
+  height: 100%;
+
+}
+
+.data-container {
+  border: solid 1px #e8dada;
+  overflow: hidden;
+}
+
+/deep/ app-chart-builder{
+  height: 100%;
+  .mat-stepper-horizontal, .mat-stepper-vertical {
+    height: 75%;
+  }
+  .mat-horizontal-content-container {
+    height: 100%;
+    overflow-y: scroll;
+  }
+  .mat-horizontal-stepper-content{
+    height: 100%;
+    overflow-y: auto;
+  }
+  div#cdk-step-content-0-3 {
+    overflow-y: hidden;
+  }
+}
+
 .sub-title-bar {
   .warnMsg {
     margin-left: 20px;
@@ -125,9 +179,11 @@ $color-text-lighter: #fff;
     justify-content: center;
 
     .CodeMirror {
-      height: 250px;
+      height: 100% !important;
     }
+
   }
+
 
   .light {
     background: #fff;
@@ -328,11 +384,7 @@ $color-text-lighter: #fff;
   display: flex;
   flex-direction : row;
   flex-wrap : wrap;
-  order: 1;
-  flex: 5;
-  overflow: auto;
-  max-height: 700px;
-  margin-right: 1%;
+  max-height: 80%;
 }
 mat-chip {
   background: rgb(36, 39, 45);
@@ -355,14 +407,15 @@ mat-chip {
   line-height: 85px;
 }
 .selected .layout-check {
-  display: block;
+  display: flex;
   position: absolute;
   z-index: 1000;
   opacity: .9;
 }
 .selected {
   background-color:  #00acc1;
-  display: block;
+  display: flex;
+  justify-content:center;
   position: absolute;
   z-index: 0;
   opacity: .7;
@@ -378,14 +431,15 @@ mat-chip {
 .card-header .mat-card-image {
   margin : 0 -10px 0 -24px;
 }
+
 .chart-card {
   background: #fff;
   box-shadow: none !important;
   color: #333;
   font-family: 'SF Pro Display','SF Pro Icons','Helvetica Neue','Helvetica','Arial',sans-serif !important;
-  margin : 10px;
-  padding: 0;
-  min-width: 25%;
+  padding: 30px;
+  width: 20%;
+  height:20%;
 
 
   h2 {
@@ -399,14 +453,15 @@ mat-chip {
 
   .mat-card-header-text {
     margin: 10px auto;
-    text-align: center;
     width: 100%;
   }
 
 .mat-card-image {
-  height: 200px;
-  width: auto;
-  margin: auto;
+  height: auto;
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+
 }
 
   .image-selected {
@@ -417,6 +472,7 @@ mat-chip {
     margin: 0;
     .categorie {
       text-align: justify;
+      white-space : pre-wrap;
     }
 
 
@@ -462,4 +518,41 @@ mat-chip {
 .list-unstyled {
     padding-left: 0;
     list-style: none;
+}
+.next-button {
+  position: fixed;
+  bottom: 10%;
+  z-index: 1000;
+}
+
+.fixed {
+  bottom: 10%;
+  position: fixed;
+  right: 10%;
+  z-index : 10000;
+}
+.fixed-left{
+  bottom: 10%;
+  position: fixed;
+  right: 10%;
+  margin-right: 90px;
+  z-index : 10000;
+}
+.fixed-close{
+  bottom: 10%;
+  position: fixed;
+  right: 10%;
+  margin-right: -90px;
+  z-index : 10000;
+
+}
+
+/deep/ codemirror {
+  .CodeMirror.cm-s-white {
+    height: 100% !important
+  }
+}
+app-data-table {
+  height: 100%;
+  width :100%
 }

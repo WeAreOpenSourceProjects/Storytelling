@@ -43,6 +43,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   @Output() validForm = new EventEmitter();
   @ViewChild('viz', { read: ViewContainerRef }) viz: ViewContainerRef;
 
+
   chartTypes = chartTypes;
 
   config = {
@@ -63,6 +64,8 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   dataDims: string[][];
   chartOptions: any;
   firstFormGroup: FormGroup;
+  width : number;
+  height:  number;
 
   @Output() configGraph = new EventEmitter();
   warnMsg: string; //to tell the user which part isn't validated
@@ -110,6 +113,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     this.dataDims.forEach(dim => {
       if (dim != null)
         dim.forEach(d => {
+          console.log(d);
           if (d.split(' ')[0] == 'err') valid = false;
         });
     });
@@ -121,14 +125,15 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     theme: 'white',
     mode: {
       name: 'json'
-    }
+    },
+    htmlMode: true
   };
   allowDropFunction(size: number, dimIndex: number): any {
     return (dragData: any) => this.dataDims[dimIndex] == null || this.dataDims[dimIndex].length < size;
   }
 
   addTobox1Items(dimIndex: number, $event: any) {
-    let type = this.headerValues.find(h => h.name == $event.dragData)['type'];
+    let type = this.headerValues.find(h => h.title == $event.dragData)['type'];
     let valid = false;
     this.chartType.dimLabels[dimIndex].dataType.forEach(_type => {
       if (_type == type) valid = true;
@@ -190,6 +195,11 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     this.clear();
     this.dataText = gapminder;
   }
+  usePast() {
+    console.log('clear here')
+    this.clearAll();
+  }
+
   useExampleDimension() {
     this.dataDims = this.chartType.dimExemple;
     this.processData();
@@ -217,7 +227,6 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     if (!this.hasValidBuilder) {
       return;
     }
-    console.log('chartType',this.chartType)
     this.data = this.chartType.convertData(this.dataDims, this.rawData);
     this.configGraph.emit({
       data: this.rawData,
@@ -263,7 +272,8 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
 */
     const headerValues = parsed.meta.fields.map(key => ({
       data: key,
-      title: key.charAt(0).toUpperCase() + key.slice(1)
+      title: key.charAt(0).toUpperCase() + key.slice(1),
+      type: typeof parsed.data[0][key]
     }));
 
     if (JSON.stringify(headerValues) !== JSON.stringify(this.headerValues)) {

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataTableComponent } from './data-table.component';
+import { DataTableComponent } from '../data-table/data-table.component';
 //import { HotTableModule } from 'ng2-handsontable';
 describe('DataTableComponent', () => {
   let component: DataTableComponent;
