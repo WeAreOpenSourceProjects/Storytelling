@@ -4,13 +4,25 @@
   height: 100%;
 }
 
-gridster {
-  background : transparent !important;
-}
-gridster-grid{
-  display: block !important;
-}
+/deep/ gridster {
+  background: white !important ;
+  gridster-grid.gridster-grid{
+    display: block !important;
+    .row {
+      border-top: 0.5px dotted grey;
+    }
+    .column {
+      border-left: 0.5px dotted grey;
+    }
+  }
 
+}
+.background-mouse{
+  margin: 0 auto;
+  opacity: 0.3;
+  width: 500px;
+  height: 400px;
+}
 .delete {
   display: none;
   z-index: 10000;

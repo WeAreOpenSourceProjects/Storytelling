@@ -113,6 +113,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     this.dataDims.forEach(dim => {
       if (dim != null)
         dim.forEach(d => {
+          console.log(d);
           if (d.split(' ')[0] == 'err') valid = false;
         });
     });
@@ -132,7 +133,7 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   }
 
   addTobox1Items(dimIndex: number, $event: any) {
-    let type = this.headerValues.find(h => h.name == $event.dragData)['type'];
+    let type = this.headerValues.find(h => h.title == $event.dragData)['type'];
     let valid = false;
     this.chartType.dimLabels[dimIndex].dataType.forEach(_type => {
       if (_type == type) valid = true;
@@ -272,7 +273,8 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
 */
     const headerValues = parsed.meta.fields.map(key => ({
       data: key,
-      title: key.charAt(0).toUpperCase() + key.slice(1)
+      title: key.charAt(0).toUpperCase() + key.slice(1),
+      type: typeof parsed.data[0][key]
     }));
 
     if (JSON.stringify(headerValues) !== JSON.stringify(this.headerValues)) {

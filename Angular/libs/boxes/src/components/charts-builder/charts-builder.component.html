@@ -64,7 +64,7 @@
         <div class="dimension" fxFlex.xs="50" fxFlex.sm="50" fxFlex.md="33" fxFlex.lg="20" fxFlex.xl="20">
           <div class="title">Dimensions</div>
           <ul class="list-unstyled dimensions-list" >
-            <li *ngFor="let dimension of headerValues" dnd-draggable [dragData]="dimension.name">
+            <li *ngFor="let dimension of headerValues" dnd-draggable [dragData]="dimension.title">
               {{dimension.title}}
               <span class="type">{{dimension.type}}</span>
               <span class="pull-right"><i class="fa fa-arrow-right"></i></span>
@@ -95,7 +95,7 @@
     <div class="ng-section viz-container"  *ngIf="isValidSlide">
       <app-graph [chart]="{ data: this.rawData, chartOptions: { chartType: chartType, headerValues: headerValues, dataDims: dataDims }}"></app-graph>
       </div>
-      <button class="fixed-close" mat-fab  type="button" name="button"  mat-button [mat-dialog-close]="'CANCEL'" tabindex="-1"><mat-icon svgIcon="content:ic_clear_24px"></mat-icon></button>
+      <button class="fixed-close" mat-fab  type="button" name="button"  mat-button mat-dialog-close tabindex="-1"><mat-icon svgIcon="content:ic_clear_24px"></mat-icon></button>
       <button class="fixed" mat-fab  type="button" name="button" matStepperNext (click)="clearAll()" [mat-dialog-close]="{ data: this.rawData, chartOptions: { chartType: chartType, headerValues: headerValues, dataDims: dataDims }}" tabindex="2"><mat-icon svgIcon="action:ic_done_24px"></mat-icon></button>
       <button class="fixed-left" mat-fab  type="button" name="button" matStepperPrevious><mat-icon svgIcon="hardware:ic_keyboard_arrow_left_24px"></mat-icon></button>
   </mat-step>

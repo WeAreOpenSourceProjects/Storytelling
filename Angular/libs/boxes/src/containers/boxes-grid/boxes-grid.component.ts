@@ -182,7 +182,7 @@ emptyCellContextMenu(event, item) {
                  'type': 'text',
                  'text': text
                }
-
+               this.slide.boxIds.push(item);
              });
            }
          }
@@ -194,17 +194,17 @@ emptyCellContextMenu(event, item) {
      item.rows =5;
     const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
     dialog.afterClosed().subscribe(result => {
-      if (result !== 'CANCEL') {
+      if (result) {
         console.log('The dialog was closed');
         item.content =  {
           'type': 'chart',
           'chart': result
         }
-        }
+        this.slide.boxIds.push(item);
+      }
     });
    }
    this.menubar.clear();
-   this.slide.boxIds.push(item);
   });
 }
 
