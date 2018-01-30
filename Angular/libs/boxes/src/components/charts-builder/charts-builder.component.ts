@@ -227,7 +227,6 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     if (!this.hasValidBuilder) {
       return;
     }
-    console.log('chartType',this.chartType)
     this.data = this.chartType.convertData(this.dataDims, this.rawData);
     this.configGraph.emit({
       data: this.rawData,

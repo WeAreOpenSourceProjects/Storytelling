@@ -179,26 +179,25 @@ emptyCellContextMenu(event, item) {
              componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
              (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe((text)=>{
                item.content =  {
-                 'type': 'text',
-                 'text': text
+                 type,
+                 text
                }
-               this.slide.boxIds.push(item);
              });
            }
          }
-
      })
+     this.slide.boxIds.push(item);
    }
    if (type==='chart'){
      item.cols= 5;
      item.rows =5;
     const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
-    dialog.afterClosed().subscribe(result => {
-      if (result) {
+    dialog.afterClosed().subscribe(chart => {
+      if (chart) {
         console.log('The dialog was closed');
         item.content =  {
-          'type': 'chart',
-          'chart': result
+          type,
+          chart
         }
         this.slide.boxIds.push(item);
       }
