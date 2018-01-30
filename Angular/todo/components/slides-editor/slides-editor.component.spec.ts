@@ -28,7 +28,6 @@ import {
   TreemapChartComponent
 } from '@labdat/charts';
 import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
-import { CodeEditorComponent } from './slide-editor/charts-builder/code-editor';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ValidService } from '../../../services/valid.service';
 import { SlidesService } from '../../../services/slides.service';
@@ -45,7 +44,6 @@ describe('SlidesEditorComponent', () => {
       TestBed.configureTestingModule({
         declarations: [
           SlidesEditorComponent,
-          CodeEditorComponent,
           BarChartComponent,
           BubbleChartComponent,
           DendogramComponent,

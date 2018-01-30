@@ -26,7 +26,6 @@ import {
   TreemapChartComponent
 } from '@labdat/charts';
 
-import { CodeEditorComponent } from './code-editor';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 describe('ChartsBuilderComponent', () => {
@@ -39,7 +38,6 @@ describe('ChartsBuilderComponent', () => {
         declarations: [
           ChartsBuilderComponent,
           DataTableComponent,
-          CodeEditorComponent,
           BarChartComponent,
           BubbleChartComponent,
           DendogramComponent,

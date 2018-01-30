@@ -35,7 +35,6 @@ import {
   AreaChartComponent,
   ChartsModule
 } from '@labdat/charts'
-
 import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 
 import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
@@ -62,7 +61,9 @@ import { environment } from '../../../apps/default/src/environments/environment'
 import { BoxesGridComponent } from './containers/boxes-grid/boxes-grid.component';
 import { ChartsService } from '@labdat/charts/src/services/charts.service';
 import { BoxDialogComponent } from './components/box-dialog/box-dialog.component'
-import  { DataTableComponent }from './components/data-table/data-table.component';
+import { DataTableComponent }from './components/data-table/data-table.component';
+import { CodeEditorComponent } from './components/code-editor';
+
 @NgModule({
     imports: [
       DragulaModule,
@@ -100,7 +101,8 @@ import  { DataTableComponent }from './components/data-table/data-table.component
       MenuBarComponent,
       BoxDialogComponent,
       ChartsBuilderComponent,
-      DataTableComponent
+      DataTableComponent,
+      CodeEditorComponent
     ],
     exports: [
       BoxesGridComponent
