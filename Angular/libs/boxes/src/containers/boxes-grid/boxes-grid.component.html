@@ -1,11 +1,14 @@
 <ng-template #menubar ></ng-template>
 <gridster [options]="gridConfig">
-  <gridster-item [item]="box" (dblclick)="enableEdit(box)" *ngFor="let box of slide?.boxIds; let i = index">
+  <gridster-item
+    *ngFor="let box of slide?.boxIds; let i = index"
+    [item]="box"
+    (dblclick)="enableEdit(box)">
     <div class="delete box-header-btns pull-right">
       <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
     </div>
     <div [ngClass]="{'gridster-item-content' : editMode}">
-      <ng-template  #texteditor ></ng-template>
+      <ng-container #texteditor></ng-container>
     </div>
     <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content && box.content.type==='chart'" [chart]="box.content.chart"></app-graph>
   </gridster-item>
