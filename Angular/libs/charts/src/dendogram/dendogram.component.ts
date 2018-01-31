@@ -91,7 +91,11 @@ export class DendogramComponent extends Chart implements OnInit, OnChanges {
       this.svg = d3
         .select(this.element)
         .append('svg')
-        .attr('id', 'DendogramComponent');
+        .attr('id', 'DendogramComponent')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('viewBox', "0 0 "+ this.element.offsetWidth +" "+ this.element.offsetHeight)
+
       this.curtain = this.svg.style('opacity', 1);
       this.svg.attr('height', this.height).attr('width', this.width);
       let g = this.svg.append('g').attr('transform', `translate(60,0)`);

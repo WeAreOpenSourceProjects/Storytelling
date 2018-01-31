@@ -59,8 +59,9 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
       .select(element)
       .append('svg')
       .attr('id', 'BubbleChartComponent')
-      .attr('width', element.offsetWidth)
-      .attr('height', element.offsetHeight);
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('viewBox', "0 0 "+ element.offsetWidth +" "+ element.offsetHeight)
 
     let centerX = width * 0.5;
     let centerY = height * 0.5;

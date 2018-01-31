@@ -104,7 +104,7 @@ export const chartTypes = [
       'Dendrograms are tree-like diagrams used to represent the distribution of a hierarchical clustering.' +
       ' The different depth levels represented by each node are visualized on the horizontal axes and it is useful to visualize a non-weighted hierarchy.',
     categorie: 'Hierarchy',
-    dimExemple: [['continent', 'country'], ['pop']],
+    dimExemple: {'contries' :[['continent', 'country'], ['pop']]},
 
     image: 'assets/img-graph/dendogram.jpg'
   }),
@@ -120,7 +120,7 @@ export const chartTypes = [
     description:
       'Treemaps for visualizing hierarchical data. Click to zoom to the next level. Click on the top orange band to zoom out.',
     categorie: 'Hierarchy',
-    dimExemple: [['continent', 'country'], ['pop']],
+    dimExemple: {'contries' :[['continent', 'country'], ['pop']]},
     image: 'assets/img-graph/zoomableTreemap.gif'
   }),
   createChartType({
@@ -135,7 +135,7 @@ export const chartTypes = [
     description:
       'Sunburst for visualizing hierarchical data. Click to zoom to the next level. Click on the center to zoom out.',
     categorie: 'Hierarchy',
-    dimExemple: [['continent', 'country', 'year', 'lifeExp'], ['pop']],
+    dimExemple: {'contries' :[['continent', 'country', 'year', 'lifeExp'], ['pop']]},
     image: 'assets/img-graph/sunburst.gif'
   }),
   createChartType({
@@ -165,7 +165,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Dispersion',
-    dimExemple: [['continent'], ['country'], ['pop'], ['year']],
+    dimExemple: {'contries' :[['continent'], ['country'], ['pop'], ['year']]},
     image: 'assets/img-graph/ForceLayoutBubble.jpg'
   }),
   createChartType({
@@ -195,7 +195,7 @@ export const chartTypes = [
     ],
     description: 'Bar Vertical 2D is a bar chart with vertical representation of data',
     categorie: 'Dispersion',
-    dimExemple: [['continent'], ['year'], ['pop']],
+    dimExemple: {'contries' :[['continent'], ['year'], ['pop']]},
     image: 'assets/img-graph/barVertical2D.jpg'
   }),
   createChartType({
@@ -209,7 +209,7 @@ export const chartTypes = [
     ],
     description: 'Bar Horizontal 2D is a bar chart with horizontal representation of data',
     categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
+    dimExemple: {'contries' :[['continent'], ['year'], ['pop']]},
     image: 'assets/img-graph/barHorizontal2D.jpg'
   }),
   createChartType({
@@ -223,7 +223,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
+    dimExemple: {'contries' :[['continent'], ['year'], ['pop']]},
     image: 'assets/img-graph/barverticalStacked.jpg'
   }),
   createChartType({
@@ -237,7 +237,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
+    dimExemple: {'contries' :[['continent'], ['year'], ['pop']]},
     image: 'assets/img-graph/barVerticalNormalized.jpg'
   }),
   createChartType({
@@ -251,7 +251,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
+    dimExemple: {'contries' :[['continent'], ['year'], ['pop']]},
     image: 'assets/img-graph/BarHorizontalNormalize.jpg'
   }),
   createChartType({
@@ -265,7 +265,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
+    dimExemple: {'contries' :[['continent'], ['year'], ['pop']]},
     image: 'assets/img-graph/polarChart.jpg'
   }),
   createChartType({
@@ -282,7 +282,7 @@ export const chartTypes = [
       'The multi-axis line chart is a special type of chart that allows multiple y-axes to be rendered in the same chart. ' +
       'The advantage of using a multi-axis line chart is that you can plot multiple data sets with different types of units and different scale ranges  on the same chart.',
     categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
+    dimExemple: {'contries' :[['continent'], ['year'], ['pop']]},
     image: 'assets/img-graph/line-chart.jpg'
   }),
   createChartType({
@@ -296,7 +296,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
+    dimExemple: {'contries' :[['continent'], ['year'], ['pop']]},
     image: 'assets/img-graph/heatMap.jpg'
   }),
   createChartType({
@@ -311,7 +311,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Dispersion',
-    dimExemple: [['continent'], ['pop'], ['year'], ['gdpPercap']],
+    dimExemple: {'contries' :[['continent'], ['pop'], ['year'], ['gdpPercap']]},
     image: 'assets/img-graph/bubbleChart.jpg'
   }),
   createChartType({
@@ -375,7 +375,7 @@ export const chartTypes = [
     description:
       'A small multiple is a series of small similar graphics or charts, allowing them to be easily compared',
     categorie: 'Comparison',
-    dimExemple: [['year'], ['country'], ['pop']],
+    dimExemple: {'contries' :[['year'], ['country'], ['pop']]},
     image: 'assets/img-graph/areaChart.jpg'
   }),
   createChartType({
@@ -391,7 +391,7 @@ export const chartTypes = [
     description:
       'A line chart or line graph is a type of chart which displays information as a series of data points called "markers" connected by straight line segments.',
     categorie: 'Comparison',
-    dimExemple: [['year'], ['country'], ['pop']],
+    dimExemple: {'contries' :[['year'], ['country'], ['pop']]},
     image: 'assets/img-graph/lineChartD3.png'
   })
 ];

@@ -273,8 +273,7 @@ ngAfterViewInit() {
   }
 
   static itemResize(item, itemComponent){
-    item.width = itemComponent.width;
-    item.height = itemComponent.height;
+  
   }
 
   removeItem($event, item) {
