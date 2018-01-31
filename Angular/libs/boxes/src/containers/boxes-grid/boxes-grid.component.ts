@@ -239,12 +239,14 @@ ngAfterViewInit() {
     map((item: any) => {
       item.cols = 5;
       item.rows = 5;
+      this.slide.boxIds.push(item);
       return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
     }),
     switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
   ).subscribe((chart: any) => {
+    console.log(chart)
     if (chart) {
-      this.slide.push({type: 'chart',chart})
+      this.slide.boxIds.slice(-1)[0].content = {'type':'chart', chart}
     }
     this.menubar.clear();
   });

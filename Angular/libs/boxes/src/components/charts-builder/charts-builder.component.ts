@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input,ViewContainerRef,  Output, EventEmitter, DoCheck } from '@angular/core';
+import { Component, OnInit, ViewChild, Input,ViewContainerRef,  Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import * as shape from 'd3-shape';
@@ -6,7 +6,7 @@ import * as babyparse from 'babyparse';
 import * as _ from 'lodash';
 import { MatDialogRef } from '@angular/material/dialog';
 import { chartTypes } from './chartTypes';
-import { contries, movies } from './data';
+import { contries, movies, Orchestra } from './data';
 import { GraphComponent } from '@labdat/charts'
 const defaultOptions = {
   view: [900, 600],
@@ -36,7 +36,7 @@ const defaultOptions = {
   templateUrl: './charts-builder.component.html',
   styleUrls: ['./charts-builder.component.scss']
 })
-export class ChartsBuilderComponent implements OnInit, DoCheck {
+export class ChartsBuilderComponent implements OnInit {
   @Input() inputData: any[];
   @Input() inputOptions: any;
   @Output() validSlide = new EventEmitter();
@@ -51,13 +51,15 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     theme: 'dracula',
     mode: 'htmlmixed'
   };
-  constructor(public dialogRef: MatDialogRef<ChartsBuilderComponent>) {}
+  constructor(public dialogRef: MatDialogRef<ChartsBuilderComponent>, private changeDetector: ChangeDetectorRef) {}
 
-
+  useOurSamples =false;
   formatTable: boolean = false;
+  sampleUsed= '';
   data: any[];
   rawData: any[];
   headerValues: any[];
+  headerValuesForTable: any[];
   errors: any[];
   chartType: any;
   theme: string;
@@ -66,11 +68,11 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
   firstFormGroup: FormGroup;
   width : number;
   height:  number;
-  samples=[{
-    name:'contries', data:contries
-  }, {
-    name:'movies', data :movies
-  }]
+  samples=[
+    {name:'contries', data:contries},
+    {name:'movies', data :movies},
+    {name:'Orchestra', data :Orchestra}
+  ]
   @Output() configGraph = new EventEmitter();
   warnMsg: string; //to tell the user which part isn't validated
   _dataText: string;
@@ -117,7 +119,6 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
     this.dataDims.forEach(dim => {
       if (dim != null)
         dim.forEach(d => {
-          console.log(d);
           if (d.split(' ')[0] == 'err') valid = false;
         });
     });
@@ -192,21 +193,30 @@ export class ChartsBuilderComponent implements OnInit, DoCheck {
 
   useExample() {
     this.clear();
-    this.dataText = gapminder;
+    // this.dataText = gapminder;
   }
-  useSample(data){
-    this.dataText = data;
+  useSample(sample){
+    this.useOurSamples =false
+    this.dataText = sample.data;
+    this.sampleUsed = sample.name
+  }
+
+  trySamples(){
+    this._dataText = undefined;
+    this.useOurSamples =true;
+    this.formatTable =false;
   }
   usePast() {
     this.clearAll();
     this.useOurSamples =false;
     this.dataText=' ';
+    this.formatTable= false;
   }
-get haveData (){
-  return this.dataText === '' || this.dataText.length !==0;
-}
+
   useExampleDimension() {
-    this.dataDims = this.chartType.dimExemple;
+    console.log(this.chartType.dimExemple[this.sampleUsed], this.sampleUsed);
+    this.dataDims = this.chartType.dimExemple[this.sampleUsed];
+    console.log(this.dataDims);
     this.processData();
   }
   clear() {
@@ -249,6 +259,19 @@ get haveData (){
     return this.data;
   }
 
+  formTable(){
+    this.headerValuesForTable = this.headerValues.map(key => ({
+      data: key.data,
+      title: key.title,
+      type: (key.type === 'string')?'text':'numeric'
+    }));
+    this.formatTable =true;
+  }
+
+  ngAfterViewChecked(){
+       this.changeDetector.detectChanges();
+  }
+
   updateData(value = this._dataText) {
     this._dataText = value;
     const parsed = babyparse.parse(this._dataText, {
@@ -256,25 +279,12 @@ get haveData (){
       dynamicTyping: true
     });
 
-    console.log(
-      'parsed',
-      parsed,
-      parsed.meta.fields.map(key => ({ data: key, title: key.charAt(0).toUpperCase() + key.slice(1) }))
-    );
-
     this.errors = parsed.errors;
 
     if (this.errors.length) {
       return this.clear();
     }
-
     this.rawData = parsed.data;
-    /*
-    const headerValues = parsed.meta.fields.map(d => ({
-        name: d,
-        type: typeof parsed.data[0][d]
-    }));
-*/
     const headerValues = parsed.meta.fields.map(key => ({
       data: key,
       title: key.charAt(0).toUpperCase() + key.slice(1),

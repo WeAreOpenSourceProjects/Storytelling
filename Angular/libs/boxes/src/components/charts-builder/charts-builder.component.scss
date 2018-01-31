@@ -33,7 +33,18 @@
   border: solid 1px #e8dada;
   overflow: hidden;
 }
-
+.samples {
+  cursor: pointer;
+  height: 10%;
+  margin : 2px;
+  justify-content: center;
+  display : flex;
+}
+.align-name {
+  align-items: center;
+  display: flex;
+  }
+  
 /deep/ app-chart-builder{
   height: 100%;
   .mat-stepper-horizontal, .mat-stepper-vertical {

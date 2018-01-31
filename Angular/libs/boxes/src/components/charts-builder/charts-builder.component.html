@@ -3,33 +3,32 @@
     <ng-template matStepLabel>Load your data</ng-template>
     <div class="flex-container">
       <ul class="data-load-actions" fxFlex="10">
-        <li class="data-load-action">
-          <a (click)="usePast()" class="a-data-load">
+        <li class="data-load-action" (click)="usePast()">
+          <a  class="a-data-load">
             <mat-icon class="past-icon" svgIcon="content:ic_content_paste_24px"></mat-icon>
             Paste
           </a>
         </li>
-        <li class="data-load-action" >
-          <a  (click)="useOurSamples = true" class="a-data-load">
+        <li class="data-load-action" (click)="trySamples()">
+          <a class="a-data-load">
             <mat-icon class="past-icon" svgIcon="image:ic_assistant_24px"></mat-icon>
             Try our samples
           </a>
         </li>
       </ul>
-      <ul *ngIf="useOurSamples">
-        <li *ngFor="let sample of samples">
-          <mat-card (click)="useSample(sample.data)">
-            {{sample.name}}
-          </mat-card>
-        </li>
-      </ul>
+
       <div fxFlex="5"></div>
+      <ul *ngIf="useOurSamples" fxFlex="85">
+          <mat-card  *ngFor="let sample of samples" fxFlex="20" class="samples" (click)="useSample(sample)">
+            <span class="align-name">{{sample.name}}</span>
+          </mat-card>
+      </ul>
       <div *ngIf="dataText" class="data-container"  fxFlex="85">
         <i class="format fa fa-align-left breath-left" [class.checked]="!formatTable" matTooltip="View as Text" matTooltipPosition="above" (click)="formatTable = false"></i>
-        <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formatTable = true"></i>
+        <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formTable()"></i>
         <codemirror *ngIf="!formatTable" [(ngModel)]="dataText" [config]="editorConfig">
         </codemirror>
-        <app-data-table *ngIf="formatTable" [data]="rawData" [columns]="headerValues" (updatedData)="editData($event)"></app-data-table>
+        <app-data-table *ngIf="formatTable" [data]="rawData" [columns]="headerValuesForTable" (updatedData)="editData($event)"></app-data-table>
         <p *ngIf="dataText.length > 1">
           <span *ngFor="let error of errors" class="text-red">
             <span *ngIf="error.row">Row {{error.row + 2}}: </span>{{error.message}} <br />
