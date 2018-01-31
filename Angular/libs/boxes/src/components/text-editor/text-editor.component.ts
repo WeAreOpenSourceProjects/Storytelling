@@ -11,17 +11,13 @@ export class TextEditorComponent {
 
   @HostListener('dblclick', ['$event'])
   onDblClick(event) {
+    console.log('dblclick', event);
     ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.on');
-    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.focus');
-//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'blur', [], true);
+//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'click', [], true);
+//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.focus');
+//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'focus', [], true);
 
-}
-
-//  @HostListener('window:click', ['$event'])
-//  onClickOut(event) {
-//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'blur', [], true);
-//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.off');
-//  }
+  }
 
   @ViewChild('froalaEditor') froalaEditor: ElementRef;
 
@@ -37,17 +33,16 @@ export class TextEditorComponent {
     this.editorOptions = {
       toolbarInline: true,
       initOnClick :true,
-      heightMin: 200,
-      heightMax: 400,
-      widthMax: 1000,
+      charCounterCount: false,
       charCounterMax: 3000,
       toolbarSticky: false,
-      toolbarBottom: false,
-      toolbarButtons: ['undo', 'redo' , '-', 'bold', 'italic', 'underline']
+      toolbarBottom: true,
+      toolbarButtons: ['undo', 'redo' , 'bold', 'italic', 'underline', 'strikeThrough', 'color', 'fontFamily', 'fontSize', 'emoticons', '-', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'indent', 'outdent']
     };
   }
 
   ngAfterViewInit() {
+    console.log($(this.froalaEditor.nativeElement).closest('gridster-item').height());
     ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.off');
     ($(this.froalaEditor.nativeElement) as any).on('froalaEditor.blur', (e, editor) => {
       console.log('blur');

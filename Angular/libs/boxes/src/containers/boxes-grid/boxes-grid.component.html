@@ -8,7 +8,7 @@
     <div class="delete box-header-btns pull-right">
       <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
     </div>
-    <div [ngClass]="{'gridster-item-content' : editMode}">
+    <div [ngClass]="{'gridster-item-content' : editMode, 'text-editor': true}">
       <ng-container #texteditor></ng-container>
     </div>
     <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content && box.content.type==='chart'" [chart]="box.content.chart"></app-graph>

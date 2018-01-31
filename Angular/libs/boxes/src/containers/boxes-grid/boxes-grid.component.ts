@@ -128,7 +128,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       emptyCellDragMaxCols: 50,
       emptyCellDragMaxRows: 50,
       draggable: {
-        delayStart: 300,
+        delayStart: 200,
         enabled: true,
         ignoreContentClass: 'gridster-item-content',
         ignoreContent: false,
@@ -217,11 +217,11 @@ ngAfterViewInit() {
     filter(type => type === 'text')
   );
 
-
   textType$.pipe(
     withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
     switchMap((item: any) => {
-      console.log('??')
+      item.item.cols = 5;
+      item.item.rows = 1;
       this.slide.boxIds.push(item.item);
       return zip(this.texteditor.changes, of(item));
     })
