@@ -31,7 +31,7 @@ gridster-item {
   border : none !important;
   padding: 5px;
   &:hover{
-    border : dotted 1px !important;
+    border : solid 1px !important;
     .delete {
       display: block;
     }
@@ -45,9 +45,14 @@ ul li {
 
 gridster-item {
   position: absolute;
+  display: flex !important;
   border: solid 1px #ccc;
+  overflow: visible !important;
 }
 
+.text-editor {
+  flex-grow: 1 !important;
+}
 
 .btn {
   margin-left: 10px;
@@ -90,6 +95,14 @@ body {
       visibility : visible !important;
     }
   }
+}
+
+.gridster-item-content.text-editor {
+  cursor: auto;
+}
+
+:not(.gridster-item-content).text-editor {
+  cursor: move;
 }
 
 .action-button {
