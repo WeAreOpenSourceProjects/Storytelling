@@ -3,6 +3,11 @@ $axisColor:#4c4c4c;
     width: 100%;
     height: 100%;
 
+    .d3-chart {
+        width: 100%;
+        height: 100%;
+    }
+
     /deep/ .axis{
        text {
           fill: $axisColor;
@@ -12,11 +17,6 @@ $axisColor:#4c4c4c;
           stroke: $axisColor;
       }
     }
-}
-
-/deep/ .d3-chart svg {
-  width: 100%;
-  height: 100%;
 }
 
 :host /deep/ .tooltip {

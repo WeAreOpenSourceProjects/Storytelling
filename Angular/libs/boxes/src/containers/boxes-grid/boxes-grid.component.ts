@@ -100,10 +100,10 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       margin: 5,
       outerMargin: true,
       mobileBreakpoint: 640,
-      minCols: 10,
-      maxCols: 20,
-      minRows: 10,
-      maxRows: 20,
+      minCols: 20,
+      maxCols: 30,
+      minRows: 20,
+      maxRows: 30,
       maxItemCols: 100,
       minItemCols: 1,
       maxItemRows: 100,
@@ -157,6 +157,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
         pushDirections: {north: true, east: true, south: true, west: true},
         pushResizeItems: false,
         disableWindowResize: false,
+        displayGrid: 'always',
         disableWarnings: false,
         scrollToNewItems: false
 
@@ -229,7 +230,7 @@ ngAfterViewInit() {
     const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
     const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
     (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
-      item.content = { type: 'text', text }
+      this.slide.boxIds.slice(-1)[0].content = { type: 'text', text }
     });
   });
 
@@ -249,20 +250,6 @@ ngAfterViewInit() {
     }
     this.menubar.clear();
   });
-/*
-  for (let i = 0; i<this.slide.boxIds.length; i++) {
-    if (this.slide.boxIds[i].content.type === 'text') {
-      const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
-      const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-      (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
-      (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
-        this.slide.boxIds[i].content = {
-          'type': 'text',
-          'text': text
-        }
-      });
-    }
-  }*/
   }
 
   changedOptions() {
@@ -280,11 +267,10 @@ ngAfterViewInit() {
       const dialog = this.dialog.open(BoxDialogComponent);
       dialog.afterClosed().subscribe(result => {
         if (result){
-          $event.preventDefault();
-          $event.stopPropagation();
-          this.boxesService.delete(item._id).subscribe((res)=>{
+            this.boxesService.delete(item._id).subscribe((res)=>{
             console.log('boxe deleted');
           })
+
           this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
           this.cdr.detectChanges();
         }
