@@ -68,7 +68,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   private presentationId: any;
 
   private emptyCellContextMenu$ = new Subject();
-  public textEditorExists = false;
 
   constructor(
     private dialog: MatDialog,
@@ -219,7 +218,6 @@ ngAfterViewInit() {
   );
 
   textType$.pipe(
-    tap(() => this.textEditorExists = true),
     withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
     switchMap((item: any) => {
       item.item.cols = 5;
@@ -228,7 +226,6 @@ ngAfterViewInit() {
       return zip(this.texteditor.changes, of(item));
     })
   ).subscribe(([texteditor, item]: [any, any]) => {
-    console.log(item)
     const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
     const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
     (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
@@ -237,7 +234,6 @@ ngAfterViewInit() {
   });
 
  chartType$.pipe(
-  tap(() => this.textEditorExists = false),
     withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
     map((item: any) => {
       item.cols = 5;

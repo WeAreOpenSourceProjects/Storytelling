@@ -3,8 +3,8 @@
 </div>
 <gridster [options]="gridConfig">
  <gridster-item [item]="box" *ngFor="let box of currentSlide?.boxIds; let i = index">
-   <div *ngIf="box.content.type ==='text'"  #textContainer [froalaView]="box.content.text" ></div>
-   <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content && box.content.type==='chart'" [chart]="box.content.chart"></app-graph>
+   <div class="text" *ngIf="box.content?.type ==='text'"  #textContainer [froalaView]="box.content?.text" ></div>
+   <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
   </gridster-item>
 </gridster>
 

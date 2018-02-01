@@ -1,6 +1,6 @@
 <ng-template #menubar ></ng-template>
 <gridster [options]="gridConfig">
-  <img *ngIf="slide.boxIds.length ===0" class="background-mouse" src="assets/right-click.png"/>
+  <img *ngIf="slide.boxIds.length === 0" class="background-mouse" src="assets/right-click.png"/>
   <gridster-item
     *ngFor="let box of slide?.boxIds; let i = index"
     [item]="box"
@@ -8,10 +8,10 @@
     <div class="delete box-header-btns pull-right">
       <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
     </div>
-    <div [hidden]="!textEditorExists" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }">
+    <div [hidden]="box.content?.type === 'chart'" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }">
       <ng-container #texteditor></ng-container>
     </div>
-    <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content && box.content.type==='chart'" [chart]="box.content.chart"></app-graph>
+    <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
   </gridster-item>
 </gridster>
 <a class="fixed" mat-fab  type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>
