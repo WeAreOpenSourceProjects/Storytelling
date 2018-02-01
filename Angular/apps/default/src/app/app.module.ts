@@ -22,8 +22,7 @@ import { RouterStateModule } from '@labdat/router-state';
 import { SlidesStateModule } from '@labdat/slides-state';
 import { PresentationsStateModule } from '@labdat/presentations-state';
 import { BoxesStateModule } from '@labdat/boxes-state';
-import { RootPresentationsRoutingModule, PresentationsRoutingModule } from '@labdat/presentations-routing';
-import { RootPresentationsStateModule } from '@labdat/presentations-state/src/presentations-state.module';
+import { PresentationsRoutingModule } from '@labdat/presentations-routing';
 import { SlidesRoutingModule } from '@labdat/slides-routing';
 
 @NgModule({
@@ -46,9 +45,11 @@ import { SlidesRoutingModule } from '@labdat/slides-routing';
     RouterStateModule.forRoot(),
     AuthenticationStateModule.forRoot(),
     CoreStateModule.forRoot([...coreConfiguration.self, ...presentationsConfiguration.core]),
+
     PresentationsStateModule.forRoot(),
-    PresentationsRoutingModule.forRoot(),
     SlidesStateModule.forRoot(),
+
+    PresentationsRoutingModule.forRoot(),
     SlidesRoutingModule.forRoot()
   ],
   declarations: [AppComponent],
