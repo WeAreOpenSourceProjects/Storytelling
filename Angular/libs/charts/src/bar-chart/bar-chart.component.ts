@@ -93,15 +93,15 @@ export class BarChartComponent extends Chart implements OnInit, OnChanges {
     setTimeout(()=>{
 
       const element = this.chartContainer.nativeElement;
-      this.width = element.offsetWidth - this.margin.left - this.margin.right;
+     this.width = element.offsetWidth - this.margin.left - this.margin.right;
       this.height = element.offsetHeight - this.margin.top - this.margin.bottom;;
 
       const svg = d3
         .select(element)
         .append('svg')
         .attr('id', 'BarChartComponent')
-        .attr('width', element.offsetWidth )
-        .attr('height', element.offsetHeight);
+//        .attr('width', element.offsetWidth )
+//        .attr('height', element.offsetHeight);
 
       // chart plot area
       this.chart = svg
