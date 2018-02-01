@@ -221,8 +221,8 @@ ngAfterViewInit() {
   textType$.pipe(
     withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
     switchMap((item: any) => {
-      item.item.cols = 5;
-      item.item.rows = 1;
+      item.item.cols = 8;
+      item.item.rows = 2;
       this.slide.boxIds.push(item.item);
       return zip(this.texteditor.changes, of(item));
     })
