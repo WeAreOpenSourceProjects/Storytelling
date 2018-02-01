@@ -194,6 +194,21 @@ emptyCellContextMenu(event, item) {
 
 ngAfterViewInit() {
 
+  for (let i = 0; i<this.slide.boxIds.length; i++) {
+    if (this.slide.boxIds[i].content.type === 'text') {
+      const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+      const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
+      console.log(this.slide.boxIds[i].content.text);
+      setTimeout(() => (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text);
+      (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
+        this.slide.boxIds[i].content = {
+          'type': 'text',
+          'text': text
+        }
+      });
+    }
+  }
+
   const addBox$ = this.emptyCellContextMenu$.pipe(
     map(({event, item}) => {
       this.editMode = false;

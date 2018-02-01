@@ -184,3 +184,8 @@ gridster-item {
 .text {
   flex-grow: 1 !important;
 }
+
+/deep/ .fr-view {
+  font-family: "Times New Roman", Georgia, Serif;
+  font-size: 36px !important;
+}
