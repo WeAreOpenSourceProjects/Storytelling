@@ -68,6 +68,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   private presentationId: any;
 
   private emptyCellContextMenu$ = new Subject();
+  public textEditorExists = false;
 
   constructor(
     private dialog: MatDialog,
@@ -218,6 +219,7 @@ ngAfterViewInit() {
   );
 
   textType$.pipe(
+    tap(() => this.textEditorExists = true),
     withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
     switchMap((item: any) => {
       item.item.cols = 5;
@@ -235,6 +237,7 @@ ngAfterViewInit() {
   });
 
  chartType$.pipe(
+  tap(() => this.textEditorExists = false),
     withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
     map((item: any) => {
       item.cols = 5;
@@ -273,8 +276,7 @@ ngAfterViewInit() {
   }
 
   static itemResize(item, itemComponent){
-    item.width = itemComponent.width;
-    item.height = itemComponent.height;
+
   }
 
   removeItem($event, item) {

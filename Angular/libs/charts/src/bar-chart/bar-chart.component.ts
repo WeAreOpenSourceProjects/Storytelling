@@ -100,8 +100,9 @@ export class BarChartComponent extends Chart implements OnInit, OnChanges {
         .select(element)
         .append('svg')
         .attr('id', 'BarChartComponent')
-//        .attr('width', element.offsetWidth )
-//        .attr('height', element.offsetHeight);
+//        .attr('width', '100%')
+//        .attr('height', '100%')
+        .attr('viewBox', "0 0 "+ element.offsetWidth +" "+ element.offsetHeight)
 
       // chart plot area
       this.chart = svg

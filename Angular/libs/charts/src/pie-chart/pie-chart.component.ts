@@ -69,7 +69,9 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
         .select(element)
         .append('svg')
         .attr('id', 'PieChartComponent')
-        .attr('viewBox', "0 0 400 400")
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('viewBox', "0 0 "+ element.offsetWidth +" "+ element.offsetHeight)
         .append('g')
         .attr('transform', `translate(${element.offsetWidth / 2},${element.offsetHeight / 2})`);
 
