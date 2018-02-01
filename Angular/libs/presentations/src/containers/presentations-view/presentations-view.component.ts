@@ -99,7 +99,7 @@ export class PresentationsViewComponent implements OnInit {
       mobileBreakpoint: 640,
       minCols: 20,
       maxCols: 30,
-      minRows: 10,
+      minRows: 20,
       maxRows: 30,
       maxItemCols: 100,
       minItemCols: 1,
