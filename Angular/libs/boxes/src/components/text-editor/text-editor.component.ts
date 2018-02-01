@@ -32,7 +32,7 @@ export class TextEditorComponent {
 
     this.editorOptions = {
       toolbarInline: true,
-      initOnClick :true,
+      initOnClick : false,
       charCounterCount: false,
       charCounterMax: 3000,
       toolbarSticky: false,
@@ -42,7 +42,6 @@ export class TextEditorComponent {
   }
 
   ngAfterViewInit() {
-    console.log($(this.froalaEditor.nativeElement).closest('gridster-item').height());
     ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.off');
     ($(this.froalaEditor.nativeElement) as any).on('froalaEditor.blur', (e, editor) => {
       console.log('blur');
