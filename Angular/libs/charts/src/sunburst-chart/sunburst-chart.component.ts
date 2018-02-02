@@ -306,7 +306,7 @@ export class SunburstChartComponent extends Chart {
         // Position of the sequence
         d3.select(element).select('#sequence')
             .select('svg')
-            .attr("transform", d => "translate(" + thisClass.width + SequenceTotalSize - thisClass.explanationWidth) / 2  + "," + (thisClass.height / 2 - thisClass.radius + thisClass.margin.top) + ")");
+            .attr("transform", d => "translate(" + (thisClass.width + SequenceTotalSize - thisClass.explanationWidth) / 2  + "," + (thisClass.height / 2 - thisClass.radius + thisClass.margin.top) + ")");
 
         // Position of the explanation
         d3.select(element).select('#explanation')

@@ -9,7 +9,7 @@ import * as _ from 'lodash';
   templateUrl: './dendogram.component.html',
   styleUrls: ['./dendogram.component.scss']
 })
-export class DendogramComponent extends Chart implements OnInit, OnChanges {
+export class DendogramComponent extends Chart  {
   @ViewChild('chart') private chartContainer: ElementRef;
   private element: any;
   private data: Array<any> = [];
@@ -23,17 +23,14 @@ export class DendogramComponent extends Chart implements OnInit, OnChanges {
     super();
   }
 
-  ngOnInit() {
+
+  ngAfterViewInit(){
     this.chartOptions = { ...this.configInput };
     d3.select('#DendogramComponent').remove();
-    this.init();
+    setTimeout(()=> {
+      this.init();
+    })
   }
-
-  ngOnChanges() {
-    d3.select('#DendogramComponent').remove();
-    this.init();
-  }
-
   /**
    * Process json Data to D3.js Bar chart format
    * @param dataDims :  string[] Selected Dimentions
@@ -91,10 +88,11 @@ export class DendogramComponent extends Chart implements OnInit, OnChanges {
       this.svg = d3
         .select(this.element)
         .append('svg')
-        .attr('id', 'DendogramComponent')
         .attr('width', '100%')
         .attr('height', '100%')
         .attr('viewBox', "0 0 "+ this.element.offsetWidth +" "+ this.element.offsetHeight)
+        .attr('id', 'DendogramComponent')
+
 
       this.curtain = this.svg.style('opacity', 1);
       this.svg.attr('height', this.height).attr('width', this.width);
