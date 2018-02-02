@@ -32,6 +32,7 @@ export class AuthenticationGuardService implements CanActivate, CanLoad {
           }
           return true;
         } else {
+          console.log('???????', tokenExpiresIn, Date.now())
           if (tokenExpiresIn) {
             if (tokenExpiresIn < Date.now()) {
               if (path === 'auth') {
