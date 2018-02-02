@@ -123,12 +123,8 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
         this.height = element.offsetHeight;
 
         let svg = d3.select(element).append('svg')
+            .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight)
             .attr("id", "ForceDirectedGraphComponent")
-            .attr('width', element.offsetWidth)
-            .attr('height', element.offsetHeight)
-            //    .atrr("overflow", "visible")
-            //    .attr("preserveAspectRatio", "xMidYMid meet")
-            //  .attr("viewBox", "0 0 " + (element.offsetWidth) + " " + element.offsetHeight)
             .classed("allow-overflow", true);
 
         //var width = +this.svg.attr("width");
@@ -210,9 +206,6 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
         let legendBox = d3.select(legendEle).append('svg')
             .attr("id", "ForceDirectedGraphComponentLegend")
             .attr("class", "legends")
-            //.attr('width', legendEle.offsetWidth)
-            //.attr('height', legendEle.offsetHeight)
-            //  .attr("viewBox", "0 0 " + (legendEle.offsetWidth) + " " + legendEle.offsetHeight)
             //.attr("transform", "translate(40,20)")
             .attr("overflow", "scroll");
 

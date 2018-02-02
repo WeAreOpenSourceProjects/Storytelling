@@ -1,22 +1,21 @@
 :host {
     width: 100%;
+    height: 100%;
 
     .d3-chart {
         width: 100%;
-        height: 80vh;
+        height: 100%;
         display: flex;
-
         .legend-container {
             //overflow: scroll !important;
-            flex: initial;
-            width: 200px;
-            min-width: 100px;
-            height: 60vh;
+            width: 20%;
+
             overflow-y: scroll;
         }
 
         .svg-container {
-            flex: 1;
+          width: 50%;
+
         }
     }
 }
