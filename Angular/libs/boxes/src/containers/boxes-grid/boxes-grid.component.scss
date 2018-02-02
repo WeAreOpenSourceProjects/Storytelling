@@ -47,7 +47,9 @@ gridster-item {
   position: absolute;
   display: flex !important;
   border: solid 1px #ccc;
-  overflow: visible !important;
+  overflow-x: initial !important;
+  overflow-y: visible !important;
+  word-wrap: break-word;
 }
 
 .text-editor {

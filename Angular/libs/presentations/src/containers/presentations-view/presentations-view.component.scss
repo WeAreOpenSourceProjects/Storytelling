@@ -169,7 +169,9 @@ gridster, gridster-item {
 gridster-item {
   position: absolute;
   display: flex !important;
-  overflow: visible !important;
+  overflow-x: initial !important;
+  overflow-y: visible !important;
+  word-wrap: break-word;
 }
 
 :host /deep/ {
@@ -183,6 +185,10 @@ gridster-item {
 
 .text {
   flex-grow: 1 !important;
+  display: block;
+  min-height: 100%;
+  max-width: 100% !important;
+  padding: 10px;
 }
 
 /deep/ .fr-view {

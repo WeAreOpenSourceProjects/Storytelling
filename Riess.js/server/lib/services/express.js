@@ -8,8 +8,6 @@ var config = require('../config'),
   log = require('./logger').log(),
   expressLogger = require('./logger').logExpress(),
   bodyParser = require('body-parser'),
-  session = require('express-session'),
-  MongoStore = require('connect-mongo')(session),
   compress = require('compression'),
   methodOverride = require('method-override'),
   cookieParser = require('cookie-parser'),
@@ -76,35 +74,6 @@ module.exports.initMiddleware = function (app) {
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }))
 
-};
-
-/**
- * Configure Express session
- */
-module.exports.initSession = function (app) {
-  // Express MongoDB session storage
-  app.use(session({
-    saveUninitialized: true,
-    resave: true,
-    secret: config.sessionSecret,
-    cookie: {
-      maxAge: config.sessionCookie.maxAge,
-      httpOnly: config.sessionCookie.httpOnly,
-      secure: config.sessionCookie.secure && config.secure.ssl
-    },
-    name: config.sessionKey,
-    store:
-      config.sessionStore
-      ? new MongoStore({
-        url: config.db.uri,
-        mongoOptions: config.db.options,
-        collection: config.sessionStore.sessionCollection
-      })
-      : undefined
-  }));
-
-  // Add Lusca CSRF Middleware
-  app.use(lusca(config.csrf));
 };
 
 /**
@@ -214,8 +183,8 @@ module.exports.init = function () {
   // Initialize modules static client routes, before session!
   this.initModulesClientRoutes(app);
 
-  // Initialize Express session
-//  this.initSession(app);
+  // Add Lusca CSRF Middleware
+  app.use(lusca(config.csrf));
 
   // Initialize Modules configuration
   this.initModulesConfiguration(app);
