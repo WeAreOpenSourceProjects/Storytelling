@@ -1,11 +1,10 @@
 :host {
   width: 100%;
+  height: 100%;
   .d3-chart {
     width: 100%;
     height: 100%;
-    text-align: center;
-    vertical-align: middle;
-    position:relative;
+    display: flex
   }
 }
 
@@ -13,7 +12,4 @@
   overflow: hidden;
   font: 11px sans-serif;
   position:absolute;
-    top:50%;
-    bottom:50%;
-    transform:translate(-50%, -50%);
 }
