@@ -11,7 +11,7 @@ import {Chart} from '../chart.class';
     templateUrl: './zoomable-treemap-chart.component.html',
     styleUrls: ['./zoomable-treemap-chart.component.scss']
 })
-export class ZoomableTreemapChartComponent extends Chart implements OnInit, OnChanges {
+export class ZoomableTreemapChartComponent extends Chart  {
     @ViewChild('chart') private chartContainer: ElementRef;
     private data: any;
     private curtain: any; //for animation
