@@ -18,7 +18,7 @@ import { Chart } from '../chart.class';
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss']
 })
-export class BarChartComponent extends Chart implements OnInit, OnChanges {
+export class BarChartComponent extends Chart implements OnInit {
   @ViewChild('chart') private chartContainer: ElementRef;
   private data: Array<any> = [];
   private margin: any = {top: 20, right: 20, bottom: 20, left: 20};
@@ -39,11 +39,6 @@ export class BarChartComponent extends Chart implements OnInit, OnChanges {
 
   ngOnInit() {
     this.chartOptions = { ...this.configInput };
-    d3.select('#BarChartComponent').remove();
-    this.init();
-  }
-
-  ngOnChanges() {
     d3.select('#BarChartComponent').remove();
     this.init();
   }
