@@ -6,16 +6,18 @@
   .d3-chart {
     height: 100%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   #explanation {
+    width: 50%;
+    height: 50px;
+    margin : 0 auto;
     color: #666;
-    height: 100px;
     line-height: 100px;
-    position: relative;
+    position: initial;
     text-align: center;
-    width: 140px;
-
     div {
       display: inline-block;
       line-height: normal;
@@ -25,5 +27,7 @@
 
   #percentage {
     font-size: 2.5em;
+    margin: 0 auto;
+
   }
 }
