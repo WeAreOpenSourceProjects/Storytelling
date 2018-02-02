@@ -201,7 +201,7 @@ export class SunburstChartComponent extends Chart {
         d3.select("#trail").remove();
         // Add the svg area.
         d3.select(element).select("#sequence").append("svg")
-            .attr('viewBox', "-100 0 "+ this.explanationWidth+" "+ this.explanationHeight)
+            .attr('viewBox', "-100 0 1000 100")
             .attr("height", '100%')
             .attr("id", "trail")
             .style("width", '100%');
