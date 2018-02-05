@@ -121,8 +121,6 @@ export class WordCloudComponent extends Chart implements OnInit, OnChanges {
     const svg = D3.select(element)
       .append('svg')
       .attr('id', 'WordCloudComponent')
-      .attr('width', this.width)
-      .attr('height', this.height)
       .append('g')
       .attr('transform', `translate(${element.offsetWidth >> 1}, ${element.offsetHeight >> 1})`);
 

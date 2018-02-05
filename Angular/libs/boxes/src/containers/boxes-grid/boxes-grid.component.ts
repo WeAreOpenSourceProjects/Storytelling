@@ -250,8 +250,8 @@ ngAfterViewInit() {
  chartType$.pipe(
     withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
     map((item: any) => {
-      item.cols = 5;
-      item.rows = 5;
+      item.cols = 10;
+      item.rows = 10;
       this.slide.boxIds.push(item);
       return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
     }),

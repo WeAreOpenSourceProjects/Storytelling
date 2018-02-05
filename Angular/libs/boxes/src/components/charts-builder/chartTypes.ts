@@ -181,7 +181,7 @@ export const chartTypes = [
       'Nested circles allow to represent hierarchies and compare values.' +
       ' This visualization is particularly effective to show the proportion between elements through their areas and their position inside a hierarchical structure. ',
     categorie: 'Hierarchy',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+    dimExemple: {'contries' :[['country','year'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
     image: 'assets/img-graph/ForceDirectedGraph.jpg'
   }),
   createChartType({
