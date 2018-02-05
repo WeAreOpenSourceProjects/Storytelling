@@ -11,6 +11,9 @@ import { filter } from 'rxjs/operators/filter';
 import { zip } from 'rxjs/operators/zip';
 import { of } from 'rxjs/observable/of';
 import { take } from 'rxjs/operators/take';
+import { tap } from 'rxjs/operators/tap';
+import { merge } from 'rxjs/observable/merge';
+import { switchMap } from 'rxjs/operators/switchMap';
 
 @Injectable()
 export class SlidesGuardService implements CanActivate {
@@ -21,7 +24,13 @@ export class SlidesGuardService implements CanActivate {
   constructor(private store: Store<AuthenticationState>) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    this.currentPresentationId$.subscribe(presentationId => this.store.dispatch(new fromSlides.Load({ presentationId })));
-    return this.slidesLoaded$.pipe(filter(loaded => loaded), take(1));
+//    this.currentPresentationId$.subscribe(presentationId => this.store.dispatch(new fromSlides.Load({ presentationId })));
+//    return this.slidesLoaded$.pipe(filter(loaded => loaded), take(1));
+    return this.currentPresentationId$.pipe(
+      tap(presentationId => this.store.dispatch(new fromSlides.Load({ presentationId }))),
+      switchMap(() => this.slidesLoaded$),
+      filter(loaded => loaded)
+    );
   }
+
 }

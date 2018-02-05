@@ -56,18 +56,13 @@ export class PresentationsApiService {
   add(presentation: Presentation): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}`;
     //console.log(presentation)
-    const payload = { ...presentation, author: presentation.author.id }
-    return this.http.post(backendURL, payload).pipe(map((presentation: Presentation) => ({...presentation, id: presentation._id})));
+    return this.http.post(backendURL, presentation).pipe(map((presentation: Presentation) => ({...presentation, id: presentation._id})));
   }
 
   copy(presentationId: number): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}/copy`;
     return this.http.post(backendURL, { presentationId })
-    .pipe(map((result: any) => ({
-      presentation: { ...result.presentation, id: result.presentation._id },
-      slides: result.slides.map(slide => ({ ...slide, id: slide._id })),
-      boxes: result.boxes.map(box => ({ ...box, id: box._id }))
-    })));
+    .pipe(map((presentation: any) => ({ ...presentation, id: presentation._id })));
   }
 
   getAll(pageIndex, pageSize): Observable<any> {

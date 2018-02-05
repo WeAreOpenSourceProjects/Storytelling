@@ -127,11 +127,7 @@ export class Copy implements Action {
 
 export class CopySuccess implements Action {
   readonly type = COPY_SUCCESS;
-  constructor(public payload: {
-    presentation: Presentation,
-    slides: Slide[],
-    boxes: Box[]
-  }) {}
+  constructor(public payload: Presentation) {}
 }
 
 export class CopyFailure implements Action {

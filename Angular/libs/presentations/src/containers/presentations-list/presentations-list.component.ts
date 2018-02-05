@@ -105,10 +105,8 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     this.subscriptions.add(editSubscription);
 
     const addSubscription = this.add$
-    .pipe(withLatestFrom(this.user$, (click, user) => user))
-    .subscribe((user) => {
+    .subscribe(() => {
       const presentation = new Presentation();
-      presentation.author = user;
       this.store.dispatch(new fromPresentations.Add(presentation));
     });
     this.subscriptions.add(addSubscription);

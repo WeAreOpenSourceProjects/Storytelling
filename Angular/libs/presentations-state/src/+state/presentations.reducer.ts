@@ -36,7 +36,7 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       return presentationsAdapter.addOne(action.payload, state);
     }
     case fromPresentations.COPY_SUCCESS: {
-      return presentationsAdapter.addOne(action.payload.presentation, state);
+      return presentationsAdapter.addOne(action.payload, state);
     }
     case fromPresentations.DELETE_SUCCESS: {
       return presentationsAdapter.removeOne(action.payload.presentationId, state);

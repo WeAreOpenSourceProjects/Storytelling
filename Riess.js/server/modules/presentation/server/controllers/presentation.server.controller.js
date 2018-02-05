@@ -9,10 +9,12 @@ var path = require('path'),
   Box = mongoose.model('Box'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
-  Promise = require('promise');
+  Promise = require('promise'),
+  _ = require('lodash');
 
 exports.create = function(req, res) {
   var presentation = new Presentation(req.body);
+  presentation.author = req.user.id;
   Presentation
   .create(presentation)
   .then(function(presentation) {
@@ -27,16 +29,19 @@ exports.create = function(req, res) {
     });
   });
 };
-
+/*
 exports.copy = function(req, res) {
-  var presentation = Presentation.findOne({ _id: req.body.presentationId })
+  const presentationId = req.body.presentationId;
+  const user = req.user;
+
+  var presentation = Presentation.findOne({ _id: presentationId });
+
   var newPresentation = presentation
   .then(function(presentation) {
     var presentation = presentation.toObject();
     delete presentation._id;
-    const user = { ...req.user, _id: req.user.id };
-    delete user.id;
-    presentation.author = user;
+    delete presentation.slideIds;
+    presentation.author = user.id;
     presentation.title += ' copy';
     return Presentation.create(presentation);
   })
@@ -48,6 +53,17 @@ exports.copy = function(req, res) {
   .then(function(presentation) {
     return Slide.find({_id: { $in: presentation.slideIds } }).exec()
   })
+
+
+
+  slides
+  .then(function(slides) {
+    slides.map(function(slide) {
+      const newSlide = _.deepCopy(slide)
+      return (copy(newSlide), boxIds)
+    })
+    return
+  });
 
   var newSlides = slides
   .then(function(slides) {
@@ -66,15 +82,21 @@ exports.copy = function(req, res) {
 
   var newBoxes = slides
   .then(function(slides) {
-    return Box.find({_id: { $in: [].concat.apply([], slides.map(slide => slide.boxIds)) } }).exec()
+    return Box.aggregate(
+      { $match: { _id: { $in: [].concat.apply([], slides.map(slide => slide.boxIds)) } } }//,
+//      { $group: { _id: '$slideId' } }
+    )
+//    return Box.find({_id: { $in: [].concat.apply([], slides.map(slide => slide.boxIds)) } }, {$group: 'slideId'}).exec()
   })
   .then(function(boxes) {
     if (boxes.length === 0) {
       return { ops: [] };
     }
     return Box.collection.insert(boxes.map(function(box) {
-      var box = box.toObject();
+      console.log('box', box)
+//      var box = box.toObject();
       delete box._id;
+      delete box.slideId;
       return box;
     }))
   })
@@ -84,10 +106,17 @@ exports.copy = function(req, res) {
 
   return Promise.all([newPresentation, newSlides, newBoxes])
   .then(function(result) {
+
+    const presentation = result[0];
+    const slides = result[1];
+    const boxes = result[2];
+
+    presentation.slideIds = slides.map(function(slide) { return slide._id });
+    slides.forEach(function(slide) { slide.presentationId = presentation._id; return slide });
+    boxes
+
     return res.json({
-      presentation: result[0],
-      slides: result[1],
-      boxes: result[2]
+      presentation: result[0]
     })
   })
   .catch(function(err) {
@@ -97,11 +126,70 @@ exports.copy = function(req, res) {
     });
   });
 }
+*/
+
+exports.copy = async function(req, res) {
+  const presentationId = req.body.presentationId;
+  const user = req.user;
+  console.log(req.user)
+
+  var presentation = await Presentation.findOne({ _id: presentationId }).exec();
+  var newPresentation = _.cloneDeep(presentation.toObject())
+  newPresentation.author = req.user.id;
+  delete newPresentation._id;
+  delete newPresentation.updatedAt;
+  delete newPresentation.createdAt;
+  newPresentation.title += ' copy';
+  newPresentation = await Presentation.create(newPresentation);
+
+  var slides = await Slide.find({_id: { $in: presentation.slideIds } }).exec()
+  var newSlides = slides.map(slide => {
+    var slide = _.cloneDeep(slide.toObject());
+    delete slide._id;
+    delete slide.updatedAt;
+    delete slide.createdAt;
+    slide.presentationId = newPresentation._id;
+    return slide;
+  })
+
+  if (newSlides.length) {
+    newSlides = (await Slide.collection.insert(newSlides)).ops;
+  }
+
+
+  newPresentation.slideIds = newSlides.map(slide => slide._id)
+
+  newSlides = newSlides.map(async function(slide) {
+    var boxes = await Box.find({_id: { $in: slide.boxIds } }).exec();
+    var newBoxes = boxes.map(box => {
+      var box = _.cloneDeep(box.toObject());
+      delete box._id;
+      delete box.updatedAt;
+      delete box.createdAt;
+      box.slideId = slide._id;
+      return box;
+    });
+    if (newBoxes.length) {
+      boxes = (await Box.collection.insert(newBoxes)).ops;
+      slide.boxIds = boxes.map(box => box._id);
+    }
+    return slide;
+  });
+
+  newPresentation = await Presentation.findByIdAndUpdate(newPresentation._id, newPresentation, { new: true }).populate('author');
+  (await Promise.all(newSlides)).forEach(async function(slide) { await Slide.findByIdAndUpdate(slide._id, slide, { new: true }) })
+
+  return res.json(newPresentation.toObject());
+}
 
 exports.update = function(req, res, next) {
+  const user = req.user;
+  const presentationId = req.params.presentationId;
+  const update = req.body;
+
   //transfer image object to id string
   //if (presentation.presentation.slideImage && presentation.presentation.slideImage._id) presentation.presentation.slideImage = presentation.presentation.slideImage._id;
-  Presentation.findByIdAndUpdate(req.params.presentationId, req.body)
+  Presentation.findOneAndUpdate({ _id: presentationId, author: user.id }, update, { new: true })
   .exec()
   .then(function(presentation) {
     res.json(presentation);
@@ -127,8 +215,9 @@ exports.update = function(req, res, next) {
 };
 
 exports.delete = function(req, res) {
+  const user = req.user;
   Presentation
-  .findOne({ _id: req.params.presentationId })
+  .findOne({ _id: req.params.presentationId, author: user.id })
   .populate({
     path: 'slideIds',
     populate: { path: 'boxIds' }
@@ -174,6 +263,9 @@ exports.findOneById = function(req, res) {
   .populate({
     path: 'slideIds',
     populate: { path: 'boxIds' }
+  })
+  .populate({
+    path: 'author'
   })
   .exec()
   .then(function(presentation) {
@@ -246,7 +338,6 @@ exports.search = function(req, res) {
   .then(function(presentations) {
     var slides = [].concat.apply([], presentations.map(function(presentation) { return presentation.slideIds }));
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
-    console.log('???????')
     res.json({
       presentations: presentations.map(function(presentation) {
         presentation.slideIds = presentation.slideIds.map(function(slide) {
