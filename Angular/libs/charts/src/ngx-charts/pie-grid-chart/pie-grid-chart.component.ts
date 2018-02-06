@@ -22,7 +22,7 @@ const defaultOptions = {
   templateUrl: './pie-grid-chart.component.html',
   styleUrls: ['./pie-grid-chart.component.scss']
 })
-export class PieGridChartComponent extends Chart implements OnInit, OnDestroy, OnChanges {
+export class PieGridChartComponent extends Chart implements OnInit, OnDestroy {
   chartOptions: any;
   @ViewChild('chart') private chartContainer: ElementRef;
 
@@ -34,22 +34,20 @@ export class PieGridChartComponent extends Chart implements OnInit, OnDestroy, O
     super();
   }
 
-  ngOnInit() {
-    // Set the config
+  ngOnInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
-
-  }
-  ngAfterViewInit(){
     let element = this.chartContainer.nativeElement;
+    let svg = d3.select(element).select('svg')
 
-      let svg = d3.select(element).select('svg')
-          .attr("width", "100%")
-          .attr("height", "100%")
-          .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight)
+     // Set the config
+     setTimeout(()=>{
+       svg.attr("width","100%")
+       .attr("height","100%")
+       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+       this.init()
+     }, 500);
+   }
 
-    setTimeout(()=>{this.init()},500);
-
-  }
   /**
    * Process json Data to Ngx-charts format
    * @param dataDims :  string[] Selected Dimentions
