@@ -10,7 +10,7 @@ import { Chart } from '../chart.class';
   templateUrl: './bubble-chart.component.html',
   styleUrls: ['./bubble-chart.component.scss']
 })
-export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
+export class BubbleChartComponent extends Chart implements OnInit {
   @ViewChild('chart') private chartContainer: ElementRef;
   private element: any;
   private data: Array<any> = [];
@@ -30,14 +30,9 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
 
   ngOnInit() {
     this.chartOptions = { ...this.configInput };
-    d3.select('#BubbleChartComponent').remove();
-    this.init();
+    setTimeout(()=>{this.init()},500);
   }
 
-  ngOnChanges() {
-    d3.select('#BubbleChartComponent').remove();
-    this.init();
-  }
 
   init() {
     if (this.configInput != null)
@@ -393,11 +388,9 @@ export class BubbleChartComponent extends Chart implements OnInit, OnChanges {
       .value();
   }
 
-  // FIXME
-  load() {}
-
-  // FIXME
-  ease() {}
+  ngOnDestroy(){
+      d3.select('#BubbleChartComponent').remove();
+  }
 }
 
 interface INode {

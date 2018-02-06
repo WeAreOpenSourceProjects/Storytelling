@@ -32,11 +32,11 @@ var BoxSchema = new Schema({
   },
   minItemRows: {
     type: Number,
-    default: '10'
+    default: '1'
   },
   minItemCols: {
     type: Number,
-    default: '10'
+    default: '1'
   },
   y: {
     type: Number,

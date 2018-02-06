@@ -164,6 +164,7 @@ svg {
 
 gridster, gridster-item {
   background : transparent !important;
+  height: 92%;
 }
 
 gridster-item {
@@ -174,7 +175,7 @@ gridster-item {
   word-wrap: break-word;
 }
 
-:host /deep/ {
+:host {
     width: 100%;
     height: 100%;
 }
