@@ -44,9 +44,10 @@ export class TextEditorComponent {
   ngAfterViewInit() {
     ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.off');
     ($(this.froalaEditor.nativeElement) as any).on('froalaEditor.blur', (e, editor) => {
-      console.log('blur');
-      this.textTosave.emit(this.editorContent);
-      editor.edit.off();
+      setTimeout(() => {
+        this.textTosave.emit(this.editorContent);
+        editor.edit.off();
+      });
     });
   }
 }
