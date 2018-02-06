@@ -252,6 +252,8 @@ ngAfterViewInit() {
     map((item: any) => {
       item.cols = 10;
       item.rows = 10;
+      item.minItemRows =10;
+      item.minItemCols=10;
       this.slide.boxIds.push(item);
       return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
     }),

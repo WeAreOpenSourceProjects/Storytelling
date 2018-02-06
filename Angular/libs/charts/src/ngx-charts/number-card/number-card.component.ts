@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import * as shape from 'd3-shape';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Chart } from '../../chart.class';
@@ -24,6 +24,7 @@ const defaultOptions = {
 })
 export class NumberCardComponent extends Chart implements OnInit, OnDestroy {
   chartOptions: any;
+  @ViewChild('chart') private chartContainer: ElementRef;
 
   data: any[];
   private activated: boolean = true;
@@ -36,10 +37,16 @@ export class NumberCardComponent extends Chart implements OnInit, OnDestroy {
   ngOnInit() {
     // Set the config
     this.chartOptions = { ...defaultOptions, ...this.configInput };
+    let element = this.chartContainer.nativeElement;
+    setTimeout(()=>{
+      let svg = d3.select(element).select('svg')
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight)
+    },500)
+    this.data = NumberCardComponent.convertData(this.chartOptions.dataDims, this.dataInput);
 
-    this.init();
   }
-
   /**
    * Process json Data to Ngx-charts format
    * @param dataDims :  string[] Selected Dimentions
@@ -73,7 +80,7 @@ export class NumberCardComponent extends Chart implements OnInit, OnDestroy {
   }
 
   init() {
-    this.data = NumberCardComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+
   }
 
   load() {
