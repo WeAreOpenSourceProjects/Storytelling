@@ -38,6 +38,7 @@ import { filter } from 'rxjs/operators/filter';
 import { Observable } from 'rxjs/Observable';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { zip } from 'rxjs/observable/zip';
+import { take } from 'rxjs/operators/take';
 import { of } from 'rxjs/observable/of';
 import { tap } from 'rxjs/operators/tap';
 
@@ -276,36 +277,29 @@ ngAfterViewInit() {
   }
 
   removeItem($event, item) {
-    if (item._id) {
-      const dialog = this.dialog.open(BoxDialogComponent);
-      dialog.afterClosed().subscribe(result => {
-        if (result){
-            this.boxesService.delete(item._id).subscribe((res)=>{
-            console.log('boxe deleted');
-          })
-
-          this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
-          this.cdr.detectChanges();
-        }
-      })
-    } else {
+    const dialog = this.dialog.open(BoxDialogComponent);
+    dialog.afterClosed().pipe(take(1)).subscribe(result => {
+      if (result && item._id) {
+        this.boxesService.delete(item._id).subscribe()
+      }
       this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
-    }
+      this.cdr.detectChanges();
+    })
   }
 
   confirmSlide(slide){
-    for (let i=0 ; i<slide.boxIds.length; i++){
+    for (let i = 0 ; i < slide.boxIds.length; i++){
       slide.boxIds[i].slideId = this.id;
       if(slide.boxIds[i]._id){
-        this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe((resu) =>{
-          console.log(resu);
+        this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe((res) =>{
+          console.log(res);
         })
       } else {
-        this.boxesService.addBox(slide.boxIds[i]).subscribe((resu) =>{
-          console.log(resu);
+        this.boxesService.addBox(slide.boxIds[i]).subscribe((res) =>{
+          console.log(res);
         })
       }
     }
-    this.router.navigate(['/','presentations', this.presentationId, 'edit'])
+    this.router.navigate(['/','presentations', this.slide.presentationId, 'edit'])
   }
 }
