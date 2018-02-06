@@ -22,7 +22,7 @@ const defaultOptions = {
   templateUrl: './number-card.component.html',
   styleUrls: ['./number-card.component.scss']
 })
-export class NumberCardComponent extends Chart implements OnInit, OnDestroy {
+export class NumberCardComponent extends Chart implements  OnDestroy {
   chartOptions: any;
   @ViewChild('chart') private chartContainer: ElementRef;
 
@@ -33,19 +33,18 @@ export class NumberCardComponent extends Chart implements OnInit, OnDestroy {
   constructor() {
     super();
   }
+ ngOnInit(){
+   this.chartOptions = { ...defaultOptions, ...this.configInput };
+   let element = this.chartContainer.nativeElement;
+   let svg = d3.select(element).select('svg')
 
-  ngOnInit() {
     // Set the config
-    this.chartOptions = { ...defaultOptions, ...this.configInput };
-    let element = this.chartContainer.nativeElement;
     setTimeout(()=>{
-      let svg = d3.select(element).select('svg')
-          .attr("width", "100%")
-          .attr("height", "100%")
-          .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight)
-    },500)
-    this.data = NumberCardComponent.convertData(this.chartOptions.dataDims, this.dataInput);
-
+      svg.attr("width","100%")
+      .attr("height","100%")
+      .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+      this.init()
+    }, 500);
   }
   /**
    * Process json Data to Ngx-charts format
@@ -80,7 +79,9 @@ export class NumberCardComponent extends Chart implements OnInit, OnDestroy {
   }
 
   init() {
-
+    if (this.configInput != null)
+    this.data = NumberCardComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+    else this.data = this.dataInput;
   }
 
   load() {
