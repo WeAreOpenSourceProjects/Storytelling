@@ -41,6 +41,7 @@ import { zip } from 'rxjs/observable/zip';
 import { take } from 'rxjs/operators/take';
 import { of } from 'rxjs/observable/of';
 import { tap } from 'rxjs/operators/tap';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-boxes-grid',
@@ -69,6 +70,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   private presentationId: any;
 
   private emptyCellContextMenu$ = new Subject();
+  private subscriptions: Subscription;
 
   constructor(
     private dialog: MatDialog,
@@ -80,17 +82,19 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdr : ChangeDetectorRef,
     private store : Store<PresentationsState>
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.currentPresentationId$.subscribe((presentationId) => {
+    this.subscriptions = this.currentPresentationId$.subscribe((presentationId) => {
       this.presentationId = presentationId;
     })
-    this.route.params.subscribe(params => {
+
+    const routesSubscription = this.route.params.subscribe(params => {
        this.id = params['id'];
      });
+     this.subscriptions.add(routesSubscription);
+
      this.slide = this.route.snapshot.data.boxes;
-     console.log(this.slide);
      if(!this.slide.boxIds) {
        this.slide.boxIds= []
      }
@@ -165,107 +169,111 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     };
   }
 
-public enableEdit(box) {
-  this.editMode= true;
-  if (box.content && box.content.type === 'text') {
+  public enableEdit(box) {
     this.editMode= true;
+    if (box.content && box.content.type === 'text') {
+      this.editMode= true;
 
-  } else if (box.content && box.content.type==='chart') {
-    const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
-    dialog.componentInstance.inputOptions = box.content.chart.chartOptions;
-    dialog.componentInstance.inputData = box.content.chart.data;
-    dialog.afterClosed().subscribe(result => {
-      if (result !== 'CANCEL') {
-        box.content.type='chart';
-        box.content.chart = result;
-        box.width = box.cols * 25;
-        box.height = box.cols * 25;
-      }
-    });
-  }
-}
-
-emptyCellClick(event, item) {
-  this.editMode = false;
-}
-
-emptyCellContextMenu(event, item) {
-  this.emptyCellContextMenu$.next({event, item})
-}
-
-ngAfterViewInit() {
-  for (let i = 0; i<this.slide.boxIds.length; i++) {
-    if (this.slide.boxIds[i].content.type === 'text') {
-      const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
-      const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-      (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
-      (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
-        this.slide.boxIds[i].content = {
-          'type': 'text',
-          'text': text
+    } else if (box.content && box.content.type==='chart') {
+      const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
+      dialog.componentInstance.inputOptions = box.content.chart.chartOptions;
+      dialog.componentInstance.inputData = box.content.chart.data;
+      const dialogSubscription = dialog.afterClosed().subscribe(result => {
+        if (result !== 'CANCEL') {
+          box.content.type='chart';
+          box.content.chart = result;
+          box.width = box.cols * 25;
+          box.height = box.cols * 25;
         }
       });
+      this.subscriptions.add(dialogSubscription);
     }
   }
 
-  const addBox$ = this.emptyCellContextMenu$.pipe(
-    map(({event, item}) => {
-      this.editMode = false;
-      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
-      if (this.menubar) {
-        this.menubar.clear();
+  emptyCellClick(event, item) {
+    this.editMode = false;
+  }
+
+  emptyCellContextMenu(event, item) {
+    this.emptyCellContextMenu$.next({event, item})
+  }
+
+  ngAfterViewInit() {
+    for (let i = 0; i<this.slide.boxIds.length; i++) {
+      if (this.slide.boxIds[i].content.type === 'text') {
+        const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+        const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
+        (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
+        (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
+          this.slide.boxIds[i].content = {
+            'type': 'text',
+            'text': text
+          }
+        });
       }
-      const componentRef = this.menubar.createComponent(componentFactory);
-      (<MenuBarComponent>componentRef.instance).top = event.clientY - 50;
-      (<MenuBarComponent>componentRef.instance).left = event.clientX - 50;
-      return componentRef.instance;
-    }),
-    switchMap((componentRef: MenuBarComponent) => componentRef.isOpen$)
-  )
-  .share();
-
-  const chartType$ = addBox$.pipe(
-    filter(type => type === 'chart')
-  );
-
-  const textType$ = addBox$.pipe(
-    filter(type => type === 'text')
-  );
-
-  textType$.pipe(
-    withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
-    switchMap((item: any) => {
-      item.item.cols = 8;
-      item.item.rows = 2;
-      this.slide.boxIds.push(item.item);
-      return zip(this.texteditor.changes, of(item));
-    })
-  ).subscribe(([texteditor, item]: [any, any]) => {
-    const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
-    const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
-    (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
-      this.slide.boxIds.slice(-1)[0].content = { type: 'text', text }
-    });
-  });
-
- chartType$.pipe(
-    withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
-    map((item: any) => {
-      item.cols = 10;
-      item.rows = 10;
-      item.minItemRows =10;
-      item.minItemCols=10;
-      this.slide.boxIds.push(item);
-      return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
-    }),
-    switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
-  ).subscribe((chart: any) => {
-    console.log(chart)
-    if (chart) {
-      this.slide.boxIds.slice(-1)[0].content = {'type':'chart', chart}
     }
-    this.menubar.clear();
-  });
+
+    const addBox$ = this.emptyCellContextMenu$.pipe(
+      map(({event, item}) => {
+        this.editMode = false;
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
+        if (this.menubar) {
+          this.menubar.clear();
+        }
+        const componentRef = this.menubar.createComponent(componentFactory);
+        (<MenuBarComponent>componentRef.instance).top = event.clientY - 50;
+        (<MenuBarComponent>componentRef.instance).left = event.clientX - 50;
+        return componentRef.instance;
+      }),
+      switchMap((componentRef: MenuBarComponent) => componentRef.isOpen$)
+    )
+    .share();
+
+    const chartType$ = addBox$.pipe(
+      filter(type => type === 'chart')
+    );
+
+    const textType$ = addBox$.pipe(
+      filter(type => type === 'text')
+    );
+
+    const textBoxSubscription = textType$.pipe(
+      withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
+      switchMap((item: any) => {
+        item.item.cols = 8;
+        item.item.rows = 2;
+        this.slide.boxIds.push(item.item);
+        return zip(this.texteditor.changes, of(item));
+      })
+    ).subscribe(([texteditor, item]: [any, any]) => {
+      const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+      const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
+      (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
+        this.slide.boxIds.slice(-1)[0].content = { type: 'text', text }
+      });
+    });
+    this.subscriptions.add(textBoxSubscription);
+
+
+    const chartBoxSubscription = chartType$.pipe(
+      withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
+      map((item: any) => {
+        item.cols = 10;
+        item.rows = 10;
+        item.minItemRows =10;
+        item.minItemCols=10;
+        this.slide.boxIds.push(item);
+        return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
+      }),
+      switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
+    ).subscribe((chart: any) => {
+      if (chart) {
+        this.slide.boxIds.slice(-1)[0].content = {'type':'chart', chart}
+      }
+      this.cdr.detectChanges();
+      this.menubar.clear();
+    });
+    this.subscriptions.add(chartBoxSubscription);
   }
 
   changedOptions() {
@@ -280,28 +288,32 @@ ngAfterViewInit() {
 
   removeItem($event, item) {
     const dialog = this.dialog.open(BoxDialogComponent);
-    dialog.afterClosed().pipe(take(1)).subscribe(result => {
-      if (result && item._id) {
-        this.boxesService.delete(item._id).subscribe()
+    const dialogSubscription = dialog.afterClosed().pipe(take(1)).subscribe(result => {
+      if (result.delete) {
+        if (item._id) {
+          this.boxesService.delete(item._id).subscribe()
+        }
+        this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
+        this.cdr.detectChanges();
       }
-      this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
-      this.cdr.detectChanges();
-    })
+    });
+    this.subscriptions.add(dialogSubscription);
   }
 
   confirmSlide(slide){
-    for (let i = 0 ; i < slide.boxIds.length; i++){
+    for (let i = 0 ; i < slide.boxIds.length; i++) {
       slide.boxIds[i].slideId = this.id;
-      if(slide.boxIds[i]._id){
-        this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe((res) =>{
-          console.log(res);
-        })
+      if (slide.boxIds[i]._id) {
+        this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe()
       } else {
-        this.boxesService.addBox(slide.boxIds[i]).subscribe((res) =>{
-          console.log(res);
-        })
+        this.boxesService.addBox(slide.boxIds[i]).subscribe()
       }
     }
     this.router.navigate(['/','presentations', this.slide.presentationId, 'edit'])
+  }
+
+  ngOnDestroy() {
+    console.log('unsubscribe')
+    this.subscriptions.unsubscribe();
   }
 }
