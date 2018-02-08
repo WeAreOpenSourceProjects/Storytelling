@@ -91,7 +91,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     this.subscriptions = this.currentPresentationId$.subscribe((presentationId) => {
       this.presentationId = presentationId;
     })
-    
+
     const routesSubscription = this.route.params.subscribe(params => {
        this.id = params['id'];
      });
@@ -105,12 +105,12 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     this.gridConfig = {
       gridType: 'fit',
       compactType: 'none',
-      margin: 5,
+      margin: 1,
       outerMargin: true,
       mobileBreakpoint: 640,
-      minCols: 20,
+      minCols: 30,
       maxCols: 30,
-      minRows: 20,
+      minRows: 30,
       maxRows: 30,
       maxItemCols: 100,
       minItemCols: 1,
@@ -269,11 +269,14 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     });
     this.subscriptions.add(textBoxSubscription);
 
+
     const chartBoxSubscription = chartType$.pipe(
       withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
       map((item: any) => {
         item.cols = 10;
         item.rows = 10;
+        item.minItemRows =10;
+        item.minItemCols=10;
         this.slide.boxIds.push(item);
         return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
       }),

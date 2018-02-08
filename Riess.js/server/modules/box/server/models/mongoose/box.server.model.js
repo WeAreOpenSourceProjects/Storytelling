@@ -30,6 +30,14 @@ var BoxSchema = new Schema({
     type: Number,
     default: '10'
   },
+  minItemRows: {
+    type: Number,
+    default: '1'
+  },
+  minItemCols: {
+    type: Number,
+    default: '1'
+  },
   y: {
     type: Number,
     default: 50

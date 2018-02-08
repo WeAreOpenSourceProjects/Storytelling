@@ -1,10 +1,15 @@
 :host {
         width: 100%;
-        
+        height: 100%;
+
     .d3-chart {
-        width: 90%;
-        height: 80%;
-        position: relative;
-        bottom: 0;
+        width: 100%;
+        height: 100%;
+
     }
+}
+/deep/svg {
+  height: 100%;
+  width: 100%;
+
 }

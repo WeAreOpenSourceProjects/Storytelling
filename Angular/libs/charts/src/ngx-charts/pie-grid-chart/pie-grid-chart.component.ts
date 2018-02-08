@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import * as shape from 'd3-shape';
 import * as d3 from 'd3';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
@@ -22,8 +22,9 @@ const defaultOptions = {
   templateUrl: './pie-grid-chart.component.html',
   styleUrls: ['./pie-grid-chart.component.scss']
 })
-export class PieGridChartComponent extends Chart implements OnInit, OnDestroy, OnChanges {
+export class PieGridChartComponent extends Chart implements OnInit, OnDestroy {
   chartOptions: any;
+  @ViewChild('chart') private chartContainer: ElementRef;
 
   data: any[];
   private activated: boolean = true;
@@ -33,11 +34,19 @@ export class PieGridChartComponent extends Chart implements OnInit, OnDestroy, O
     super();
   }
 
-  ngOnInit() {
-    // Set the config
+  ngOnInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
-    this.init();
-  }
+    let element = this.chartContainer.nativeElement;
+    let svg = d3.select(element).select('svg')
+
+     // Set the config
+     setTimeout(()=>{
+       svg.attr("width","100%")
+       .attr("height","100%")
+       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+       this.init()
+     }, 500);
+   }
 
   /**
    * Process json Data to Ngx-charts format
@@ -70,10 +79,7 @@ export class PieGridChartComponent extends Chart implements OnInit, OnDestroy, O
     this.chartOptions = { ...this.chartOptions, ...graphConfig };
     this.data = graphData;
   }
-  ngOnChanges() {
-    d3.select('#PieGridChartComponent').remove();
-    this.init();
-  }
+
   init() {
     if (this.configInput != null)
       this.data = PieGridChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);

@@ -1,4 +1,4 @@
-<div class="d3-chart" >
+<div class="d3-chart" #chart>
   <ngx-charts-bar-vertical-2d fxFlex
     [style.visibility]="activated ?  'visible' : 'hidden' "
     *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-2d'"
@@ -28,7 +28,7 @@
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
-  [results]="data?data:[]"
+    [results]="data?data:[]"
     [gradient]="chartOptions.gradient"
     matTooltip
     [matTooltipDisabled]="chartOptions.tooltipDisabled"

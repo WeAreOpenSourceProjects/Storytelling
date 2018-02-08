@@ -1,8 +1,18 @@
 :host {
   width: 100%;
+  height: 100%;
 
   .d3-chart {
     width: 100%;
-    height: 60vh;
+    height: 100%;
   }
+
+}
+/deep/.ngx-charts-outer.ng-trigger.ng-trigger-animationState{
+  width: 100% !important;
+  height: 100% !important;
+}
+/deep/ svg {
+  height: 100%;
+  width: 100%
 }
