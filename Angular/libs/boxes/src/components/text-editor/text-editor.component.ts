@@ -1,5 +1,5 @@
 
-import { Component, Input, Inject, HostListener, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
+import { Component, Input, Inject, HostListener, Output, EventEmitter, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { environment } from '../../../../../apps/default/src/environments/environment';
 
 @Component({
@@ -7,47 +7,68 @@ import { environment } from '../../../../../apps/default/src/environments/enviro
   templateUrl: './text-editor.component.html',
   styleUrls: ['./text-editor.component.scss']
 })
-export class TextEditorComponent {
+export class TextEditorComponent implements OnInit {
 
   @HostListener('dblclick', ['$event'])
   onDblClick(event) {
-    console.log('dblclick', event);
-    ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.on');
-//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'click', [], true);
-//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.focus');
-//    ($(this.froalaEditor.nativeElement) as any).froalaEditor('events.trigger', 'focus', [], true);
-
+    this.froalaEditor('events.trigger', 'froalaEditor.focus');
+//    this.froalaEditor('edit.on');
   }
 
-  @ViewChild('froalaEditor') froalaEditor: ElementRef;
+  private froalaEditor;
 
-  private editorOptions: Object;//option of the text editor
-  @Input() editorContent : any;
-  @Output() textTosave: EventEmitter<string> = new EventEmitter();
-  constructor() {
+  @Input()
+  public editorContent : any;
+
+  @Input()
+  public id : any;
+
+  @Output()
+  public textTosave: EventEmitter<string> = new EventEmitter();
+
+  private editorOptions: Object;
+
+  ngOnInit() {
     let baseURL = `${environment.backend.protocol}://${environment.backend.host}`;
     if (environment.backend.port) {
       baseURL += `:${environment.backend.port}`;
     }
 
     this.editorOptions = {
+      events: {
+        'froalaEditor.blur': (e, editor) => {
+          this.textTosave.emit(this.editorContent);
+          //this.froalaEditor('edit.off');
+        }      
+      },
       toolbarInline: true,
-      initOnClick : false,
+      initOnClick : true,
       charCounterCount: false,
-      charCounterMax: 3000,
-      toolbarSticky: false,
-      toolbarBottom: true,
-      toolbarButtons: ['undo', 'redo' , 'bold', 'italic', 'underline', 'strikeThrough', 'color', 'fontFamily', 'fontSize', 'emoticons', '-', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'indent', 'outdent']
+      toolbarButtons: [
+        'undo',
+        'redo' ,
+        'bold',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'color',
+        'fontFamily',
+        'fontSize',
+        'emoticons',
+        '-',
+        'paragraphFormat',
+        'align',
+        'formatOL',
+        'formatUL',
+        'indent',
+        'outdent'
+      ]
     };
   }
 
-  ngAfterViewInit() {
-    ($(this.froalaEditor.nativeElement) as any).froalaEditor('edit.off');
-    ($(this.froalaEditor.nativeElement) as any).on('froalaEditor.blur', (e, editor) => {
-      setTimeout(() => {
-        this.textTosave.emit(this.editorContent);
-        editor.edit.off();
-      });
-    });
+  setControls(controls) {
+    this.froalaEditor = controls.getEditor();
+    controls.initialize();
+//    this.froalaEditor('edit.off');
   }
 }

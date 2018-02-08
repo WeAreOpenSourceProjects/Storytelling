@@ -27,7 +27,7 @@ import { PresentationDialogComponent } from './components/presentation-dialog/pr
 import { PresentationSettingsComponent } from './components/presentation-settings/presentation-settings.component';
 import { PresentationsSearchComponent } from './components/presentations-search/presentations-search.component';
 import { TitleSlideComponent } from './components/title-slide/title-slide.component';
-import { FroalaViewModule } from 'angular-froala-wysiwyg';
+import { FroalaViewModule } from 'angular2-froala-wysiwyg';
 
 
 import { GridsterModule } from 'angular-gridster2';
@@ -64,8 +64,6 @@ import { environment } from '../../../apps/default/src/environments/environment'
 import { SlidesStateModule } from '@labdat/slides-state';
 import { PresentationsStateModule } from '@labdat/presentations-state';
 import { ChartsService } from '@labdat/charts/src/services/charts.service';
-
-
 
 @NgModule({
   imports: [

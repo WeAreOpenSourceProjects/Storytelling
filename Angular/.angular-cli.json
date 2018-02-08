@@ -23,7 +23,10 @@
         { "glob": "svg-sprite-hardware.svg", "input": "../../../node_modules/material-design-icons/sprites/svg-sprite/", "output": "assets/" },
         { "glob": "*", "input": "../../../libs/core/src/assets/", "output": "assets/" },
         { "glob": "*", "input": "../../../libs/presentations/src/assets/", "output": "assets/" },
-        { "glob": "**/*", "input": "../../../libs/charts/src/assets/img-graph", "output": "assets/img-graph" }
+        { "glob": "**/*", "input": "../../../libs/charts/src/assets/img-graph/", "output": "assets/img-graph/" },
+        { "glob": "**/*", "input": "../../../node_modules/tinymce/themes/", "output": "themes/" },
+        { "glob": "**/*", "input": "../../../node_modules/tinymce/plugins/", "output": "plugins/" },
+        { "glob": "**/*", "input": "../../../node_modules/tinymce/skins/", "output": "skins/" }         
       ],
       "index": "index.html",
       "main": "main.ts",

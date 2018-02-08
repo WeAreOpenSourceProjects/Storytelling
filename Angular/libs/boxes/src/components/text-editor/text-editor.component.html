@@ -1,1 +1,1 @@
-<textarea #froalaEditor class="froalaEditor" [(froalaEditor)]='editorOptions' [(froalaModel)]="editorContent"></textarea>
+<div [attr.id]="id" class="froalaEditor" [froalaEditor]='editorOptions' (froalaInit)="setControls($event)" [(froalaModel)]="editorContent"></div>

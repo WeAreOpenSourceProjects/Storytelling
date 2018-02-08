@@ -45,9 +45,12 @@ import { HotTableModule } from 'angular-handsontable';
 
 import "../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js";
 // import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
 
 import { TextEditorComponent } from './components/text-editor/text-editor.component';
+
+import "../../../node_modules/tinymce/tinymce.js";
+import { TinyEditorComponent } from './components/tiny-editor/tiny-editor.component';
 import { ChartsBuilderComponent } from './components/charts-builder/charts-builder.component';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { GridsterModule } from 'angular-gridster2';
@@ -63,6 +66,7 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
 import { BoxDialogComponent } from './components/box-dialog/box-dialog.component'
 import { DataTableComponent }from './components/data-table/data-table.component';
 import { CodeEditorComponent } from './components/code-editor';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 @NgModule({
     imports: [
@@ -92,9 +96,10 @@ import { CodeEditorComponent } from './components/code-editor';
       MatDialogModule,
       RouterModule,
       GridsterModule,
-      MatStepperModule, ChartsModule ],
-
-
+      MatStepperModule,
+      ChartsModule,
+      EditorModule
+    ],
     declarations: [
       BoxesGridComponent,
       TextEditorComponent,
@@ -102,7 +107,8 @@ import { CodeEditorComponent } from './components/code-editor';
       BoxDialogComponent,
       ChartsBuilderComponent,
       DataTableComponent,
-      CodeEditorComponent
+      CodeEditorComponent,
+      TinyEditorComponent
     ],
     exports: [
       BoxesGridComponent
@@ -128,7 +134,8 @@ import { CodeEditorComponent } from './components/code-editor';
       MenuBarComponent,
       ChartsBuilderComponent,
       TextEditorComponent,
-      BoxDialogComponent
+      BoxDialogComponent,
+      TinyEditorComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [ OverlayContainer, ChartsService ]

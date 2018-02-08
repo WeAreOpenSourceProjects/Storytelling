@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  min-height: 100%;
+  max-width: 100% !important;
+  padding: 10px;
+}
+
+/deep/ [contenteditable] {
+  outline: none;
+}

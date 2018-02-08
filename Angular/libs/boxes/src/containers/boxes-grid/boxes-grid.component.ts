@@ -18,8 +18,9 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 
 import {BoxesApiService} from '../../../../boxes-state/src/services/boxes.api.service';
 import {ChartsBuilderComponent} from '../../components/charts-builder';
-import {TextEditorComponent} from '../../components/text-editor/text-editor.component';
-import {Chart} from '@labdat/charts';
+//import {TextTinyEditorComponent} from '../../components/text-editor/text-editor.component';
+import { TinyEditorComponent } from '../../components/tiny-editor/tiny-editor.component';
+import { Chart } from '@labdat/charts';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { GridsterConfig, GridsterItem  }  from 'angular-gridster2';
@@ -71,6 +72,8 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
 
   private emptyCellContextMenu$ = new Subject();
   private subscriptions: Subscription;
+
+  private dynamicTextEditors = [];
 
   constructor(
     private dialog: MatDialog,
@@ -133,7 +136,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       emptyCellDragMaxCols: 50,
       emptyCellDragMaxRows: 50,
       draggable: {
-        delayStart: 200,
         enabled: true,
         ignoreContentClass: 'gridster-item-content',
         ignoreContent: false,
@@ -169,7 +171,10 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     };
   }
 
-  public enableEdit(box) {
+  public enableEdit(box, i) {
+
+    this.dynamicTextEditors[i].setEditMode();
+
     this.editMode= true;
     if (box.content && box.content.type === 'text') {
       this.editMode= true;
@@ -201,15 +206,20 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     for (let i = 0; i<this.slide.boxIds.length; i++) {
       if (this.slide.boxIds[i].content.type === 'text') {
-        const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+        const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
         const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-        (<TextEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
-        (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
+        this.dynamicTextEditors.push(componentEditorRef.instance)
+//        (<TinyEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
+        console.log(this.slide.boxIds[i]._id);
+//        (<TinyEditorComponent>componentEditorRef.instance).id = this.slide.boxIds[i]._id;
+/*
+        (<TinyEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
           this.slide.boxIds[i].content = {
             'type': 'text',
             'text': text
           }
         });
+        */
       }
     }
 
@@ -246,11 +256,16 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
         return zip(this.texteditor.changes, of(item));
       })
     ).subscribe(([texteditor, item]: [any, any]) => {
-      const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TextEditorComponent);
+      const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
       const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
-      (<TextEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
+      this.dynamicTextEditors.push(componentEditorRef.instance)
+      console.log(item);
+//      (<TinyEditorComponent>componentEditorRef.instance).id = 0;
+/*
+      (<TinyEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
         this.slide.boxIds.slice(-1)[0].content = { type: 'text', text }
       });
+      */
     });
     this.subscriptions.add(textBoxSubscription);
 

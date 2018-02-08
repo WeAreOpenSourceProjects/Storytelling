@@ -3,13 +3,14 @@
   <img *ngIf="slide.boxIds.length === 0" class="background-mouse" src="assets/right-click.png"/>
   <gridster-item
     *ngFor="let box of slide?.boxIds; let i = index"
-    [item]="box"
-    (dblclick)="enableEdit(box)">
-    <div class="delete box-header-btns pull-right">
+    [item]="box">
+    <div *ngIf="!editMode" class="controls box-header-btns pull-right">
+      <a title="Edit" (click)="enableEdit(box, i)"><mat-icon svgIcon="editor:ic_mode_edit_24px"></mat-icon></a>
       <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
     </div>
     <div [hidden]="box.content?.type === 'chart'" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }">
       <ng-container #texteditor></ng-container>
+      <!--editor [init]="{ inline: true, toolbar: 'undo redo', menubar: false, plugins: 'link'}"></editor-->
     </div>
     <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
   </gridster-item>
