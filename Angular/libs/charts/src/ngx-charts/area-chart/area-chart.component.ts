@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import * as shape from 'd3-shape';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Chart } from '../../chart.class';
@@ -10,7 +10,9 @@ import * as d3 from 'd3';
   templateUrl: './area-chart.component.html',
   styleUrls: ['./area-chart.component.scss']
 })
-export class AreaChartComponent extends Chart implements OnInit, OnChanges, OnDestroy {
+export class AreaChartComponent extends Chart implements OnInit, OnDestroy {
+  @ViewChild('chart') private chartContainer: ElementRef;
+
   view: any;
   chartOptions: any;
   showXAxis = true;
@@ -36,10 +38,17 @@ export class AreaChartComponent extends Chart implements OnInit, OnChanges, OnDe
     this.chartOptions = { ...this.configInput };
     this.init();
   }
-  ngOnChanges() {
-    d3.select('#AreaChartComponent').remove();
-    this.init();
-  }
+  ngAfterViewInit(){
+    let element = this.chartContainer.nativeElement;
+    let svg = d3.select(element).select('svg')
+
+     // Set the config
+     setTimeout(()=>{
+       svg.attr("width","100%")
+       .attr("height","100%")
+       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+     }, 500);
+   }
   /**
    * Process json Data to Ngx-charts format
    * @param dataDims :  string[] Selected Dimentions

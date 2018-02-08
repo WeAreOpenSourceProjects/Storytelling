@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { Chart } from '../../chart.class';
 import { nest } from 'd3-collection';
 import * as d3 from 'd3';
@@ -7,13 +7,14 @@ import * as d3 from 'd3';
   templateUrl: './gauge-chart.component.html',
   styleUrls: ['./gauge-chart.component.scss']
 })
-export class GaugeChartComponent extends Chart implements OnInit, OnChanges {
+export class GaugeChartComponent extends Chart implements OnInit {
   data: Array<any> = [];
+  @ViewChild('chart') private chartContainer: ElementRef;
 
   private width: number;
   private height: number;
   chartOptions: any;
-  view: any[];
+  view: any;
   showLegend: boolean = true;
   legendTitle: string = 'Legend';
   gaugeTextValue: string = '';
@@ -26,6 +27,7 @@ export class GaugeChartComponent extends Chart implements OnInit, OnChanges {
   gaugeShowAxis: boolean = true;
   gaugeLargeSegments: number = 10;
   gaugeSmallSegments: number = 5;
+  autoScale = true;
 
   // margin
   margin: boolean = false;
@@ -64,25 +66,25 @@ export class GaugeChartComponent extends Chart implements OnInit, OnChanges {
     this.init();
   }
 
-  ngOnChanges() {
-    d3.select('#GaugeChartComponent').remove();
-    this.init();
-  }
+  ngAfterViewInit(){
+    let element = this.chartContainer.nativeElement;
+    let svg = d3.select(element).select('svg')
+
+     // Set the config
+     setTimeout(()=>{
+       svg.attr("width","80%")
+       .attr("height","100%")
+       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+     }, 500);
+   }
 
   init() {
-    // this.width = 700;
-    // this.height = 300;
-    // this.view = [this.width, this.height];
     if (this.configInput != null)
       this.data = GaugeChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else this.data = this.dataInput;
-    this.load();
   }
 
-  load() {
-    if (this.data === undefined) return;
-    this.data = [...this.data];
-  }
+
   public static convertData(dataDims: string[], rawData: any) {
     const key$ = d => d[dataDims[0]];
     const value$ = d => d3.sum(d, (s: any) => s[dataDims[1]]);

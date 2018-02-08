@@ -272,10 +272,10 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     const chartBoxSubscription = chartType$.pipe(
       withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
       map((item: any) => {
-        item.cols = 10;
-        item.rows = 10;
-        item.minItemRows =10;
-        item.minItemCols=10;
+        item.cols = 15;
+        item.rows = 15;
+        item.minItemRows =15;
+        item.minItemCols=15;
         this.slide.boxIds.push(item);
         return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
       }),
