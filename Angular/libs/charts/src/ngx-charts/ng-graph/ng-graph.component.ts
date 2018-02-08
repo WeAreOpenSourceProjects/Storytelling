@@ -50,6 +50,8 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   }
   ngOnInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
+    this.init()
+
   }
   ngAfterViewInit(){
     let element = this.chartContainer.nativeElement;
@@ -57,12 +59,12 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
     console.log('d3',d3.select('svg'))
 
      // Set the config
-       d3.select('svg')
-       .attr("width","100%")
-       .attr("height","100%")
-       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-
-       this.init()
+     setTimeout(()=>{
+       d3.select(element).select('svg')
+         .attr("width","100%")
+         .attr("height","100%")
+         .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+     })
    }
   /**
    * Process json Data to Ngx-charts format

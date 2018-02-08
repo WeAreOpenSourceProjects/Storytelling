@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef } from '@angular/core';
 import { Chart } from '../../chart.class';
 import { formatLabel } from '@swimlane/ngx-charts';
 import { nest } from 'd3-collection';
@@ -12,6 +12,8 @@ const defaultOptions = {};
 })
 export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestroy {
   data: Array<any> = [];
+  @ViewChild('chart') private chartContainer: ElementRef;
+
   chartOptions: any;
   private width: number;
   private height: number;
@@ -44,11 +46,25 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
     super();
   }
 
-  ngOnInit() {
-    this.chartOptions = { ...this.configInput };
-    this.init();
-  }
 
+  ngOnInit(){
+    this.chartOptions = { ...defaultOptions, ...this.configInput };
+    this.init()
+
+  }
+  ngAfterViewInit(){
+    let element = this.chartContainer.nativeElement;
+    console.log(element, this.chartContainer)
+    console.log('d3',d3.select('svg'))
+
+     // Set the config
+     setTimeout(()=>{
+       d3.select(element).select('svg')
+         .attr("width","100%")
+         .attr("height","100%")
+         .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+     })
+   }
   init() {
     if (this.configInput != null)
       this.data = AdvancedPieChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);

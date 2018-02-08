@@ -47,6 +47,7 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
   }
   ngOnInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
+    this.init()
   }
   ngAfterViewInit(){
     let element = this.chartContainer.nativeElement;
@@ -57,7 +58,6 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
        svg.attr("width","100%")
        .attr("height","100%")
        .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-       this.init()
      }, 500);
    }
   /**
@@ -65,24 +65,23 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
    * @param dataDims :  string[] Selected Dimentions
    * @param rawData : array<Object> Json data
    */
-  public static convertData(dataDims: string[], rawData: any) {
-    if (dataDims === undefined || rawData === undefined) return null;
-    const key$ = d => d[dataDims[0]];
-    const value$ = d => d3.sum(d, (s: any) => s[dataDims[1]]);
+   public static convertData(dataDims: string[], rawData: any) {
+     const key$ = d => d[dataDims[0]];
+     const value$ = d => d3.sum(d, (s: any) => s[dataDims[1]]);
 
-    return (<any>nest())
-      .key(key$)
-      .rollup(value$)
-      .entries(rawData)
-      .map(seriesPoints);
+     return (<any>nest())
+       .key(key$)
+       .rollup(value$)
+       .entries(rawData)
+       .map(seriesPoints);
 
-    function seriesPoints(d) {
-      return {
-        name: d.key,
-        value: d.value
-      };
-    }
-  }
+     function seriesPoints(d) {
+       return {
+         name: d.key,
+         value: d.value
+       };
+     }
+   }
 
   setData(graphData, graphConfig) {
     this.chartOptions = { ...this.chartOptions, ...graphConfig };
