@@ -24,8 +24,8 @@ export class TinyEditorComponent {
   public init = {
     menubar: false,
     theme: 'inlite',
-    insert_toolbar: 'blockquote | numlist bullist',
-    selection_toolbar: 'quicklink | bold italic fontselect fontsizeselect forecolor backcolor',
+    insert_toolbar: 'blockquote | numlist bullist | alignleft aligncenter alignright alignjustify',
+    selection_toolbar: 'quicklink | bold italic fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify',
     init_instance_callback: function (editor) {
       editor.focus();
       editor.on('blur', function (e) {
