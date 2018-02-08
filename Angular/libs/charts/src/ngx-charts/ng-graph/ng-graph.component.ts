@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import * as shape from 'd3-shape';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Chart } from '../../chart.class';
 import { nest } from 'd3-collection';
 import * as _ from 'lodash';
+import * as d3 from 'd3';
 
 const defaultOptions = {
   view: [2000, 2000],
@@ -38,6 +39,7 @@ const defaultOptions = {
 })
 export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   chartOptions: any;
+  @ViewChild('chart') private chartContainer: ElementRef;
 
   data: any[];
   private activated: boolean = true;
@@ -46,14 +48,22 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   constructor() {
     super();
   }
-
-  ngOnInit() {
-    // Set the config
+  ngOnInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
-
-    this.init();
   }
+  ngAfterViewInit(){
+    let element = this.chartContainer.nativeElement;
+    console.log(element, this.chartContainer)
+    console.log('d3',d3.select('svg'))
 
+     // Set the config
+       d3.select('svg')
+       .attr("width","100%")
+       .attr("height","100%")
+       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+
+       this.init()
+   }
   /**
    * Process json Data to Ngx-charts format
    * @param dataDims :  string[] Selected Dimentions
@@ -94,15 +104,10 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   }
 
   init() {
-    this.data = NgGraphComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+    if (this.configInput != null)
+      this.data = NgGraphComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+    else this.data = this.dataInput;
   }
-
-  load() {
-    // this.data = [];
-    // this._setIntervalHandler =  setTimeout(() => this.data = this.dataInput);
-  }
-
-  ease() {}
 
   select(data) {
     console.log('Item clicked', data);

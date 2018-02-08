@@ -1,4 +1,4 @@
-<div class="d3-chart" >
+<div class="d3-chart" #chart>
     <ngx-charts-tree-map fxFlex
         [style.visibility]="activated ?  'visible' : 'hidden' "
         *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'treemap'"
