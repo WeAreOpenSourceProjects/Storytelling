@@ -163,8 +163,9 @@ svg {
 }
 
 gridster, gridster-item {
-  background : transparent !important;
-  height: 92%;
+  width: 100%;
+  background: white;
+  height: 100%;
 }
 
 gridster-item {
@@ -195,4 +196,9 @@ gridster-item {
 /deep/ .fr-view {
   font-family: "Times New Roman", Georgia, Serif;
   font-size: 36px !important;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
 }
