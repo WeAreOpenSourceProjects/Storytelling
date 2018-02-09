@@ -173,18 +173,16 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
 
   public enableEdit(box, i) {
 
-    this.dynamicTextEditors[i].setEditMode();
 
     this.editMode= true;
     if (box.content && box.content.type === 'text') {
-      this.editMode= true;
-
+      this.dynamicTextEditors[i].setEditMode();
     } else if (box.content && box.content.type==='chart') {
       const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
       dialog.componentInstance.inputOptions = box.content.chart.chartOptions;
       dialog.componentInstance.inputData = box.content.chart.data;
       const dialogSubscription = dialog.afterClosed().subscribe(result => {
-        if (result !== 'CANCEL') {
+        if (result && result !== 'CANCEL' ) {
           box.content.type='chart';
           box.content.chart = result;
           box.width = box.cols * 25;
