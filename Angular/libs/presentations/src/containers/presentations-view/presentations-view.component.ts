@@ -111,9 +111,9 @@ export class PresentationsViewComponent implements OnInit {
       outerMargin: true,
       mobileBreakpoint: 640,
       minCols: 30,
-      maxCols: 30,
+      maxCols: 50,
       minRows: 30,
-      maxRows: 30,
+      maxRows: 50,
       maxItemCols: 100,
       minItemCols: 1,
       maxItemRows: 100,
@@ -220,6 +220,7 @@ export class PresentationsViewComponent implements OnInit {
 
   onClick() {
     if (this.screenfull.enabled) {
+      console.log('screen');
       this.screenfull.toggle(this.slider.element.nativeElement);
     }
   }

@@ -76,7 +76,9 @@
         border-right-color: #2a76dd;
         border-right-width: 22px;
         top: 42px;
-
+        &:focus {
+         outline : none;
+        }
         .fragmented {
             opacity: 0.3;
         }
@@ -87,7 +89,9 @@
         border-left-width: 22px;
         left: 74px;
         top: 42px;
-
+        &:focus {
+         outline : none;
+        }
         .fragmented {
             opacity: 0.3;
         }
@@ -97,7 +101,9 @@
         border-bottom-color: #2a76dd;
         border-bottom-width: 22px;
         left: 42px;
-
+        &:focus {
+         outline : none;
+        }
         .fragmented {
             opacity: 0.3;
         }
@@ -108,7 +114,9 @@
         border-top-width: 22px;
         left: 42px;
         top: 74px;
-
+        &:focus {
+         outline : none;
+        }
         .fragmented {
             opacity: 0.3;
         }
@@ -118,6 +126,7 @@
         border: 3px;
         left: 42px;
         top: 42px;
+        outline : none;
 
         .fa {
             color: #9e9e9e;
@@ -163,8 +172,9 @@ svg {
 }
 
 gridster, gridster-item {
-  background : transparent !important;
-  height: 92%;
+  width: 100%;
+  background: white;
+  height: 100%;
 }
 
 gridster-item {
@@ -195,4 +205,9 @@ gridster-item {
 /deep/ .fr-view {
   font-family: "Times New Roman", Georgia, Serif;
   font-size: 36px !important;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
 }
