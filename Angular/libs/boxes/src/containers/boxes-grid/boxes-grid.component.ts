@@ -180,7 +180,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       dialog.componentInstance.inputOptions = box.content.chart.chartOptions;
       dialog.componentInstance.inputData = box.content.chart.data;
       const dialogSubscription = dialog.afterClosed().subscribe(result => {
-        if (result !== 'CANCEL') {
+        if (result && result !== 'CANCEL' ) {
           box.content.type='chart';
           box.content.chart = result;
           box.width = box.cols * 25;
