@@ -83,9 +83,7 @@
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
     "typescript": ">=2.4.2 <2.5.0",
-    "zone.js": "^0.8.14",
-    "@tinymce/tinymce-angular": "^1.0.2"
-
+    "zone.js": "^0.8.14"
   },
   "devDependencies": {
     "@angular/cli": "github:nrwl/fix-cli-build#release16",
