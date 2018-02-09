@@ -205,17 +205,15 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       if (this.slide.boxIds[i].content.type === 'text') {
         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
         const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-        this.dynamicTextEditors.push(componentEditorRef.instance)
+        this.dynamicTextEditors.push(componentEditorRef.instance);
+        console.log(this.slide.boxIds[i])
+        componentEditorRef.instance.initialValue = this.slide.boxIds[i].content.text;
 //        (<TinyEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
 //        (<TinyEditorComponent>componentEditorRef.instance).id = this.slide.boxIds[i]._id;
-/*
-        (<TinyEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
-          this.slide.boxIds[i].content = {
-            'type': 'text',
-            'text': text
-          }
+
+        (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
+          this.slide.boxIds[i].content.text = text;
         });
-        */
       }
     }
 
@@ -255,9 +253,11 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     ).subscribe(([texteditor, item]: [any, any]) => {
       const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
       const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
+      (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
+        this.slide.boxIds[this.texteditor.length - 1].content.text = text;
+      });
       this.dynamicTextEditors.push(componentEditorRef.instance)
       this.editMode = true;
-      console.log(item);
 //      (<TinyEditorComponent>componentEditorRef.instance).id = 0;
 /*
       (<TinyEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {

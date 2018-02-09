@@ -19,6 +19,12 @@ export class TinyEditorComponent {
   @ViewChild('editor')
   public editorComponent: ElementRef;
 
+  @Input()
+  public initialValue = '';
+
+  @Output()
+  public textToSave = new EventEmitter();
+
   public activeEditor: any;
 
   public init = {
@@ -26,10 +32,11 @@ export class TinyEditorComponent {
     theme: 'inlite',
     insert_toolbar: 'blockquote | numlist bullist | alignleft aligncenter alignright alignjustify',
     selection_toolbar: 'quicklink | bold italic fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify',
-    init_instance_callback: function (editor) {
+    init_instance_callback: (editor) => {
       editor.focus();
-      editor.on('blur', function (e) {
+      editor.on('blur', (e) => {
         editor.setMode('readonly');
+        this.textToSave.emit(editor.getContent());
       });
     },
     content_style: ".mce-content-body { font-size: 24pt; font-family: Arial,sans-serif; }",
