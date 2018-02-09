@@ -8,10 +8,10 @@
   background: white !important ;
   gridster-grid.gridster-grid{
     .row {
-      border-top: 0.5px dotted grey;
+      border-top: 0.5px dotted rgb(189, 195, 199);
     }
     .column {
-      border-left: 0.5px dotted grey;
+      border-left: 0.5px dotted rgb(189, 195, 199);
     }
   }
 
@@ -32,16 +32,17 @@
     height: 0.9rem;
   }
 }
+
 gridster-item {
+  background-color: rgb(255,255,255) !important;
   border : none !important;
-  padding: 5px;
+  padding-top: 9px;
   &:hover{
     border : solid 1px !important;
     .controls {
       display: block;
     }
   }
-  background: transparent !important;
 }
 
 ul li {

@@ -59,13 +59,13 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   @ViewChildren('texteditor', {read: ViewContainerRef})
   public texteditor: QueryList<ViewContainerRef>;
 
-  public editMode =true;
+  public editMode = true;
   public editors;
   public slide: any;
   public isOpened = false;
   public id: any;
   public idSlides: any;
-  public gridConfig:any;
+  public gridConfig: any;
   public options;
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
   private presentationId: any;
@@ -172,8 +172,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   }
 
   public enableEdit(box, i) {
-
-
     this.editMode= true;
     if (box.content && box.content.type === 'text') {
       this.dynamicTextEditors[i].setEditMode();
@@ -188,6 +186,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           box.width = box.cols * 25;
           box.height = box.cols * 25;
         }
+        this.editMode= false;
       });
       this.subscriptions.add(dialogSubscription);
     }
@@ -208,7 +207,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
         const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
         this.dynamicTextEditors.push(componentEditorRef.instance)
 //        (<TinyEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
-        console.log(this.slide.boxIds[i]._id);
 //        (<TinyEditorComponent>componentEditorRef.instance).id = this.slide.boxIds[i]._id;
 /*
         (<TinyEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
@@ -248,8 +246,9 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     const textBoxSubscription = textType$.pipe(
       withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
       switchMap((item: any) => {
-        item.item.cols = 8;
-        item.item.rows = 2;
+        item.item.cols = 16;
+        item.item.rows = 3;
+        item.item.content = { type: 'text' };
         this.slide.boxIds.push(item.item);
         return zip(this.texteditor.changes, of(item));
       })
@@ -257,6 +256,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
       const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
       this.dynamicTextEditors.push(componentEditorRef.instance)
+      this.editMode = true;
       console.log(item);
 //      (<TinyEditorComponent>componentEditorRef.instance).id = 0;
 /*
@@ -266,7 +266,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       */
     });
     this.subscriptions.add(textBoxSubscription);
-
 
     const chartBoxSubscription = chartType$.pipe(
       withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
