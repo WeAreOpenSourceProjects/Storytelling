@@ -14,7 +14,7 @@ export class GaugeChartComponent extends Chart implements OnInit {
   private width: number;
   private height: number;
   chartOptions: any;
-  view: any;
+  view: null;
   showLegend: boolean = true;
   legendTitle: string = 'Legend';
   gaugeTextValue: string = '';
@@ -63,19 +63,16 @@ export class GaugeChartComponent extends Chart implements OnInit {
 
     // Set data
     this.chartOptions = { ...this.configInput };
-    this.init();
   }
 
   ngAfterViewInit(){
-    let element = this.chartContainer.nativeElement;
-    let svg = d3.select(element).select('svg')
-
-     // Set the config
-     setTimeout(()=>{
-       svg.attr("width","80%")
-       .attr("height","100%")
-       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-     }, 500);
+      setTimeout(()=>{
+        let element = this.chartContainer.nativeElement;
+        let svg = d3.select(element).select('svg')
+        svg
+          .attr("viewBox","0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+        this.init();
+    })
    }
 
   init() {

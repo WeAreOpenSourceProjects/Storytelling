@@ -26,10 +26,9 @@ export class DendogramComponent extends Chart  {
 
   ngAfterViewInit(){
     this.chartOptions = { ...this.configInput };
-    d3.select('#DendogramComponent').remove();
     setTimeout(()=> {
       this.init();
-    })
+    },500)
   }
   /**
    * Process json Data to D3.js Bar chart format

@@ -1,7 +1,7 @@
 <div class="d3-chart" #chart>
   <ngx-charts-bar-vertical-2d fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-2d'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-2d' "
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -23,8 +23,8 @@
     [roundDomains]="chartOptions.roundDomains">
   </ngx-charts-bar-vertical-2d>
   <ngx-charts-bar-horizontal-2d fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-2d'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-2d'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -44,8 +44,8 @@
     [roundDomains]="chartOptions.roundDomains">
   </ngx-charts-bar-horizontal-2d>
   <ngx-charts-bar-vertical-stacked fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-stacked'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-stacked'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -65,8 +65,8 @@
     [roundDomains]="chartOptions.roundDomains">
   </ngx-charts-bar-vertical-stacked>
   <ngx-charts-bar-horizontal-stacked fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-stacked'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-stacked'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -84,8 +84,8 @@
     [roundDomains]="chartOptions.roundDomains">
   </ngx-charts-bar-horizontal-stacked>
   <ngx-charts-bar-vertical-normalized fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-normalized'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-normalized'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -105,8 +105,8 @@
     [roundDomains]="chartOptions.roundDomains">
   </ngx-charts-bar-vertical-normalized>
   <ngx-charts-bar-horizontal-normalized fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-normalized'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-normalized'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -126,8 +126,8 @@
     [roundDomains]="chartOptions.roundDomains">
   </ngx-charts-bar-horizontal-normalized>
   <ngx-charts-polar-chart fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'polar-chart'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'polar-chart'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -151,8 +151,8 @@
     [showSeriesOnHover]="chartOptions.showSeriesOnHover">
   </ngx-charts-polar-chart>
   <ngx-charts-line-chart fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'line-chart'"
+
+    *ngIf="activated &&chartOptions.chartType&&chartOptions.chartType.name === 'line-chart'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -175,8 +175,8 @@
     matTooltip>
   </ngx-charts-line-chart>
   <ngx-charts-heat-map fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'heat-map'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'heat-map'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [results]="data?data:[]"
@@ -193,8 +193,8 @@
     [matTooltipDisabled]="chartOptions.tooltipDisabled">
   </ngx-charts-heat-map>
   <ngx-charts-bubble-chart fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'bubble-chart'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bubble-chart'"
     class="chart-container"
     [view]="null"
     [results]="data?data:[]"
@@ -217,8 +217,8 @@
     [maxRadius]="20">
   </ngx-charts-bubble-chart>
   <ngx-charts-number-card fxFlex
-    [style.visibility]="activated ?  'visible' : 'hidden' "
-    *ngIf="chartOptions.chartType&&chartOptions.chartType.name === 'number-cards'"
+
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'number-cards'"
     [scheme]="chartOptions.colorScheme"
     [results]="data?data:[]">
   </ngx-charts-number-card>

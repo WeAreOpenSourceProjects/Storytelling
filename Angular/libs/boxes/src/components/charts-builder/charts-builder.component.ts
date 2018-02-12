@@ -9,7 +9,7 @@ import { chartTypes } from './chartTypes';
 import { contries, movies, Orchestra } from './data';
 import { GraphComponent } from '@labdat/charts'
 const defaultOptions = {
-  view: [900, 600],
+  view: null,
   colorScheme: colorSets.find(s => s.name === 'cool'),
   schemeType: 'ordinal',
   showLegend: true,

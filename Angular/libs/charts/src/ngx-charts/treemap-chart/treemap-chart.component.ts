@@ -6,7 +6,7 @@ import { nest } from 'd3-collection';
 import * as d3 from 'd3';
 
 const defaultOptions = {
-  view: [900, 600],
+  view: null,
   colorScheme: colorSets.find(s => s.name === 'cool'),
   schemeType: 'ordinal',
   showLegend: true,
@@ -39,7 +39,7 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
 
 
   data: any[];
-  private activated: boolean = true;
+  private activated: boolean = false;
   private _setIntervalHandler: any;
 
   constructor() {
@@ -47,18 +47,18 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
   }
   ngOnInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
-    this.init()
   }
   ngAfterViewInit(){
     let element = this.chartContainer.nativeElement;
     let svg = d3.select(element).select('svg')
-
      // Set the config
      setTimeout(()=>{
        svg.attr("width","100%")
        .attr("height","100%")
        .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-     }, 500);
+       this.init()
+       this.activated = true;
+     },500);
    }
   /**
    * Process json Data to Ngx-charts format

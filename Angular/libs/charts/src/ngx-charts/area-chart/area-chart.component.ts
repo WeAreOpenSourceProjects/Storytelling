@@ -13,7 +13,7 @@ import * as d3 from 'd3';
 export class AreaChartComponent extends Chart implements OnInit, OnDestroy {
   @ViewChild('chart') private chartContainer: ElementRef;
 
-  view: any;
+  view: null;
   chartOptions: any;
   showXAxis = true;
   showYAxis = true;

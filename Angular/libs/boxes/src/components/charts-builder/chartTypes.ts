@@ -76,21 +76,21 @@ export const chartTypes = [
     dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Production Budget (millions)"]]},
     image: 'assets/img-graph/pieChart.png'
   }),
-  createChartType({
-    title: 'Word Cloud Chart',
-    simpleData: true,
-    cmpName: 'wordCloud',
-    convertData: WordCloudComponent.convertData,
-    dimLabels: [
-      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Value', maxSize: 1, dataType: ['number'] }
-    ],
-    description:
-      'A word cloud chart is a visual representation of text data, typically used to depict keyword metadata (tags) on websites, or to visualize free form text.',
-    categorie: 'Comparison',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
-    image: 'assets/img-graph/wordCloud-chart.jpg'
-  }),
+  // createChartType({
+  //   title: 'Word Cloud Chart',
+  //   simpleData: true,
+  //   cmpName: 'wordCloud',
+  //   convertData: WordCloudComponent.convertData,
+  //   dimLabels: [
+  //     { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
+  //     { column: 'Value', maxSize: 1, dataType: ['number'] }
+  //   ],
+  //   description:
+  //     'A word cloud chart is a visual representation of text data, typically used to depict keyword metadata (tags) on websites, or to visualize free form text.',
+  //   categorie: 'Comparison',
+  //   dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+  //   image: 'assets/img-graph/wordCloud-chart.jpg'
+  // }),
   createChartType({
     title: 'Dendogram',
     simpleData: true,
@@ -345,23 +345,23 @@ export const chartTypes = [
     dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
     image: 'assets/img-graph/advencedPie-chart.jpg'
   }),
-  createChartType({
-    title: 'Gauge Chart',
-    simpleData: true,
-    cmpName: 'GaugeChart',
-    convertData: GaugeChartComponent.convertData,
-    dimLabels: [
-      { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Value', maxSize: 1, dataType: ['number'] }
-    ],
-    description:
-      'Gauge charts, also known as dial charts or speedometer charts, use needles to show information as a reading on a dial.' +
-      'This chart type is often used in executive dashboard reports to show key business indicators.' +
-      'Gauge charts are useful for comparing values between a small number of variables either by using multiple needles on the same gauge or by using multiple gauges.',
-    categorie: 'Comparison',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
-    image: 'assets/img-graph/gauge-chart.jpg'
-  }),
+  // createChartType({
+  //   title: 'Gauge Chart',
+  //   simpleData: true,
+  //   cmpName: 'GaugeChart',
+  //   convertData: GaugeChartComponent.convertData,
+  //   dimLabels: [
+  //     { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
+  //     { column: 'Value', maxSize: 1, dataType: ['number'] }
+  //   ],
+  //   description:
+  //     'Gauge charts, also known as dial charts or speedometer charts, use needles to show information as a reading on a dial.' +
+  //     'This chart type is often used in executive dashboard reports to show key business indicators.' +
+  //     'Gauge charts are useful for comparing values between a small number of variables either by using multiple needles on the same gauge or by using multiple gauges.',
+  //   categorie: 'Comparison',
+  //   dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+  //   image: 'assets/img-graph/gauge-chart.jpg'
+  // }),
   createChartType({
     title: 'Area Chart',
     simpleData: true,

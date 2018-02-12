@@ -8,7 +8,7 @@
       <a title="Edit" (click)="enableEdit(box, i)"><mat-icon svgIcon="editor:ic_mode_edit_24px"></mat-icon></a>
       <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
     </div>
-    <div [hidden]="box.content?.type === 'chart'" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }">
+    <div *ngIf="box.content?.type === 'text'" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }">
       <ng-container #texteditor></ng-container>
       <!--editor [init]="{ inline: true, toolbar: 'undo redo', menubar: false, plugins: 'link'}"></editor-->
     </div>

@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import * as d3 from 'd3';
 
 const defaultOptions = {
-  view: [2000, 2000],
+  view: null,
   colorScheme: colorSets.find(s => {
     if (s === undefined) return;
     else return s.name === 'cool';
@@ -42,7 +42,7 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   @ViewChild('chart') private chartContainer: ElementRef;
 
   data: any[];
-  private activated: boolean = true;
+  private activated: boolean = false;
   private _setIntervalHandler: any;
 
   constructor() {
@@ -50,21 +50,18 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   }
   ngOnInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
-    this.init()
-
   }
   ngAfterViewInit(){
     let element = this.chartContainer.nativeElement;
-    console.log(element, this.chartContainer)
-    console.log('d3',d3.select('svg'))
-
      // Set the config
      setTimeout(()=>{
+       this.init();
        d3.select(element).select('svg')
-         .attr("width","100%")
+         .attr("width","80%")
          .attr("height","100%")
          .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-     })
+         this.activated =true;
+     },500)
    }
   /**
    * Process json Data to Ngx-charts format

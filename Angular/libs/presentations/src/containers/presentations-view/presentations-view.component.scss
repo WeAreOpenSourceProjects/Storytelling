@@ -175,6 +175,7 @@ gridster, gridster-item {
   width: 100%;
   background: white;
   height: 100%;
+  display: block;
 }
 
 gridster-item {
@@ -189,10 +190,7 @@ gridster-item {
     width: 100%;
     height: 100%;
 }
-:host /deep/ svg{
-    width: 100%;
-    height: 100%;
-}
+
 
 .text {
   flex-grow: 1 !important;

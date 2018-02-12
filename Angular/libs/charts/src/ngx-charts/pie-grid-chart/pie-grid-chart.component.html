@@ -1,5 +1,6 @@
 <div class="d3-chart" #chart>
     <ngx-charts-pie-grid
+        *ngIf="activated"
         class="pie-grid-container"
         [scheme]="chartOptions.colorScheme"
         [results]="data?data:[]">

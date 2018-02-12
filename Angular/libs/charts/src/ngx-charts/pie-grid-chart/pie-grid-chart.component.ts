@@ -5,7 +5,7 @@ import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Chart } from '../../chart.class';
 import { nest } from 'd3-collection';
 const defaultOptions = {
-  view: [1200, 800],
+  view: null,
   showXAxis: true,
   showYAxis: true,
   gradient: false,
@@ -22,19 +22,22 @@ const defaultOptions = {
   templateUrl: './pie-grid-chart.component.html',
   styleUrls: ['./pie-grid-chart.component.scss']
 })
-export class PieGridChartComponent extends Chart implements OnInit, OnDestroy {
+export class PieGridChartComponent extends Chart implements OnDestroy {
   chartOptions: any;
   @ViewChild('chart') private chartContainer: ElementRef;
 
   data: any[];
-  private activated: boolean = true;
+  private activated: boolean = false;
   private _setIntervalHandler: any;
 
   constructor() {
     super();
   }
-
   ngOnInit(){
+    this.chartOptions = { ...defaultOptions, ...this.configInput };
+
+  }
+  ngAfterViewInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
     let element = this.chartContainer.nativeElement;
     let svg = d3.select(element).select('svg')
@@ -44,8 +47,9 @@ export class PieGridChartComponent extends Chart implements OnInit, OnDestroy {
        svg.attr("width","100%")
        .attr("height","100%")
        .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-       this.init()
-     }, 500);
+       this.init();
+       this.activated = true;
+     },500);
    }
 
   /**

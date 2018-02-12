@@ -5,7 +5,7 @@ import { Chart } from '../../chart.class';
 import { nest } from 'd3-collection';
 import * as d3 from 'd3';
 const defaultOptions = {
-  view: [1200, 800],
+  view: null,
   showXAxis: true,
   showYAxis: true,
   gradient: false,
@@ -27,14 +27,16 @@ export class NumberCardComponent extends Chart implements  OnDestroy {
   @ViewChild('chart') private chartContainer: ElementRef;
 
   data: any[];
-  private activated: boolean = true;
+  private activated: boolean = false;
   private _setIntervalHandler: any;
 
   constructor() {
     super();
   }
- ngOnInit(){
-   this.chartOptions = { ...defaultOptions, ...this.configInput };
+  ngOnInit(){
+    this.chartOptions = { ...defaultOptions, ...this.configInput };
+  }
+ ngAfterViewInit(){
    let element = this.chartContainer.nativeElement;
    let svg = d3.select(element).select('svg')
 
@@ -43,8 +45,10 @@ export class NumberCardComponent extends Chart implements  OnDestroy {
       svg.attr("width","100%")
       .attr("height","100%")
       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-      this.init()
-    }, 500);
+      this.init();
+      this.activated = true;
+
+    },500);
   }
   /**
    * Process json Data to Ngx-charts format
