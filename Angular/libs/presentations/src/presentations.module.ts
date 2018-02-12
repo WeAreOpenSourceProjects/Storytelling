@@ -28,7 +28,7 @@ import { PresentationSettingsComponent } from './components/presentation-setting
 import { PresentationsSearchComponent } from './components/presentations-search/presentations-search.component';
 import { TitleSlideComponent } from './components/title-slide/title-slide.component';
 import { FroalaViewModule } from 'angular2-froala-wysiwyg';
-
+import { TinyEditorModule } from '@labdat/tiny-editor';
 
 import { GridsterModule } from 'angular-gridster2';
 import {
@@ -88,7 +88,8 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
     FroalaViewModule,
     PieChartModule,
     GaugeModule,
-    ChartsModule
+    ChartsModule,
+    TinyEditorModule
   ],
   entryComponents: [
     PresentationDialogComponent,

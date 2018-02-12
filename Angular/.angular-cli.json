@@ -26,7 +26,7 @@
         { "glob": "**/*", "input": "../../../libs/charts/src/assets/img-graph/", "output": "assets/img-graph/" },
         { "glob": "**/*", "input": "../../../node_modules/tinymce/themes/", "output": "themes/" },
         { "glob": "**/*", "input": "../../../node_modules/tinymce/plugins/", "output": "plugins/" },
-        { "glob": "**/*", "input": "../../../node_modules/tinymce/skins/", "output": "skins/" }         
+        { "glob": "**/*", "input": "../../../node_modules/tinymce/skins/", "output": "skins/" }
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -139,6 +139,12 @@
     {
       "name": "presentations-state",
       "root": "libs/presentations-state/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    },
+    {
+      "name": "tiny-editor",
+      "root": "libs/tiny-editor/src",
       "test": "../../../test.js",
       "appRoot": ""
     }

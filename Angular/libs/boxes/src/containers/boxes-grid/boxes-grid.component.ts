@@ -19,7 +19,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import {BoxesApiService} from '../../../../boxes-state/src/services/boxes.api.service';
 import {ChartsBuilderComponent} from '../../components/charts-builder';
 //import {TextTinyEditorComponent} from '../../components/text-editor/text-editor.component';
-import { TinyEditorComponent } from '../../components/tiny-editor/tiny-editor.component';
+import { TinyEditorComponent } from '@labdat/tiny-editor';
 import { Chart } from '@labdat/charts';
 
 import { ActivatedRoute, Router } from '@angular/router';

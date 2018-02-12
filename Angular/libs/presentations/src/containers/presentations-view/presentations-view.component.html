@@ -1,11 +1,12 @@
+
 <div class="container" #slider>
   <div [ngStyle]="slideHeight_style" class="slide" *ngIf="curSlideIndex === 0" id="slide-0">
     <app-title-slide [slideTitle]="slideTitle"> </app-title-slide>
   </div>
   <gridster *ngIf="curSlideIndex!==0" [options]="gridConfig" >
    <gridster-item [item]="box" *ngFor="let box of currentSlide?.boxIds; let i = index">
-     <div class="text" *ngIf="box.content?.type ==='text'"  #textContainer [froalaView]="box.content?.text" ></div>
-     <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
+      <app-tiny-editor class="text" *ngIf="box.content?.type ==='text'" [initialValue]="box.content?.text" [init]="init" [plugins]="plugins"></app-tiny-editor>
+      <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
     </gridster-item>
   </gridster>
 

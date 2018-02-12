@@ -50,7 +50,7 @@ import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
 import { TextEditorComponent } from './components/text-editor/text-editor.component';
 
 import "../../../node_modules/tinymce/tinymce.js";
-import { TinyEditorComponent } from './components/tiny-editor/tiny-editor.component';
+import { TinyEditorComponent } from '@labdat/tiny-editor';
 import { ChartsBuilderComponent } from './components/charts-builder/charts-builder.component';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { GridsterModule } from 'angular-gridster2';
@@ -66,7 +66,7 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
 import { BoxDialogComponent } from './components/box-dialog/box-dialog.component'
 import { DataTableComponent }from './components/data-table/data-table.component';
 import { CodeEditorComponent } from './components/code-editor';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { TinyEditorModule } from '@labdat/tiny-editor';
 
 @NgModule({
     imports: [
@@ -98,7 +98,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
       GridsterModule,
       MatStepperModule,
       ChartsModule,
-      EditorModule
+      TinyEditorModule
     ],
     declarations: [
       BoxesGridComponent,
@@ -108,7 +108,6 @@ import { EditorModule } from '@tinymce/tinymce-angular';
       ChartsBuilderComponent,
       DataTableComponent,
       CodeEditorComponent,
-      TinyEditorComponent
     ],
     exports: [
       BoxesGridComponent

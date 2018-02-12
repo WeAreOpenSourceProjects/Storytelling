@@ -27,6 +27,7 @@ export class TinyEditorComponent {
 
   public activeEditor: any;
 
+  @Input()
   public init = {
     menubar: false,
     theme: 'inlite',
@@ -39,11 +40,12 @@ export class TinyEditorComponent {
         this.textToSave.emit(editor.getContent());
       });
     },
-    content_style: ".mce-content-body { font-size: 24pt; font-family: Arial,sans-serif; }",
+    content_style: ".mce-content-body { font-size: 24pt; font-family: Arial,sans-serif; } [contenteditable] { outline: none; }"
   };
 
   public inline = true;
 
+  @Input()
   public plugins = ['link', 'textcolor', 'colorpicker', 'lists', 'advlist'];
 
   public setEditMode() {

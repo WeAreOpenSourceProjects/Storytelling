@@ -51,6 +51,19 @@ export class PresentationsViewComponent implements OnInit {
   slideload$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   slideease$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
+  public init = {
+    menubar: false,
+    theme: 'inlite',
+    init_instance_callback: (editor) => {
+      editor.setMode('readonly');
+    },
+    content_style: ".mce-content-body { font-size: 24pt; font-family: Arial,sans-serif; } [contenteditable] { outline: none; }"
+  };
+
+  public inline = true;
+
+  public plugins = [''];
+
   @ViewChildren('chart') chartEle: any;
 
   @ViewChild('slider', { read: ViewContainerRef })
@@ -145,7 +158,6 @@ export class PresentationsViewComponent implements OnInit {
       disableWarnings: false,
       scrollToNewItems: false
     };
-
   }
 
   lastSlide() {
