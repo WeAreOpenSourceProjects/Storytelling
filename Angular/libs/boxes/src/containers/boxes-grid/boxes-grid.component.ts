@@ -275,11 +275,12 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
     ).subscribe((chart: any) => {
       if (chart) {
-        var item ={};
-        item.cols = 15;
-        item.rows = 15;
-        item.minItemRows =15;
-        item.minItemCols=15;
+        var item ={
+          cols: 15,
+          rows : 15,
+          minItemRows :15,
+          minItemCols: 15
+        };
         this.slide.boxIds.push(item);
         this.slide.boxIds.slice(-1)[0].content = {'type':'chart', chart}
       }

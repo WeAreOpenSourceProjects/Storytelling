@@ -18,12 +18,7 @@
       </ul>
 
       <div fxFlex="5"></div>
-      <ul *ngIf="useOurSamples" fxFlex="85">
-          <mat-card  *ngFor="let sample of samples" fxFlex="20" class="samples" (click)="useSample(sample)">
-            <span class="align-name">{{sample.name}}</span>
-          </mat-card>
-      </ul>
-      <div *ngIf="dataText" class="data-container"  fxFlex="85">
+      <div class="data-container"  fxFlex="85">
         <i class="format fa fa-align-left breath-left" [class.checked]="!formatTable" matTooltip="View as Text" matTooltipPosition="above" (click)="formatTable = false"></i>
         <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formTable()"></i>
         <codemirror *ngIf="!formatTable" [(ngModel)]="dataText" [config]="editorConfig">
@@ -62,7 +57,7 @@
   <mat-step [completed]="false">
     <ng-template matStepLabel>Map your dimensions</ng-template>
     <div *ngIf="hasChartSelected" class="section-content">
-       <span>
+       <span >
           Drag and drop the dimensions of graph
          <button class="btn btn-link" (click)="useExampleDimension()">(Use example dimension)</button>
         </span>

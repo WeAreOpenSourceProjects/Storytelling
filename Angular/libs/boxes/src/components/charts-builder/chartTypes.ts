@@ -73,7 +73,7 @@ export const chartTypes = [
     description:
       'A pie chart (or a circle chart) is a circular statistical graphic which is divided into slices to illustrate numerical proportion.',
     categorie: 'Comparison',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Production Budget (millions)"]]},
+    dimExemple: {'contries' :[['country'], ['pop']]},
     image: 'assets/img-graph/pieChart.png'
   }),
   // createChartType({
@@ -149,7 +149,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+    dimExemple: {'contries' :[['country'], ['pop']]},
     image: 'assets/img-graph/pieGridChart.jpg'
   }),
   createChartType({
@@ -181,7 +181,7 @@ export const chartTypes = [
       'Nested circles allow to represent hierarchies and compare values.' +
       ' This visualization is particularly effective to show the proportion between elements through their areas and their position inside a hierarchical structure. ',
     categorie: 'Hierarchy',
-    dimExemple: {'contries' :[['country','year'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+    dimExemple: {'contries' :[['country','year'], ['pop']]},
     image: 'assets/img-graph/ForceDirectedGraph.jpg'
   }),
   createChartType({
@@ -328,7 +328,7 @@ export const chartTypes = [
       "The different hierarchical levels create visual clusters through the subdivision into rectangles proportionally to each element's value." +
       ' Treemaps are useful to represent the different proportion of nested hierarchical data structures.',
     categorie: 'Hierarchy',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+    dimExemple: {'contries' :[['country'], ['pop']]},
     image: 'assets/img-graph/treemap.jpg'
   }),
   // createChartType({

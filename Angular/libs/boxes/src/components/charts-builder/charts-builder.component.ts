@@ -68,16 +68,13 @@ export class ChartsBuilderComponent implements OnInit {
   firstFormGroup: FormGroup;
   width : number;
   height:  number;
-  samples=[
-    {name:'contries', data:contries},
-    {name:'movies', data :movies},
-    {name:'Orchestra', data :Orchestra}
-  ]
+  samples= {name:'contries', data:contries}
+
   @Output() configGraph = new EventEmitter();
   warnMsg: string; //to tell the user which part isn't validated
   _dataText: string;
   get dataText() {
-    return this._dataText || undefined ;
+    return this._dataText || ' ' ;
   }
 
   set dataText(value) {
@@ -195,16 +192,9 @@ export class ChartsBuilderComponent implements OnInit {
     this.clear();
     // this.dataText = gapminder;
   }
-  useSample(sample){
-    this.useOurSamples =false
-    this.dataText = sample.data;
-    this.sampleUsed = sample.name
-  }
 
   trySamples(){
-    this._dataText = undefined;
-    this.useOurSamples =true;
-    this.formatTable =false;
+    this.dataText = this.samples.data;
   }
   usePast() {
     this.clearAll();
@@ -214,9 +204,7 @@ export class ChartsBuilderComponent implements OnInit {
   }
 
   useExampleDimension() {
-    console.log(this.chartType.dimExemple[this.sampleUsed], this.sampleUsed);
-    this.dataDims = this.chartType.dimExemple[this.sampleUsed];
-    console.log(this.dataDims);
+    this.dataDims = this.chartType.dimExemple[this.samples.name];
     this.processData();
   }
   clear() {
@@ -233,11 +221,14 @@ export class ChartsBuilderComponent implements OnInit {
     this.theme = 'light';
     this.chartOptions = { ...defaultOptions };
   }
+
   choseChartType(chart) {
     this.chartType = chart;
+
     this.dataDims = [null, null, null, null];
     this.processData();
   }
+
   processData() {
     if (!this.hasValidBuilder) {
       return;
