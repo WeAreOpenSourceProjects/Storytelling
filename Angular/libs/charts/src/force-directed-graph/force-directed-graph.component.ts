@@ -191,7 +191,7 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
         });
         this.node.append("title")
             .text(d => {
-                console.log(d,d.id.split('.')[d.depth]);
+
                 return (d.data)&&d.depth ? d.id.split('.')[d.depth] + " : " + d.data.value : d.id
             });
         this.simulation
@@ -234,7 +234,7 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
         legends.append('text')
             .attr('x', legendRectSize + legendSpacing)
             .attr('y', legendRectSize - legendSpacing / 2)
-            .attr("transform", "translate(0,5)")
+            // .attr("transform", "translate(0,5)")
             .text(d => {
                 return d.split('.')[this.maxDepth - 1]
             });

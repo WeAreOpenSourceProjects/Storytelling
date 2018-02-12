@@ -26,7 +26,7 @@ import { SlideDialogComponent } from './components/slide-dialog/slide-dialog.com
       MatIconModule,
       MatButtonModule,
       MatChipsModule,
-      MatDialogModule
+      MatDialogModule,
     ],
     declarations: [
       SlidesListComponent,

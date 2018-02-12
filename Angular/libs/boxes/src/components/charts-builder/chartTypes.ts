@@ -331,20 +331,20 @@ export const chartTypes = [
     dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
     image: 'assets/img-graph/treemap.jpg'
   }),
-  createChartType({
-    title: 'Advanced Pie Chart',
-    simpleData: true,
-    cmpName: 'AdvancedPieChart',
-    convertData: AdvancedPieChartComponent.convertData,
-    dimLabels: [
-      { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Value', maxSize: 1, dataType: ['number'] }
-    ],
-    description: 'Adevenced pie chart is similar to the pie chart, with more details showing on the right of the pie',
-    categorie: 'Comparison',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
-    image: 'assets/img-graph/advencedPie-chart.jpg'
-  }),
+  // createChartType({
+  //   title: 'Advanced Pie Chart',
+  //   simpleData: true,
+  //   cmpName: 'AdvancedPieChart',
+  //   convertData: AdvancedPieChartComponent.convertData,
+  //   dimLabels: [
+  //     { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
+  //     { column: 'Value', maxSize: 1, dataType: ['number'] }
+  //   ],
+  //   description: 'Adevenced pie chart is similar to the pie chart, with more details showing on the right of the pie',
+  //   categorie: 'Comparison',
+  //   dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+  //   image: 'assets/img-graph/advencedPie-chart.jpg'
+  // }),
   // createChartType({
   //   title: 'Gauge Chart',
   //   simpleData: true,

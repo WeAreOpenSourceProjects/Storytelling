@@ -270,16 +270,17 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     const chartBoxSubscription = chartType$.pipe(
       withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
       map((item: any) => {
-        item.cols = 15;
-        item.rows = 15;
-        item.minItemRows =15;
-        item.minItemCols=15;
-        this.slide.boxIds.push(item);
         return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
       }),
       switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
     ).subscribe((chart: any) => {
       if (chart) {
+        var item ={};
+        item.cols = 15;
+        item.rows = 15;
+        item.minItemRows =15;
+        item.minItemCols=15;
+        this.slide.boxIds.push(item);
         this.slide.boxIds.slice(-1)[0].content = {'type':'chart', chart}
       }
       this.cdr.detectChanges();

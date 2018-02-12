@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef } from '@angular/core';
 import { Chart } from '../../chart.class';
-import { formatLabel } from '@swimlane/ngx-charts';
+import { formatLabel } from '@swimlane/ngx-charts/';
 import { nest } from 'd3-collection';
 import * as d3 from 'd3';
 
@@ -13,12 +13,12 @@ const defaultOptions = {};
 export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestroy {
   data: Array<any> = [];
   @ViewChild('chart') private chartContainer: ElementRef;
-
+  activated = false;
   chartOptions: any;
   private width: number;
   private height: number;
   private _setIntervalHandler: any;
-  view: any;
+  view: null;
   colorScheme = {
     name: 'pie',
     selectable: true,
@@ -40,7 +40,7 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
   tooltipDisabled = false;
 
   // margin
-  private margin: any = { top: 20, bottom: 20, left: 40, right: 40 };
+  private margin: any = { top: 30, bottom: 20, left: 40, right: 40 };
 
   constructor() {
     super();
@@ -49,32 +49,28 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
 
   ngOnInit(){
     this.chartOptions = { ...defaultOptions, ...this.configInput };
-    this.init()
 
   }
   ngAfterViewInit(){
     let element = this.chartContainer.nativeElement;
-    console.log(element, this.chartContainer)
-    console.log('d3',d3.select('svg'))
-
-     // Set the config
+  // Set the config
      setTimeout(()=>{
        d3.select(element).select('svg')
          .attr("width","100%")
          .attr("height","100%")
-         .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+         .attr("viewBox", "0  " + element.offsetHeight /3 +" "+ (element.offsetWidth / 3) + " " + element.offsetHeight /3);
+         this.init();
+         this.activated = true;
+
      })
    }
+
   init() {
     if (this.configInput != null)
       this.data = AdvancedPieChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else this.data = this.dataInput;
   }
 
-  load() {
-    this.data = [];
-    this._setIntervalHandler = setTimeout(() => (this.data = this.dataInput[0].results));
-  }
 
   public static convertData(dataDims: string[], rawData: any) {
     const key$ = d => d[dataDims[0]];
@@ -93,11 +89,7 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
       };
     }
   }
-  ngOnChanges() {
-    d3.select('#AdvancedPieChartComponent').remove();
-    this.init();
-  }
-  ease() {}
+
 
   select(data) {
     console.log('Item clicked', data);
@@ -105,16 +97,6 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
 
   onLegendLabelClick(entry) {
     console.log('Legend clicked', entry);
-  }
-
-  pieTooltipText({ data }) {
-    const label = formatLabel(data.name);
-    const val = formatLabel(data.value);
-
-    return `
-      <span class="tooltip-label">${label}</span>
-      <span class="tooltip-val">$${val}</span>
-    `;
   }
 
   ngOnDestroy() {

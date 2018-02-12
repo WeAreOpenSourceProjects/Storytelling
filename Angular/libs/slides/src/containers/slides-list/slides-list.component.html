@@ -1,11 +1,10 @@
-<div dragula [dragulaModel]="slides" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+<div dragula [dragulaModel]="slides" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around" >
   <app-slide-card fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
     *ngFor="let slide of slides"
     [index]="slide?.index"
     (select)="select$.next(slide.id)"
     (delete)="delete$.next(slide.id)">
   </app-slide-card>
-
 </div>
 <div class="base" fxLayout="row" fxLayoutAlign="center center">
   <a id="add" mat-fab (click)="add$.next()" matTooltip="add a new slide" >
