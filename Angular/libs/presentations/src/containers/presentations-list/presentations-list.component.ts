@@ -85,7 +85,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
       this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 6, search}))
 
     })
-    const countPresentationSubscription = this.presentationsCount$.subscribe((count){
+    const countPresentationSubscription = this.presentationsCount$.subscribe((count) =>{
       this.count = count;
     })
     this.subscriptions.add(countPresentationSubscription);
