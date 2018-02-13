@@ -48,7 +48,7 @@ export class Search implements Action {
 
 export class SearchSuccess implements Action {
   readonly type = SEARCH_SUCCESS;
-  constructor(public payload: { presentations: Presentation[] }) { }
+  constructor(public payload: { presentations: Presentation[], presentationCount : any}) { }
 }
 
 export class SearchFailure implements Action {

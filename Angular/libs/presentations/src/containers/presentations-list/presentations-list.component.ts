@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Slides, SlidesSetting } from '../../models/index';
 import { PageEvent } from '@angular/material/paginator';
@@ -17,7 +17,7 @@ import {
   selectPresentationsTotal,
   selectPresentationsEntities,
   selectCurrentPresentation,
-  selectShowEmptyMessage } from '@labdat/presentations-state';
+  selectShowEmptyMessage, selectPresentationsCount } from '@labdat/presentations-state';
 import { fromRouter } from '@labdat/router-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
@@ -48,6 +48,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   public select$ = new Subject();
   public loggedIn$ = this.store.select(selectIsLoggedIn);
   public user$ = this.store.select(selectUser);
+  public presentationsCount$ = this.store.select(selectPresentationsCount);
   public presentations$ = this.store.select(selectAllPresentations);
   public presentationsTotal$ = this.store.select(selectPresentationsTotal);
   public presentationsError$ = this.store.select(selectPresentationsError);
@@ -66,13 +67,13 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<PresentationsState>,
-    private dialog: MatDialog ) { }
+    private dialog: MatDialog,
+    private cdr : ChangeDetectorRef,
+ ) { }
 
   ngOnInit() {
-
     this.subscriptions = this.searchObserver
     .pipe(
-      debounceTime(500),
       withLatestFrom(this.user$))
     .subscribe(([formSearch, user]) => {
       const search = {
@@ -80,12 +81,14 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
         email: user.email,
         username: user.username
       }
-      this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 10, search}))
-    })
+      this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 6, search}))
 
+    })
     const nextPageSubscription = this.nextPage$
     .pipe(withLatestFrom(this.searchObserver))
-    .subscribe(([pageEvent, search]: [PageEvent, any]) => this.store.dispatch(new fromPresentations.Search({ pageIndex: pageEvent.pageIndex, pageSize: 10, search})));
+    .subscribe(([pageEvent, search]: [PageEvent, any]) => {
+      console.log(pageEvent)
+      this.store.dispatch(new fromPresentations.Search({ pageIndex: pageEvent.pageIndex, pageSize: 6, search}))});
     this.subscriptions.add(nextPageSubscription);
 
     const togglePublishSubscription = this.togglePublish$

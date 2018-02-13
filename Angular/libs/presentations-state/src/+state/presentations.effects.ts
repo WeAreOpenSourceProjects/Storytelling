@@ -29,7 +29,9 @@ export class PresentationsEffects {
     run: (action: fromPresentations.Search, state: PresentationsState) => {
       const { pageIndex, pageSize, search } = action.payload
       return this.presentationsApiService.search(pageIndex, pageSize, search)
-        .pipe(map(result => new fromPresentations.SearchSuccess(result)))
+        .pipe(map((result) => {
+          return new fromPresentations.SearchSuccess(result)
+        }))
     },
     onError: (action: fromPresentations.Search, error) => {
       console.error('Error', error);

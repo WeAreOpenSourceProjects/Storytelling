@@ -1,34 +1,33 @@
-<div fxLayout="row" fxLayoutAlign="center center">
-  <app-slides-search kind="advanced" [searchObserver]="searchObserver"></app-slides-search>
+<div class="container">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <app-slides-search kind="advanced" [searchObserver]="searchObserver"></app-slides-search>
+  </div>
+
+  <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+    <ng-container  >
+      <app-slides-card
+        *ngFor="let presentation of presentations$ | async; trackBy:trackById"
+        fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
+        (select)="select$.next(presentation.id)"
+        (delete)="delete$.next($event)"
+        (copy)="copy$.next($event)"
+        (edit)="edit$.next($event)"
+        (isPublishChange)="togglePublish$.next($event)"
+        (isFavoriteChange)="toggleFavorite$.next($event)"
+        [presentation]="presentation"
+        [loggedIn]="loggedIn$ | async"
+        [user]="user$ | async"
+        [editable]="true">
+      </app-slides-card>
+    </ng-container>
+  </div>
+  <div class="error" [innerHTML]="message$ | async"></div>
+  <mat-paginator
+    [length]="presentationsCount$ | async"
+    [pageSize]="6"
+    (page)="nextPage$.next($event)">
+  </mat-paginator>
 </div>
-
-<div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-  <ng-container  >
-    <app-slides-card
-      *ngFor="let presentation of presentations$ | async; trackBy:trackById"
-      fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
-      (select)="select$.next(presentation.id)"
-      (delete)="delete$.next($event)"
-      (copy)="copy$.next($event)"
-      (edit)="edit$.next($event)"
-      (isPublishChange)="togglePublish$.next($event)"
-      (isFavoriteChange)="toggleFavorite$.next($event)"
-      [presentation]="presentation"
-      [loggedIn]="loggedIn$ | async"
-      [user]="user$ | async"
-      [editable]="true">
-    </app-slides-card>
-  </ng-container>
-</div>
-
-<div class="error" [innerHTML]="message$ | async"></div>
-
-<mat-paginator
-  *ngIf="(presentationsTotal$ | async) > 6"
-  [length]="presentationsTotal$ | async"
-  [pageSize]="10"
-  (page)="nextPage$.next($event)">
-</mat-paginator>
 
 <button
   class="buttonBottom"

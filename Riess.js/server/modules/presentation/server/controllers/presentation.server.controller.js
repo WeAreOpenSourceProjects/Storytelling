@@ -322,31 +322,38 @@ exports.search = function(req, res) {
     delete request.$and;
   }
 
-  Presentation
-  .find(request)
-  .populate({
-    path: 'slideIds',
-    populate: { path: 'boxIds' }
-  })
-  .populate({
-    path: 'author'
-  })
-  .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
-  .limit(pageSize)
-  .sort(order)
-  .exec()
-  .then(function(presentations) {
+  var presnetationsCount = Presentation.find(request).count();
+  var presnetationsFind = Presentation.find(request);
+
+
+
+ Promise.all([presnetationsCount,
+   presnetationsFind.populate({
+     path: 'slideIds',
+     populate: { path: 'boxIds' }
+   })
+   .populate({
+     path: 'author'
+   })
+   .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
+   .limit(pageSize)
+   .sort(order)
+   .exec()])
+
+  .then(function([count, presentations]) {
     var slides = [].concat.apply([], presentations.map(function(presentation) { return presentation.slideIds }));
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     res.json({
-      presentations: presentations.map(function(presentation) {
-        presentation.slideIds = presentation.slideIds.map(function(slide) {
-          return slide._id
-        })
-        return presentation
-      }),
+      presentations: {
+          presentaion : presentations.map(function(presentation) {
+          presentation.slideIds = presentation.slideIds.map(function(slide) {
+            return slide._id
+          })
+          return presentation;
+        }),
+        count}, 
       slides: slides,
-      boxes: boxes
+      boxes: boxes,
     });
   })
   .catch(function(err) {

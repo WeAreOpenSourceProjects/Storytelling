@@ -7,4 +7,5 @@ export const presentationsInitialState: PresentationsState = presentationsAdapte
   loaded: false,
   loading: false,
   error: '',
+  count: 0
 });

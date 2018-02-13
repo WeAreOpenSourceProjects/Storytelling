@@ -34,6 +34,7 @@ export class PresentationsSearchComponent implements OnDestroy {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
+
     this.searchForm = this.formBuilder.group({
       title: this.formBuilder.control(''),
       isFavorite: this.formBuilder.control('indeterminate'),
@@ -41,6 +42,13 @@ export class PresentationsSearchComponent implements OnDestroy {
       order: this.formBuilder.control('date'),
     });
 
+    this.searchObserver.next({
+       title:'',
+       isFavorite:'indeterminate' ,
+       isPublic:'indeterminate',
+       order: 'date'
+    });
+    
     this.subscriptions = this.searchForm.valueChanges
     .subscribe(this.searchObserver)
   }

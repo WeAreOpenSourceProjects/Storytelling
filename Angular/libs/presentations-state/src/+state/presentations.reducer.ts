@@ -10,6 +10,7 @@ export const presentationsInitialState: PresentationsState = presentationsAdapte
   loaded: false,
   loading: false,
   error: '',
+  count :0
 });
 
 export function presentationsReducer(state: PresentationsState = presentationsInitialState, action: fromPresentations.Actions | fromAuthentication.Actions | RouterNavigationAction | fromSlides.Actions ): PresentationsState {
@@ -24,7 +25,7 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       return presentationsAdapter.removeAll({...state, error: action.payload.error, loading: false, loaded: false });
     }
     case fromPresentations.SEARCH_SUCCESS: {
-      return presentationsAdapter.addMany(action.payload.presentations, { ...state, loading: false, loaded: true });
+      return presentationsAdapter.addMany(action.payload.presentations, { ...state, count :action.payload.presentationCount , loading: false, loaded: true });
     }
     case fromPresentations.GET_ONE: {
       return presentationsAdapter.removeAll({ ...state, loading: true, loaded: false });
@@ -33,10 +34,10 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       return presentationsAdapter.addOne(action.payload.presentation, { ...state, loading: false, loaded: true });
     }
     case fromPresentations.ADD_SUCCESS: {
-      return presentationsAdapter.addOne(action.payload, state);
+      return presentationsAdapter.addOne(action.payload, { ...state, count : state.count +1});
     }
     case fromPresentations.COPY_SUCCESS: {
-      return presentationsAdapter.addOne(action.payload, state);
+      return presentationsAdapter.addOne(action.payload, { ...state, count : state.count +1});
     }
     case fromPresentations.DELETE_SUCCESS: {
       return presentationsAdapter.removeOne(action.payload.presentationId, state);

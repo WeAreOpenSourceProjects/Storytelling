@@ -10,6 +10,7 @@ export {
   selectPresentationsTotal,
   selectPresentationsLoading,
   selectPresentationsLoaded,
+  selectPresentationsCount,
   selectPresentationsError,
   selectCurrentPresentationId,
   selectCurrentPresentation,

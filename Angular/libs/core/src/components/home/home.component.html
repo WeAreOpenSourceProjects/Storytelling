@@ -1,30 +1,31 @@
-<div class="base" fxLayout="column" fxLayoutAlign="center center">
-  <div class="logo" [class.hide]="hide$ | async">
-    <img src="assets/logo.png" width="100%">
-  </div>
-  <div class="search-block" [class.center-mode]="!(hide$ | async)" [class.side-mode]="hide$ | async">
-    <div class="search-wrap">
-      <app-slides-search kind="generic" [searchObserver]="searchObserver"></app-slides-search>
+<div>
+  <div class="base" fxLayout="column" fxLayoutAlign="center center">
+    <div class="logo" [class.hide]="hide$ | async">
+      <img src="assets/logo.png" width="100%">
     </div>
-    <button *ngIf="!(hide$ | async)" class="buttonBottom floating" (click)="showPublicPresentations$.next()" mat-fab><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+    <div class="search-block" [class.center-mode]="!(hide$ | async)" [class.side-mode]="hide$ | async">
+      <div class="search-wrap">
+        <app-slides-search kind="generic" [searchObserver]="searchObserver"></app-slides-search>
+      </div>
+      <button *ngIf="!(hide$ | async)" class="buttonBottom floating" (click)="showPublicPresentations$.next()" mat-fab><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+    </div>
   </div>
-</div>
 
-<div *ngIf="(hide$ | async)"
-  fxLayout="row" fxLayoutWrap="wrap"
-  fxLayoutAlign="space-around">
-  <div
-    *ngFor="let presentation of presentations$ | async; trackBy:trackById"
-    fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
-    <app-slides-card [presentation]="presentation" [editable]="false" [loggedIn]="false" (select)="select$.next(presentation.id)"></app-slides-card>
+  <div *ngIf="(hide$ | async)"
+    fxLayout="row" fxLayoutWrap="wrap"
+    fxLayoutAlign="space-around">
+    <div
+      *ngFor="let presentation of presentations$ | async; trackBy:trackById"
+      fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
+      <app-slides-card [presentation]="presentation" [editable]="false" [loggedIn]="false" (select)="select$.next(presentation.id)"></app-slides-card>
+    </div>
   </div>
-</div>
 
-<mat-paginator
-  *ngIf="(hide$ | async) && (presentationsCount$ | async) > 6"
-  [length]="presentationsCount$ | async"
-  [pageSize]="pageSize"
-  (page)="nextPage($event)">
-</mat-paginator>
-
-<div class="error" [innerHTML]="message$ | async"></div>
+  <mat-paginator
+    *ngIf="(hide$ | async) && (presentationsCount$ | async)>6"
+    [length]="presentationsCount$ | async"
+    [pageSize]="6"
+    (page)="nextPage$.next($event)">
+  </mat-paginator>
+<div>
+<div class="error" *ngIf="(hide$ | async)" [innerHTML]="message$ | async"></div>

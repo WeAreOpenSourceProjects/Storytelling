@@ -38,18 +38,16 @@ export class PieGridChartComponent extends Chart implements OnDestroy {
 
   }
   ngAfterViewInit(){
-    this.chartOptions = { ...defaultOptions, ...this.configInput };
     let element = this.chartContainer.nativeElement;
-    let svg = d3.select(element).select('svg')
 
      // Set the config
      setTimeout(()=>{
+       let svg = d3.select(element).select('svg')
        svg.attr("width","100%")
        .attr("height","100%")
        .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
        this.init();
-       this.activated = true;
-     },500);
+     });
    }
 
   /**

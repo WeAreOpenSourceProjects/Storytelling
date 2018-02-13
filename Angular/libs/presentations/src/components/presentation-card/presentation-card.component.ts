@@ -6,7 +6,6 @@ import { filter } from 'rxjs/operators/filter';
 import { Presentation } from '@labdat/data-models';
 import { MatDialog } from '@angular/material/dialog';
 //import { NotifBarService } from 'app/core';
-import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { selectUser, selectIsLoggedIn, AuthenticationState } from '@labdat/authentication-state';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
@@ -18,31 +17,6 @@ import { User } from '@labdat/data-models';
   selector: 'app-slides-card',
   templateUrl: './presentation-card.component.html',
   styleUrls: ['./presentation-card.component.scss'],
-  animations: [
-    trigger('flyInOut', [
-      state('in', style({ transform: 'translateX(0)' })),
-      transition('void => *', [
-        animate(
-          300,
-          keyframes([
-            style({ opacity: 0, transform: 'translateX(100%)', offset: 0 }),
-            style({ opacity: 1, transform: 'translateX(-15px)', offset: 0.3 }),
-            style({ opacity: 1, transform: 'translateX(0)', offset: 1.0 })
-          ])
-        )
-      ]),
-      transition('* => void', [
-        animate(
-          300,
-          keyframes([
-            style({ opacity: 1, transform: 'translateX(0)', offset: 0 }),
-            style({ opacity: 1, transform: 'translateX(15px)', offset: 0.7 }),
-            style({ opacity: 0, transform: 'translateX(-100%)', offset: 1.0 })
-          ])
-        )
-      ])
-    ])
-  ]
 })
 export class PresentationCardComponent implements OnInit {
 

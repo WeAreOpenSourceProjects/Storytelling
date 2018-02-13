@@ -20,7 +20,7 @@ import {
   selectAllPresentations,
   fromPresentations,
   selectPresentationsTotal,
-  selectCurrentPresentation } from '@labdat/presentations-state';
+  selectCurrentPresentation, selectPresentationsCount } from '@labdat/presentations-state';
 import { skip } from 'rxjs/operators/skip';
 import { Subscription } from 'rxjs/Subscription';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public subscriptions: Subscription;
   public showPublicSlides$ = new Subject<boolean>();
   public showPublicPresentations$ = new Subject<boolean>();
+  public presentationsCount$ = this.store.select(selectPresentationsCount);
   private nextPage$ = new Subject();
   public select$ = new Subject();
   public searchObserver = new Subject();
