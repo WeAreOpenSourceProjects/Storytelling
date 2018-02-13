@@ -55,6 +55,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   public currentPresentation$ = this.store.select(selectCurrentPresentation);
   public searchObserver = new Subject();
   public selectShowEmptyMessage$ = this.store.select(selectShowEmptyMessage);
+  public count = 0;
   public message$ = this.selectShowEmptyMessage$.pipe(
     withLatestFrom(this.searchObserver, (showMessage, search) => {
       if (showMessage) {
@@ -84,6 +85,11 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
       this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 6, search}))
 
     })
+    const countPresentationSubscription = this.presentationsCount$.subscribe((count){
+      this.count = count;
+    })
+    this.subscriptions.add(countPresentationSubscription);
+    this.subscriptions.add(countPresentationSubscription);
     const nextPageSubscription = this.nextPage$
     .pipe(withLatestFrom(this.searchObserver))
     .subscribe(([pageEvent, search]: [PageEvent, any]) => {
@@ -108,7 +114,12 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     this.subscriptions.add(editSubscription);
 
     const addSubscription = this.add$
-    .subscribe(() => {
+    .subscribe((res) => {
+      console.log(this.pageIndex);
+       this.nextPage$.next({
+         pageIndex: this.count / 6
+       })
+      console.log(res);
       const presentation = new Presentation();
       this.store.dispatch(new fromPresentations.Add(presentation));
     });

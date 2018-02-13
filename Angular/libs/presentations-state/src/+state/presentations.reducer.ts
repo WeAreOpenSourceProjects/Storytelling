@@ -34,13 +34,14 @@ export function presentationsReducer(state: PresentationsState = presentationsIn
       return presentationsAdapter.addOne(action.payload.presentation, { ...state, loading: false, loaded: true });
     }
     case fromPresentations.ADD_SUCCESS: {
+      console.log(presentationsAdapter);
       return presentationsAdapter.addOne(action.payload, { ...state, count : state.count +1});
     }
     case fromPresentations.COPY_SUCCESS: {
       return presentationsAdapter.addOne(action.payload, { ...state, count : state.count +1});
     }
     case fromPresentations.DELETE_SUCCESS: {
-      return presentationsAdapter.removeOne(action.payload.presentationId, state);
+      return presentationsAdapter.removeOne(action.payload.presentationId, { ...state, count : state.count +1});
     }
     case fromPresentations.UPDATE_SUCCESS: {
       return presentationsAdapter.updateOne(action.payload, state);
