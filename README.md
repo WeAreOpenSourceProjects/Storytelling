@@ -10,8 +10,8 @@ Make sure you have installed all of the following prerequisites on your developm
 * Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) or [GitHub Gist](https://gist.github.com/isaacs/579814)
 ## Installation
 ```
-$ git clone --recursive https://github.com/weareopensource/MEANie.git
-$ cd MEANie
+$ git clone https://github.com/weareopensource/Storytelling.git
+$ cd Storytelling
 $ npm i
 ```
 ## Running Your Application
