@@ -65,7 +65,7 @@
         <div class="dimension" fxFlex.xs="50" fxFlex.sm="50" fxFlex.md="33" fxFlex.lg="20" fxFlex.xl="20">
           <div class="title">Dimensions</div>
           <ul class="list-unstyled dimensions-list" >
-            <li *ngFor="let dimension of headerValues" dnd-draggable [dragData]="dimension.title">
+            <li *ngFor="let dimension of headerValues" dnd-draggable [dragData]="dimension.data">
               {{dimension.title}}
               <span class="type">{{dimension.type}}</span>
               <span class="pull-right"><i class="fa fa-arrow-right"></i></span>

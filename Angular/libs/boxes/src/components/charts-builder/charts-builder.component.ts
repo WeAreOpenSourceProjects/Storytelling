@@ -6,7 +6,7 @@ import * as babyparse from 'babyparse';
 import * as _ from 'lodash';
 import { MatDialogRef } from '@angular/material/dialog';
 import { chartTypes } from './chartTypes';
-import { contries, movies, Orchestra } from './data';
+import { gapminder } from './data';
 import { GraphComponent } from '@labdat/charts'
 const defaultOptions = {
   view: null,
@@ -68,7 +68,6 @@ export class ChartsBuilderComponent implements OnInit {
   firstFormGroup: FormGroup;
   width : number;
   height:  number;
-  samples= {name:'contries', data:contries}
 
   @Output() configGraph = new EventEmitter();
   warnMsg: string; //to tell the user which part isn't validated
@@ -135,7 +134,7 @@ export class ChartsBuilderComponent implements OnInit {
   }
 
   addTobox1Items(dimIndex: number, $event: any) {
-    let type = this.headerValues.find(h => h.title == $event.dragData)['type'];
+    let type = this.headerValues.find(h => h.data == $event.dragData)['type'];
     let valid = false;
     this.chartType.dimLabels[dimIndex].dataType.forEach(_type => {
       if (_type == type) valid = true;
@@ -147,6 +146,7 @@ export class ChartsBuilderComponent implements OnInit {
     } else {
       this.dataDims[dimIndex].push('err' + ' ' + $event.dragData);
     }
+    console.log('dragDatadim', this.dataDims)
   }
 
   removeItem(dimIndex: number, item: string) {
@@ -177,6 +177,7 @@ export class ChartsBuilderComponent implements OnInit {
   loadData() {
     if (this.inputOptions) {
       this.headerValues = this.inputOptions.headerValues;
+      console.log(this.headerValues);
       this.dataDims = this.inputOptions.dataDims;
       this.rawData = this.inputData;
       this.errors = []
@@ -188,14 +189,11 @@ export class ChartsBuilderComponent implements OnInit {
     }
   }
 
-  useExample() {
-    this.clear();
-    // this.dataText = gapminder;
-  }
-
   trySamples(){
-    this.dataText = this.samples.data;
-  }
+    this.clear();
+    this.dataText = gapminder;
+    }
+
   usePast() {
     this.clearAll();
     this.useOurSamples =false;
@@ -204,13 +202,14 @@ export class ChartsBuilderComponent implements OnInit {
   }
 
   useExampleDimension() {
-    this.dataDims = this.chartType.dimExemple[this.samples.name];
+    this.dataDims = this.chartType.dimExemple;
+    console.log("use Exemple",this.dataDims)
     this.processData();
   }
   clear() {
     this.headerValues = [];
     this.rawData = [];
-    this.dataDims = [null, null, null, null];
+    this.dataDims = [];
     return (this.data = []);
   }
 
@@ -225,7 +224,7 @@ export class ChartsBuilderComponent implements OnInit {
   choseChartType(chart) {
     this.chartType = chart;
 
-    this.dataDims = [null, null, null, null];
+    this.dataDims = [];
     this.processData();
   }
 
@@ -284,7 +283,7 @@ export class ChartsBuilderComponent implements OnInit {
 
     if (JSON.stringify(headerValues) !== JSON.stringify(this.headerValues)) {
       this.headerValues = headerValues.slice();
-      this.dataDims = [null, null, null, null];
+      this.dataDims = [];
       this.data = [];
     } else {
       this.processData();

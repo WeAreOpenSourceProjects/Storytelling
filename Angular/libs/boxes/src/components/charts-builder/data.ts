@@ -1,4 +1,4 @@
-export const contries = `
+export const gapminder = `
 country	year	gdpPercap	lifeExp	pop	continent
 Australia	1952	10039.59564	69.12	8691212	Oceania
 Australia	1957	10949.64959	70.33	9712569	Oceania

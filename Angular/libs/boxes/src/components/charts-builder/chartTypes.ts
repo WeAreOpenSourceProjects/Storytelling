@@ -42,7 +42,7 @@ export const chartTypes = [
       { column: 'Card Value', maxSize: 1, dataType: ['string', 'number'] }
     ],
     description: '',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+    dimExemple:  [['country'], ['pop']],
     categorie: 'Comparison',
     image: 'assets/img-graph/numberCards.png'
   }),
@@ -58,7 +58,7 @@ export const chartTypes = [
     description:
       'A bar chart or bar graph is a chart or graph that presents grouped data with rectangular bars with heights proportional to the values that they represent.',
     categorie: 'Comparison',
-    dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+    dimExemple:  [['country'], ['pop']],
     image: 'assets/img-graph/barChart.jpg'
   }),
   createChartType({
@@ -73,7 +73,7 @@ export const chartTypes = [
     description:
       'A pie chart (or a circle chart) is a circular statistical graphic which is divided into slices to illustrate numerical proportion.',
     categorie: 'Comparison',
-    dimExemple: {'contries' :[['country'], ['pop']]},
+    dimExemple:  [['country'], ['pop']],
     image: 'assets/img-graph/pieChart.png'
   }),
   // createChartType({
@@ -88,7 +88,7 @@ export const chartTypes = [
   //   description:
   //     'A word cloud chart is a visual representation of text data, typically used to depict keyword metadata (tags) on websites, or to visualize free form text.',
   //   categorie: 'Comparison',
-  //   dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+  //   dimExemple:  [['country'], ['pop']],
   //   image: 'assets/img-graph/wordCloud-chart.jpg'
   // }),
   createChartType({
@@ -149,7 +149,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple: {'contries' :[['country'], ['pop']]},
+    dimExemple:  [['country'], ['pop']],
     image: 'assets/img-graph/pieGridChart.jpg'
   }),
   createChartType({
@@ -328,7 +328,7 @@ export const chartTypes = [
       "The different hierarchical levels create visual clusters through the subdivision into rectangles proportionally to each element's value." +
       ' Treemaps are useful to represent the different proportion of nested hierarchical data structures.',
     categorie: 'Hierarchy',
-    dimExemple: {'contries' :[['country'], ['pop']]},
+    dimExemple:  [['country'], ['pop']],
     image: 'assets/img-graph/treemap.jpg'
   }),
   // createChartType({
@@ -342,7 +342,7 @@ export const chartTypes = [
   //   ],
   //   description: 'Adevenced pie chart is similar to the pie chart, with more details showing on the right of the pie',
   //   categorie: 'Comparison',
-  //   dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+  //   dimExemple:  [['country'], ['pop']],
   //   image: 'assets/img-graph/advencedPie-chart.jpg'
   // }),
   // createChartType({
@@ -359,7 +359,7 @@ export const chartTypes = [
   //     'This chart type is often used in executive dashboard reports to show key business indicators.' +
   //     'Gauge charts are useful for comparing values between a small number of variables either by using multiple needles on the same gauge or by using multiple gauges.',
   //   categorie: 'Comparison',
-  //   dimExemple: {'contries' :[['country'], ['pop']], 'Orchestra':[['Orchestra type'], ['Number']], 'movies':[["Movie"],["Rating IMDB"]]},
+  //   dimExemple:  [['country'], ['pop']],
   //   image: 'assets/img-graph/gauge-chart.jpg'
   // }),
   createChartType({
