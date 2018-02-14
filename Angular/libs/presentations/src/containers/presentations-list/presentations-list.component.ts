@@ -116,9 +116,8 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     const addSubscription = this.add$
     .subscribe((res) => {
        this.nextPage$.next({
-         pageIndex: this.count / 6
+         pageIndex: (this.count+1) / 6
        })
-      console.log(res);
       const presentation = new Presentation();
       this.store.dispatch(new fromPresentations.Add(presentation));
     });
