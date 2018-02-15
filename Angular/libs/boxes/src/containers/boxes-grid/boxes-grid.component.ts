@@ -26,7 +26,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GridsterConfig, GridsterItem  }  from 'angular-gridster2';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component'
 import { GraphComponent } from '@labdat/charts';
-import { Slide } from '@labdat/data-models';
 import { BoxDialogComponent } from '../../components/box-dialog/box-dialog.component'
 import { Store } from '@ngrx/store';
 import {selectCurrentPresentationId, PresentationsState } from '@labdat/presentations-state';
@@ -59,7 +58,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   @ViewChildren('texteditor', {read: ViewContainerRef})
   public texteditor: QueryList<ViewContainerRef>;
 
-  public editMode = true;
+  public editMode = false;
   public editors;
   public slide: any;
   public isOpened = false;
@@ -201,21 +200,30 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    for (let i = 0; i<this.slide.boxIds.length; i++) {
-      if (this.slide.boxIds[i].content.type === 'text') {
-        const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
-        const componentEditorRef = this.texteditor.toArray()[i].createComponent(componentEditorFactory);
-        this.dynamicTextEditors.push(componentEditorRef.instance);
-        console.log(this.slide.boxIds[i])
-        componentEditorRef.instance.initialValue = this.slide.boxIds[i].content.text;
-//        (<TinyEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
-//        (<TinyEditorComponent>componentEditorRef.instance).id = this.slide.boxIds[i]._id;
+    console.log(this.texteditor.toArray());
+    let j = 0;
+      for (let i = 0; i<this.slide.boxIds.length; i++) {
+        if (this.slide.boxIds[i].content.type === 'text') {
+          const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
+          console.log(j)
+          const componentEditorRef = this.texteditor.toArray()[j].createComponent(componentEditorFactory);
+          j++;
+          console.log(componentEditorRef.instance, j)
+          console.log(this.slide.boxIds[i].content.text)
+          componentEditorRef.instance.initialValue = this.slide.boxIds[i].content.text;
+          this.dynamicTextEditors.push(componentEditorRef.instance);
 
-        (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
-          this.slide.boxIds[i].content.text = text;
-        });
+  //        (<TinyEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
+  //        (<TinyEditorComponent>componentEditorRef.instance).id = this.slide.boxIds[i]._id;
+
+          (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
+            this.slide.boxIds[i].content.text = text;
+          });
+        }
       }
-    }
+      j=0;
+
+
 
     const addBox$ = this.emptyCellContextMenu$.pipe(
       map(({event, item}) => {

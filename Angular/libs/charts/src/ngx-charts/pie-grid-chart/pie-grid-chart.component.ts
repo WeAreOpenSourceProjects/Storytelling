@@ -37,6 +37,10 @@ export class PieGridChartComponent extends Chart implements OnDestroy {
     this.chartOptions = { ...defaultOptions, ...this.configInput };
 
   }
+  ease(){
+
+  }
+  load(){}
   ngAfterViewInit(){
     let element = this.chartContainer.nativeElement;
 
