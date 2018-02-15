@@ -33,9 +33,13 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
         this.data = ForceDirectedGraphComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else
         this.data = this.dataInput;
-    this.init();
   }
 
+  ngAfterViewInit(){
+    setTimeout(()=> {
+      this.init();
+    },500)
+  }
 
     /**
      * Process json Data to D3.js Bar chart format
