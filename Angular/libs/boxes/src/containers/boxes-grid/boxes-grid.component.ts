@@ -18,6 +18,8 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 
 import {BoxesApiService} from '../../../../boxes-state/src/services/boxes.api.service';
 import {ChartsBuilderComponent} from '../../components/charts-builder';
+import {ImageUploadComponent} from '@labdat/image-upload';
+
 //import {TextTinyEditorComponent} from '../../components/text-editor/text-editor.component';
 import { TinyEditorComponent } from '@labdat/tiny-editor';
 import { Chart } from '@labdat/charts';
@@ -57,6 +59,8 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('texteditor', {read: ViewContainerRef})
   public texteditor: QueryList<ViewContainerRef>;
+  @ViewChildren('imageeditor', {read: ViewContainerRef})
+  public imageeditor: QueryList<ViewContainerRef>;
 
   public editMode = false;
   public editors;
@@ -189,6 +193,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       });
       this.subscriptions.add(dialogSubscription);
     }
+
   }
 
   emptyCellClick(event, item) {
@@ -202,29 +207,31 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     console.log(this.texteditor.toArray());
     let j = 0;
+    let k = 0;
       for (let i = 0; i<this.slide.boxIds.length; i++) {
         if (this.slide.boxIds[i].content.type === 'text') {
           const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
-          console.log(j)
           const componentEditorRef = this.texteditor.toArray()[j].createComponent(componentEditorFactory);
           j++;
-          console.log(componentEditorRef.instance, j)
-          console.log(this.slide.boxIds[i].content.text)
           componentEditorRef.instance.initialValue = this.slide.boxIds[i].content.text;
           this.dynamicTextEditors.push(componentEditorRef.instance);
-
-  //        (<TinyEditorComponent>componentEditorRef.instance).editorContent = this.slide.boxIds[i].content.text;
-  //        (<TinyEditorComponent>componentEditorRef.instance).id = this.slide.boxIds[i]._id;
-
           (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
             this.slide.boxIds[i].content.text = text;
           });
+        } else if (this.slide.boxIds[i].content.type === 'image'){
+          const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(ImageUploadComponent);
+          const componentEditorRef = this.imageeditor.toArray()[k].createComponent(componentEditorFactory);
+          k++;
+          componentEditorRef.instance.image = this.slide.boxIds[i].content.imageId;
+          componentEditorRef.instance.editMode = this.editMode;
+          this.dynamicTextEditors.push(componentEditorRef.instance);
+          console.log('id');
+          (<ImageUploadComponent>componentEditorRef.instance).imageId.subscribe(id => {
+            console.log(id);
+            this.slide.boxIds[i].content.imageId = id;
+          });
         }
       }
-      j=0;
-
-
-
     const addBox$ = this.emptyCellContextMenu$.pipe(
       map(({event, item}) => {
         this.editMode = false;
@@ -247,6 +254,10 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
 
     const textType$ = addBox$.pipe(
       filter(type => type === 'text')
+    );
+
+    const imageType$ = addBox$.pipe(
+      filter(type => type === 'image')
     );
 
     const textBoxSubscription = textType$.pipe(
@@ -296,6 +307,30 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       this.menubar.clear();
     });
     this.subscriptions.add(chartBoxSubscription);
+
+
+    ///////
+    const imageBoxSubscription = imageType$.pipe(
+      withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
+      switchMap((item: any) => {
+        item.item.cols = 15;
+        item.item.rows = 15;
+        item.item.content = { type: 'image' };
+        this.slide.boxIds.push(item.item);
+        return zip(this.imageeditor.changes, of(item));
+      })
+    ).subscribe(([imageeditor, item]: [any, any]) => {
+        const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(ImageUploadComponent);
+        const componentEditorRef = this.imageeditor.last.createComponent(componentEditorFactory);
+        (<ImageUploadComponent>componentEditorRef.instance).imageId.subscribe(id => {
+          console.log(id);
+          this.slide.boxIds[this.imageeditor.length - 1].content.imageId = id;
+        });
+        this.dynamicTextEditors.push(componentEditorRef.instance);
+        this.editMode = true;
+      });
+
+      this.subscriptions.add(imageBoxSubscription);
   }
 
   changedOptions() {

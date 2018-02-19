@@ -56,6 +56,12 @@ var BoxSchema = new Schema({
     },
     text: {
       type : String
+    },
+    imageId: {
+      type: {
+        type: Schema.ObjectId,
+        ref: 'Image'
+      }
     }
   }
 }, {

@@ -51,6 +51,8 @@ import { TextEditorComponent } from './components/text-editor/text-editor.compon
 
 import "../../../node_modules/tinymce/tinymce.js";
 import { TinyEditorComponent } from '@labdat/tiny-editor';
+import { ImageUploadComponent } from '@labdat/image-upload';
+
 import { ChartsBuilderComponent } from './components/charts-builder/charts-builder.component';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { GridsterModule } from 'angular-gridster2';
@@ -67,6 +69,7 @@ import { BoxDialogComponent } from './components/box-dialog/box-dialog.component
 import { DataTableComponent }from './components/data-table/data-table.component';
 import { CodeEditorComponent } from './components/code-editor';
 import { TinyEditorModule } from '@labdat/tiny-editor';
+import { ImageUploadModule } from '@labdat/image-upload';
 
 @NgModule({
     imports: [
@@ -98,7 +101,8 @@ import { TinyEditorModule } from '@labdat/tiny-editor';
       GridsterModule,
       MatStepperModule,
       ChartsModule,
-      TinyEditorModule
+      TinyEditorModule,
+      ImageUploadModule
     ],
     declarations: [
       BoxesGridComponent,
@@ -108,7 +112,7 @@ import { TinyEditorModule } from '@labdat/tiny-editor';
       ChartsBuilderComponent,
       DataTableComponent,
       CodeEditorComponent,
-    ],
+      ],
     exports: [
       BoxesGridComponent
     ],
@@ -134,7 +138,8 @@ import { TinyEditorModule } from '@labdat/tiny-editor';
       ChartsBuilderComponent,
       TextEditorComponent,
       BoxDialogComponent,
-      TinyEditorComponent
+      TinyEditorComponent,
+      ImageUploadComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [ OverlayContainer, ChartsService ]

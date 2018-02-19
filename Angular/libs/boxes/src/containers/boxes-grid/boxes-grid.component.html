@@ -12,6 +12,9 @@
       <ng-container #texteditor></ng-container>
     </div>
     <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
+    <div *ngIf="box.content?.type === 'image'">
+      <ng-container #imageeditor></ng-container>
+    </div>
   </gridster-item>
 </gridster>
 <a class="fixed" mat-fab  type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>

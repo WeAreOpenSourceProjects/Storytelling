@@ -63,7 +63,7 @@ exports.delete = function(req, res) {
   Slide.findById(slideId)
   .then(function(slide) {
     return Presentation.findById(slide.presentationId)
-    .populate('slideIds')
+    .populate({ path : 'slideIds'})
     .exec()
   })
   .then(function(presentation) {
@@ -120,8 +120,10 @@ exports.findOneById = function(req, res) {
       message: 'slide is invalid'
     });
   }
+  mongoose.set('debug', true);
   Slide.findById(slideId).populate({
-    path: 'boxIds'
+    path: 'boxIds',
+    populate : {path : 'content.imageId', model: 'Image'}
    })
    .exec()
    .then(function(slide) {

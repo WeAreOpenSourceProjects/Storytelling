@@ -9,14 +9,19 @@ var path = require('path'),
   fs = require('fs'),
   Box = mongoose.model('Box'),
   Slide = mongoose.model('Slide'),
+  Image = mongoose.model('Image'),
 
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
   Promise = require('promise');
 
   exports.list = function(req, res) {
+    console.log('ici');
     Box.find()
     .sort('-created')
+    .populate({
+      path: 'content.imageId',
+      model: 'Image'})
     .exec()
     .then(function(boxes) {
       return res.json(boxes);
@@ -34,7 +39,7 @@ var path = require('path'),
 exports.create = function(req, res) {
   const boxP = Box.create(req.body)
   const slideP = Slide.findOne({ _id: req.body.slideId });
-
+  console.log(req.body);
   Promise.all([boxP, slideP])
   .then(function(result) {
     const box = result[0];
@@ -83,9 +88,16 @@ exports.update = function(req, res) {
  * Delete a box
  */
 exports.delete = function(req, res) {
+  console.log('ici')
+  mongoose.set('debug', true);
   Box.findByIdAndRemove(req.params.boxId)
+  .populate({path:'content.imageId', model :'Image'})
   .exec()
   .then(function(box) {
+    console.log(box)
+    mongoose.set('debug', true);
+
+    Image.findByIdAndRemove(box.content.imageId._id).exec();
     return res.json(box);
   })
   .catch(function(err) {

@@ -29,105 +29,6 @@ exports.create = function(req, res) {
     });
   });
 };
-/*
-exports.copy = function(req, res) {
-  const presentationId = req.body.presentationId;
-  const user = req.user;
-
-  var presentation = Presentation.findOne({ _id: presentationId });
-
-  var newPresentation = presentation
-  .then(function(presentation) {
-    var presentation = presentation.toObject();
-    delete presentation._id;
-    delete presentation.slideIds;
-    presentation.author = user.id;
-    presentation.title += ' copy';
-    return Presentation.create(presentation);
-  })
-  .then(function(presentation) {
-    return presentation.populate('author').execPopulate()
-  })
-
-  var slides = presentation
-  .then(function(presentation) {
-    return Slide.find({_id: { $in: presentation.slideIds } }).exec()
-  })
-
-
-
-  slides
-  .then(function(slides) {
-    slides.map(function(slide) {
-      const newSlide = _.deepCopy(slide)
-      return (copy(newSlide), boxIds)
-    })
-    return
-  });
-
-  var newSlides = slides
-  .then(function(slides) {
-    if (slides.length === 0) {
-      return { ops: [] };
-    }
-    return Slide.collection.insert(slides.map(function(slide) {
-      var slide = slide.toObject();
-      delete slide._id;
-      return slide;
-    }))
-  })
-  .then(function(slides) {
-    return slides.ops;
-  })
-
-  var newBoxes = slides
-  .then(function(slides) {
-    return Box.aggregate(
-      { $match: { _id: { $in: [].concat.apply([], slides.map(slide => slide.boxIds)) } } }//,
-//      { $group: { _id: '$slideId' } }
-    )
-//    return Box.find({_id: { $in: [].concat.apply([], slides.map(slide => slide.boxIds)) } }, {$group: 'slideId'}).exec()
-  })
-  .then(function(boxes) {
-    if (boxes.length === 0) {
-      return { ops: [] };
-    }
-    return Box.collection.insert(boxes.map(function(box) {
-      console.log('box', box)
-//      var box = box.toObject();
-      delete box._id;
-      delete box.slideId;
-      return box;
-    }))
-  })
-  .then(function(boxes) {
-    return boxes.ops;
-  })
-
-  return Promise.all([newPresentation, newSlides, newBoxes])
-  .then(function(result) {
-
-    const presentation = result[0];
-    const slides = result[1];
-    const boxes = result[2];
-
-    presentation.slideIds = slides.map(function(slide) { return slide._id });
-    slides.forEach(function(slide) { slide.presentationId = presentation._id; return slide });
-    boxes
-
-    return res.json({
-      presentation: result[0]
-    })
-  })
-  .catch(function(err) {
-    console.log(err)
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage(err)
-    });
-  });
-}
-*/
-
 exports.copy = async function(req, res) {
   const presentationId = req.body.presentationId;
   const user = req.user;
@@ -220,7 +121,13 @@ exports.delete = function(req, res) {
   .findOne({ _id: req.params.presentationId, author: user.id })
   .populate({
     path: 'slideIds',
-    populate: { path: 'boxIds' }
+      populate: {
+        path: 'boxIds',
+        populate : {
+          path : 'content.imageId',
+          model: 'Image'
+        }
+      }
   })
   .exec()
   .then(function(presentation) {
@@ -262,7 +169,12 @@ exports.findOneById = function(req, res) {
   .findOne({ _id: presentationId })
   .populate({
     path: 'slideIds',
-    populate: { path: 'boxIds' }
+    populate: { path: 'boxIds',
+    populate : {
+      path : 'content.imageId',
+      model: 'Image'
+    }
+   }
   })
   .populate({
     path: 'author'
@@ -330,7 +242,12 @@ exports.search = function(req, res) {
  Promise.all([presnetationsCount,
    presnetationsFind.populate({
      path: 'slideIds',
-     populate: { path: 'boxIds' }
+     populate: { path: 'boxIds',
+     populate : {
+       path : 'content.imageId',
+       model: 'Image'
+     }
+    }
    })
    .populate({
      path: 'author'
@@ -351,7 +268,7 @@ exports.search = function(req, res) {
           })
           return presentation;
         }),
-        count}, 
+        count},
       slides: slides,
       boxes: boxes,
     });
