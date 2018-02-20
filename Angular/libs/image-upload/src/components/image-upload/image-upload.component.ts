@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, 
 import { Http } from '@angular/http';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from '../../../../../apps/default/src/environments/environment'
+
 //import {NotifBarService} from 'app/core'
 
 @Component({
@@ -12,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ImageUploadComponent {
   @Input() editMode : Boolean;
   @Input() image : any;
-  @Output() imageId : EventEmitter<String>= new EventEmitter();
+  @Output() getImageId : EventEmitter<String>= new EventEmitter();
   formData: FormData;
   files: UploadFile[];
   uploadInput: EventEmitter<UploadInput>;
@@ -20,25 +22,32 @@ export class ImageUploadComponent {
   dragOver: boolean;
   options: UploaderOptions;
   previewData: any;
-
+  endpoints : any;
+  baseUrl : string;
+  backendURL: string;
   constructor() {
     this.options = { concurrency: 1 };
     this.files = [];
     this.uploadInput = new EventEmitter<UploadInput>();
     this.humanizeBytes = humanizeBytes;
-
+    const { protocol, host, port, endpoints } = environment.backend;
+    this.endpoints = endpoints;
+    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
+    this.backendURL = `${this.baseUrl}/${this.endpoints.images}`;
   }
 ngOnInit(){
   if(this.image) {
+    console.log(this.image);
     this.previewData = 'data:'+this.image.contentType+';base64,' + this.arrayBufferToBase64(this.image.data.data);
-    this.imageId.emit(this.image._id);
+    this.getImageId.emit(this.image._id);
   }
+
 }
   onUploadOutput(output: UploadOutput): void {
     if (output.type === 'allAddedToQueue') {
       const event: UploadInput = {
         type: 'uploadAll',
-        url: 'http://localhost:3000/api/images',
+        url: this.backendURL,
         method: 'POST',
         data: { foo: 'bar' },
         file: this.files[0]
@@ -64,18 +73,17 @@ ngOnInit(){
       console.log(output.file.name + ' rejected');
     } else if (output.type === 'done') {
       this.previewData = 'data:'+output.file.response.contentType+';base64,' + this.arrayBufferToBase64(output.file.response.data.data);
-      this.imageId.emit(output.file.response._id);
+      this.getImageId.emit(output.file.response._id);
       console.log(output.file.response._id + ' done');
     }
     this.files = this.files.filter(file => file.progress.status !== UploadStatus.Done);
-    console.log(this.files, this.uploadInput, output);
   }
 
   startUpload(): void {
     console.log("upload", this.files[0])
     const event: UploadInput = {
       type: 'uploadAll',
-        url: 'http://localhost:3000/api/images',
+        url: this.backendURL,
         method: 'POST',
       data: { foo: 'bar' },
       file: this.files[0]

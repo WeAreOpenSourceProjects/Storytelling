@@ -225,8 +225,8 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           componentEditorRef.instance.image = this.slide.boxIds[i].content.imageId;
           componentEditorRef.instance.editMode = this.editMode;
           this.dynamicTextEditors.push(componentEditorRef.instance);
-          console.log('id');
-          (<ImageUploadComponent>componentEditorRef.instance).imageId.subscribe(id => {
+          console.log('id', this.slide.boxIds[i].content);
+          (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
             console.log(id);
             this.slide.boxIds[i].content.imageId = id;
           });
@@ -322,7 +322,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     ).subscribe(([imageeditor, item]: [any, any]) => {
         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(ImageUploadComponent);
         const componentEditorRef = this.imageeditor.last.createComponent(componentEditorFactory);
-        (<ImageUploadComponent>componentEditorRef.instance).imageId.subscribe(id => {
+        (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
           console.log(id);
           this.slide.boxIds[this.imageeditor.length - 1].content.imageId = id;
         });

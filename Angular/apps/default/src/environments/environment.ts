@@ -18,7 +18,6 @@ export const environment = {
       users: 'users',
       slides: 'slides',
       images: 'images',
-      imagesServer: 'imagesServer',
       search: 'search/slides',
       banner: 'banner'
     }
