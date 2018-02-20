@@ -7,6 +7,7 @@ var path = require('path'),
   Presentation = mongoose.model('Presentation'),
   Slide = mongoose.model('Slide'),
   Box = mongoose.model('Box'),
+  Image = mongoose.model('Image'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
   Promise = require('promise'),
@@ -135,15 +136,19 @@ exports.delete = function(req, res) {
     var slideIds = slides.map(function(slide) { return slide._id })
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     var boxIds = boxes.map(function(box) { return box._id })
+    var images = [].concat.apply([], boxes.map(function(box) { return box.content.imageId} ));
+    var imageIds = images.map(function(image) { return image._id })
     return Promise.all([
       Promise.resolve({
         presentationId: presentation.id,
         slideIds: slideIds,
-        boxIds: boxIds
+        boxIds: boxIds,
+        imageIds : imageIds
       }),
       presentation.remove(),
       Slide.remove({ _id: { $in: slideIds } }),
-      Box.remove({ _id: { $in: boxIds } })
+      Box.remove({ _id: { $in: boxIds } }),
+      Image.remove({ _id: { $in: imageIds } }),
     ])
   })
   .then(function(result) {

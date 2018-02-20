@@ -6,6 +6,7 @@ var path = require('path'),
   fs = require('fs'),
   Slide = mongoose.model('Slide'),
   Box = mongoose.model('Box'),
+  Image = mongoose.model('Image'),
   Presentation = mongoose.model('Presentation'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
@@ -24,7 +25,6 @@ exports.create = function (req, res) {
     return Promise.all([Slide.findByIdAndUpdate(slide._id, slide, { new: true }), Presentation.findByIdAndUpdate(presentation.id, presentation)]);
   })
   .then(function(result) {
-    console.log(result);
     return res.json(result[0]);
   })
   .catch(function(err) {
@@ -61,12 +61,31 @@ exports.bulkUpdate = function(req, res, next) {
 exports.delete = function(req, res) {
   const slideId = req.params.slideId
   Slide.findById(slideId)
+  .populate({path:'boxIds', model:'Box', populate : {path : 'content.imageId', model: 'Image' }}).exec()
   .then(function(slide) {
-    return Presentation.findById(slide.presentationId)
-    .populate({ path : 'slideIds'})
-    .exec()
+    var boxes = slide.boxIds;
+    var boxIds = boxes.map(function(box) { return box._id })
+    var images = [].concat.apply([], boxes.map(function(box) { return box.content.imageId || ''} ));
+    if(images.length){
+      var imageIds = images.map(function(image) { return image._id });
+    }
+    var presentation =  Presentation.findById(slide.presentationId)
+    .populate({ path : 'slideIds'});
+    return Promise.all([
+      Promise.resolve({
+        presentation : presentation,
+        boxIds: boxIds,
+        imageIds : imageIds
+      }),
+      Box.remove({ _id: { $in: boxIds } }),
+      Image.remove({ _id: { $in: imageIds } })
+    ])
   })
+   .then(function(result) {
+     return result[0].presentation.exec();
+   })
   .then(function(presentation) {
+
     console.log('slideId', JSON.stringify(slideId))
 
     const index = presentation.slideIds
@@ -76,7 +95,6 @@ exports.delete = function(req, res) {
     .findIndex(function(id) {
       return id.toString() === slideId.toString();
     })
-    console.log(index)
 
     const updateSlides = presentation.slideIds
     .slice(index + 1)
@@ -89,6 +107,7 @@ exports.delete = function(req, res) {
     presentation.slideIds = presentation.slideIds.map(function(slide){
       return slide._id
     })
+
 
     return Promise.all(
       [Slide.findByIdAndRemove(slideId).exec()]
@@ -150,7 +169,6 @@ exports.findOneByPresentationId = function(req, res) {
   .populate('slideIds')
   .exec()
   .then(function(presentation) {
-    console.log('??', presentation)
     return res.json(presentation.slideIds);
   })
   .catch(function(err) {

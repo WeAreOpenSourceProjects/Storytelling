@@ -88,15 +88,10 @@ exports.update = function(req, res) {
  * Delete a box
  */
 exports.delete = function(req, res) {
-  console.log('ici')
-  mongoose.set('debug', true);
   Box.findByIdAndRemove(req.params.boxId)
   .populate({path:'content.imageId', model :'Image'})
   .exec()
   .then(function(box) {
-    console.log(box)
-    mongoose.set('debug', true);
-
     Image.findByIdAndRemove(box.content.imageId._id).exec();
     return res.json(box);
   })
