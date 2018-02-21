@@ -61,3 +61,13 @@ exports.update = function(req, res) {
 
   });
 };
+
+/**
+ * delete an image
+ */
+exports.delete = function(req, res) {
+  Image.findByIdAndRemove(req.params.imageId).exec()
+  .then(function(){
+    res.json('OK')
+  })
+};

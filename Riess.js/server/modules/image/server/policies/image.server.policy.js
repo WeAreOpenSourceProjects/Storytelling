@@ -17,18 +17,27 @@ exports.invokeRolesPolicies = function () {
     allows: [{
       resources: '/api/images',
       permissions: '*'
+    }, {
+      resources: '/api/images/:imageId',
+      permissions: '*'
     }]},
     {
       roles: ['user'],
       allows: [{
         resources: '/api/images',
         permissions: ['*']
+      }, {
+        resources: '/api/images/:imageId',
+        permissions: '*'
       }]
     },{
       roles: ['guest'],
       allows: [{
         resources: '/api/images',
         permissions: ['*']
+      }, {
+        resources: '/api/images/:imageId',
+        permissions: '*'
       }]
     }]);
 };

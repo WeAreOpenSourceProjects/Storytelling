@@ -35,7 +35,7 @@ export class BoxesApiService {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
     return this.http.get(backendURL);
   }
-  
+
   getOne(id): Observable<any> {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/${id}`;
     return this.http.get(backendURL);
@@ -47,6 +47,10 @@ export class BoxesApiService {
   }
   delete(id): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.boxes}/${id}`;
+    return this.http.delete(backendURL);
+  }
+  deleteImage(id): Observable<any> {
+    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.images}/${id}`;
     return this.http.delete(backendURL);
   }
 }

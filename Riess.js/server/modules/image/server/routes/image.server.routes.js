@@ -17,7 +17,7 @@ app.route('/api/images/:imageId')
 .all(imagePolicy.isAllowed)
 //   .get(image.findOneById)
 .put(image.update)
-//     .delete(image.delete);
+.delete(image.delete);
 //
 //     app.route('/api/imagees/:imageId')
 // //    .all(imagePolicy.isAllowed)

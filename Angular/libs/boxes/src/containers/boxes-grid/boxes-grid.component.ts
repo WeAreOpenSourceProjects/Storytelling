@@ -373,6 +373,9 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
         if (item._id) {
           this.boxesService.delete(item._id).subscribe()
         }
+        if(item.content.imageId){
+         this.boxesService.deleteImage(item.content.imageId).subscribe();  
+        }
         this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
         this.cdr.detectChanges();
       }
