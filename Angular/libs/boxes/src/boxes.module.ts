@@ -27,6 +27,7 @@ import {
   AdvancedPieChartComponent,
   DendogramComponent,
   NgGraphComponent,
+  GraphComponent,
   TreemapChartComponent,
   ZoomableTreemapChartComponent,
   BubbleChartComponent,
@@ -139,7 +140,8 @@ import { ImageUploadModule } from '@labdat/image-upload';
       TextEditorComponent,
       BoxDialogComponent,
       TinyEditorComponent,
-      ImageUploadComponent
+      ImageUploadComponent,
+      GraphComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [ OverlayContainer, ChartsService ]

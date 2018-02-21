@@ -44,7 +44,7 @@ module.exports = {
       image: {
         dest: './modules/users/client/img/profile/uploads/',
         limits: {
-          fileSize: 100000 // Limit filesize (100kb) for testing purposes
+          fileSize: 52428800 // Limit filesize (100kb) for testing purposes
         }
       }
     }

@@ -48,9 +48,12 @@ export class TinyEditorComponent {
   @Input()
   public plugins = ['link', 'textcolor', 'colorpicker', 'lists', 'advlist'];
 
-  public setEditMode() {
-    this.activeEditor.setMode('design');
+  public setEditMode(value) {
+    if(value){
+      console.log('value', value);
+      this.activeEditor.setMode('design');
   }
+}
 
   ngAfterViewInit() {
     (this.editorComponent as any).registerOnChange(function () { });

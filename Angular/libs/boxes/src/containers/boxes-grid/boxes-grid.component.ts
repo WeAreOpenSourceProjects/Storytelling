@@ -61,6 +61,8 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   public texteditor: QueryList<ViewContainerRef>;
   @ViewChildren('imageeditor', {read: ViewContainerRef})
   public imageeditor: QueryList<ViewContainerRef>;
+  @ViewChildren('grapheditor', {read: ViewContainerRef})
+  public grapheditor: QueryList<ViewContainerRef>;
 
   public editMode = false;
   public editors;
@@ -76,7 +78,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   private emptyCellContextMenu$ = new Subject();
   private subscriptions: Subscription;
 
-  private dynamicTextEditors = [];
+  private dynamicComponent = [];
 
   constructor(
     private dialog: MatDialog,
@@ -175,46 +177,55 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   }
 
   public enableEdit(box, i) {
-    this.editMode= true;
-    if (box.content && box.content.type === 'text') {
-      this.dynamicTextEditors[i].setEditMode();
-    } else if (box.content && box.content.type==='chart') {
-      const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
-      dialog.componentInstance.inputOptions = box.content.chart.chartOptions;
-      dialog.componentInstance.inputData = box.content.chart.data;
-      const dialogSubscription = dialog.afterClosed().subscribe(result => {
-        if (result && result !== 'CANCEL' ) {
-          box.content.type='chart';
-          box.content.chart = result;
-          box.width = box.cols * 25;
-          box.height = box.cols * 25;
+    this.editMode = true;
+    if (box.content) {
+     if(box.content.type==='chart'){
+        const dialog = this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
+        dialog.componentInstance.inputOptions = box.content.chart.chartOptions;
+        dialog.componentInstance.inputData = box.content.chart.data;
+        const dialogSubscription = dialog.afterClosed().subscribe(result => {
+          if (result && result !== 'CANCEL' ) {
+            box.content.type='chart';
+            box.content.chart = result;
+            box.width = box.cols * 25;
+            box.height = box.cols * 25;
+          }
+          this.editMode= false;
+        });
+        this.subscriptions.add(dialogSubscription);
+      } else {
+        console.log(this.dynamicComponent, i);
+          this.dynamicComponent[i].setEditMode(true);
         }
-        this.editMode= false;
-      });
-      this.subscriptions.add(dialogSubscription);
     }
-
   }
 
   emptyCellClick(event, item) {
     this.editMode = false;
+    for (var i in this.dynamicComponent){
+      this.dynamicComponent[i].setEditMode(false);
+    }
   }
 
   emptyCellContextMenu(event, item) {
     this.emptyCellContextMenu$.next({event, item})
+    this.editMode = false;
+    for (var i in this.dynamicComponent){
+      this.dynamicComponent[i].setEditMode(false);
+    }
   }
 
   ngAfterViewInit() {
-    console.log(this.texteditor.toArray());
     let j = 0;
     let k = 0;
+    let o = 0;
       for (let i = 0; i<this.slide.boxIds.length; i++) {
         if (this.slide.boxIds[i].content.type === 'text') {
           const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
           const componentEditorRef = this.texteditor.toArray()[j].createComponent(componentEditorFactory);
           j++;
           componentEditorRef.instance.initialValue = this.slide.boxIds[i].content.text;
-          this.dynamicTextEditors.push(componentEditorRef.instance);
+          this.dynamicComponent.push(componentEditorRef.instance);
           (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
             this.slide.boxIds[i].content.text = text;
           });
@@ -223,15 +234,24 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           const componentEditorRef = this.imageeditor.toArray()[k].createComponent(componentEditorFactory);
           k++;
           componentEditorRef.instance.image = this.slide.boxIds[i].content.imageId;
+          console.log(this.editMode);
+
           componentEditorRef.instance.editMode = this.editMode;
-          this.dynamicTextEditors.push(componentEditorRef.instance);
+          this.dynamicComponent.push(componentEditorRef.instance);
           console.log('id', this.slide.boxIds[i].content);
           (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
-            console.log(id);
             this.slide.boxIds[i].content.imageId = id;
           });
+        } else if (this.slide.boxIds[i].content.type === 'chart'){
+          const componentGraphFactory = this.componentFactoryResolver.resolveComponentFactory(GraphComponent);
+          const componentGraphRef = this.grapheditor.toArray()[o].createComponent(componentGraphFactory);
+          o++;
+          componentGraphRef.instance.chart = this.slide.boxIds[i].content.chart;
+          this.dynamicComponent.push(componentGraphRef.instance);
         }
       }
+
+
     const addBox$ = this.emptyCellContextMenu$.pipe(
       map(({event, item}) => {
         this.editMode = false;
@@ -273,35 +293,39 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
       const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
       (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
+
         this.slide.boxIds[this.texteditor.length - 1].content.text = text;
       });
-      this.dynamicTextEditors.push(componentEditorRef.instance)
+      this.dynamicComponent.push(componentEditorRef.instance)
       this.editMode = true;
-//      (<TinyEditorComponent>componentEditorRef.instance).id = 0;
-/*
-      (<TinyEditorComponent>componentEditorRef.instance).textTosave.subscribe(text => {
-        this.slide.boxIds.slice(-1)[0].content = { type: 'text', text }
-      });
-      */
     });
     this.subscriptions.add(textBoxSubscription);
 
     const chartBoxSubscription = chartType$.pipe(
       withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
-      map((item: any) => {
-        return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
-      }),
-      switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
-    ).subscribe((chart: any) => {
-      if (chart) {
-        var item ={
+      switchMap ((item:any)=> {
+        item ={
           cols: 15,
           rows : 15,
           minItemRows :15,
           minItemCols: 15
         };
         this.slide.boxIds.push(item);
-        this.slide.boxIds.slice(-1)[0].content = {'type':'chart', chart}
+        this.slide.boxIds.slice(-1)[0].content = {'type':'chart'};
+        return zip(this.grapheditor.changes, of(item));
+      }),
+      map(() => {
+        return this.dialog.open(ChartsBuilderComponent, {height: '95%', width: '90%'});
+      }),
+      switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
+    ).subscribe((chart: any) => {
+      if (chart) {
+        const componentGraphFactory = this.componentFactoryResolver.resolveComponentFactory(GraphComponent);
+        const componentGraphRef = this.grapheditor.last.createComponent(componentGraphFactory);
+        (<GraphComponent>componentGraphRef.instance).chart = chart;
+        this.slide.boxIds[this.grapheditor.length - 1].content.chart = chart;
+        this.dynamicComponent.push(componentGraphRef.instance)
+        this.editMode = true;
       }
       this.cdr.detectChanges();
       this.menubar.clear();
@@ -323,10 +347,10 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(ImageUploadComponent);
         const componentEditorRef = this.imageeditor.last.createComponent(componentEditorFactory);
         (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
-          console.log(id);
-          this.slide.boxIds[this.imageeditor.length - 1].content.imageId = id;
+          console.log('????????', this.slide.boxIds[this.imageeditor.length - 1].content, item);
+          item.item.content.imageId = id;
         });
-        this.dynamicTextEditors.push(componentEditorRef.instance);
+        this.dynamicComponent.push(componentEditorRef.instance);
         this.editMode = true;
       });
 

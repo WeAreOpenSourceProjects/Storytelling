@@ -139,7 +139,6 @@ exports.findOneById = function(req, res) {
       message: 'slide is invalid'
     });
   }
-  mongoose.set('debug', true);
   Slide.findById(slideId).populate({
     path: 'boxIds',
     populate : {path : 'content.imageId', model: 'Image'}

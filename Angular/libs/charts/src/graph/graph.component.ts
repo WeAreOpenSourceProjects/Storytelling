@@ -62,4 +62,7 @@ export class GraphComponent implements OnInit, AfterContentInit, OnChanges {
     this.componentRef.instance.dataInput = this.chart.data; // set the input inputData of the abstract class Chart
     this.componentRef.instance.configInput = this.chart.chartOptions;
   }
+  public setEditMode(){
+    
+  }
 }

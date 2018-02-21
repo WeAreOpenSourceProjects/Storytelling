@@ -11,9 +11,11 @@
     <div *ngIf="box.content?.type === 'text'" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }">
       <ng-container #texteditor></ng-container>
     </div>
-    <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
-    <div *ngIf="box.content?.type === 'image'">
-      <ng-container #imageeditor></ng-container>
+    <div class="graph-editor" *ngIf="box.content?.type==='chart'">
+      <ng-container #grapheditor></ng-container>
+    </div>
+    <div class="image-upload" *ngIf="box.content?.type === 'image'">
+      <ng-container  #imageeditor></ng-container>
     </div>
   </gridster-item>
 </gridster>

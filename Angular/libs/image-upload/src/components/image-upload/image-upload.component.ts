@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnChanges, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, HostListener, OnChanges, ViewContainerRef } from '@angular/core';
 import { Http } from '@angular/http';
-import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
+import { UploadOutput, UploadInput, UploadFile, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../../../../../apps/default/src/environments/environment'
 
@@ -12,24 +12,23 @@ import { environment } from '../../../../../apps/default/src/environments/enviro
   styleUrls: ['./image-upload.component.scss']
 })
 export class ImageUploadComponent {
-  @Input() editMode : Boolean;
   @Input() image : any;
   @Output() getImageId : EventEmitter<String>= new EventEmitter();
-  formData: FormData;
+
   files: UploadFile[];
   uploadInput: EventEmitter<UploadInput>;
-  humanizeBytes: Function;
   dragOver: boolean;
   options: UploaderOptions;
   previewData: any;
   endpoints : any;
   baseUrl : string;
   backendURL: string;
+  editMode : Boolean = true;
+
   constructor() {
     this.options = { concurrency: 1 };
     this.files = [];
     this.uploadInput = new EventEmitter<UploadInput>();
-    this.humanizeBytes = humanizeBytes;
     const { protocol, host, port, endpoints } = environment.backend;
     this.endpoints = endpoints;
     this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
@@ -49,7 +48,6 @@ ngOnInit(){
         type: 'uploadAll',
         url: this.backendURL,
         method: 'POST',
-        data: { foo: 'bar' },
         file: this.files[0]
       };
       console.log(this.files[0], event)
@@ -74,7 +72,8 @@ ngOnInit(){
     } else if (output.type === 'done') {
       this.previewData = 'data:'+output.file.response.contentType+';base64,' + this.arrayBufferToBase64(output.file.response.data.data);
       this.getImageId.emit(output.file.response._id);
-      console.log(output.file.response._id + ' done');
+      console.log(this.files)
+      this.editMode = false;
     }
     this.files = this.files.filter(file => file.progress.status !== UploadStatus.Done);
   }
@@ -85,7 +84,6 @@ ngOnInit(){
       type: 'uploadAll',
         url: this.backendURL,
         method: 'POST',
-      data: { foo: 'bar' },
       file: this.files[0]
     };
 
@@ -102,6 +100,8 @@ ngOnInit(){
     return window.btoa(binary);
   }
 
-
+  public setEditMode(value){
+    this.editMode = value;
+  }
 
 }
