@@ -24,7 +24,7 @@ export class ImageUploadComponent {
   baseUrl : string;
   backendURL: string;
   editMode : Boolean = true;
-
+  idImage : string;
   constructor() {
     this.options = { concurrency: 1 };
     this.files = [];
@@ -38,20 +38,31 @@ ngOnInit(){
   if(this.image) {
     console.log(this.image);
     this.previewData = 'data:'+this.image.contentType+';base64,' + this.arrayBufferToBase64(this.image.data.data);
+    this.idImage = this.image._id;
     this.getImageId.emit(this.image._id);
   }
 
 }
   onUploadOutput(output: UploadOutput): void {
-    if (output.type === 'allAddedToQueue') {
-      const event: UploadInput = {
+    let event: UploadInput;
+    if(!this.idImage){
+      event = {
         type: 'uploadAll',
         url: this.backendURL,
         method: 'POST',
         file: this.files[0]
       };
       console.log(this.files[0], event)
+    } else {
+      event = {
+        type: 'uploadAll',
+        url: `${this.backendURL}/${this.idImage}`,
+        method: 'PUT',
+        file: this.files[0]
+      };
+    }
 
+    if (output.type === 'allAddedToQueue') {
       this.uploadInput.emit(event);
       console.log(event);
     } else if (output.type === 'addedToQueue'  && typeof output.file !== 'undefined') {
@@ -72,7 +83,7 @@ ngOnInit(){
     } else if (output.type === 'done') {
       this.previewData = 'data:'+output.file.response.contentType+';base64,' + this.arrayBufferToBase64(output.file.response.data.data);
       this.getImageId.emit(output.file.response._id);
-      console.log(this.files)
+      this.idImage = output.file.response._id;
       this.editMode = false;
     }
     this.files = this.files.filter(file => file.progress.status !== UploadStatus.Done);

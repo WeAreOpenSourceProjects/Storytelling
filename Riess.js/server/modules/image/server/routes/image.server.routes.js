@@ -9,14 +9,14 @@ var imagePolicy = require('../policies/image.server.policy'),
 module.exports = function(app) {
   // users-list all image
   app.route('/api/images').all(imagePolicy.isAllowed)
-  // .get(image.list)
-  .post(image.create);
+  .post(image.create)
+  .patch(image.update);
 
 //   // Single image routes
-//   app.route('/api/images/:imageId')
-//   //.all(imagePolicy.isAllowed)
+app.route('/api/images/:imageId')
+.all(imagePolicy.isAllowed)
 //   .get(image.findOneById)
-//     .patch(image.update)
+.put(image.update)
 //     .delete(image.delete);
 //
 //     app.route('/api/imagees/:imageId')

@@ -347,7 +347,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(ImageUploadComponent);
         const componentEditorRef = this.imageeditor.last.createComponent(componentEditorFactory);
         (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
-          console.log('????????', this.slide.boxIds[this.imageeditor.length - 1].content, item);
           item.item.content.imageId = id;
         });
         this.dynamicComponent.push(componentEditorRef.instance);

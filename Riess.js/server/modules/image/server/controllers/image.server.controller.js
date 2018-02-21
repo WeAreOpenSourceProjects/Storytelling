@@ -35,8 +35,29 @@ exports.create = function(req, res) {
       image.data = fs.readFileSync(req.file.path);
       image.contentType = req.file.mimetype;
       image.save(function (err, a) {
-        console.log(image.data.$binary)
         res.json(image);
       });
+  });
+};
+
+/**
+ * update an image
+ */
+exports.update = function(req, res) {
+  upload(req,res,function(err) {
+    console.log(req.file, req.params)
+    if(err) {
+        return res.end("Error uploading file.");
+    }
+    var image = new Image({
+      data : fs.readFileSync(req.file.path),
+      contentType : req.file.mimetype,
+      _id : req.params.imageId
+    })
+    Image.findByIdAndUpdate(req.params.imageId, image,  { new: true }).exec()
+    .then(function (im) {
+       res.json(im);
+    })
+
   });
 };
