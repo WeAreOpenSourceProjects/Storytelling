@@ -293,8 +293,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
       const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
       (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
-
-        this.slide.boxIds[this.texteditor.length - 1].content.text = text;
+        item.item.content.text = text;
       });
       this.dynamicComponent.push(componentEditorRef.instance)
       this.editMode = true;
@@ -319,11 +318,12 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       }),
       switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
     ).subscribe((chart: any) => {
+      console.log(chart);
       if (chart) {
         const componentGraphFactory = this.componentFactoryResolver.resolveComponentFactory(GraphComponent);
         const componentGraphRef = this.grapheditor.last.createComponent(componentGraphFactory);
         (<GraphComponent>componentGraphRef.instance).chart = chart;
-        this.slide.boxIds[this.grapheditor.length - 1].content.chart = chart;
+        this.slide.boxIds[this.slide.boxIds.length - 1].content.chart = chart;
         this.dynamicComponent.push(componentGraphRef.instance)
         this.editMode = true;
       }
@@ -374,7 +374,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           this.boxesService.delete(item._id).subscribe()
         }
         if(item.content.imageId){
-         this.boxesService.deleteImage(item.content.imageId).subscribe();  
+         this.boxesService.deleteImage(item.content.imageId).subscribe();
         }
         this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
         this.cdr.detectChanges();
