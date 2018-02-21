@@ -7,8 +7,8 @@
    <gridster-item [item]="box" *ngFor="let box of currentSlide?.boxIds; let i = index">
       <app-tiny-editor class="text" *ngIf="box.content?.type ==='text'" [initialValue]="box.content?.text" [init]="init" [plugins]="plugins"></app-tiny-editor>
       <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
-      <app-image-upload *ngIf="box.content?.type==='image'" [image]="box.content?.imageId" ></app-image-upload>
-      
+      <app-image-upload *ngIf="box.content?.type==='image'" [presentationMode]="true" [image]="box.content?.imageId" ></app-image-upload>
+
     </gridster-item>
   </gridster>
 

@@ -14,7 +14,7 @@ import { environment } from '../../../../../apps/default/src/environments/enviro
 export class ImageUploadComponent {
   @Input() image : any;
   @Output() getImageId : EventEmitter<String>= new EventEmitter();
-
+  @Input() presentationMode : Boolean = false;
   files: UploadFile[];
   uploadInput: EventEmitter<UploadInput>;
   dragOver: boolean;
