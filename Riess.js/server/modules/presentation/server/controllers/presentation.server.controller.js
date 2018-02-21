@@ -246,13 +246,7 @@ exports.search = function(req, res) {
 
  Promise.all([presnetationsCount,
    presnetationsFind.populate({
-     path: 'slideIds',
-     populate: { path: 'boxIds',
-     populate : {
-       path : 'content.imageId',
-       model: 'Image'
-     }
-    }
+     path: 'slideIds'
    })
    .populate({
      path: 'author'
