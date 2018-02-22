@@ -20,7 +20,10 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/box/:boxId',
       permissions: '*'
-    }]
+    },{
+      resources :'/api/boxes/background',
+      permissions: '*'
+    } ]
   }, {
     roles: ['user'],
     allows: [{
@@ -29,7 +32,10 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/box/:boxId',
       permissions: ['*']
-    }]
+    }, {
+      resources :'/api/boxes/background',
+      permissions: '*'
+    } ]
   }, {
     roles: ['guest'],
     allows: [{
@@ -38,7 +44,10 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/box/:boxId',
       permissions: ['*']
-    }]
+    }, {
+      resources :'/api/boxes/background',
+      permissions: '*'
+    } ]
   }]);
 };
 

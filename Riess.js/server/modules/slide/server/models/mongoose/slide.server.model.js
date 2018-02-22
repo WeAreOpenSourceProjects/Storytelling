@@ -8,6 +8,10 @@ var SlideSchema = new Schema({
     type: Number,
     default: 0
   },
+  background : {
+    type: String,
+    default :'#FFFFF'
+  },
   boxIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Box',

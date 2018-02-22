@@ -45,6 +45,11 @@ export class BoxesApiService {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/${id}`;
     return this.http.patch(backendURL, boxe);
   }
+  changeGridBackground(background){
+    const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/background`;
+    return this.http.post(backendURL, background);
+
+  }
   delete(id): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.boxes}/${id}`;
     return this.http.delete(backendURL);

@@ -11,7 +11,7 @@ module.exports = function(app) {
   app.route('/api/boxes').all(boxPolicy.isAllowed)
   .get(box.list)
   .post(box.create);
-  
+
   // Single box routes
   app.route('/api/boxes/:boxId')
   //.all(boxPolicy.isAllowed)
@@ -21,5 +21,6 @@ module.exports = function(app) {
 
     app.route('/api/boxes/:boxId')
 //    .all(boxPolicy.isAllowed)
-
+    app.route('/api/boxes/background').all(boxPolicy.isAllowed)
+    .post(box.updateBackground)
 };

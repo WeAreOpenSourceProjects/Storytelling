@@ -16,7 +16,6 @@ var path = require('path'),
   Promise = require('promise');
 
   exports.list = function(req, res) {
-    console.log('ici');
     Box.find()
     .sort('-created')
     .populate({
@@ -117,4 +116,17 @@ exports.findOneById = function(id) {
   .catch(function(err) {
     return next(err);
   });
+}
+
+exports.updateBackground = function (req, res){
+  console.log(req.body);
+  var slide = {
+    background : req.body.background
+  }
+  Slide.findByIdAndUpdate(req.body.id, slide).exec()
+  .then(function(slide){
+     res.json('OK');
+  });
+  res.json('ok');
+
 }

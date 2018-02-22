@@ -55,6 +55,7 @@ import { TinyEditorComponent } from '@labdat/tiny-editor';
 import { ImageUploadComponent } from '@labdat/image-upload';
 
 import { ChartsBuilderComponent } from './components/charts-builder/charts-builder.component';
+import { BoxesBackgroundComponent } from './components/boxes-background/boxes-background.component';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { GridsterModule } from 'angular-gridster2';
 
@@ -71,6 +72,7 @@ import { DataTableComponent }from './components/data-table/data-table.component'
 import { CodeEditorComponent } from './components/code-editor';
 import { TinyEditorModule } from '@labdat/tiny-editor';
 import { ImageUploadModule } from '@labdat/image-upload';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
     imports: [
@@ -103,7 +105,8 @@ import { ImageUploadModule } from '@labdat/image-upload';
       MatStepperModule,
       ChartsModule,
       TinyEditorModule,
-      ImageUploadModule
+      ImageUploadModule,
+      ColorPickerModule
     ],
     declarations: [
       BoxesGridComponent,
@@ -113,6 +116,7 @@ import { ImageUploadModule } from '@labdat/image-upload';
       ChartsBuilderComponent,
       DataTableComponent,
       CodeEditorComponent,
+      BoxesBackgroundComponent
       ],
     exports: [
       BoxesGridComponent
@@ -141,7 +145,8 @@ import { ImageUploadModule } from '@labdat/image-upload';
       BoxDialogComponent,
       TinyEditorComponent,
       ImageUploadComponent,
-      GraphComponent
+      GraphComponent,
+      BoxesBackgroundComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [ OverlayContainer, ChartsService ]

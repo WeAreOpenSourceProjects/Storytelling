@@ -1,22 +1,24 @@
-<ng-template #menubar ></ng-template>
-<gridster [options]="gridConfig">
-  <img *ngIf="slide.boxIds.length === 0" class="background-mouse" src="assets/right-click.png"/>
-  <gridster-item
-    *ngFor="let box of slide?.boxIds; let i = index"
-    [item]="box">
-    <div *ngIf="!editMode" class="controls box-header-btns pull-right">
-      <a title="Edit" (click)="enableEdit(box, i)"><mat-icon svgIcon="editor:ic_mode_edit_24px"></mat-icon></a>
-      <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
-    </div>
-    <div *ngIf="box.content?.type === 'text'" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }">
-      <ng-container #texteditor></ng-container>
-    </div>
-    <div class="graph-editor" *ngIf="box.content?.type==='chart'">
-      <ng-container #grapheditor></ng-container>
-    </div>
-    <div class="image-upload" *ngIf="box.content?.type === 'image'">
-      <ng-container  #imageeditor></ng-container>
-    </div>
-  </gridster-item>
-</gridster>
+  <ng-template #menubar ></ng-template>
+  <div class="gridster-class" [style.background]="slide.background">
+    <gridster [options]="gridConfig" >
+      <img *ngIf="slide.boxIds.length === 0" class="background-mouse" src="assets/right-click.png"/>
+      <gridster-item [style.background]="slide.background"
+        *ngFor="let box of slide?.boxIds; let i = index"
+        [item]="box">
+        <div *ngIf="!editMode" class="controls box-header-btns pull-right">
+          <a title="Edit" (click)="enableEdit(box, i)"><mat-icon svgIcon="editor:ic_mode_edit_24px"></mat-icon></a>
+          <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
+        </div>
+        <div *ngIf="box.content?.type === 'text'" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }">
+          <ng-container #texteditor></ng-container>
+        </div>
+        <div class="graph-editor" *ngIf="box.content?.type==='chart'">
+          <ng-container #grapheditor></ng-container>
+        </div>
+        <div class="image-upload" *ngIf="box.content?.type === 'image'">
+          <ng-container  #imageeditor></ng-container>
+        </div>
+      </gridster-item>
+    </gridster>
+</div>
 <a class="fixed" mat-fab  type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>

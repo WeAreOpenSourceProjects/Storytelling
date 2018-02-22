@@ -18,6 +18,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 
 import {BoxesApiService} from '../../../../boxes-state/src/services/boxes.api.service';
 import {ChartsBuilderComponent} from '../../components/charts-builder';
+import { BoxesBackgroundComponent } from '../../components/boxes-background/boxes-background.component';
 import {ImageUploadComponent} from '@labdat/image-upload';
 
 //import {TextTinyEditorComponent} from '../../components/text-editor/text-editor.component';
@@ -74,7 +75,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   public options;
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId)
   private presentationId: any;
-
+  private background : string = 'white';
   private emptyCellContextMenu$ = new Subject();
   private subscriptions: Subscription;
 
@@ -234,11 +235,8 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           const componentEditorRef = this.imageeditor.toArray()[k].createComponent(componentEditorFactory);
           k++;
           componentEditorRef.instance.image = this.slide.boxIds[i].content.imageId;
-          console.log(this.editMode);
-
           componentEditorRef.instance.editMode = this.editMode;
           this.dynamicComponent.push(componentEditorRef.instance);
-          console.log('id', this.slide.boxIds[i].content);
           (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
             this.slide.boxIds[i].content.imageId = id;
           });
@@ -280,6 +278,10 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       filter(type => type === 'image')
     );
 
+    const backgroungType$ = addBox$.pipe(
+      filter(type => type === 'background')
+    );
+
     const textBoxSubscription = textType$.pipe(
       withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
       switchMap((item: any) => {
@@ -318,7 +320,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       }),
       switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
     ).subscribe((chart: any) => {
-      console.log(chart);
       if (chart) {
         const componentGraphFactory = this.componentFactoryResolver.resolveComponentFactory(GraphComponent);
         const componentGraphRef = this.grapheditor.last.createComponent(componentGraphFactory);
@@ -332,8 +333,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     });
     this.subscriptions.add(chartBoxSubscription);
 
-
-    ///////
     const imageBoxSubscription = imageType$.pipe(
       withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
       switchMap((item: any) => {
@@ -352,8 +351,22 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
         this.dynamicComponent.push(componentEditorRef.instance);
         this.editMode = true;
       });
-
       this.subscriptions.add(imageBoxSubscription);
+
+
+
+      const backgroundBoxSubscription = backgroungType$.pipe(
+        map(() => {
+          return this.dialog.open(BoxesBackgroundComponent, {height:'50%', width: '50%'});
+        }),
+        switchMap((dialog: MatDialogRef<BoxesBackgroundComponent>) => dialog.afterClosed())
+      ).subscribe((background) => {
+        this.slide.background = background.background;
+        this.cdr.detectChanges();
+      });
+      this.subscriptions.add(backgroundBoxSubscription);
+
+
   }
 
   changedOptions() {
@@ -389,9 +402,10 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
       if (slide.boxIds[i]._id) {
         this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe()
       } else {
-        this.boxesService.addBox(slide.boxIds[i]).subscribe()
+        this.boxesService.addBox(slide.boxIds[i]).subscribe();
       }
     }
+    this.boxesService.changeGridBackground({background :slide.background, id : this.id}).subscribe();
     this.router.navigate(['/','presentations', this.slide.presentationId, 'edit'])
   }
 

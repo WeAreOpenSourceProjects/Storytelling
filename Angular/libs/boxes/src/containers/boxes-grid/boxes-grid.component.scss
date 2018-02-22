@@ -6,7 +6,7 @@
 }
 
 /deep/ gridster {
-  background: white !important ;
+  background: transparent !important ;
   gridster-grid.gridster-grid{
     .row {
       border-top: 0.5px dotted rgb(189, 195, 199);
@@ -35,7 +35,7 @@
 }
 
 gridster-item {
-  background-color: rgb(255,255,255) !important;
+  background-color: white;
   border : none !important;
   padding-top: 9px;
   &:hover{
@@ -146,4 +146,8 @@ body {
 .graph-editor {
   width: 100%;
   height: 100%;
+}
+.gridster-class {
+  height: 100%;
+  width: 100%;
 }

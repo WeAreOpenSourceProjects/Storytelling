@@ -15,6 +15,7 @@ export class ImageUploadComponent {
   @Input() image : any;
   @Output() getImageId : EventEmitter<String>= new EventEmitter();
   @Input() presentationMode : Boolean = false;
+  @Output() getImageIdInBase64 : EventEmitter<String> = new EventEmitter();
   files: UploadFile[];
   uploadInput: EventEmitter<UploadInput>;
   dragOver: boolean;
@@ -36,7 +37,6 @@ export class ImageUploadComponent {
   }
 ngOnInit(){
   if(this.image) {
-    console.log(this.image);
     this.previewData = 'data:'+this.image.contentType+';base64,' + this.arrayBufferToBase64(this.image.data.data);
     this.idImage = this.image._id;
     this.getImageId.emit(this.image._id);
