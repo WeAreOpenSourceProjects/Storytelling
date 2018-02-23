@@ -13,7 +13,8 @@ import {
   MatToolbarModule,
   MatDialogModule,
   MatCheckboxModule,
-  MatStepperModule } from '@angular/material';
+  MatStepperModule
+} from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   BarChartComponent,
@@ -35,7 +36,7 @@ import {
   SunburstChartComponent,
   AreaChartComponent,
   ChartsModule
-} from '@labdat/charts'
+} from '@labdat/charts';
 import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 
 import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
@@ -44,13 +45,13 @@ import { CodemirrorModule } from 'ng4-codemirror/src';
 import { DndModule } from 'ng2-dnd';
 import { HotTableModule } from 'angular-handsontable';
 
-import "../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js";
+import '../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js';
 // import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
 import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
 
 import { TextEditorComponent } from './components/text-editor/text-editor.component';
 
-import "../../../node_modules/tinymce/tinymce.js";
+import '../../../node_modules/tinymce/tinymce.js';
 import { TinyEditorComponent } from '@labdat/tiny-editor';
 import { ImageUploadComponent } from '@labdat/image-upload';
 
@@ -67,96 +68,94 @@ import { DragulaModule } from 'ng2-dragula';
 import { environment } from '../../../apps/default/src/environments/environment';
 import { BoxesGridComponent } from './containers/boxes-grid/boxes-grid.component';
 import { ChartsService } from '@labdat/charts/src/services/charts.service';
-import { BoxDialogComponent } from './components/box-dialog/box-dialog.component'
-import { DataTableComponent }from './components/data-table/data-table.component';
+import { BoxDialogComponent } from './components/box-dialog/box-dialog.component';
+import { DataTableComponent } from './components/data-table/data-table.component';
 import { CodeEditorComponent } from './components/code-editor';
 import { TinyEditorModule } from '@labdat/tiny-editor';
 import { ImageUploadModule } from '@labdat/image-upload';
 import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
-    imports: [
-      DragulaModule,
-      CommonModule,
-      MatCheckboxModule,
-      FormsModule,
-      ReactiveFormsModule,
-      PieChartModule,
-      GaugeModule,
-      NgxChartsModule,
-      CodemirrorModule,
-      FlexLayoutModule,
-      DndModule.forRoot(),
-      HotTableModule,
-      FroalaEditorModule.forRoot(),
-      FroalaViewModule.forRoot(),
-      MatTooltipModule,
-      MatCardModule,
-      MatSelectModule,
-      MatIconModule,
-      MatButtonModule,
-      MatChipsModule,
-      MatToolbarModule,
-      MatInputModule,
-      HttpModule,
-      MatDialogModule,
-      RouterModule,
-      GridsterModule,
-      MatStepperModule,
-      ChartsModule,
-      TinyEditorModule,
-      ImageUploadModule,
-      ColorPickerModule
-    ],
-    declarations: [
-      BoxesGridComponent,
-      TextEditorComponent,
-      MenuBarComponent,
-      BoxDialogComponent,
-      ChartsBuilderComponent,
-      DataTableComponent,
-      CodeEditorComponent,
-      BoxesBackgroundComponent
-      ],
-    exports: [
-      BoxesGridComponent
-    ],
-    entryComponents: [
-      BarChartComponent,
-      LineChartComponent,
-      ForceDirectedGraphComponent,
-      HierarchicalEdgeBundlingComponent,
-      PieChartComponent,
-      PieGridChartComponent,
-      NumberCardComponent,
-      GaugeChartComponent,
-      AdvancedPieChartComponent,
-      DendogramComponent,
-      NgGraphComponent,
-      TreemapChartComponent,
-      ZoomableTreemapChartComponent,
-      BubbleChartComponent,
-      WordCloudComponent,
-      SunburstChartComponent,
-      AreaChartComponent,
-      MenuBarComponent,
-      ChartsBuilderComponent,
-      TextEditorComponent,
-      BoxDialogComponent,
-      TinyEditorComponent,
-      ImageUploadComponent,
-      GraphComponent,
-      BoxesBackgroundComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    providers: [ OverlayContainer, ChartsService ]
-    //  SlidesService, SlideService, SlideResolve, ImagesService, ChartsService, ValidService
+  imports: [
+    DragulaModule,
+    CommonModule,
+    MatCheckboxModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PieChartModule,
+    GaugeModule,
+    NgxChartsModule,
+    CodemirrorModule,
+    FlexLayoutModule,
+    DndModule.forRoot(),
+    HotTableModule,
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
+    MatTooltipModule,
+    MatCardModule,
+    MatSelectModule,
+    MatIconModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatToolbarModule,
+    MatInputModule,
+    HttpModule,
+    MatDialogModule,
+    RouterModule,
+    GridsterModule,
+    MatStepperModule,
+    ChartsModule,
+    TinyEditorModule,
+    ImageUploadModule,
+    ColorPickerModule
+  ],
+  declarations: [
+    BoxesGridComponent,
+    TextEditorComponent,
+    MenuBarComponent,
+    BoxDialogComponent,
+    ChartsBuilderComponent,
+    DataTableComponent,
+    CodeEditorComponent,
+    BoxesBackgroundComponent
+  ],
+  exports: [BoxesGridComponent],
+  entryComponents: [
+    BarChartComponent,
+    LineChartComponent,
+    ForceDirectedGraphComponent,
+    HierarchicalEdgeBundlingComponent,
+    PieChartComponent,
+    PieGridChartComponent,
+    NumberCardComponent,
+    GaugeChartComponent,
+    AdvancedPieChartComponent,
+    DendogramComponent,
+    NgGraphComponent,
+    TreemapChartComponent,
+    ZoomableTreemapChartComponent,
+    BubbleChartComponent,
+    WordCloudComponent,
+    SunburstChartComponent,
+    AreaChartComponent,
+    MenuBarComponent,
+    ChartsBuilderComponent,
+    TextEditorComponent,
+    BoxDialogComponent,
+    TinyEditorComponent,
+    ImageUploadComponent,
+    GraphComponent,
+    BoxesBackgroundComponent
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [OverlayContainer, ChartsService]
+  //  SlidesService, SlideService, SlideResolve, ImagesService, ChartsService, ValidService
 })
 export class BoxesModule {
   public static forRoot() {
     return {
       ngModule: BoxesModule,
-      providers: [ OverlayContainer ]
+      providers: [OverlayContainer]
       // , SlidesService, ImagesService, ChartsService, ValidService, SlideResolve
     };
   }

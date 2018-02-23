@@ -23,15 +23,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class PresentationsEffects {
-
   @Effect()
   search$ = this.dataPersistence.fetch(fromPresentations.SEARCH, {
     run: (action: fromPresentations.Search, state: PresentationsState) => {
-      const { pageIndex, pageSize, search } = action.payload
-      return this.presentationsApiService.search(pageIndex, pageSize, search)
-        .pipe(map((result) => {
-          return new fromPresentations.SearchSuccess(result)
-        }))
+      const { pageIndex, pageSize, search } = action.payload;
+      return this.presentationsApiService.search(pageIndex, pageSize, search).pipe(
+        map(result => {
+          return new fromPresentations.SearchSuccess(result);
+        })
+      );
     },
     onError: (action: fromPresentations.Search, error) => {
       console.error('Error', error);
@@ -42,8 +42,9 @@ export class PresentationsEffects {
   @Effect()
   getOne$ = this.dataPersistence.fetch(fromPresentations.GET_ONE, {
     run: (action: fromPresentations.GetOne, state: PresentationsState) => {
-      return this.presentationsApiService.getOne(action.payload.presentationId)
-        .pipe(map(result => new fromPresentations.GetOneSuccess({ presentation: result })))
+      return this.presentationsApiService
+        .getOne(action.payload.presentationId)
+        .pipe(map(result => new fromPresentations.GetOneSuccess({ presentation: result })));
     },
     onError: (action: fromPresentations.GetOne, error) => {
       console.error('Error', error);
@@ -52,46 +53,41 @@ export class PresentationsEffects {
   });
 
   @Effect()
-  add$ = this.actions
-    .ofType(fromPresentations.ADD)
-    .pipe(
-      map(toPayload),
-      switchMap((presentation) => this.presentationsApiService.add(presentation)),
-      map((response: Presentation) => new fromPresentations.AddSuccess(response)),
-      tap(() =>
-        this.snackBar.openFromComponent(PresentationsSnackComponent, {
-          duration: 1000,
-          data: 'Presentation Add Success',
-          horizontalPosition: 'right',
-          verticalPosition: 'top'
-        })
-      ),
-      catchError(error => of(new fromPresentations.AddFailure(error)))
-    );
+  add$ = this.actions.ofType(fromPresentations.ADD).pipe(
+    map(toPayload),
+    switchMap(presentation => this.presentationsApiService.add(presentation)),
+    map((response: Presentation) => new fromPresentations.AddSuccess(response)),
+    tap(() =>
+      this.snackBar.openFromComponent(PresentationsSnackComponent, {
+        duration: 1000,
+        data: 'Presentation Add Success',
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      })
+    ),
+    catchError(error => of(new fromPresentations.AddFailure(error)))
+  );
 
   @Effect()
-  copy$ = this.actions
-    .ofType(fromPresentations.COPY)
-    .pipe(
-      map(toPayload),
-      switchMap((payload) => this.presentationsApiService.copy(payload)),
-      map((response: any) => new fromPresentations.CopySuccess(response)),
-      tap(() =>
-        this.snackBar.openFromComponent(PresentationsSnackComponent, {
-          duration: 1000,
-          data: 'Presentation Copy Success',
-          horizontalPosition: 'right',
-          verticalPosition: 'top'
-        })
-      ),
-      catchError(error => of(new fromPresentations.CopyFailure(error)))
-    );
+  copy$ = this.actions.ofType(fromPresentations.COPY).pipe(
+    map(toPayload),
+    switchMap(payload => this.presentationsApiService.copy(payload)),
+    map((response: any) => new fromPresentations.CopySuccess(response)),
+    tap(() =>
+      this.snackBar.openFromComponent(PresentationsSnackComponent, {
+        duration: 1000,
+        data: 'Presentation Copy Success',
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      })
+    ),
+    catchError(error => of(new fromPresentations.CopyFailure(error)))
+  );
 
   @Effect()
   update$ = this.dataPersistence.optimisticUpdate(fromPresentations.UPDATE, {
     run: (action: fromPresentations.Update, state: PresentationsState) => {
-      return this.presentationsApiService.update(action.payload)
-      .pipe(
+      return this.presentationsApiService.update(action.payload).pipe(
         tap(() =>
           this.snackBar.openFromComponent(PresentationsSnackComponent, {
             duration: 1000,
@@ -110,26 +106,25 @@ export class PresentationsEffects {
   });
 
   @Effect()
-  delete$ = this.actions
-    .ofType(fromPresentations.DELETE)
-    .pipe(
-      map(toPayload),
-      switchMap(presentationId => this.presentationsApiService.delete(presentationId)),
-      map((response: any) => new fromPresentations.DeleteSuccess(response)),
-      tap(() =>
-        this.snackBar.openFromComponent(PresentationsSnackComponent, {
-          duration: 1000,
-          data: 'Presentation Delete Success',
-          horizontalPosition: 'right',
-          verticalPosition: 'top'
-        })
-      ),
-      catchError(error => of(new fromPresentations.DeleteFailure(error)))
-    )
+  delete$ = this.actions.ofType(fromPresentations.DELETE).pipe(
+    map(toPayload),
+    switchMap(presentationId => this.presentationsApiService.delete(presentationId)),
+    map((response: any) => new fromPresentations.DeleteSuccess(response)),
+    tap(() =>
+      this.snackBar.openFromComponent(PresentationsSnackComponent, {
+        duration: 1000,
+        data: 'Presentation Delete Success',
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      })
+    ),
+    catchError(error => of(new fromPresentations.DeleteFailure(error)))
+  );
 
   constructor(
     private actions: Actions,
     private dataPersistence: DataPersistence<PresentationsState>,
     private presentationsApiService: PresentationsApiService,
-    private snackBar: MatSnackBar ) { }
+    private snackBar: MatSnackBar
+  ) {}
 }

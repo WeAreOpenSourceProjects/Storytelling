@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER, ModuleWithProviders  } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -12,27 +12,28 @@ import {
   MatToolbarModule,
   MatDialogModule,
   MatCheckboxModule,
-  MatPaginatorModule } from '@angular/material';
+  MatPaginatorModule
+} from '@angular/material';
 
-  import {BarChartComponent } from './bar-chart/bar-chart.component'
-  import {LineChartComponent } from './line-chart/line-chart.component'
-  import {ForceDirectedGraphComponent } from './force-directed-graph/force-directed-graph.component'
-  import {HierarchicalEdgeBundlingComponent } from './hierarchical-edge-bundling/hierarchical-edge-bundling.component'
-  import {NumberCardComponent } from './ngx-charts'
-  import {GaugeChartComponent } from './ngx-charts'
-  import {AdvancedPieChartComponent } from './ngx-charts'
-  import {PieChartComponent } from './pie-chart/pie-chart.component'
-  import {DendogramComponent } from './dendogram/dendogram.component'
-  import {NgGraphComponent } from './ngx-charts'
-  import {TreemapChartComponent } from './ngx-charts'
-  import {ZoomableTreemapChartComponent } from './zoomable-treemap-chart/zoomable-treemap-chart.component'
-  import {BubbleChartComponent } from './bubble-chart'
-  import {WordCloudComponent } from './word-cloud'
-  import {SunburstChartComponent } from './sunburst-chart/sunburst-chart.component'
-  import {AreaChartComponent } from './ngx-charts'
-  import {PieGridChartComponent } from './ngx-charts'
-  import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
-  import {GraphComponent} from './graph/graph.component'
+import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { LineChartComponent } from './line-chart/line-chart.component';
+import { ForceDirectedGraphComponent } from './force-directed-graph/force-directed-graph.component';
+import { HierarchicalEdgeBundlingComponent } from './hierarchical-edge-bundling/hierarchical-edge-bundling.component';
+import { NumberCardComponent } from './ngx-charts';
+import { GaugeChartComponent } from './ngx-charts';
+import { AdvancedPieChartComponent } from './ngx-charts';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
+import { DendogramComponent } from './dendogram/dendogram.component';
+import { NgGraphComponent } from './ngx-charts';
+import { TreemapChartComponent } from './ngx-charts';
+import { ZoomableTreemapChartComponent } from './zoomable-treemap-chart/zoomable-treemap-chart.component';
+import { BubbleChartComponent } from './bubble-chart';
+import { WordCloudComponent } from './word-cloud';
+import { SunburstChartComponent } from './sunburst-chart/sunburst-chart.component';
+import { AreaChartComponent } from './ngx-charts';
+import { PieGridChartComponent } from './ngx-charts';
+import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
+import { GraphComponent } from './graph/graph.component';
 
 @NgModule({
   imports: [
@@ -70,7 +71,7 @@ import {
     PieGridChartComponent,
     BarChartComponent,
     GraphComponent
-    ],
+  ],
   exports: [
     LineChartComponent,
     ForceDirectedGraphComponent,
@@ -91,4 +92,4 @@ import {
     GraphComponent
   ]
 })
-export class ChartsModule { }
+export class ChartsModule {}

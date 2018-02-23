@@ -9,7 +9,7 @@ import * as _ from 'lodash';
   templateUrl: './dendogram.component.html',
   styleUrls: ['./dendogram.component.scss']
 })
-export class DendogramComponent extends Chart  {
+export class DendogramComponent extends Chart {
   @ViewChild('chart') private chartContainer: ElementRef;
   private element: any;
   private data: Array<any> = [];
@@ -23,12 +23,11 @@ export class DendogramComponent extends Chart  {
     super();
   }
 
-
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.chartOptions = { ...this.configInput };
-    setTimeout(()=> {
+    setTimeout(() => {
       this.init();
-    },500)
+    }, 500);
   }
   /**
    * Process json Data to D3.js Bar chart format
@@ -78,7 +77,7 @@ export class DendogramComponent extends Chart  {
    * Draw function for D3.js Bar chart
    */
   drawChart() {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.element = this.chartContainer.nativeElement;
 
       this.width = this.element.offsetWidth;
@@ -89,9 +88,8 @@ export class DendogramComponent extends Chart  {
         .append('svg')
         .attr('width', '100%')
         .attr('height', '100%')
-        .attr('viewBox', "0 0 "+ this.element.offsetWidth +" "+ this.element.offsetHeight)
-        .attr('id', 'DendogramComponent')
-
+        .attr('viewBox', '0 0 ' + this.element.offsetWidth + ' ' + this.element.offsetHeight)
+        .attr('id', 'DendogramComponent');
 
       this.curtain = this.svg.style('opacity', 1);
       this.svg.attr('height', this.height).attr('width', this.width);
@@ -162,8 +160,7 @@ export class DendogramComponent extends Chart  {
         .text(d => {
           return d.id.substring(d.id.lastIndexOf('.') + 1);
         });
-    }, 500)
-
+    }, 500);
   }
 
   load() {

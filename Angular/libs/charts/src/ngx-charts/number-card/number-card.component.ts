@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import * as shape from 'd3-shape';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Chart } from '../../chart.class';
@@ -22,7 +30,7 @@ const defaultOptions = {
   templateUrl: './number-card.component.html',
   styleUrls: ['./number-card.component.scss']
 })
-export class NumberCardComponent extends Chart implements  OnDestroy {
+export class NumberCardComponent extends Chart implements OnDestroy {
   chartOptions: any;
   @ViewChild('chart') private chartContainer: ElementRef;
 
@@ -33,22 +41,22 @@ export class NumberCardComponent extends Chart implements  OnDestroy {
   constructor() {
     super();
   }
-  ngOnInit(){
+  ngOnInit() {
     this.chartOptions = { ...defaultOptions, ...this.configInput };
   }
- ngAfterViewInit(){
-   let element = this.chartContainer.nativeElement;
-   let svg = d3.select(element).select('svg')
+  ngAfterViewInit() {
+    let element = this.chartContainer.nativeElement;
+    let svg = d3.select(element).select('svg');
 
     // Set the config
-    setTimeout(()=>{
-      svg.attr("width","100%")
-      .attr("height","100%")
-      .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
+    setTimeout(() => {
+      svg
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
       this.init();
       this.activated = true;
-
-    },500);
+    }, 500);
   }
   /**
    * Process json Data to Ngx-charts format
@@ -84,7 +92,7 @@ export class NumberCardComponent extends Chart implements  OnDestroy {
 
   init() {
     if (this.configInput != null)
-    this.data = NumberCardComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+      this.data = NumberCardComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else this.data = this.dataInput;
   }
 

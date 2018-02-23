@@ -4,17 +4,17 @@ import { PresentationsListComponent } from '@labdat/presentations/src/containers
 import { PresentationEditComponent } from '@labdat/presentations/src/containers/presentation-edit/presentation-edit.component';
 import { PresentationsViewComponent } from '@labdat/presentations/src/containers/presentations-view/presentations-view.component';
 import { PresentationsGuardService } from './services/presentations.guard.service';
-export { PresentationsGuardService }
+export { PresentationsGuardService };
 import { PresentationGuardService } from './services/presentation.guard.service';
 import { SlidesGuardService } from '@labdat/slides-routing/src/services/slides.guard.service';
 import { HttpClientModule } from '@angular/common/http';
-export { PresentationGuardService }
+export { PresentationGuardService };
 
 const prenstationsRoutes: Routes = [
   {
     path: '',
     component: PresentationsListComponent,
-    canActivate: [ PresentationsGuardService ],
+    canActivate: [PresentationsGuardService],
     data: {
       roles: ['user', 'admin'],
       title: 'Presentations List'
@@ -24,7 +24,7 @@ const prenstationsRoutes: Routes = [
   {
     path: ':id/edit',
     component: PresentationEditComponent,
-    canActivate: [ PresentationGuardService, SlidesGuardService ],
+    canActivate: [PresentationGuardService, SlidesGuardService],
     data: {
       roles: ['user', 'admin'],
       title: 'Presentation Detail'
@@ -33,13 +33,13 @@ const prenstationsRoutes: Routes = [
   {
     path: ':id/view',
     component: PresentationsViewComponent,
-    canActivate: [ PresentationGuardService, SlidesGuardService ],
+    canActivate: [PresentationGuardService, SlidesGuardService],
     data: {
       roles: ['user', 'admin'],
       title: 'Presentation'
     }
-  },
-/*
+  }
+  /*
   {
     path: 'createSlides',
     component: SlidesEditorFormComponent,
@@ -76,18 +76,13 @@ const prenstationsRoutes: Routes = [
 export class PresentationsRoutingModule {
   public static forRoot(): ModuleWithProviders {
     return {
-        ngModule: RootPresentationsRoutingModule,
-        providers: [
-          PresentationsGuardService,
-          PresentationGuardService
-        ]
-      }
+      ngModule: RootPresentationsRoutingModule,
+      providers: [PresentationsGuardService, PresentationGuardService]
     };
+  }
 }
 
 @NgModule({
-  imports: [ HttpClientModule ],
+  imports: [HttpClientModule]
 })
-export class RootPresentationsRoutingModule {
-
-}
+export class RootPresentationsRoutingModule {}

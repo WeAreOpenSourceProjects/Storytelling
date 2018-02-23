@@ -106,7 +106,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit, OnDestroy, Co
     }
 
     this.instance = CodeMirror.fromTextArea(this.host.nativeElement, this.config);
-    this.instance.setSize(900,"100%");
+    this.instance.setSize(900, '100%');
     this.instance.on('change', () => {
       this.updateValue(this.instance.getValue());
     });

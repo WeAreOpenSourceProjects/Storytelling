@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Output,
-  Input,
-  EventEmitter,
-  forwardRef,
-  OnDestroy} from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, forwardRef, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_CHECKBOX_CLICK_ACTION, MatCheckbox } from '@angular/material/checkbox';
 import { MatSelect } from '@angular/material/select';
@@ -16,41 +9,39 @@ import { PartialObserver } from 'rxjs/Observer';
   selector: 'app-slides-search',
   templateUrl: './presentations-search.component.html',
   styleUrls: ['./presentations-search.component.scss'],
-  providers: [{
-    provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'noop'
-  }]
+  providers: [
+    {
+      provide: MAT_CHECKBOX_CLICK_ACTION,
+      useValue: 'noop'
+    }
+  ]
 })
 export class PresentationsSearchComponent implements OnDestroy {
+  @Input() public kind: string;
 
-  @Input()
-  public kind: string;
-
-  @Input()
-  public searchObserver: PartialObserver<any>;
+  @Input() public searchObserver: PartialObserver<any>;
 
   public searchForm: FormGroup;
-  private subscriptions: Subscription
+  private subscriptions: Subscription;
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-
     this.searchForm = this.formBuilder.group({
       title: this.formBuilder.control(''),
       isFavorite: this.formBuilder.control('indeterminate'),
       isPublic: this.formBuilder.control('indeterminate'),
-      order: this.formBuilder.control('date'),
+      order: this.formBuilder.control('date')
     });
 
     this.searchObserver.next({
-       title:'',
-       isFavorite:'indeterminate' ,
-       isPublic:'indeterminate',
-       order: 'date'
+      title: '',
+      isFavorite: 'indeterminate',
+      isPublic: 'indeterminate',
+      order: 'date'
     });
-    
-    this.subscriptions = this.searchForm.valueChanges
-    .subscribe(this.searchObserver)
+
+    this.subscriptions = this.searchForm.valueChanges.subscribe(this.searchObserver);
   }
 
   onClick(checkbox: MatCheckbox) {
@@ -62,8 +53,8 @@ export class PresentationsSearchComponent implements OnDestroy {
       this.searchForm.get(name).setValue(false);
       return;
     } else {
-    checkbox.indeterminate = true;
-    this.searchForm.get(name).setValue('indeterminate');
+      checkbox.indeterminate = true;
+      this.searchForm.get(name).setValue('indeterminate');
     }
   }
 

@@ -9,9 +9,9 @@ export class PresentationDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<PresentationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   yes() {
     this.dialogRef.close({ delete: true, presentationId: this.data.presentationId });

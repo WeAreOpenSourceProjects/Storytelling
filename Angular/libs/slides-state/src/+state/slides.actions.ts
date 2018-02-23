@@ -17,20 +17,19 @@ export const DELETE_FAILURE = '[Slides] Delete Failure';
 export const UPDATE_ON_DELETE = '[Slides] Update On Delete';
 
 export type Actions =
-| Load
-| LoadSuccess
-| LoadFailure
-| Add
-| AddSuccess
-| AddFailure
-| BulkUpdate
-| BulkUpdateSuccess
-| BulkUpdateFailure
-| Delete
-| DeleteSuccess
-| DeleteFailure
-| UpdateOnDelete
-;
+  | Load
+  | LoadSuccess
+  | LoadFailure
+  | Add
+  | AddSuccess
+  | AddFailure
+  | BulkUpdate
+  | BulkUpdateSuccess
+  | BulkUpdateFailure
+  | Delete
+  | DeleteSuccess
+  | DeleteFailure
+  | UpdateOnDelete;
 
 export class Load implements Action {
   readonly type = LOAD;
@@ -39,7 +38,7 @@ export class Load implements Action {
 
 export class LoadSuccess implements Action {
   readonly type = LOAD_SUCCESS;
-  constructor(public payload: { slides: Slide[]}) {}
+  constructor(public payload: { slides: Slide[] }) {}
 }
 
 export class LoadFailure implements Action {
@@ -91,7 +90,6 @@ export class UpdateOnDelete implements Action {
   readonly type = UPDATE_ON_DELETE;
   constructor(public payload: { slide: Slide }) {}
 }
-
 
 export class DeleteFailure implements Action {
   readonly type = DELETE_FAILURE;

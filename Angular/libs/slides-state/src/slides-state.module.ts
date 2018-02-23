@@ -9,19 +9,19 @@ import { SlidesEffects } from './+state/slides.effects';
 import { SlidesSnackComponent } from './components/slides-snack/slides-snack.component';
 
 @NgModule({
-  declarations: [ SlidesSnackComponent ],
-  entryComponents: [ SlidesSnackComponent ],
+  declarations: [SlidesSnackComponent],
+  entryComponents: [SlidesSnackComponent],
   imports: [
     HttpClientModule,
     StoreModule.forFeature('slides', slidesReducer),
-    EffectsModule.forFeature([ SlidesEffects ])
+    EffectsModule.forFeature([SlidesEffects])
   ]
 })
 export class SlidesStateModule {
   public static forRoot(): ModuleWithProviders {
     return {
       ngModule: SlidesStateModule,
-      providers: [ SlidesApiService ]
+      providers: [SlidesApiService]
     };
   }
 }

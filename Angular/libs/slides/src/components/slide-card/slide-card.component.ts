@@ -8,17 +8,13 @@ import { Slide } from '@labdat/data-models';
   styleUrls: ['./slide-card.component.scss']
 })
 export class SlideCardComponent {
+  @Input() public index: number;
 
-  @Input()
-  public index: number;
+  @Output() delete = new EventEmitter<string>();
 
-  @Output()
-  delete = new EventEmitter<string>();
+  @Output() select = new EventEmitter();
 
-  @Output()
-  select = new EventEmitter();
-
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {}
 
   public deleteSlide(event: Event) {
     event.preventDefault();
@@ -29,5 +25,4 @@ export class SlideCardComponent {
   public onClick() {
     this.select.emit();
   }
-
 }

@@ -16,11 +16,7 @@ import { mapTo } from 'rxjs/operators/mapTo';
 
 @Injectable()
 export class BoxesEffects {
-
-  @Effect()
-  loginSuccess$ = this.actions
-    .ofType(fromAuthentication.LOGIN_SUCCESS)
-    .pipe(mapTo(new fromBoxes.Load()))
+  @Effect() loginSuccess$ = this.actions.ofType(fromAuthentication.LOGIN_SUCCESS).pipe(mapTo(new fromBoxes.Load()));
 
   // @Effect()
   // load = this.dataPersistence.fetch(fromBoxes.LOAD, {
@@ -40,11 +36,10 @@ export class BoxesEffects {
     .ofType(fromBoxes.ADD)
     .pipe(
       map(toPayload),
-      switchMap((payload) => this.boxesApiService.addBox(payload.boxes)),
+      switchMap(payload => this.boxesApiService.addBox(payload.boxes)),
       map((response: any) => new fromBoxes.AddSuccess({ boxe: response })),
       catchError(error => of(new fromBoxes.AddFailure(error)))
-    )
-;
+    );
 
   @Effect()
   update = this.dataPersistence.optimisticUpdate(fromBoxes.UPDATE, {
@@ -62,13 +57,14 @@ export class BoxesEffects {
     .ofType(fromBoxes.DELETE)
     .pipe(
       map(toPayload),
-      switchMap((payload) => this.boxesApiService.delete(payload.boxeId)),
-      map((response: any) => new fromBoxes.DeleteSuccess({boxIds: [response.id]})),
+      switchMap(payload => this.boxesApiService.delete(payload.boxeId)),
+      map((response: any) => new fromBoxes.DeleteSuccess({ boxIds: [response.id] })),
       catchError(error => of(new fromBoxes.DeleteFailure(error)))
-    )
+    );
 
   constructor(
     private actions: Actions,
     private dataPersistence: DataPersistence<BoxesState>,
-    private boxesApiService: BoxesApiService) {}
+    private boxesApiService: BoxesApiService
+  ) {}
 }

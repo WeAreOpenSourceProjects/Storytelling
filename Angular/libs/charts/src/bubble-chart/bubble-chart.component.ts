@@ -30,9 +30,10 @@ export class BubbleChartComponent extends Chart implements OnInit {
 
   ngOnInit() {
     this.chartOptions = { ...this.configInput };
-    setTimeout(()=>{this.init()},500);
+    setTimeout(() => {
+      this.init();
+    }, 500);
   }
-
 
   init() {
     if (this.configInput != null)
@@ -48,7 +49,7 @@ export class BubbleChartComponent extends Chart implements OnInit {
   drawChart() {
     let element = this.chartContainer.nativeElement;
     let width = element.offsetWidth;
-    let height = element.offsetHeight ;
+    let height = element.offsetHeight;
 
     let svg = d3
       .select(element)
@@ -56,7 +57,7 @@ export class BubbleChartComponent extends Chart implements OnInit {
       .attr('id', 'BubbleChartComponent')
       .attr('width', '100%')
       .attr('height', '100%')
-      .attr('viewBox', "0 0 "+ element.offsetWidth +" "+ element.offsetHeight)
+      .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
 
     let centerX = width * 0.5;
     let centerY = height * 0.5;
@@ -388,8 +389,8 @@ export class BubbleChartComponent extends Chart implements OnInit {
       .value();
   }
 
-  ngOnDestroy(){
-      d3.select('#BubbleChartComponent').remove();
+  ngOnDestroy() {
+    d3.select('#BubbleChartComponent').remove();
   }
 }
 

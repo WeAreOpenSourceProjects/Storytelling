@@ -16,91 +16,81 @@ import { User } from '@labdat/data-models';
 @Component({
   selector: 'app-slides-card',
   templateUrl: './presentation-card.component.html',
-  styleUrls: ['./presentation-card.component.scss'],
+  styleUrls: ['./presentation-card.component.scss']
 })
 export class PresentationCardComponent implements OnInit {
+  @Output() public select = new EventEmitter();
 
-  @Output()
-  public select = new EventEmitter();
+  @Input() public presentation: Presentation;
 
-  @Input()
-  public presentation: Presentation;
+  @Input() public editable: boolean; // whether the presentation can be edited;
 
-  @Input()
-  public editable: boolean; // whether the presentation can be edited;
+  @Input() public loggedIn: boolean;
 
-  @Input()
-  public loggedIn: boolean;
+  @Input() public user: User;
 
-  @Input()
-  public user: User;
+  @Output() public delete = new EventEmitter();
 
-  @Output()
-  public delete = new EventEmitter();
+  @Output() public edit = new EventEmitter();
 
-  @Output()
-  public edit = new EventEmitter();
+  @Output() public isPublishChange = new EventEmitter();
 
-  @Output()
-  public isPublishChange = new EventEmitter();
+  @Output() public isFavoriteChange = new EventEmitter();
 
-  @Output()
-  public isFavoriteChange = new EventEmitter();
-
-  @Output()
-  public copy = new EventEmitter();
+  @Output() public copy = new EventEmitter();
 
   public loggedIn$: Observable<boolean> = this.store.select(selectIsLoggedIn);
-  public userName$ = this.store.select(selectUser)
+  public userName$ = this.store
+    .select(selectUser)
     .pipe(filter(user => !isEmpty(user)), map(user => user.firstName + user.lastName));
 
   public banner: string; // banner picture of the presentation card
 
   constructor(
-//    private slidesService: PresentationsApiService,
+    //    private slidesService: PresentationsApiService,
     private dialog: MatDialog,
     private store: Store<AuthenticationState>
-   /*        private notifBarService: NotifBarService */ ) {
+  ) /*        private notifBarService: NotifBarService */ {
     this.banner = '';
   }
 
   ngOnInit() {
     /*after load presentation info, load presentation banner*/
     if (this.presentation.banner) {
-//      this.imagesService.getImage(this.presentation.banner).subscribe(_banner => {
-//        this.banner = _banner;
-//      });
+      //      this.imagesService.getImage(this.presentation.banner).subscribe(_banner => {
+      //        this.banner = _banner;
+      //      });
     }
   }
 
   public selectPresentation() {
-    this.select.emit()
+    this.select.emit();
   }
 
   public togglePublish(event) {
-      //            elm => this.notifBarService.showNotif("set upload status successfully!"),
-      //            error => this.notifBarService.showNotif("fail to set upload status, error is " + error)
-      event.preventDefault();
-      event.stopPropagation();
-      this.isPublishChange.emit(this.presentation)
+    //            elm => this.notifBarService.showNotif("set upload status successfully!"),
+    //            error => this.notifBarService.showNotif("fail to set upload status, error is " + error)
+    event.preventDefault();
+    event.stopPropagation();
+    this.isPublishChange.emit(this.presentation);
   }
   /*set like/dislike presentation*/
   public toggleFavorite(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.isFavoriteChange.emit(this.presentation)
+    this.isFavoriteChange.emit(this.presentation);
   }
 
   public editPresentation(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.edit.emit(this.presentation.id)
+    this.edit.emit(this.presentation.id);
   }
 
   public deletePresentation(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.delete.emit(this.presentation.id)
+    this.delete.emit(this.presentation.id);
   }
   /*duplicate presentation*/
   public copyPresentation(event) {
@@ -109,6 +99,5 @@ export class PresentationCardComponent implements OnInit {
     this.copy.emit(this.presentation.id);
     // this.notifBarService.showNotif("presentation has been copied");
     // this.notifBarService.showNotif("Opps! fail to copy the presentation. error :" + error);
-
   }
 }

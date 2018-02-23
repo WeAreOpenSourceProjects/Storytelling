@@ -6,7 +6,8 @@ import {
   MatIconModule,
   MatButtonModule,
   MatChipsModule,
-  MatDialogModule } from '@angular/material';
+  MatDialogModule
+} from '@angular/material';
 import { SlidesListComponent } from './containers/slides-list/slides-list.component';
 import { SlidesRoutingModule } from '@labdat/slides-routing';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -16,31 +17,25 @@ import { SlideCardComponent } from './components/slide-card/slide-card.component
 import { SlideDialogComponent } from './components/slide-dialog/slide-dialog.component';
 
 @NgModule({
-    imports: [
-      DragulaModule,
-      CommonModule,
-      MatTooltipModule,
-      FlexLayoutModule,
-      MatTooltipModule,
-      MatCardModule,
-      MatIconModule,
-      MatButtonModule,
-      MatChipsModule,
-      MatDialogModule,
-    ],
-    declarations: [
-      SlidesListComponent,
-      SlideDialogComponent,
-      SlideCardComponent
-    ],
-    entryComponents: [ SlideDialogComponent ],
-    exports: [
-      SlidesListComponent
-    ]
+  imports: [
+    DragulaModule,
+    CommonModule,
+    MatTooltipModule,
+    FlexLayoutModule,
+    MatTooltipModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatDialogModule
+  ],
+  declarations: [SlidesListComponent, SlideDialogComponent, SlideCardComponent],
+  entryComponents: [SlideDialogComponent],
+  exports: [SlidesListComponent]
 })
-export class SlidesModule { }
+export class SlidesModule {}
 
 @NgModule({
-  imports: [SlidesModule, SlidesRoutingModule ]
+  imports: [SlidesModule, SlidesRoutingModule]
 })
 export class RootSlidesModule {}

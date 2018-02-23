@@ -10,8 +10,8 @@ if (environment.production) {
 }
 
 import * as $ from 'jquery';
-window["$"] = $;
-window["jQuery"] = $;
+window['$'] = $;
+window['jQuery'] = $;
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)

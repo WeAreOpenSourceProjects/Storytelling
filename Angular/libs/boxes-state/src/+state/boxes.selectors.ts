@@ -9,7 +9,7 @@ export const {
   selectIds: selectBoxesIds,
   selectEntities: selectBoxesEntities,
   selectAll: selectAllBoxes,
-  selectTotal: selectBoxesTotal,
+  selectTotal: selectBoxesTotal
 } = boxesAdapter.getSelectors(selectBoxesState);
 
 export const selectIsLoading = createSelector(selectBoxesState, (state: BoxesState) => state.loading);
@@ -18,7 +18,8 @@ export const selectCurrentBoxId = createSelector(selectBoxesState, (state: Boxes
 export const selectCurrentBox = createSelector(
   selectBoxesEntities,
   selectCurrentBoxId,
-  (boxEntities, boxId) => boxEntities[boxId]);
+  (boxEntities, boxId) => boxEntities[boxId]
+);
 export const selectCurrentBoxGrid = createSelector(selectCurrentBox, box => box);
 export const selectCurrentBoxType = createSelector(selectCurrentBox, box => box.mime);
 export const selectCurrentBoxContent = createSelector(selectCurrentBox, box => box.content);

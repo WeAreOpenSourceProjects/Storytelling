@@ -11,14 +11,11 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
-import { switchMap } from 'rxjs/operators/switchMap'
+import { switchMap } from 'rxjs/operators/switchMap';
 import { first } from 'rxjs/operators/first';
 import { _throw } from 'rxjs/observable/throw';
 import { catchError } from 'rxjs/operators/catchError';
-import {
-  fromAuthentication,
-  selectTokenExpiresIn,
-  AuthenticationState } from '@labdat/authentication-state';
+import { fromAuthentication, selectTokenExpiresIn, AuthenticationState } from '@labdat/authentication-state';
 import { isEmpty } from 'lodash';
 
 @Injectable()
@@ -57,6 +54,6 @@ export class AuthenticationInterceptorService implements HttpInterceptor {
           })
         );
       })
-    )
+    );
   }
 }

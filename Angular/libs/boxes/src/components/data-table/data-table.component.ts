@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-data-table',
@@ -15,12 +15,12 @@ export class DataTableComponent implements OnInit {
   settings;
 
   options;
-  constructor(private elem : ElementRef) {}
+  constructor(private elem: ElementRef) {}
 
   ngOnInit() {
     this.settings = {
-        stretchH: 'all'
-    }
+      stretchH: 'all'
+    };
     //this.colHeaders = this.columns.map((col: any) =>  col.name );
     console.log('----  data  ---->', this.data);
     console.log('---- columns ---->', this.columns);

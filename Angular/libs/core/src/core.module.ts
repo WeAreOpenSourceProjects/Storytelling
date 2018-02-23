@@ -65,6 +65,6 @@ export class CoreModule {
 }
 
 @NgModule({
-  imports: [CoreModule, CoreRoutingModule, PresentationsStateModule ]
+  imports: [CoreModule, CoreRoutingModule, PresentationsStateModule]
 })
 export class RootCoreModule {}

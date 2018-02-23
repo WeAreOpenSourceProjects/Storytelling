@@ -4,11 +4,8 @@ import { CommonModule } from '@angular/common';
 import { TinyEditorComponent } from './components/tiny-editor/tiny-editor.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    EditorModule
-  ],
-  declarations: [ TinyEditorComponent ],
-  exports: [ TinyEditorComponent ]
+  imports: [CommonModule, EditorModule],
+  declarations: [TinyEditorComponent],
+  exports: [TinyEditorComponent]
 })
-export class TinyEditorModule { }
+export class TinyEditorModule {}

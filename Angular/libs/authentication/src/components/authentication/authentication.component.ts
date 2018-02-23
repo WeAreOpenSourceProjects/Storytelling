@@ -18,7 +18,7 @@ import { Authenticate } from '../../models/user.model';
 export class AuthenticationComponent {
   public pending$ = this.store.select(selectLoginPagePending);
   public error$ = this.store.select(selectLoginPageError);
-
+  private forgetPassword : Boolean = false;
   constructor(private store: Store<AuthenticationState>) {}
 
   onLogin(authenticate: Authenticate) {
@@ -27,5 +27,12 @@ export class AuthenticationComponent {
 
   onRegister(registration: any) {
     this.store.dispatch(new fromAuthentication.Register(registration));
+  }
+  onForgetPassword(){
+    this.forgetPassword = true;
+  }
+  onResetPassword(email){
+    console.log(email);
+    this.store.dispatch(new fromAuthentication.ResetPassword(email));
   }
 }

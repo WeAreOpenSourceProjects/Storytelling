@@ -1,4 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, AfterViewChecked, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  AfterViewChecked,
+  OnDestroy
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { AuthenticationState, selectIsLoggedIn } from '@labdat/authentication-state';
@@ -20,7 +27,9 @@ import {
   selectAllPresentations,
   fromPresentations,
   selectPresentationsTotal,
-  selectCurrentPresentation, selectPresentationsCount } from '@labdat/presentations-state';
+  selectCurrentPresentation,
+  selectPresentationsCount
+} from '@labdat/presentations-state';
 import { skip } from 'rxjs/operators/skip';
 import { Subscription } from 'rxjs/Subscription';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -52,59 +61,62 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.searchObserver.pipe(startWith({ title: '', isPublic: true, isFavorite: 'indeterminate' })),
       (showMessage, search) => {
         if (showMessage) {
-          return this.emptyMessage(search)
+          return this.emptyMessage(search);
         }
         return '';
       }
     )
-  )
+  );
 
-  public hide$ = merge(this.searchObserver,this.showPublicPresentations$)
-  .pipe(mapTo(true));
+  public hide$ = merge(this.searchObserver, this.showPublicPresentations$).pipe(mapTo(true));
 
   constructor(private presentationsApiService: PresentationsApiService, private store: Store<any>) {}
 
   ngOnInit() {
     this.subscriptions = merge(
-      this.showPublicPresentations$.pipe(mapTo({ title: '', isPublic: true, isFavorite: 'indeterminate'})),
+      this.showPublicPresentations$.pipe(mapTo({ title: '', isPublic: true, isFavorite: 'indeterminate' })),
       this.searchObserver
-    ).pipe(debounceTime(500))
-    .subscribe((search: any) => {
-      search.isPublic = true
-      this.store.dispatch(new fromPresentations.Search({
-        pageIndex: 0,
-        pageSize: 6,
-        search
-      }))
-    })
+    )
+      .pipe(debounceTime(500))
+      .subscribe((search: any) => {
+        search.isPublic = true;
+        this.store.dispatch(
+          new fromPresentations.Search({
+            pageIndex: 0,
+            pageSize: 6,
+            search
+          })
+        );
+      });
 
     const nextPageSubscription = this.nextPage$
-    .pipe(withLatestFrom(this.searchObserver))
-    .subscribe(([pageEvent, search]: [PageEvent, any]) =>
-      this.store.dispatch(new fromPresentations.Search({
-        pageIndex: pageEvent.pageIndex,
-        pageSize: 6, search
-      }))
-    );
+      .pipe(withLatestFrom(this.searchObserver))
+      .subscribe(([pageEvent, search]: [PageEvent, any]) =>
+        this.store.dispatch(
+          new fromPresentations.Search({
+            pageIndex: pageEvent.pageIndex,
+            pageSize: 6,
+            search
+          })
+        )
+      );
     this.subscriptions.add(nextPageSubscription);
 
-    const selectSubscription = this.select$
-    .subscribe(presentationId =>
+    const selectSubscription = this.select$.subscribe(presentationId =>
       this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'view'] }))
     );
     this.subscriptions.add(selectSubscription);
-
   }
 
   emptyMessage(search) {
     if (search.title.length > 0) {
       return '<p>Oops, no result for these key words</p>';
     }
-    return `<p>Sorry, no one publish slides yet! Would you want to be the pioneer ?</p>`
+    return `<p>Sorry, no one publish slides yet! Would you want to be the pioneer ?</p>`;
   }
 
   trackById(presentation) {
-    return presentation.id
+    return presentation.id;
   }
 
   ngOnDestroy() {

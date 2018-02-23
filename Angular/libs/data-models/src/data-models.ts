@@ -1,4 +1,4 @@
-import { NgGridItemConfig } from "angular2-grid";
+import { NgGridItemConfig } from 'angular2-grid';
 
 export interface Authenticate {
   email: string;
@@ -6,8 +6,8 @@ export interface Authenticate {
 }
 
 export interface User {
-  _id?: string
-  id?: string
+  _id?: string;
+  id?: string;
   firstName: string;
   lastName: string;
   username?: string;
@@ -24,28 +24,28 @@ export interface MenuItem {
 }
 
 export interface Box {
-  _id?: string,
-  id?: string,
-  width: Number,
-  height:  Number,
-  top: Number,
-  left: Number,
-  mime: String,
-  content: any,
-  slideId: String
+  _id?: string;
+  id?: string;
+  width: Number;
+  height: Number;
+  top: Number;
+  left: Number;
+  mime: String;
+  content: any;
+  slideId: String;
 }
 
 export interface IPresentation {
-  _id?: string,
-  id?: string,
-  title?: string
-  public?: boolean,
-  favorite?: boolean,
-  description?: string,
-  tags?: string[],
-  author?: User,
-  banner?: any,
-  slideIds?: string[]
+  _id?: string;
+  id?: string;
+  title?: string;
+  public?: boolean;
+  favorite?: boolean;
+  description?: string;
+  tags?: string[];
+  author?: User;
+  banner?: any;
+  slideIds?: string[];
 }
 
 export class Presentation {
@@ -71,7 +71,7 @@ export interface ISlide {
   index?: number;
   presentationId?: string;
   boxIds?: Box[];
-  background?:string;
+  background?: string;
 }
 
 export class Slide implements ISlide {
@@ -81,5 +81,5 @@ export class Slide implements ISlide {
     public index?: number,
     public presentationId?: string,
     public boxIds?: Box[]
-  ) { }
+  ) {}
 }

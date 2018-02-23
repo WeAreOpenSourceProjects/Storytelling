@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators/filter';
 import { User } from '@labdat/data-models';
-import { environment } from '../../../../apps/default/src/environments/environment'
+import { environment } from '../../../../apps/default/src/environments/environment';
 import { map } from 'rxjs/operators/map';
 import { tap } from 'rxjs/operators/tap';
 
@@ -56,15 +56,18 @@ export class PresentationsApiService {
   add(presentation: Presentation): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}`;
     //console.log(presentation)
-    return this.http.post(backendURL, presentation).pipe(map((presentation: Presentation) => {
-      return {...presentation, id: presentation._id}
-    }));
+    return this.http.post(backendURL, presentation).pipe(
+      map((presentation: Presentation) => {
+        return { ...presentation, id: presentation._id };
+      })
+    );
   }
 
   copy(presentationId: number): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}/copy`;
-    return this.http.post(backendURL, { presentationId })
-    .pipe(map((presentation: any) => ({ ...presentation, id: presentation._id })));
+    return this.http
+      .post(backendURL, { presentationId })
+      .pipe(map((presentation: any) => ({ ...presentation, id: presentation._id })));
   }
 
   getAll(pageIndex, pageSize): Observable<any> {
@@ -73,19 +76,21 @@ export class PresentationsApiService {
     params.set('pageIndex', pageIndex);
     params.set('pageSize', pageSize);
     const backendURL = `${this.baseUrl}/${this.endpoints.presentations}`;
-    return this.http
-//      .get(backendURL, { search: params })
-      .get(backendURL)
+    return (
+      this.http
+        //      .get(backendURL, { search: params })
+        .get(backendURL)
+    );
   }
 
   getOne(presentationId): Observable<any> {
     const backendURL = `${this.baseUrl}/${this.endpoints.presentations}/${presentationId}`;
-    return this.http.get(backendURL).pipe(
-      map((presentation: Presentation) => ({...presentation, id: presentation._id}))
-    );
+    return this.http
+      .get(backendURL)
+      .pipe(map((presentation: Presentation) => ({ ...presentation, id: presentation._id })));
   }
 
-  update({id, changes}): Observable<any> {
+  update({ id, changes }): Observable<any> {
     const backendURL = `${this.baseUrl}/${this.endpoints.presentations}/${id}`;
     return this.http.patch(backendURL, changes);
   }
@@ -97,11 +102,11 @@ export class PresentationsApiService {
 
   search(pageIndex, pageSize, search?): Observable<any> {
     const backendURL = `${this.baseUrl}/presentations/search`;
-//    return this.http.get(backendURL, { params: params });
+    //    return this.http.get(backendURL, { params: params });
     const cleanSearch = {
       ...search
-    }
-      console.log(cleanSearch)
+    };
+    console.log(cleanSearch);
     if (cleanSearch.isFavorite === 'indeterminate') {
       delete cleanSearch.isFavorite;
     }
@@ -114,17 +119,24 @@ export class PresentationsApiService {
       delete cleanSearch.title;
     }
 
-    return this.http.get(backendURL, {
-      params: {
-        ...cleanSearch,
-        pageIndex,
-        pageSize
-      }
-    }).pipe(map((result: any) => ({
-      presentations: result.presentations.presentaion.map(presentation => ({ ...presentation, id: presentation._id  })),
-      presentationCount : result.presentations.count,
-      slides: result.slides.map(slide => ({ ...slide, id: slide._id })),
-      boxes: result.boxes.map(box => ({ ...box, id: box._id }))
-    })));
+    return this.http
+      .get(backendURL, {
+        params: {
+          ...cleanSearch,
+          pageIndex,
+          pageSize
+        }
+      })
+      .pipe(
+        map((result: any) => ({
+          presentations: result.presentations.presentaion.map(presentation => ({
+            ...presentation,
+            id: presentation._id
+          })),
+          presentationCount: result.presentations.count,
+          slides: result.slides.map(slide => ({ ...slide, id: slide._id })),
+          boxes: result.boxes.map(box => ({ ...box, id: box._id }))
+        }))
+      );
   }
 }

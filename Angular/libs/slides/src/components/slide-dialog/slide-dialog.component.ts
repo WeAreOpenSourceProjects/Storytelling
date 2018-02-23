@@ -6,12 +6,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './slide-dialog.component.html'
 })
 export class SlideDialogComponent implements OnInit {
-  constructor(
-    private dialogRef: MatDialogRef<SlideDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  constructor(private dialogRef: MatDialogRef<SlideDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   yes() {
     this.dialogRef.close({ delete: true, slideId: this.data.slideId });

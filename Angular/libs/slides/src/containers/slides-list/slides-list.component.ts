@@ -29,7 +29,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromRouter } from '@labdat/router-state';
 import { MatDialog } from '@angular/material/dialog';
-import { SlideDialogComponent } from '../../components/slide-dialog/slide-dialog.component'
+import { SlideDialogComponent } from '../../components/slide-dialog/slide-dialog.component';
 import { zip } from 'rxjs/observable/zip';
 import { of } from 'rxjs/observable/of';
 import { take } from 'rxjs/operators/take';
@@ -45,7 +45,6 @@ import { cloneDeep, xorBy, remove } from 'lodash';
   encapsulation: ViewEncapsulation.None
 })
 export class SlidesListComponent implements OnInit, OnDestroy {
-
   public add$ = new Subject();
   public delete$ = new Subject();
   public select$ = new Subject();
@@ -61,87 +60,79 @@ export class SlidesListComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription;
 
-  constructor(
-    private dragulaService: DragulaService,
-    private dialog: MatDialog,
-    private store: Store<SlidesState>) { }
+  constructor(private dragulaService: DragulaService, private dialog: MatDialog, private store: Store<SlidesState>) {}
 
   ngOnInit() {
-
-    this.subscriptions = this.slides$
-    .subscribe(slides => {
+    this.subscriptions = this.slides$.subscribe(slides => {
       if (this.slides === undefined) {
-        return this.slides = cloneDeep(slides);
+        return (this.slides = cloneDeep(slides));
       }
       if (this.slides.length === slides.length) {
         return slides.forEach(slide => {
-          const index = this.slides.findIndex(s => s.id === slide.id );
+          const index = this.slides.findIndex(s => s.id === slide.id);
           if (index !== undefined) {
             this.slides[index].index = slide.index;
           }
-        })
+        });
       }
       const slide = xorBy(this.slides, slides, 'id')[0];
       if (this.slides.length < slides.length) {
         return this.slides.push(cloneDeep(slide));
       }
       if (this.slides.length > slides.length) {
-        return remove(this.slides, s => s.id === slide.id )
+        return remove(this.slides, s => s.id === slide.id);
       }
     });
 
-    this.dragulaService.drag
-    .subscribe(value => this.drag$.next(value));
+    this.dragulaService.drag.subscribe(value => this.drag$.next(value));
 
-    this.dragulaService.out
-    .subscribe(value => this.out$.next(value));
+    this.dragulaService.out.subscribe(value => this.out$.next(value));
 
-    const dragSubscriptions = this.drag$.pipe(
-      switchMap(drag => zip(
-        of(cloneDeep(this.slides)), this.out$.pipe(take(1))
-        ,(oldSlides, out) => oldSlides),
-    ))
-    .subscribe(oldSlides  => {
-      const oldSlideIds = oldSlides.map(slide => slide.id);
-      const newSlideIds = this.slides.map(slide => slide.id);
-      const toUpdate=[]
-      oldSlideIds.forEach((slideId: string, index: number) => {
-        const oldSlideId = slideId;
-        const newSlideId = newSlideIds[index];
-        if (oldSlideId !== newSlideId) {
-          toUpdate.push({id: newSlideId, changes: { index: index + 1 }});
+    const dragSubscriptions = this.drag$
+      .pipe(switchMap(drag => zip(of(cloneDeep(this.slides)), this.out$.pipe(take(1)), (oldSlides, out) => oldSlides)))
+      .subscribe(oldSlides => {
+        const oldSlideIds = oldSlides.map(slide => slide.id);
+        const newSlideIds = this.slides.map(slide => slide.id);
+        const toUpdate = [];
+        oldSlideIds.forEach((slideId: string, index: number) => {
+          const oldSlideId = slideId;
+          const newSlideId = newSlideIds[index];
+          if (oldSlideId !== newSlideId) {
+            toUpdate.push({ id: newSlideId, changes: { index: index + 1 } });
+          }
+        });
+        if (toUpdate.length !== 0) {
+          this.store.dispatch(new fromSlides.BulkUpdate(toUpdate));
         }
-      })
-      if (toUpdate.length !== 0) {
-        this.store.dispatch(new fromSlides.BulkUpdate(toUpdate));
-      }
-    });
-    this.subscriptions.add(dragSubscriptions)
+      });
+    this.subscriptions.add(dragSubscriptions);
 
-    const addSubscription = this.add$.pipe(
-      withLatestFrom(this.currentPresentationId$)
-    ).subscribe(([click, presentationId]) => {
+    const addSubscription = this.add$
+      .pipe(withLatestFrom(this.currentPresentationId$))
+      .subscribe(([click, presentationId]) => {
         const newSlide = new Slide();
         newSlide.presentationId = presentationId;
-        this.store.dispatch(new fromSlides.Add(newSlide))
-    });
-    this.subscriptions.add(addSubscription)
+        this.store.dispatch(new fromSlides.Add(newSlide));
+      });
+    this.subscriptions.add(addSubscription);
 
-    const deleteSubscription = this.delete$.pipe(
-      switchMap(slideId => this.dialog.open(SlideDialogComponent, { height: '20%', width: '20%', data: { slideId } }).afterClosed())
-    )
-    .subscribe(result => {
-      if (result.delete) {
-        this.store.dispatch(new fromSlides.Delete({ slideId: result.slideId }))
-      }
-    });
-    this.subscriptions.add(deleteSubscription)
+    const deleteSubscription = this.delete$
+      .pipe(
+        switchMap(slideId =>
+          this.dialog.open(SlideDialogComponent, { height: '20%', width: '20%', data: { slideId } }).afterClosed()
+        )
+      )
+      .subscribe(result => {
+        if (result.delete) {
+          this.store.dispatch(new fromSlides.Delete({ slideId: result.slideId }));
+        }
+      });
+    this.subscriptions.add(deleteSubscription);
 
-    const selectSubscription = this.select$
-    .subscribe(slideId => {
-      this.store.dispatch(new fromRouter.Go({ path: ['slides', slideId] }))
+    const selectSubscription = this.select$.subscribe(slideId => {
+      this.store.dispatch(new fromRouter.Go({ path: ['slides', slideId] }));
     });
-    this.subscriptions.add(selectSubscription)
+    this.subscriptions.add(selectSubscription);
   }
 
   ngOnDestroy() {

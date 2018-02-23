@@ -1,4 +1,13 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnChanges,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import * as shape from 'd3-shape';
 import * as d3 from 'd3';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
@@ -33,26 +42,24 @@ export class PieGridChartComponent extends Chart implements OnDestroy {
   constructor() {
     super();
   }
-  ngOnInit(){
+  ngOnInit() {
     this.chartOptions = { ...defaultOptions, ...this.configInput };
-
   }
-  ease(){
-
-  }
-  load(){}
-  ngAfterViewInit(){
+  ease() {}
+  load() {}
+  ngAfterViewInit() {
     let element = this.chartContainer.nativeElement;
 
-     // Set the config
-     setTimeout(()=>{
-       let svg = d3.select(element).select('svg')
-       svg.attr("width","100%")
-       .attr("height","100%")
-       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-       this.init();
-     });
-   }
+    // Set the config
+    setTimeout(() => {
+      let svg = d3.select(element).select('svg');
+      svg
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
+      this.init();
+    });
+  }
 
   /**
    * Process json Data to Ngx-charts format

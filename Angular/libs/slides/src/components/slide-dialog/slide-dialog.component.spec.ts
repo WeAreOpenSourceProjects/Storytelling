@@ -11,8 +11,7 @@ describe('DeleteDialogComponent', () => {
       TestBed.configureTestingModule({
         declarations: [DeleteDialogComponent],
         providers: [{ provide: MatDialogRef }]
-      })
-      .compileComponents();
+      }).compileComponents();
     })
   );
 

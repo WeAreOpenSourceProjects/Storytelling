@@ -8,19 +8,13 @@ import { boxesInitialState } from './+state/boxes.init';
 import { BoxesEffects } from './+state/boxes.effects';
 
 @NgModule({
-  imports: [
-    HttpClientModule,
-    StoreModule.forFeature('boxes', boxesReducer),
-    EffectsModule.forFeature([ BoxesEffects ])
-  ],
+  imports: [HttpClientModule, StoreModule.forFeature('boxes', boxesReducer), EffectsModule.forFeature([BoxesEffects])]
 })
 export class BoxesStateModule {
   public static forRoot(): ModuleWithProviders {
     return {
       ngModule: BoxesStateModule,
-      providers: [
-        BoxesApiService,
-      ]
+      providers: [BoxesApiService]
     };
   }
 }

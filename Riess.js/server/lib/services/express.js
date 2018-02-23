@@ -163,7 +163,16 @@ module.exports.configureSocketIO = function (app) {
   // Return server object
   return server;
 };
-
+/**
+ * Configure view engine
+ */
+module.exports.initViewEngine = function(app) {
+  app.engine('server.view.html', hbs.express4({
+    extname: '.server.view.html'
+  }));
+  app.set('view engine', 'server.view.html');
+  app.set('views', path.resolve('./'));
+};
 /**
  * Initialize the Express application
  */
@@ -176,7 +185,7 @@ module.exports.init = function () {
 
   // Initialize Express middleware
   this.initMiddleware(app);
-
+  this.initViewEngine(app);
   // Initialize Helmet security headers
 //  this.initHelmetHeaders(app);
 

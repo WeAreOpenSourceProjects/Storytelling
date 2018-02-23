@@ -3,22 +3,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { BoxesGridComponent } from '@labdat/boxes/src/containers/boxes-grid/boxes-grid.component';
 import { BoxesModule } from '@labdat/boxes/src/boxes.module';
 import { SlidesGuardService } from '@labdat/slides-routing/src/services/slides.guard.service';
-import { BoxesResolve } from './services/boxes.resolve'
+import { BoxesResolve } from './services/boxes.resolve';
 
-
-const slidesRoutes: Routes = [{
-  path: ':id',
-  component: BoxesGridComponent,
-  // canActivate: [ SlidesGuardService ],
-  data: {
-    roles: ['user', 'admin'],
-    title: 'Slide Detail'
-  },
-  resolve: {
-    boxes: BoxesResolve
+const slidesRoutes: Routes = [
+  {
+    path: ':id',
+    component: BoxesGridComponent,
+    // canActivate: [ SlidesGuardService ],
+    data: {
+      roles: ['user', 'admin'],
+      title: 'Slide Detail'
+    },
+    resolve: {
+      boxes: BoxesResolve
+    }
   }
-}
-/*
+  /*
   {
     path: 'createSlides',
     component: SlidesEditorFormComponent,
@@ -56,11 +56,10 @@ export class SlidesRoutingModule {
   public static forRoot() {
     return {
       ngModule: RootSlidesRoutingModule,
-      providers: [ SlidesGuardService, BoxesResolve ]
-    }
+      providers: [SlidesGuardService, BoxesResolve]
+    };
   }
 }
 
 @NgModule()
-export class RootSlidesRoutingModule { }
-
+export class RootSlidesRoutingModule {}

@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators/filter';
 import { User, Box } from '@labdat/data-models';
-import { environment } from '../../../../apps/default/src/environments/environment'
+import { environment } from '../../../../apps/default/src/environments/environment';
 
 @Injectable()
 export class BoxesApiService {
@@ -28,7 +28,6 @@ export class BoxesApiService {
   addBox(box: Box): Observable<any> {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
     return this.http.post(backendURL, box);
-
   }
   getAll(slideId): Observable<any> {
     const params: URLSearchParams = new URLSearchParams();
@@ -45,10 +44,9 @@ export class BoxesApiService {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/${id}`;
     return this.http.patch(backendURL, boxe);
   }
-  changeGridBackground(background){
+  changeGridBackground(background) {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/background`;
     return this.http.post(backendURL, background);
-
   }
   delete(id): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.boxes}/${id}`;

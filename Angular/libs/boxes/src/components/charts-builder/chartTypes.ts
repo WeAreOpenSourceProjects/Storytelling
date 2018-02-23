@@ -42,7 +42,7 @@ export const chartTypes = [
       { column: 'Card Value', maxSize: 1, dataType: ['string', 'number'] }
     ],
     description: '',
-    dimExemple:  [['country'], ['pop']],
+    dimExemple: [['country'], ['pop']],
     categorie: 'Comparison',
     image: 'assets/img-graph/numberCards.png'
   }),
@@ -58,7 +58,7 @@ export const chartTypes = [
     description:
       'A bar chart or bar graph is a chart or graph that presents grouped data with rectangular bars with heights proportional to the values that they represent.',
     categorie: 'Comparison',
-    dimExemple:  [['country'], ['pop']],
+    dimExemple: [['country'], ['pop']],
     image: 'assets/img-graph/barChart.jpg'
   }),
   createChartType({
@@ -73,7 +73,7 @@ export const chartTypes = [
     description:
       'A pie chart (or a circle chart) is a circular statistical graphic which is divided into slices to illustrate numerical proportion.',
     categorie: 'Comparison',
-    dimExemple:  [['country'], ['pop']],
+    dimExemple: [['country'], ['pop']],
     image: 'assets/img-graph/pieChart.png'
   }),
   // createChartType({
@@ -149,7 +149,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple:  [['country'], ['pop']],
+    dimExemple: [['country'], ['pop']],
     image: 'assets/img-graph/pieGridChart.jpg'
   }),
   createChartType({
@@ -181,7 +181,7 @@ export const chartTypes = [
       'Nested circles allow to represent hierarchies and compare values.' +
       ' This visualization is particularly effective to show the proportion between elements through their areas and their position inside a hierarchical structure. ',
     categorie: 'Hierarchy',
-    dimExemple: [['country','year'], ['pop']],
+    dimExemple: [['country', 'year'], ['pop']],
     image: 'assets/img-graph/ForceDirectedGraph.jpg'
   }),
   createChartType({
@@ -223,7 +223,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple:[['continent'], ['year'], ['pop']],
+    dimExemple: [['continent'], ['year'], ['pop']],
     image: 'assets/img-graph/barverticalStacked.jpg'
   }),
   createChartType({
@@ -237,7 +237,7 @@ export const chartTypes = [
     ],
     description: '',
     categorie: 'Comparison',
-    dimExemple:[['continent'], ['year'], ['pop']],
+    dimExemple: [['continent'], ['year'], ['pop']],
     image: 'assets/img-graph/barVerticalNormalized.jpg'
   }),
   createChartType({
@@ -328,7 +328,7 @@ export const chartTypes = [
       "The different hierarchical levels create visual clusters through the subdivision into rectangles proportionally to each element's value." +
       ' Treemaps are useful to represent the different proportion of nested hierarchical data structures.',
     categorie: 'Hierarchy',
-    dimExemple:  [['country'], ['pop']],
+    dimExemple: [['country'], ['pop']],
     image: 'assets/img-graph/treemap.jpg'
   }),
   // createChartType({

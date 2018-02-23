@@ -13,7 +13,8 @@ import {
   MatToolbarModule,
   MatDialogModule,
   MatCheckboxModule,
-  MatPaginatorModule } from '@angular/material';
+  MatPaginatorModule
+} from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SlidesModule } from '@labdat/slides';
@@ -52,7 +53,7 @@ import {
   AreaChartComponent,
   ChartsModule,
   GraphComponent
-} from '@labdat/charts'
+} from '@labdat/charts';
 import { PieChartModule, GaugeModule, NgxChartsModule } from '@swimlane/ngx-charts';
 
 // SLIDES ROUTES MODULE
@@ -127,13 +128,13 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
     PresentationsListComponent,
     PresentationEditComponent,
     PresentationsSearchComponent,
-    PresentationCardComponent,
+    PresentationCardComponent
   ]
 })
-export class PresentationsModule { }
+export class PresentationsModule {}
 
 @NgModule({
-  imports: [ PresentationsModule, PresentationsRoutingModule, SlidesStateModule ],
+  imports: [PresentationsModule, PresentationsRoutingModule, SlidesStateModule],
   providers: [ChartsService]
 })
 export class RootPresentationsModule {}

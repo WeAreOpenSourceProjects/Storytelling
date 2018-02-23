@@ -6,6 +6,6 @@ export interface PresentationsState extends EntityState<Presentation> {
   loaded: boolean;
   loading: boolean;
   error: string;
-  count: number
+  count: number;
 }
 export const presentationsAdapter: EntityAdapter<Presentation> = createEntityAdapter<Presentation>();

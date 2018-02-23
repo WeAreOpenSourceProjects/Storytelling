@@ -1,4 +1,13 @@
-import { Component, OnInit, OnDestroy, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef, ElementRef , ViewChild} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  OnChanges,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
 import * as shape from 'd3-shape';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Chart } from '../../chart.class';
@@ -37,7 +46,6 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
   chartOptions: any;
   @ViewChild('chart') private chartContainer: ElementRef;
 
-
   data: any[];
   private activated: boolean = false;
   private _setIntervalHandler: any;
@@ -45,43 +53,44 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
   constructor() {
     super();
   }
-  ngOnInit(){
+  ngOnInit() {
     this.chartOptions = { ...defaultOptions, ...this.configInput };
   }
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     let element = this.chartContainer.nativeElement;
-    let svg = d3.select(element).select('svg')
-     // Set the config
-     setTimeout(()=>{
-       svg.attr("width","100%")
-       .attr("height","100%")
-       .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-       this.init()
-       this.activated = true;
-     },500);
-   }
+    let svg = d3.select(element).select('svg');
+    // Set the config
+    setTimeout(() => {
+      svg
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
+      this.init();
+      this.activated = true;
+    }, 500);
+  }
   /**
    * Process json Data to Ngx-charts format
    * @param dataDims :  string[] Selected Dimentions
    * @param rawData : array<Object> Json data
    */
-   public static convertData(dataDims: string[], rawData: any) {
-     const key$ = d => d[dataDims[0]];
-     const value$ = d => d3.sum(d, (s: any) => s[dataDims[1]]);
+  public static convertData(dataDims: string[], rawData: any) {
+    const key$ = d => d[dataDims[0]];
+    const value$ = d => d3.sum(d, (s: any) => s[dataDims[1]]);
 
-     return (<any>nest())
-       .key(key$)
-       .rollup(value$)
-       .entries(rawData)
-       .map(seriesPoints);
+    return (<any>nest())
+      .key(key$)
+      .rollup(value$)
+      .entries(rawData)
+      .map(seriesPoints);
 
-     function seriesPoints(d) {
-       return {
-         name: d.key,
-         value: d.value
-       };
-     }
-   }
+    function seriesPoints(d) {
+      return {
+        name: d.key,
+        value: d.value
+      };
+    }
+  }
 
   setData(graphData, graphConfig) {
     this.chartOptions = { ...this.chartOptions, ...graphConfig };
@@ -94,7 +103,6 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
     else this.data = this.dataInput;
   }
 
-
   select(data) {
     console.log('Item clicked', data);
   }
@@ -104,7 +112,6 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
     clearTimeout(this._setIntervalHandler);
     d3.select('#TreemapChartComponent').remove();
   }

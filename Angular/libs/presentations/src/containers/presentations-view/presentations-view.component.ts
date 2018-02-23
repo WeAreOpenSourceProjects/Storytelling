@@ -15,13 +15,12 @@ import { WindowResizeService } from '../../services/window-resize.service';
 
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 
-import {PresentationsApiService} from '../../../../presentations-state/src/services/presentations.api.service';
+import { PresentationsApiService } from '../../../../presentations-state/src/services/presentations.api.service';
 
-import { PageConfig, HALF_HALF_LAYOUT, FULL_LAYOUT} from './pageConfig';
+import { PageConfig, HALF_HALF_LAYOUT, FULL_LAYOUT } from './pageConfig';
 
 import { slideTransition } from './slide.animation';
 import * as screenfull from 'screenfull';
-
 
 @Component({
   selector: 'app-presentations-view',
@@ -43,7 +42,7 @@ export class PresentationsViewComponent implements OnInit {
   curSlideIndex: number = 0;
   direction: number = 1;
   currentSlide: any;
-  gridConfig : any;
+  gridConfig: any;
   slideNum: number;
   charts: Array<any> = [];
   screenfull: any;
@@ -54,10 +53,11 @@ export class PresentationsViewComponent implements OnInit {
   public init = {
     menubar: false,
     theme: 'inlite',
-    init_instance_callback: (editor) => {
+    init_instance_callback: editor => {
       editor.setMode('readonly');
     },
-    content_style: ".mce-content-body { font-size: 24pt; font-family: Arial,sans-serif; } [contenteditable] { outline: none; }"
+    content_style:
+      '.mce-content-body { font-size: 24pt; font-family: Arial,sans-serif; } [contenteditable] { outline: none; }'
   };
 
   public inline = true;
@@ -151,7 +151,7 @@ export class PresentationsViewComponent implements OnInit {
           nw: true
         }
       },
-      pushDirections: {north: true, east: true, south: true, west: true},
+      pushDirections: { north: true, east: true, south: true, west: true },
       pushResizeItems: false,
       displayGrid: 'none',
       disableWindowResize: false,
@@ -194,7 +194,7 @@ export class PresentationsViewComponent implements OnInit {
     if (nextIndex >= 0 && nextIndex <= this.slideNum) {
       this.curSlideIndex = nextIndex;
       this.currentSlide = this.slides[this.curSlideIndex - 1];
-      console.log('slide current', this.currentSlide )
+      console.log('slide current', this.currentSlide);
 
       this.direction = direction;
     }

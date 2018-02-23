@@ -5,9 +5,9 @@ import { LoadSuccess } from './slides.actions';
 
 describe('slidesReducer', () => {
   it('should work', () => {
-//    const state: Slides = {};
-//    const action: LoadSuccess = { type: 'DATA_LOADED', payload: {} };
-//    const actual = slidesReducer(state, action);
-//    expect(actual).toEqual({});
+    //    const state: Slides = {};
+    //    const action: LoadSuccess = { type: 'DATA_LOADED', payload: {} };
+    //    const actual = slidesReducer(state, action);
+    //    expect(actual).toEqual({});
   });
 });

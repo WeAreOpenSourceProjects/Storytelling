@@ -125,6 +125,25 @@ export class AuthenticationEffectsService {
       })
     )
   );
+  @Effect()
+  resetPassword$ = this.actions$.ofType(fromAuthentication.RESTE_PASSWORD).pipe(
+    map(toPayload),
+    exhaustMap(email =>
+      this.authenticationApiService
+        .ResetPassword({ email : email})
+        .pipe(
+          catchError(error => {
+            this.store.dispatch(new fromAuthentication.ResetPasswordFailure("reset failure"));
+            return empty();
+          })
+        )
+    ),
+    tap((payload: any) => {
+      sessionStorage.setItem('user', JSON.stringify(payload.user));
+      sessionStorage.setItem('tokenExpiresIn', payload.tokenExpiresIn);
+    }),
+    map(payload => new fromAuthentication.RegisterSuccess({ ...payload }))
+  );
 
   constructor(
     private actions$: Actions,

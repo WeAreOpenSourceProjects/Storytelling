@@ -10,20 +10,20 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PresentationsSnackComponent } from './components/presentations-snack/presentations-snack.component';
 
 @NgModule({
-  declarations: [ PresentationsSnackComponent ],
-  entryComponents: [ PresentationsSnackComponent ],
+  declarations: [PresentationsSnackComponent],
+  entryComponents: [PresentationsSnackComponent],
   imports: [
     HttpClientModule,
     MatSnackBarModule,
     StoreModule.forFeature('presentations', presentationsReducer),
-    EffectsModule.forFeature([ PresentationsEffects ])
-  ],
+    EffectsModule.forFeature([PresentationsEffects])
+  ]
 })
 export class PresentationsStateModule {
   public static forRoot(): ModuleWithProviders {
     return {
       ngModule: PresentationsStateModule,
-      providers: [ PresentationsApiService ]
+      providers: [PresentationsApiService]
     };
   }
 }

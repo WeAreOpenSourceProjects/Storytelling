@@ -21,7 +21,7 @@ import { Chart } from '../chart.class';
 export class BarChartComponent extends Chart implements OnInit {
   @ViewChild('chart') private chartContainer: ElementRef;
   private data: Array<any> = [];
-  private margin: any = {top: 20, right: 20, bottom: 20, left: 20};
+  private margin: any = { top: 20, right: 20, bottom: 20, left: 20 };
   private chart: any;
   private width: number;
   private height: number;
@@ -85,11 +85,10 @@ export class BarChartComponent extends Chart implements OnInit {
    * Draw function for D3.js Bar chart
    */
   drawChart() {
-    setTimeout(()=>{
-
+    setTimeout(() => {
       const element = this.chartContainer.nativeElement;
-     this.width = element.offsetWidth - this.margin.left - this.margin.right;
-      this.height = element.offsetHeight - this.margin.top - this.margin.bottom;;
+      this.width = element.offsetWidth - this.margin.left - this.margin.right;
+      this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
 
       const svg = d3
         .select(element)
@@ -97,13 +96,13 @@ export class BarChartComponent extends Chart implements OnInit {
         .attr('id', 'BarChartComponent')
         .attr('width', '100%')
         .attr('height', '100%')
-        .attr('viewBox', "0 0 "+ element.offsetWidth +" "+ element.offsetHeight)
+        .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
 
       // chart plot area
       this.chart = svg
         .append('g')
         .attr('class', 'bars')
-        .attr('transform', `translate(${this.margin.left }, ${this.margin.top})`);
+        .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
       // define X & Y domains
       const xDomain = this.data.map(d => d.index);
@@ -127,7 +126,7 @@ export class BarChartComponent extends Chart implements OnInit {
       this.xAxis = svg
         .append('g')
         .attr('class', 'axis axis-x')
-        .attr('transform', `translate(${this.margin.left}, ${this.height  + this.margin.bottom})`)
+        .attr('transform', `translate(${this.margin.left}, ${this.height + this.margin.bottom})`)
         .call(d3.axisBottom(this.xScale));
       this.yAxis = svg
         .append('g')
@@ -195,7 +194,7 @@ export class BarChartComponent extends Chart implements OnInit {
         // .delay((d, i) => i * 100 + 400)
         .attr('y', d => this.yScale(d.value))
         .attr('height', d => this.height - this.yScale(d.value));
-      },500)
+    }, 500);
   }
 
   load() {

@@ -17,7 +17,9 @@ import {
   selectPresentationsTotal,
   selectPresentationsEntities,
   selectCurrentPresentation,
-  selectShowEmptyMessage, selectPresentationsCount } from '@labdat/presentations-state';
+  selectShowEmptyMessage,
+  selectPresentationsCount
+} from '@labdat/presentations-state';
 import { fromRouter } from '@labdat/router-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
@@ -37,7 +39,6 @@ import { zip } from 'rxjs/operators/zip';
   styleUrls: ['./presentations-list.component.scss']
 })
 export class PresentationsListComponent implements OnInit, OnDestroy {
-
   public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
@@ -59,98 +60,103 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   public message$ = this.selectShowEmptyMessage$.pipe(
     withLatestFrom(this.searchObserver, (showMessage, search) => {
       if (showMessage) {
-        return this.emptyMessage(search)
+        return this.emptyMessage(search);
       }
       return '';
     })
   );
   private subscriptions: Subscription;
 
-  constructor(
-    private store: Store<PresentationsState>,
-    private dialog: MatDialog,
-    private cdr : ChangeDetectorRef,
- ) { }
+  constructor(private store: Store<PresentationsState>, private dialog: MatDialog, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.subscriptions = this.searchObserver
-    .pipe(
-      withLatestFrom(this.user$))
-    .subscribe(([formSearch, user]) => {
+    this.subscriptions = this.searchObserver.pipe(withLatestFrom(this.user$)).subscribe(([formSearch, user]) => {
       const search = {
         ...formSearch,
         email: user.email,
         username: user.username
-      }
-      this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 6, search}))
-
-    })
-    const countPresentationSubscription = this.presentationsCount$.subscribe((count) =>{
+      };
+      this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 6, search }));
+    });
+    const countPresentationSubscription = this.presentationsCount$.subscribe(count => {
       this.count = count;
-    })
+    });
     this.subscriptions.add(countPresentationSubscription);
     this.subscriptions.add(countPresentationSubscription);
     const nextPageSubscription = this.nextPage$
-    .pipe(withLatestFrom(this.searchObserver))
-    .subscribe(([pageEvent, search]: [PageEvent, any]) => {
-      console.log(pageEvent)
-      this.store.dispatch(new fromPresentations.Search({ pageIndex: pageEvent.pageIndex, pageSize: 6, search}))});
+      .pipe(withLatestFrom(this.searchObserver))
+      .subscribe(([pageEvent, search]: [PageEvent, any]) => {
+        console.log(pageEvent);
+        this.store.dispatch(new fromPresentations.Search({ pageIndex: pageEvent.pageIndex, pageSize: 6, search }));
+      });
     this.subscriptions.add(nextPageSubscription);
 
-    const togglePublishSubscription = this.togglePublish$
-    .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { isPublic: !presentation.isPublic }})));
+    const togglePublishSubscription = this.togglePublish$.subscribe((presentation: Presentation) =>
+      this.store.dispatch(
+        new fromPresentations.Update({ id: presentation.id, changes: { isPublic: !presentation.isPublic } })
+      )
+    );
     this.subscriptions.add(togglePublishSubscription);
 
-    const toggleFavoriteSubscription = this.toggleFavorite$
-    .subscribe((presentation: Presentation) => this.store.dispatch(new fromPresentations.Update({id: presentation.id, changes: { isFavorite: !presentation.isFavorite }})));
+    const toggleFavoriteSubscription = this.toggleFavorite$.subscribe((presentation: Presentation) =>
+      this.store.dispatch(
+        new fromPresentations.Update({ id: presentation.id, changes: { isFavorite: !presentation.isFavorite } })
+      )
+    );
     this.subscriptions.add(toggleFavoriteSubscription);
 
-    const copySubscription = this.copy$
-    .subscribe((presentationId: string) => this.store.dispatch(new fromPresentations.Copy(presentationId)));
+    const copySubscription = this.copy$.subscribe((presentationId: string) =>
+      this.store.dispatch(new fromPresentations.Copy(presentationId))
+    );
     this.subscriptions.add(copySubscription);
 
-    const editSubscription = this.edit$
-    .subscribe((presentationId: string) => this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'edit'] })));
+    const editSubscription = this.edit$.subscribe((presentationId: string) =>
+      this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'edit'] }))
+    );
     this.subscriptions.add(editSubscription);
 
-    const addSubscription = this.add$
-    .subscribe((res) => {
-       this.nextPage$.next({
-         pageIndex: (this.count+1) / 6
-       })
+    const addSubscription = this.add$.subscribe(res => {
+      this.nextPage$.next({
+        pageIndex: (this.count + 1) / 6
+      });
       const presentation = new Presentation();
       this.store.dispatch(new fromPresentations.Add(presentation));
     });
     this.subscriptions.add(addSubscription);
 
     const deleteSubscription = this.delete$
-    .pipe(switchMap(presentationId => this.dialog.open(PresentationDialogComponent, { height: '20%', width: '20%', data: { presentationId } }).afterClosed()))
-    .subscribe(result => {
-      if (result.delete) {
-        this.store.dispatch(new fromPresentations.Delete(result.presentationId))
-      }
-    });
+      .pipe(
+        switchMap(presentationId =>
+          this.dialog
+            .open(PresentationDialogComponent, { height: '20%', width: '20%', data: { presentationId } })
+            .afterClosed()
+        )
+      )
+      .subscribe(result => {
+        if (result.delete) {
+          this.store.dispatch(new fromPresentations.Delete(result.presentationId));
+        }
+      });
     this.subscriptions.add(deleteSubscription);
 
-    const selectSubscription = this.select$
-    .subscribe(presentationId => {
-        this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'view'] }))
+    const selectSubscription = this.select$.subscribe(presentationId => {
+      this.store.dispatch(new fromRouter.Go({ path: ['presentations', presentationId, 'view'] }));
     });
-    this.subscriptions.add(selectSubscription)
+    this.subscriptions.add(selectSubscription);
   }
 
   private emptyMessage(search) {
     if (search.title) {
-      return '<p> Oops, no result for these key words <p>'
+      return '<p> Oops, no result for these key words <p>';
     }
     if (search.isPublic) {
-      return '<p>Sorry, no one publish slides yet!<br> Would you want to be the pioneer ?</p>'
+      return '<p>Sorry, no one publish slides yet!<br> Would you want to be the pioneer ?</p>';
     }
     return `<p>Sorry, you don't have any slides yet!</p>`;
   }
 
   public trackById(presentation) {
-    return presentation.id
+    return presentation.id;
   }
 
   ngOnDestroy() {

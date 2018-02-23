@@ -1,7 +1,7 @@
 export { SlidesStateModule } from './src/slides-state.module';
 export { SlidesState } from './src/+state/slides.interfaces';
 import * as fromSlides from './src/+state/slides.actions';
-export { SlidesApiService } from './src/services/slides.api.service'
+export { SlidesApiService } from './src/services/slides.api.service';
 export { fromSlides };
 export {
   selectCurrentPresentationId,
@@ -15,4 +15,4 @@ export {
   selectCurrentSlide,
   selectCurrentSlideIndex,
   selectCurrentSlideBoxes
-} from './src/+state/slides.selectors'
+} from './src/+state/slides.selectors';

@@ -9,7 +9,10 @@ export const boxesInitialState: BoxesState = boxesAdapter.getInitialState({
   loading: false
 });
 
-export function boxesReducer(state: BoxesState = boxesInitialState, action: fromBoxes.Actions | fromAuthentication.Actions): BoxesState {
+export function boxesReducer(
+  state: BoxesState = boxesInitialState,
+  action: fromBoxes.Actions | fromAuthentication.Actions
+): BoxesState {
   switch (action.type) {
     case fromAuthentication.LOGOUT: {
       return boxesInitialState;

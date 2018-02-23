@@ -13,7 +13,7 @@ import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
 import { User } from '@labdat/data-models';
-import { environment } from '../../../../apps/default/src/environments/environment'
+import { environment } from '../../../../apps/default/src/environments/environment';
 
 @Injectable()
 export class SlidesApiService {
@@ -28,8 +28,7 @@ export class SlidesApiService {
 
   getPresentationSlides(presentationId): Observable<any> {
     const backendURL = `${this.baseUrl}/slides/presentation/${presentationId}`;
-    return this.http.get(backendURL)
-    .pipe(map((slides: Slide[]) => slides.map(slide => ({...slide, id: slide._id}))));
+    return this.http.get(backendURL).pipe(map((slides: Slide[]) => slides.map(slide => ({ ...slide, id: slide._id }))));
   }
 
   add(slide: Slide): Observable<any> {
@@ -49,7 +48,7 @@ export class SlidesApiService {
 
   delete(slideId: string): Observable<any> {
     const backendURL = `${this.baseUrl}/slides/${slideId}`;
-    return this.http.delete(backendURL).pipe(map((slide: Slide) => ({...slide, id: slide._id})));
+    return this.http.delete(backendURL).pipe(map((slide: Slide) => ({ ...slide, id: slide._id })));
   }
   getAllBoxes(id): Observable<any> {
     const params: URLSearchParams = new URLSearchParams();

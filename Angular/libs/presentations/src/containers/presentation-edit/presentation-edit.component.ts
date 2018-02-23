@@ -23,17 +23,15 @@ import { fromRouter } from '@labdat/router-state';
   providers: [PresentationsApiService, ValidService]
 })
 export class PresentationEditComponent implements OnInit, AfterViewChecked {
-
   private editorValid: Subscription; //validation of slide editor
   private errorMsg; //error
   private isRequired = false;
   private isInShuffle = false;
 
   private currentPresentation$ = this.store.select(selectCurrentPresentation);
-  public currentPresentationSlideIds$ = this.store.select(selectCurrentPresentationSlideIds)
+  public currentPresentationSlideIds$ = this.store.select(selectCurrentPresentationSlideIds);
 
-  public currentPresentationSettings$ = this.currentPresentation$
-  .pipe(
+  public currentPresentationSettings$ = this.currentPresentation$.pipe(
     filter((presentation: Presentation) => !isEmpty(presentation)),
     map(presentation => ({
       title: presentation.title,
@@ -46,9 +44,9 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
   public settingsObserver$ = new Subject<any>();
 
   private subscriptions: Subscription;
-//  @ViewChild('editor')
-//  _editor: SlidesEditorComponent;
-//  _editor: any;
+  //  @ViewChild('editor')
+  //  _editor: SlidesEditorComponent;
+  //  _editor: any;
 
   constructor(
     private router: Router,
@@ -65,15 +63,11 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.subscriptions = this.update$.pipe(
-      withLatestFrom(
-        this.settingsObserver$,
-        this.currentPresentation$
-      )
-    )
-    .subscribe(([click, settings, presentation]: [Event, any, Presentation]) =>
-      this.store.dispatch(new fromPresentations.Update({ id: presentation.id, changes: settings }))
-    );
+    this.subscriptions = this.update$
+      .pipe(withLatestFrom(this.settingsObserver$, this.currentPresentation$))
+      .subscribe(([click, settings, presentation]: [Event, any, Presentation]) =>
+        this.store.dispatch(new fromPresentations.Update({ id: presentation.id, changes: settings }))
+      );
   }
 
   public cancel() {

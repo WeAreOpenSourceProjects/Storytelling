@@ -5,8 +5,11 @@
         <app-login
           (submitted)="onLogin($event)"
           [pending]="pending$ | async"
-          [errorMessage]="error$ | async">
+          [errorMessage]="error$ | async"
+          (forgetPassword) = "onForgetPassword($event)"
+          >
         </app-login>
+        <app-forget-password *ngIf="forgetPassword" (submitted)="onResetPassword($event)"></app-forget-password>
       </mat-tab>
       <mat-tab label="Register">
         <app-register

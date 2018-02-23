@@ -9,6 +9,9 @@ export const REGISTER_SUCCESS = '[Auth] Register Success';
 export const REGISTER_FAILURE = '[Auth] Register Failure';
 export const LOGOUT = '[Auth] Logout';
 export const LOAD_USER = '[Auth] Load User';
+export const RESTE_PASSWORD = '[Auth] rest password';
+export const RESTE_PASSWORD_SUCCESS = '[Auth] rest password Success'
+export const RESTE_PASSWORD_FAILURE = '[Auth] rest password Failure'
 
 export type Actions =
   | Login
@@ -18,7 +21,10 @@ export type Actions =
   | RegisterSuccess
   | RegisterFailure
   | Logout
-  | LoadUser;
+  | LoadUser
+  | ResetPassword
+  | ResetPasswordSuccess
+  | ResetPasswordFailure;
 
 export class Login implements Action {
   readonly type = LOGIN;
@@ -58,4 +64,17 @@ export class Logout implements Action {
 export class LoadUser implements Action {
   readonly type = LOAD_USER;
   constructor(public payload: { user: User; tokenExpiresIn: number }) {}
+}
+
+export class ResetPassword implements Action {
+  readonly type = RESTE_PASSWORD;
+  constructor(public payload?:any) {}
+}
+export class ResetPasswordSuccess implements Action {
+  readonly type = RESTE_PASSWORD_SUCCESS;
+  constructor(public payload: { message : 'resete password succes'}) {}
+}
+export class ResetPasswordFailure implements Action {
+  readonly type = RESTE_PASSWORD_FAILURE;
+  constructor(public payload?: any) {}
 }

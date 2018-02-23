@@ -5,13 +5,12 @@ import { Directive, Input } from '@angular/core';
   selector: '[disableControl]'
 })
 export class DisableControlDirective {
-
-  @Input() set disableControl( condition : boolean ) {
-    (condition)
-    ? this.ngControl.control.enabled && this.ngControl.control.disable()
-    : this.ngControl.control.disabled && this.ngControl.control.enable();
+  @Input()
+  set disableControl(condition: boolean) {
+    condition
+      ? this.ngControl.control.enabled && this.ngControl.control.disable()
+      : this.ngControl.control.disabled && this.ngControl.control.enable();
   }
 
-  constructor( private ngControl : NgControl ) { }
-
+  constructor(private ngControl: NgControl) {}
 }

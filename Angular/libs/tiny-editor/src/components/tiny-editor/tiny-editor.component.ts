@@ -1,12 +1,21 @@
-
-import { Component, Input, Inject, HostListener, Output, EventEmitter, ElementRef, ViewChild, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Inject,
+  HostListener,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ViewChild,
+  OnInit
+} from '@angular/core';
 import { environment } from '../../../../../apps/default/src/environments/environment';
 
 declare let global: any;
-const getGlobal = (): any => typeof window !== 'undefined' ? window : global;
+const getGlobal = (): any => (typeof window !== 'undefined' ? window : global);
 const getTinymce = () => {
-   const global = getGlobal();
-   return global && global.tinymce ? global.tinymce : null;
+  const global = getGlobal();
+  return global && global.tinymce ? global.tinymce : null;
 };
 
 @Component({
@@ -15,15 +24,11 @@ const getTinymce = () => {
   styleUrls: ['./tiny-editor.component.scss']
 })
 export class TinyEditorComponent {
+  @ViewChild('editor') public editorComponent: ElementRef;
 
-  @ViewChild('editor')
-  public editorComponent: ElementRef;
+  @Input() public initialValue = '';
 
-  @Input()
-  public initialValue = '';
-
-  @Output()
-  public textToSave = new EventEmitter();
+  @Output() public textToSave = new EventEmitter();
 
   public activeEditor: any;
 
@@ -32,32 +37,33 @@ export class TinyEditorComponent {
     menubar: false,
     theme: 'inlite',
     insert_toolbar: 'blockquote | numlist bullist | alignleft aligncenter alignright alignjustify',
-    selection_toolbar: 'quicklink | bold italic fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify',
-    init_instance_callback: (editor) => {
+    selection_toolbar:
+      'quicklink | bold italic fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify',
+    init_instance_callback: editor => {
       editor.focus();
-      editor.on('blur', (e) => {
+      editor.on('blur', e => {
         editor.setMode('readonly');
         this.textToSave.emit(editor.getContent());
       });
     },
-    content_style: ".mce-content-body { font-size: 24pt; font-family: Arial,sans-serif; } [contenteditable] { outline: none; }"
+    content_style:
+      '.mce-content-body { font-size: 24pt; font-family: Arial,sans-serif; } [contenteditable] { outline: none; }'
   };
 
   public inline = true;
 
-  @Input()
-  public plugins = ['link', 'textcolor', 'colorpicker', 'lists', 'advlist'];
+  @Input() public plugins = ['link', 'textcolor', 'colorpicker', 'lists', 'advlist'];
 
   public setEditMode(value) {
-    if(value){
+    if (value) {
       console.log('value', value);
       this.activeEditor.setMode('design');
+    }
   }
-}
 
   ngAfterViewInit() {
-    (this.editorComponent as any).registerOnChange(function () { });
-    (this.editorComponent as any).registerOnTouched(function() { });
+    (this.editorComponent as any).registerOnChange(function() {});
+    (this.editorComponent as any).registerOnTouched(function() {});
     this.activeEditor = getTinymce().activeEditor;
   }
 }

@@ -65,22 +65,20 @@ export class GaugeChartComponent extends Chart implements OnInit {
     this.chartOptions = { ...this.configInput };
   }
 
-  ngAfterViewInit(){
-      setTimeout(()=>{
-        let element = this.chartContainer.nativeElement;
-        let svg = d3.select(element).select('svg')
-        svg
-          .attr("viewBox","0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-        this.init();
-    })
-   }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      let element = this.chartContainer.nativeElement;
+      let svg = d3.select(element).select('svg');
+      svg.attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
+      this.init();
+    });
+  }
 
   init() {
     if (this.configInput != null)
       this.data = GaugeChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else this.data = this.dataInput;
   }
-
 
   public static convertData(dataDims: string[], rawData: any) {
     const key$ = d => d[dataDims[0]];

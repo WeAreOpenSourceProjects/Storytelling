@@ -20,11 +20,15 @@ export class AuthenticationApiService {
       `${this.baseUrl}/auth/signin`,
       { usernameOrEmail: email, password },
       { withCredentials: true }
-    )
+    );
   }
 
   register(registration: any) {
     return this.http.post(`${this.baseUrl}/auth/signup`, registration);
     //      .do(token => this.setAuthorizationHeader(token));
+  }
+  ResetPassword(email: any) {
+    const backendURL = `${this.baseUrl}/auth/forgot` ;
+    return this.http.post(backendURL, email).map((response: Response) => response.json());
   }
 }

@@ -1,5 +1,14 @@
-
-import { Component, Input, Inject, HostListener, Output, EventEmitter, ElementRef, ViewChild, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Inject,
+  HostListener,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ViewChild,
+  OnInit
+} from '@angular/core';
 import { environment } from '../../../../../apps/default/src/environments/environment';
 
 @Component({
@@ -8,23 +17,19 @@ import { environment } from '../../../../../apps/default/src/environments/enviro
   styleUrls: ['./text-editor.component.scss']
 })
 export class TextEditorComponent implements OnInit {
-
   @HostListener('dblclick', ['$event'])
   onDblClick(event) {
     this.froalaEditor('events.trigger', 'froalaEditor.focus');
-//    this.froalaEditor('edit.on');
+    //    this.froalaEditor('edit.on');
   }
 
   private froalaEditor;
 
-  @Input()
-  public editorContent : any;
+  @Input() public editorContent: any;
 
-  @Input()
-  public id : any;
+  @Input() public id: any;
 
-  @Output()
-  public textTosave: EventEmitter<string> = new EventEmitter();
+  @Output() public textTosave: EventEmitter<string> = new EventEmitter();
 
   private editorOptions: Object;
 
@@ -39,14 +44,14 @@ export class TextEditorComponent implements OnInit {
         'froalaEditor.blur': (e, editor) => {
           this.textTosave.emit(this.editorContent);
           //this.froalaEditor('edit.off');
-        }      
+        }
       },
       toolbarInline: true,
-      initOnClick : true,
+      initOnClick: true,
       charCounterCount: false,
       toolbarButtons: [
         'undo',
-        'redo' ,
+        'redo',
         'bold',
         'italic',
         'underline',
@@ -69,6 +74,6 @@ export class TextEditorComponent implements OnInit {
   setControls(controls) {
     this.froalaEditor = controls.getEditor();
     controls.initialize();
-//    this.froalaEditor('edit.off');
+    //    this.froalaEditor('edit.off');
   }
 }

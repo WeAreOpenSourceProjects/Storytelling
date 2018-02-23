@@ -13,7 +13,7 @@ describe('ImageUploadComponent', () => {
     async(() => {
       TestBed.configureTestingModule({
         declarations: [ImageUploadComponent],
-        imports: [FormsModule, HttpModule],
+        imports: [FormsModule, HttpModule]
         // providers: [{ provide: SlidesService, useValue: slidesServiceStub } /*, NotifBarService*/]
       }).compileComponents();
     })

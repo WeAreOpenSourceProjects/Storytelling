@@ -4,7 +4,12 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/take';
-import { AuthenticationState, selectIsLoggedIn, selectTokenExpiresIn, fromAuthentication } from '@labdat/authentication-state';
+import {
+  AuthenticationState,
+  selectIsLoggedIn,
+  selectTokenExpiresIn,
+  fromAuthentication
+} from '@labdat/authentication-state';
 import { fromRouter } from '@labdat/router-state';
 
 @Injectable()
@@ -32,7 +37,7 @@ export class AuthenticationGuardService implements CanActivate, CanLoad {
           }
           return true;
         } else {
-          console.log('???????', tokenExpiresIn, Date.now())
+          console.log('???????', tokenExpiresIn, Date.now());
           if (tokenExpiresIn) {
             if (tokenExpiresIn < Date.now()) {
               if (path === 'auth') {

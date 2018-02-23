@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import * as shape from 'd3-shape';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Chart } from '../../chart.class';
@@ -48,21 +56,23 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   constructor() {
     super();
   }
-  ngOnInit(){
+  ngOnInit() {
     this.chartOptions = { ...defaultOptions, ...this.configInput };
   }
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     let element = this.chartContainer.nativeElement;
-     // Set the config
-     setTimeout(()=>{
-       this.init();
-       d3.select(element).select('svg')
-         .attr("width","80%")
-         .attr("height","100%")
-         .attr("viewBox", "0 0 "+ (element.offsetWidth) + " " + element.offsetHeight);
-         this.activated =true;
-     },500)
-   }
+    // Set the config
+    setTimeout(() => {
+      this.init();
+      d3
+        .select(element)
+        .select('svg')
+        .attr('width', '80%')
+        .attr('height', '100%')
+        .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
+      this.activated = true;
+    }, 500);
+  }
   /**
    * Process json Data to Ngx-charts format
    * @param dataDims :  string[] Selected Dimentions
@@ -103,8 +113,7 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   }
 
   init() {
-    if (this.configInput != null)
-      this.data = NgGraphComponent.convertData(this.chartOptions.dataDims, this.dataInput);
+    if (this.configInput != null) this.data = NgGraphComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else this.data = this.dataInput;
   }
 

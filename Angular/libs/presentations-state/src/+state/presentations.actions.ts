@@ -21,34 +21,33 @@ export const DELETE_SUCCESS = '[Presentations] Delete Success';
 export const DELETE_FAILURE = '[Presentations] Delete Failure';
 
 export type Actions =
-| Search
-| SearchSuccess
-| SearchFailure
-| GetOne
-| GetOneSuccess
-| GetOneFailure
-| Add
-| AddSuccess
-| AddFailure
-| Copy
-| CopySuccess
-| CopyFailure
-| Update
-| UpdateSuccess
-| UpdateFailure
-| Delete
-| DeleteSuccess
-| DeleteFailure
-;
+  | Search
+  | SearchSuccess
+  | SearchFailure
+  | GetOne
+  | GetOneSuccess
+  | GetOneFailure
+  | Add
+  | AddSuccess
+  | AddFailure
+  | Copy
+  | CopySuccess
+  | CopyFailure
+  | Update
+  | UpdateSuccess
+  | UpdateFailure
+  | Delete
+  | DeleteSuccess
+  | DeleteFailure;
 
 export class Search implements Action {
   readonly type = SEARCH;
-  constructor(public payload: { pageIndex: number, pageSize: number, search?: any}) {}
+  constructor(public payload: { pageIndex: number; pageSize: number; search?: any }) {}
 }
 
 export class SearchSuccess implements Action {
   readonly type = SEARCH_SUCCESS;
-  constructor(public payload: { presentations: Presentation[], presentationCount : any}) { }
+  constructor(public payload: { presentations: Presentation[]; presentationCount: any }) {}
 }
 
 export class SearchFailure implements Action {
@@ -63,7 +62,7 @@ export class GetOne implements Action {
 
 export class GetOneSuccess implements Action {
   readonly type = GET_ONE_SUCCESS;
-  constructor(public payload: { presentation: Presentation }) { }
+  constructor(public payload: { presentation: Presentation }) {}
 }
 
 export class GetOneFailure implements Action {
@@ -88,12 +87,12 @@ export class AddFailure implements Action {
 
 export class Update implements Action {
   readonly type = UPDATE;
-  constructor(public payload: { id: string, changes: any }) {}
+  constructor(public payload: { id: string; changes: any }) {}
 }
 
 export class UpdateSuccess implements Action {
   readonly type = UPDATE_SUCCESS;
-  constructor(public payload: { id: string, changes: any }) {}
+  constructor(public payload: { id: string; changes: any }) {}
 }
 
 export class UpdateFailure implements Action {
@@ -108,11 +107,13 @@ export class Delete implements Action {
 
 export class DeleteSuccess implements Action {
   readonly type = DELETE_SUCCESS;
-  constructor(public payload: {
-    presentationId: string,
-    slideIds: string[],
-    boxIds: string[]
-  }) { }
+  constructor(
+    public payload: {
+      presentationId: string;
+      slideIds: string[];
+      boxIds: string[];
+    }
+  ) {}
 }
 
 export class DeleteFailure implements Action {

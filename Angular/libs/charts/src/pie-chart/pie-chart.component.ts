@@ -33,22 +33,20 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('ng changes')
+    console.log('ng changes');
   }
 
-  ngOnDestroy(){
-    console.log('clear')
+  ngOnDestroy() {
+    console.log('clear');
     d3.select('PieChartComponent').remove();
   }
   init() {
     if (this.configInput != null) {
       this.data = PieChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
-      console.log('this.configInput',this.data);
-    }
-    else {
+      console.log('this.configInput', this.data);
+    } else {
       this.data = this.dataInput;
-      console.log('this.dataInput',this.data);
-
+      console.log('this.dataInput', this.data);
     }
     this.drawChart();
   }
@@ -57,9 +55,8 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
    * Draw function for D3.js Bar chart
    */
   drawChart() {
-
     console.log('draw');
-    setTimeout(()=>{
+    setTimeout(() => {
       if (this.data === undefined) return;
       let element = this.chartContainer.nativeElement;
       this.width = element.offsetWidth;
@@ -71,7 +68,7 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
         .attr('id', 'PieChartComponent')
         .attr('width', '100%')
         .attr('height', '100%')
-        .attr('viewBox', "0 0 "+ element.offsetWidth +" "+ element.offsetHeight)
+        .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight)
         .append('g')
         .attr('transform', `translate(${element.offsetWidth / 2},${element.offsetHeight / 2})`);
 
@@ -150,7 +147,7 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
         const a = (d.startAngle + d.endAngle) * 90 / Math.PI - 90;
         return a > 90 ? a - 180 : a;
       }
-    }, 500)
+    }, 500);
   }
 
   /**

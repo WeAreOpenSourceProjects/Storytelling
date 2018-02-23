@@ -18,6 +18,7 @@ var smtpTransport = nodemailer.createTransport(config.mailer.options);
  * Forgot for reset password (forgot POST)
  */
 exports.forgot = function (req, res, next) {
+  console.log(req.body.email);
   async.waterfall([
     // Generate random token
     function (done) {
@@ -28,10 +29,11 @@ exports.forgot = function (req, res, next) {
     },
     // Lookup user by username
     function (token, done) {
-      if (req.body.username) {
+      if (req.body.email) {
         User.findOne({
-          username: req.body.username.toLowerCase()
+          email: req.body.email.email
         }, '-salt -password', function (err, user) {
+          console.log(user)
           if (err || !user) {
             return res.status(400).send({
               message: 'No account with that username has been found'
@@ -41,6 +43,7 @@ exports.forgot = function (req, res, next) {
               message: 'It seems like you signed up using your ' + user.provider + ' account'
             });
           } else {
+
             user.resetPasswordToken = token;
             user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
@@ -62,8 +65,8 @@ exports.forgot = function (req, res, next) {
         httpTransport = 'https://';
       }
       var baseUrl = req.app.get('domain') || httpTransport + req.headers.host;
-      res.render(path.resolve('modules/users/server/templates/reset-password-email'), {
-        name: user.displayName,
+      res.render('modules/user/server/templates/reset-password-email', {
+        name: user.username,
         appName: config.app.title,
         url: baseUrl + '/api/auth/reset/' + token
       }, function (err, emailHTML) {

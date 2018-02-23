@@ -15,19 +15,18 @@ export const DELETE_SUCCESS = '[Boxes] Delete Success';
 export const DELETE_FAILURE = '[Boxes] Delete Failure';
 
 export type Actions =
-| Load
-| LoadSuccess
-| LoadFailure
-| Add
-| AddSuccess
-| AddFailure
-| Update
-| UpdateSuccess
-| UpdateFailure
-| Delete
-| DeleteSuccess
-| DeleteFailure
-;
+  | Load
+  | LoadSuccess
+  | LoadFailure
+  | Add
+  | AddSuccess
+  | AddFailure
+  | Update
+  | UpdateSuccess
+  | UpdateFailure
+  | Delete
+  | DeleteSuccess
+  | DeleteFailure;
 
 export class Load implements Action {
   readonly type = LOAD;
@@ -35,7 +34,7 @@ export class Load implements Action {
 
 export class LoadSuccess implements Action {
   readonly type = LOAD_SUCCESS;
-  constructor(public payload: { boxes: Box[]}) {}
+  constructor(public payload: { boxes: Box[] }) {}
 }
 
 export class LoadFailure implements Action {
@@ -60,12 +59,12 @@ export class AddFailure implements Action {
 
 export class Update implements Action {
   readonly type = UPDATE;
-  constructor(public payload: { boxe: { id: number, changes: any }}) {}
+  constructor(public payload: { boxe: { id: number; changes: any } }) {}
 }
 
 export class UpdateSuccess implements Action {
   readonly type = UPDATE_SUCCESS;
-  constructor(public payload: { boxe: { id: number, changes: any }}) {}
+  constructor(public payload: { boxe: { id: number; changes: any } }) {}
 }
 
 export class UpdateFailure implements Action {

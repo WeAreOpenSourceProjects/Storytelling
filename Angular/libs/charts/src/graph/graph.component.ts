@@ -28,9 +28,7 @@ export class GraphComponent implements OnInit, AfterContentInit, OnChanges {
   @ViewChild('parent', { read: ViewContainerRef })
   parent: ViewContainerRef;
   componentRef: ComponentRef<any>;
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver,
-   private chartsService: ChartsService
-   ) {}
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private chartsService: ChartsService) {}
 
   ngOnInit() {}
 
@@ -62,7 +60,5 @@ export class GraphComponent implements OnInit, AfterContentInit, OnChanges {
     this.componentRef.instance.dataInput = this.chart.data; // set the input inputData of the abstract class Chart
     this.componentRef.instance.configInput = this.chart.chartOptions;
   }
-  public setEditMode(){
-    
-  }
+  public setEditMode() {}
 }

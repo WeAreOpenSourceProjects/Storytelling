@@ -1,5 +1,14 @@
-import { Component, OnInit, ViewChild, Input,ViewContainerRef,  Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  ViewContainerRef,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef
+} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import * as shape from 'd3-shape';
 import * as babyparse from 'babyparse';
@@ -7,7 +16,7 @@ import * as _ from 'lodash';
 import { MatDialogRef } from '@angular/material/dialog';
 import { chartTypes } from './chartTypes';
 import { gapminder } from './data';
-import { GraphComponent } from '@labdat/charts'
+import { GraphComponent } from '@labdat/charts';
 const defaultOptions = {
   view: null,
   colorScheme: colorSets.find(s => s.name === 'cool'),
@@ -41,8 +50,8 @@ export class ChartsBuilderComponent implements OnInit {
   @Input() inputOptions: any;
   @Output() validSlide = new EventEmitter();
   @Output() validForm = new EventEmitter();
-  @ViewChild('viz', { read: ViewContainerRef }) viz: ViewContainerRef;
-
+  @ViewChild('viz', { read: ViewContainerRef })
+  viz: ViewContainerRef;
 
   chartTypes = chartTypes;
 
@@ -53,9 +62,9 @@ export class ChartsBuilderComponent implements OnInit {
   };
   constructor(public dialogRef: MatDialogRef<ChartsBuilderComponent>, private changeDetector: ChangeDetectorRef) {}
 
-  useOurSamples =false;
+  useOurSamples = false;
   formatTable: boolean = false;
-  sampleUsed= '';
+  sampleUsed = '';
   data: any[];
   rawData: any[];
   headerValues: any[];
@@ -66,14 +75,14 @@ export class ChartsBuilderComponent implements OnInit {
   dataDims: string[][];
   chartOptions: any;
   firstFormGroup: FormGroup;
-  width : number;
-  height:  number;
+  width: number;
+  height: number;
 
   @Output() configGraph = new EventEmitter();
   warnMsg: string; //to tell the user which part isn't validated
   _dataText: string;
   get dataText() {
-    return this._dataText || ' ' ;
+    return this._dataText || ' ';
   }
 
   set dataText(value) {
@@ -146,7 +155,7 @@ export class ChartsBuilderComponent implements OnInit {
     } else {
       this.dataDims[dimIndex].push('err' + ' ' + $event.dragData);
     }
-    console.log('dragDatadim', this.dataDims)
+    console.log('dragDatadim', this.dataDims);
   }
 
   removeItem(dimIndex: number, item: string) {
@@ -163,8 +172,8 @@ export class ChartsBuilderComponent implements OnInit {
       this.clearAll();
     }
   }
-  ngOnChanges(){
-    console.log('change')
+  ngOnChanges() {
+    console.log('change');
   }
   editData(updatedData) {
     this._dataText = babyparse.unparse(updatedData);
@@ -180,8 +189,8 @@ export class ChartsBuilderComponent implements OnInit {
       console.log(this.headerValues);
       this.dataDims = this.inputOptions.dataDims;
       this.rawData = this.inputData;
-      this.errors = []
-      this.chartOptions = this.inputOptions ;
+      this.errors = [];
+      this.chartOptions = this.inputOptions;
       this._dataText = babyparse.unparse(this.inputData);
       this.chartType = this.chartTypes.find(chart => chart.name === this.inputOptions.chartType.name);
 
@@ -189,21 +198,21 @@ export class ChartsBuilderComponent implements OnInit {
     }
   }
 
-  trySamples(){
+  trySamples() {
     this.clear();
     this.dataText = gapminder;
-    }
+  }
 
   usePast() {
     this.clearAll();
-    this.useOurSamples =false;
-    this.dataText=' ';
-    this.formatTable= false;
+    this.useOurSamples = false;
+    this.dataText = ' ';
+    this.formatTable = false;
   }
 
   useExampleDimension() {
     this.dataDims = this.chartType.dimExemple;
-    console.log("use Exemple",this.dataDims)
+    console.log('use Exemple', this.dataDims);
     this.processData();
   }
   clear() {
@@ -249,17 +258,17 @@ export class ChartsBuilderComponent implements OnInit {
     return this.data;
   }
 
-  formTable(){
+  formTable() {
     this.headerValuesForTable = this.headerValues.map(key => ({
       data: key.data,
       title: key.title,
-      type: (key.type === 'string')?'text':'numeric'
+      type: key.type === 'string' ? 'text' : 'numeric'
     }));
-    this.formatTable =true;
+    this.formatTable = true;
   }
 
-  ngAfterViewChecked(){
-       this.changeDetector.detectChanges();
+  ngAfterViewChecked() {
+    this.changeDetector.detectChanges();
   }
 
   updateData(value = this._dataText) {

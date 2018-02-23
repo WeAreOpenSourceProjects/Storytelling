@@ -2,6 +2,7 @@ import { Authenticate } from './../../models/user.model';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent {
   @Input() public errorMessage: string | null;
 
   @Output() public submitted = new EventEmitter<Authenticate>();
-
+  @Output() public forgetPassword =  new EventEmitter<string>();
   public hide = true;
   public form = this.formBuilder.group({
     email: this.formBuilder.control('', [Validators.required, Validators.email]),
@@ -36,5 +37,9 @@ export class LoginComponent {
 
   onSubmit() {
     this.submitted.emit(this.form.value);
+  }
+
+  forgotPassword(){
+    this.forgetPassword.emit('forget-password');
   }
 }
