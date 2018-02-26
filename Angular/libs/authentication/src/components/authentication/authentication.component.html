@@ -9,7 +9,7 @@
           (forgetPassword) = "onForgetPassword($event)"
           >
         </app-login>
-        <app-forget-password *ngIf="forgetPassword" (submitted)="onResetPassword($event)"></app-forget-password>
+        <app-forget-password (submitted)="onResetPassword($event)"></app-forget-password>
       </mat-tab>
       <mat-tab label="Register">
         <app-register

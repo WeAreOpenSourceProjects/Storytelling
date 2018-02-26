@@ -8,11 +8,8 @@
     <mat-icon [svgIcon]="visibility" matSuffix (click)="hide = !hide"></mat-icon>
     <mat-error *ngIf="form.controls['password'].invalid">You must enter a value</mat-error>
   </mat-form-field>
-  <br>
-    <a  (click)="forgotPassword()">Forgot your password?</a>
-  <button type="submit" [disabled]="!form.valid" mat-raised-button>Login</button>
-  <br>
-  <p *ngIf="errorMessage" class="loginError">
-    {{ errorMessage }}
-  </p>
+  <div *ngIf="errorMessage" class="loginError">{{ errorMessage }}</div>
+  <div class="center-align" >
+    <button *ngIf="!message"  mat-raised-button type="submit" class="mat-primary" [disabled]="!form.valid">Login</button>
+  </div>
 </form>

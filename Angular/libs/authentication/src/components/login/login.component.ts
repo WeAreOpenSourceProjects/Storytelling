@@ -38,8 +38,4 @@ export class LoginComponent {
   onSubmit() {
     this.submitted.emit(this.form.value);
   }
-
-  forgotPassword(){
-    this.forgetPassword.emit('forget-password');
-  }
 }

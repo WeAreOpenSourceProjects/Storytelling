@@ -1,8 +1,13 @@
 :host {
   display: block;
   padding: 25px;
+  padding-bottom: 0px;
 }
 
 mat-form-field {
   width: auto;
+}
+
+.center-align {
+  text-align: center;
 }
