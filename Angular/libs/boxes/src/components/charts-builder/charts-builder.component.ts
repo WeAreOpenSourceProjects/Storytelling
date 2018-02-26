@@ -172,9 +172,11 @@ export class ChartsBuilderComponent implements OnInit {
       this.clearAll();
     }
   }
+
   ngOnChanges() {
     console.log('change');
   }
+
   editData(updatedData) {
     this._dataText = babyparse.unparse(updatedData);
     this.rawData = updatedData;

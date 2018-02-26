@@ -46,6 +46,7 @@ import { take } from 'rxjs/operators/take';
 import { of } from 'rxjs/observable/of';
 import { tap } from 'rxjs/operators/tap';
 import { Subscription } from 'rxjs/Subscription';
+import { delay } from 'rxjs/operators/delay';
 
 @Component({
   selector: 'app-boxes-grid',
@@ -309,6 +310,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           this.slide.boxIds.slice(-1)[0].content = { type: 'chart' };
           return zip(this.grapheditor.changes, of(item));
         }),
+        delay(0),
         map(() => {
           return this.dialog.open(ChartsBuilderComponent, { height: '95%', width: '90%' });
         }),
@@ -352,9 +354,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
 
     const backgroundBoxSubscription = backgroungType$
       .pipe(
-        map(() => {
-          return this.dialog.open(BoxesBackgroundComponent, { height: '50%', width: '50%' });
-        }),
+        map(() => this.dialog.open(BoxesBackgroundComponent, { height: '50%', width: '50%' })),
         switchMap((dialog: MatDialogRef<BoxesBackgroundComponent>) => dialog.afterClosed())
       )
       .subscribe(background => {
