@@ -26,6 +26,7 @@ export class PresentationsEffects {
   @Effect()
   search$ = this.dataPersistence.fetch(fromPresentations.SEARCH, {
     run: (action: fromPresentations.Search, state: PresentationsState) => {
+      console.log(action.payload);
       const { pageIndex, pageSize, search } = action.payload;
       return this.presentationsApiService.search(pageIndex, pageSize, search).pipe(
         map(result => {

@@ -9,6 +9,7 @@ import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms'
 export class ForgetPasswordComponent implements OnInit {
    message : string;
    error : string;
+   show : boolean;
    @Output() public submitted = new EventEmitter<string>();
 
    public form = this.formBuilder.group({
@@ -19,5 +20,6 @@ export class ForgetPasswordComponent implements OnInit {
    }
    askForPasswordReset(email) {
      this.submitted.emit(this.form.value);
+     
    }
 }

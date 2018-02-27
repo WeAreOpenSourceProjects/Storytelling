@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreGuardService } from './services/core.guard.service';
 import { AuthenticationGuardService } from '@labdat/authentication';
-import { AuthenticationComponent } from '@labdat/authentication';
-
+import { AuthenticationComponent, ResetPasswordComponent } from '@labdat/authentication';
 const coreRoutes: Routes = [
   {
     path: '',
@@ -23,6 +22,10 @@ const coreRoutes: Routes = [
         path: 'auth',
         component: AuthenticationComponent,
         canActivate: [AuthenticationGuardService]
+      },
+      {
+        path: 'auth/:token',
+        component: ResetPasswordComponent
       },
       {
         path: 'presentations',

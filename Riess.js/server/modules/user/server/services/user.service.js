@@ -98,6 +98,26 @@ class UserService {
     return Promise.resolve(user)
   }
 
+  static async changePassword (userObj, password) {
+
+    // Set provider to local
+    userObj.provider = 'local'
+
+    // When password is provided we need to make sure that it is
+    // confirming to secure password policies
+    const validPassword = UserValidationService.validatePassword(userObj)
+    if (validPassword !== true && validPassword.errors && validPassword.errors.length) {
+      const errors = validPassword.errors.join(' ')
+      throw new Error(errors)
+    }
+
+    // When password is provided we need to make sure we are hashing it
+    if (password) {
+      userObj.password = await this.hashPassword(password)
+    }
+    return Promise.resolve(userObj)
+  }
+
   static async comparePassword (userPassword, storedPassword) {
     return bcrypt.compare(String(userPassword), String(storedPassword))
   }

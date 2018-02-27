@@ -27,8 +27,12 @@ export class AuthenticationApiService {
     return this.http.post(`${this.baseUrl}/auth/signup`, registration);
     //      .do(token => this.setAuthorizationHeader(token));
   }
-  ResetPassword(email: any) {
+  forgetPassword(email: any) {
     const backendURL = `${this.baseUrl}/auth/forgot` ;
-    return this.http.post(backendURL, email).map((response: Response) => response.json());
+    return this.http.post(backendURL, email);
+  }
+  resetPassword(auth) {
+    const backendURL = `${this.baseUrl}/auth/reset/${auth.token}` ;
+    return this.http.post(backendURL, auth.password);
   }
 }

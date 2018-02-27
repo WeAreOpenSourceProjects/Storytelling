@@ -71,11 +71,13 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions = this.searchObserver.pipe(withLatestFrom(this.user$)).subscribe(([formSearch, user]) => {
+      console.log("???",user);
       const search = {
         ...formSearch,
         email: user.email,
         username: user.username
       };
+      console.log("???",search);
       this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 6, search }));
     });
     const countPresentationSubscription = this.presentationsCount$.subscribe(count => {

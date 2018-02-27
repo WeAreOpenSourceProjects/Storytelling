@@ -421,7 +421,7 @@ describe('User CRUD tests', function () {
       should.not.exist(err);
       agent.post('/api/auth/forgot')
         .send({
-          username: user.username
+          email: user.email
         })
         .expect(400)
         .end(function (err, res) {
@@ -430,11 +430,11 @@ describe('User CRUD tests', function () {
             return done(err);
           }
 
-          User.findOne({ username: user.username.toLowerCase() }, function(err, userRes) {
+          User.findOne({ email: user.email.toLowerCase() }, function(err, userRes) {
             userRes.resetPasswordToken.should.not.be.empty();
             should.exist(userRes.resetPasswordExpires);
 
-            agent.get('/api/auth/reset/' + userRes.resetPasswordToken)
+            agent.get('/api/auth/' + userRes.resetPasswordToken)
             .expect(302)
             .end(function (err, res) {
               // Handle error
@@ -442,7 +442,7 @@ describe('User CRUD tests', function () {
                 return done(err);
               }
 
-              res.headers.location.should.be.equal('/password/reset/' + userRes.resetPasswordToken);
+              res.headers.location.should.be.equal('/auth/' + userRes.resetPasswordToken);
 
               return done();
             });
@@ -458,7 +458,7 @@ describe('User CRUD tests', function () {
       should.not.exist(err);
       agent.post('/api/auth/forgot')
         .send({
-          username: user.username
+          email: user.email
         })
         .expect(400)
         .end(function (err, res) {
@@ -468,7 +468,7 @@ describe('User CRUD tests', function () {
           }
 
           var invalidToken = 'someTOKEN1234567890';
-          agent.get('/api/auth/reset/' + invalidToken)
+          agent.get('/api/auth/' + invalidToken)
           .expect(302)
           .end(function (err, res) {
             // Handle error
@@ -476,7 +476,7 @@ describe('User CRUD tests', function () {
               return done(err);
             }
 
-            res.headers.location.should.be.equal('/password/reset/invalid');
+            res.headers.location.should.be.equal('/auth/invalid');
 
             return done();
           });

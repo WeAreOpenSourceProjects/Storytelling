@@ -19,6 +19,7 @@ export class AuthenticationComponent {
   public pending$ = this.store.select(selectLoginPagePending);
   public error$ = this.store.select(selectLoginPageError);
   private forgetPassword : Boolean = false;
+  show :true;
   constructor(private store: Store<AuthenticationState>) {}
 
   onLogin(authenticate: Authenticate) {
@@ -32,7 +33,6 @@ export class AuthenticationComponent {
     this.forgetPassword = true;
   }
   onResetPassword(email){
-    console.log(email);
-    this.store.dispatch(new fromAuthentication.ResetPassword(email));
+    this.store.dispatch(new fromAuthentication.ForgetPassword(email));
   }
 }

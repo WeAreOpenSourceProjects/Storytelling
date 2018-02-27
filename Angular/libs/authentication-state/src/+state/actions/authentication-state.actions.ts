@@ -9,9 +9,12 @@ export const REGISTER_SUCCESS = '[Auth] Register Success';
 export const REGISTER_FAILURE = '[Auth] Register Failure';
 export const LOGOUT = '[Auth] Logout';
 export const LOAD_USER = '[Auth] Load User';
-export const RESTE_PASSWORD = '[Auth] rest password';
-export const RESTE_PASSWORD_SUCCESS = '[Auth] rest password Success'
-export const RESTE_PASSWORD_FAILURE = '[Auth] rest password Failure'
+export const FORGET_PASSWORD = '[Auth] forget password';
+export const FORGET_PASSWORD_SUCCESS = '[Auth] forget password Success'
+export const FORGET_PASSWORD_FAILURE = '[Auth] forget password Failure'
+export const RESET_PASSWORD = '[Auth] reset password';
+export const RESET_PASSWORD_SUCCESS = '[Auth] reset password Success'
+export const RESET_PASSWORD_FAILURE = '[Auth] reset password Failure'
 
 export type Actions =
   | Login
@@ -22,6 +25,9 @@ export type Actions =
   | RegisterFailure
   | Logout
   | LoadUser
+  | ForgetPassword
+  | ForgetPasswordSuccess
+  | ForgetPasswordFailure
   | ResetPassword
   | ResetPasswordSuccess
   | ResetPasswordFailure;
@@ -66,15 +72,27 @@ export class LoadUser implements Action {
   constructor(public payload: { user: User; tokenExpiresIn: number }) {}
 }
 
+export class ForgetPassword implements Action {
+  readonly type = FORGET_PASSWORD;
+  constructor(public payload?:any) {}
+}
+export class ForgetPasswordSuccess implements Action {
+  readonly type = FORGET_PASSWORD_SUCCESS;
+  constructor(public payload?:any) {}
+}
+export class ForgetPasswordFailure implements Action {
+  readonly type = FORGET_PASSWORD_FAILURE;
+  constructor(public payload?: any) {}
+}
 export class ResetPassword implements Action {
-  readonly type = RESTE_PASSWORD;
+  readonly type = RESET_PASSWORD;
   constructor(public payload?:any) {}
 }
 export class ResetPasswordSuccess implements Action {
-  readonly type = RESTE_PASSWORD_SUCCESS;
-  constructor(public payload: { message : 'resete password succes'}) {}
+  readonly type = RESET_PASSWORD_SUCCESS;
+  constructor(public payload: { user: User; tokenExpiresIn: number }) {}
 }
 export class ResetPasswordFailure implements Action {
-  readonly type = RESTE_PASSWORD_FAILURE;
+  readonly type = RESET_PASSWORD_FAILURE;
   constructor(public payload?: any) {}
 }

@@ -4,7 +4,6 @@
   </div>
 
   <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
-    <ng-container  >
       <app-slides-card
         *ngFor="let presentation of presentations$ | async; trackBy:trackById"
         fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"
@@ -19,7 +18,6 @@
         [user]="user$ | async"
         [editable]="true">
       </app-slides-card>
-    </ng-container>
   </div>
   <div class="error" [innerHTML]="message$ | async"></div>
   <mat-paginator
