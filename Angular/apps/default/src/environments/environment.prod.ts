@@ -1,22 +1,20 @@
 export const environment = {
   production: true,
   backend: {
-    protocol: 'http',
-    host: 'localhost',
-    port: 4002,
+    protocol: process.env.PROTOCOL || 'http',
+    host: process.env.HOST || 'localhost',
+    port: process.env.PORT || 4002,
     endpoints: {
-      basePath: 'api',
-      signup: '/api/auth/signup',
-      signin: '/api/auth/signin',
-      articles: '/api/articles',
-      users: '/api/users',
-      slides: '/api/slides',
-      slide: 'slide',
-      slidesFix: '/api/slidesFix',
-      images: '/api/images',
-      imagesServer: '/api/imagesServer',
-      search: '/api/search/slides',
-      banner: '/api/banner'
+      basePath: process.env.ENDPOINTS_BASE_PATH || 'api',
+      signup: process.env.ENDPOINTS_SIGNUP || 'auth/signup',
+      signin: process.env.ENDPOINTS_SIGNIN || 'auth/signin',
+      boxes: process.env.ENDPOINTS_BOXES || 'boxes',
+      presentations: process.env.ENDPOINTS_PRESENTATIONS || 'presentations',
+      users: process.env.ENDPOINTS_USERS || 'users',
+      slides: process.env.ENDPOINTS_SLIDES || 'slides',
+      images: process.env.ENDPOINTS_IMAGES || 'images',
+      search: process.env.ENDPOINTS_SEARCH || 'search/slides',
+      banner: process.env.ENDPOINTS_BANNER || 'banner'
     }
   }
 };

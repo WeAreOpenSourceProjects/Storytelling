@@ -47,9 +47,6 @@ import { HotTableModule } from 'angular-handsontable';
 
 import '../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js';
 // import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
-import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
-
-import { TextEditorComponent } from './components/text-editor/text-editor.component';
 
 import '../../../node_modules/tinymce/tinymce.js';
 import { TinyEditorComponent } from '@labdat/tiny-editor';
@@ -89,8 +86,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
     FlexLayoutModule,
     DndModule.forRoot(),
     HotTableModule,
-    FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot(),
     MatTooltipModule,
     MatCardModule,
     MatSelectModule,
@@ -111,7 +106,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
   ],
   declarations: [
     BoxesGridComponent,
-    TextEditorComponent,
     MenuBarComponent,
     BoxDialogComponent,
     ChartsBuilderComponent,
@@ -140,7 +134,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
     AreaChartComponent,
     MenuBarComponent,
     ChartsBuilderComponent,
-    TextEditorComponent,
     BoxDialogComponent,
     TinyEditorComponent,
     ImageUploadComponent,

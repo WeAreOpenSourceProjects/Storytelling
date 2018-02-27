@@ -47,7 +47,7 @@ export class TreemapChartComponent extends Chart implements OnInit, OnDestroy {
   @ViewChild('chart') private chartContainer: ElementRef;
 
   data: any[];
-  private activated: boolean = false;
+  public activated: boolean = false;
   private _setIntervalHandler: any;
 
   constructor() {

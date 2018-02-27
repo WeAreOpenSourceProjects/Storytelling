@@ -24,9 +24,9 @@ import { fromRouter } from '@labdat/router-state';
 })
 export class PresentationEditComponent implements OnInit, AfterViewChecked {
   private editorValid: Subscription; //validation of slide editor
-  private errorMsg; //error
+  public errorMsg; //error
   private isRequired = false;
-  private isInShuffle = false;
+  public isInShuffle = false;
 
   private currentPresentation$ = this.store.select(selectCurrentPresentation);
   public currentPresentationSlideIds$ = this.store.select(selectCurrentPresentationSlideIds);

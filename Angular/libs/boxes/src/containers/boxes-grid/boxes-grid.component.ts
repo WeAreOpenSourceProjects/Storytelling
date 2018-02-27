@@ -262,7 +262,8 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           (<MenuBarComponent>componentRef.instance).left = event.clientX - 50;
           return componentRef.instance;
         }),
-        switchMap((componentRef: MenuBarComponent) => componentRef.isOpen$)
+        switchMap((componentRef: MenuBarComponent) => componentRef.isOpen$),
+        tap(() => this.menubar.clear())
       )
       .share();
 
@@ -306,28 +307,36 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
             minItemRows: 15,
             minItemCols: 15
           };
+          /*
           this.slide.boxIds.push(item);
           this.slide.boxIds.slice(-1)[0].content = { type: 'chart' };
-          return zip(this.grapheditor.changes, of(item));
+          */
+          return of(item);
         }),
         delay(0),
-        map(() => {
-          return this.dialog.open(ChartsBuilderComponent, { height: '95%', width: '90%' });
+        map(() => this.dialog.open(ChartsBuilderComponent, { height: '95%', width: '90%' })),
+        switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed()),
+        filter((chart: any) => !!chart),
+        switchMap(chart => {
+          this.slide.boxIds.push({
+            cols: 15,
+            rows: 15,
+            minItemRows: 15,
+            minItemCols: 15
+          });
+          this.slide.boxIds.slice(-1)[0].content = { type: 'chart' };
+          return zip(of(chart), this.grapheditor.changes)
         }),
-        switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed())
-      )
-      .subscribe((chart: any) => {
-        if (chart) {
+        tap(([chart, x]: [any, any]) => {
           const componentGraphFactory = this.componentFactoryResolver.resolveComponentFactory(GraphComponent);
           const componentGraphRef = this.grapheditor.last.createComponent(componentGraphFactory);
           (<GraphComponent>componentGraphRef.instance).chart = chart;
           this.slide.boxIds[this.slide.boxIds.length - 1].content.chart = chart;
           this.dynamicComponent.push(componentGraphRef.instance);
           this.editMode = true;
-        }
-        this.cdr.detectChanges();
-        this.menubar.clear();
-      });
+        })
+      )
+      .subscribe(() => this.cdr.detectChanges());
     this.subscriptions.add(chartBoxSubscription);
 
     const imageBoxSubscription = imageType$
@@ -341,7 +350,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           return zip(this.imageeditor.changes, of(item));
         })
       )
-      .subscribe(([imageeditor, item]: [any, any]) => {
+      .subscribe(([imageeditor, item]) => {
         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(ImageUploadComponent);
         const componentEditorRef = this.imageeditor.last.createComponent(componentEditorFactory);
         (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
@@ -387,6 +396,9 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           }
           this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
           this.cdr.detectChanges();
+          setTimeout(() => this.cdr.detectChanges())
+          setTimeout(() => this.cdr.detectChanges(), 100)
+          setTimeout(() => this.cdr.detectChanges(), 1000)
         }
       });
     this.subscriptions.add(dialogSubscription);
