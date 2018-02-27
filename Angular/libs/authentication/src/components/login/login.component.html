@@ -10,6 +10,6 @@
   </mat-form-field>
   <div *ngIf="errorMessage" class="loginError">{{ errorMessage }}</div>
   <div class="center-align" >
-    <button *ngIf="!message"  mat-raised-button type="submit" class="mat-primary" [disabled]="!form.valid">Login</button>
+    <button mat-raised-button type="submit" class="mat-primary" [disabled]="!form.valid">Login</button>
   </div>
 </form>

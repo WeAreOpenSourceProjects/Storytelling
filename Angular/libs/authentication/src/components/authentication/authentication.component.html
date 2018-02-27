@@ -5,9 +5,7 @@
         <app-login
           (submitted)="onLogin($event)"
           [pending]="pending$ | async"
-          [errorMessage]="error$ | async"
-          (forgetPassword) = "onForgetPassword($event)"
-          >
+          [errorMessage]="error$ | async">
         </app-login>
         <br>
         <app-forget-password (submitted)="onResetPassword($event)"></app-forget-password>

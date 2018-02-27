@@ -1,9 +1,7 @@
 <mat-card-content>
   <app-slides-setting
     [settingsObserver$]="settingsObserver$"
-    [settings]="currentPresentationSettings$ | async"
-    (onSettingChange)="slidesSettingChange($event)"
-    (formValidateChange)="settingValidateChange($event)">
+    [settings]="currentPresentationSettings$ | async">
   </app-slides-setting>
   <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
     <div class="base dark">

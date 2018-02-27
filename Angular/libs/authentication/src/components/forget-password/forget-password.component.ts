@@ -7,8 +7,9 @@ import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms'
   styleUrls: ['./forget-password.component.scss']
 })
 export class ForgetPasswordComponent implements OnInit {
-   message : string;
-   error : string;
+   public message : string;
+   public show: string
+   public error : string;
    @Output() public submitted = new EventEmitter<string>();
 
    public form = this.formBuilder.group({

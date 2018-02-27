@@ -6,17 +6,15 @@ export const environment = {
     port: 4002,
     endpoints: {
       basePath: 'api',
-      signup: '/api/auth/signup',
-      signin: '/api/auth/signin',
-      articles: '/api/articles',
-      users: '/api/users',
-      slides: '/api/slides',
-      slide: 'slide',
-      slidesFix: '/api/slidesFix',
-      images: '/api/images',
-      imagesServer: '/api/imagesServer',
-      search: '/api/search/slides',
-      banner: '/api/banner'
+      signup: 'auth/signup',
+      signin: 'auth/signin',
+      boxes: 'boxes',
+      presentations: 'presentations',
+      users: 'users',
+      slides: 'slides',
+      images: 'images',
+      search: 'search/slides',
+      banner: 'banner'
     }
   }
 };
