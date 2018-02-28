@@ -17,7 +17,7 @@
     "reinstall": "run-p clean cache:clean install",
     "start": "run-p client",
     "client": "npm run storytelling",
-    "prod": "ng build --prod --environment=prod"
+    "prod": "ng build --prod --environment=prod --aot"
   },
   "private": true,
   "dependencies": {

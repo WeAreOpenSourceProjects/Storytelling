@@ -35,10 +35,10 @@ export class PresentationSettingsComponent {
     const settingsForm = this.formBuilder.group({
       title: this.formBuilder.control(settings.title),
       description: this.formBuilder.control(settings.description),
-      banner: this.formBuilder.control(settings.banner)
+      banner: this.formBuilder.control(settings.banner),
+      tags: this.formBuilder.array([])
     });
-    settingsForm.addControl('tags', this.formBuilder.array([]));
-    settings.tags.forEach(tag => (settingsForm.get('tags') as FormArray).push(this.formBuilder.control(tag)));
+    settings.tags.forEach(tag => settingsForm.get('tags')['controls'].push(this.formBuilder.control(tag)));
     return settingsForm;
   }
 
