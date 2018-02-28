@@ -10,7 +10,7 @@
     <div class="tag" formArrayName="tags" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
       <div class="tag-group">
         <mat-chip-list>
-          <mat-chip *ngFor="let tag of settingsForm?.controls?.tags; index as i">
+          <mat-chip *ngFor="let tag of settingsForm?.controls?.tags?.controls; index as i">
             <input [formControlName]="i" style="display: none">{{ tag.value }}
             <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i>
           </mat-chip>

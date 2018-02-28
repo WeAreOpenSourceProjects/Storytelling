@@ -19,7 +19,6 @@ export class AuthenticationComponent {
   public pending$ = this.store.select(selectLoginPagePending);
   public error$ = this.store.select(selectLoginPageError);
   private forgetPassword : Boolean = false;
-  show :true;
   constructor(private store: Store<AuthenticationState>) {}
 
   onLogin(authenticate: Authenticate) {
