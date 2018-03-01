@@ -76,7 +76,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   public options;
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId);
   private presentationId: any;
-  private background: string = 'white';
+  private backgroundImage: any;
   private emptyCellContextMenu$ = new Subject();
   private subscriptions: Subscription;
 
@@ -108,6 +108,9 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     if (!this.slide.boxIds) {
       this.slide.boxIds = [];
     }
+    if(this.slide.background.image)
+      this.backgroundImage = 'url(data:' + this.slide.background.image.contentType +
+      ';base64,' +this.arrayBufferToBase64(this.slide.background.image.data.data) +')';
 
     this.gridConfig = {
       gridType: 'fit',
@@ -307,10 +310,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
             minItemRows: 15,
             minItemCols: 15
           };
-          /*
-          this.slide.boxIds.push(item);
-          this.slide.boxIds.slice(-1)[0].content = { type: 'chart' };
-          */
           return of(item);
         }),
         delay(0),
@@ -363,12 +362,23 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
 
     const backgroundBoxSubscription = backgroungType$
       .pipe(
-        map(() => this.dialog.open(BoxesBackgroundComponent, { height: '50%', width: '50%' })),
+        map(() => this.dialog.open(BoxesBackgroundComponent)),
         switchMap((dialog: MatDialogRef<BoxesBackgroundComponent>) => dialog.afterClosed())
       )
       .subscribe(background => {
-        this.slide.background = background.background;
-        this.cdr.detectChanges();
+        console.log(background);
+        if(background){
+          console.log(background);
+          if(background.imagePreview === 'deleteBackground') {
+            this.backgroundImage ='';
+            this.slide.background.image = null;
+          } else if(background.imagePreview){
+              this.backgroundImage = 'url('+background.imagePreview+')';
+              this.slide.background.image = background.backgroundImage;
+            }
+          this.slide.background.color = background.background
+          this.cdr.detectChanges();
+        }
       });
     this.subscriptions.add(backgroundBoxSubscription);
   }
@@ -396,9 +406,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
           }
           this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
           this.cdr.detectChanges();
-          setTimeout(() => this.cdr.detectChanges())
-          setTimeout(() => this.cdr.detectChanges(), 100)
-          setTimeout(() => this.cdr.detectChanges(), 1000)
         }
       });
     this.subscriptions.add(dialogSubscription);
@@ -407,6 +414,9 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   confirmSlide(slide) {
     for (let i = 0; i < slide.boxIds.length; i++) {
       slide.boxIds[i].slideId = this.id;
+      if(slide.background.image && slide.background.image._id){
+        slide.background.image= slide.background.image._id;
+      }
       if (slide.boxIds[i]._id) {
         this.boxesService.update(slide.boxIds[i], slide.boxIds[i]._id).subscribe();
       } else {
@@ -420,5 +430,16 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     console.log('unsubscribe');
     this.subscriptions.unsubscribe();
+  }
+
+  arrayBufferToBase64(buffer) {
+    var binary = '';
+    /* eslint no-undef: 0 */
+    var bytes = new Uint8Array(buffer);
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
   }
 }

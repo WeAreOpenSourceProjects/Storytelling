@@ -71,7 +71,10 @@ export interface ISlide {
   index?: number;
   presentationId?: string;
   boxIds?: Box[];
-  background?: string;
+  background?: {
+    color : string,
+    image : string
+  };
 }
 
 export class Slide implements ISlide {

@@ -62,7 +62,6 @@ export class ImageUploadComponent {
         method: 'POST',
         file: this.files[0]
       };
-      console.log(this.files[0], event);
     } else {
       event = {
         type: 'uploadAll',
@@ -74,7 +73,6 @@ export class ImageUploadComponent {
 
     if (output.type === 'allAddedToQueue') {
       this.uploadInput.emit(event);
-      console.log(event);
     } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
       this.files.push(output.file);
     } else if (output.type === 'uploading' && typeof output.file !== 'undefined') {
@@ -89,13 +87,13 @@ export class ImageUploadComponent {
     } else if (output.type === 'drop') {
       this.dragOver = false;
     } else if (output.type === 'rejected' && typeof output.file !== 'undefined') {
-      console.log(output.file.name + ' rejected');
     } else if (output.type === 'done') {
       this.previewData =
         'data:' +
         output.file.response.contentType +
         ';base64,' +
-        this.arrayBufferToBase64(output.file.response.data.data);
+      this.arrayBufferToBase64(output.file.response.data.data);
+      this.getImageIdInBase64.emit(this.previewData)
       this.getImageId.emit(output.file.response._id);
       this.idImage = output.file.response._id;
       this.editMode = false;
@@ -104,14 +102,12 @@ export class ImageUploadComponent {
   }
 
   startUpload(): void {
-    console.log('upload', this.files[0]);
     const event: UploadInput = {
       type: 'uploadAll',
       url: this.backendURL,
       method: 'POST',
       file: this.files[0]
     };
-
     this.uploadInput.emit(event);
   }
   arrayBufferToBase64(buffer) {

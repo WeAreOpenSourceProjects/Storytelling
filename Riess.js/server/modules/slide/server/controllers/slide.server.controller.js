@@ -139,20 +139,33 @@ exports.findOneById = function(req, res) {
       message: 'slide is invalid'
     });
   }
+  mongoose.set('debug', true);
   Slide.findById(slideId).populate({
     path: 'boxIds',
     populate : {path : 'content.imageId', model: 'Image'}
-   })
-   .exec()
-   .then(function(slide) {
-     return res.json(slide);
-   })
+  })
+  .populate ({path: 'background.image', model: 'Image'})
+  .exec()
+  .then(function(slide) {
+    return res.json(slide);
+  })
   .catch(function(err) {
     return res.status(404).send({
-      message: 'No slide with that identifier has been found'
+      message: 'No slide with that identifier has been found ' + err
     });
   });
 };
+
+exports.arrayBufferToBase64 = function(buffer) {
+  var binary = '';
+  /* eslint no-undef: 0 */
+  var bytes = new Uint8Array(buffer);
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+}
 
 exports.findOneByPresentationId = function(req, res) {
 
