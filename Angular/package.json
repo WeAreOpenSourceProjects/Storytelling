@@ -4,7 +4,6 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -17,7 +16,9 @@
     "reinstall": "run-p clean cache:clean install",
     "start": "run-p client",
     "client": "npm run storytelling",
-    "prod": "ng build --prod --environment=prod --aot"
+    "set-env": "node set-env.js",
+    "build": "ng build --prod --environment=prod --aot --output-path=../Riess.js/server/public",
+    "build:prod": "run-p set-env build "
   },
   "private": true,
   "dependencies": {
