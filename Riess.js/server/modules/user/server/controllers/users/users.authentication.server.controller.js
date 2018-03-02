@@ -42,9 +42,13 @@ exports.signup = async function (req, res, next) {
  * Signin after passport authentication
  */
 exports.signin = async function (req, res) {
+  console.log('.....')
   const { id, firstName, lastName, email, username } = req.user;
   const payload = { id, firstName, lastName, email, username };
   const token = jwt.sign(payload, configuration.jwt.secret);
+
+  console.log('VVVV', config.host)
+
   return res.status(200)
   .cookie('TOKEN', token, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true, domain: config.host })
     .json({ user: payload, tokenExpiresIn: (new Date(Date.now() + 60 * 60 * 24 * 1000)).getTime() });

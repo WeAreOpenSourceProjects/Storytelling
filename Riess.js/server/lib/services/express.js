@@ -69,7 +69,7 @@ module.exports.initMiddleware = function (app) {
   app.use(cookieParser());
 
   app.use(cors({
-    origin: [`http://${config.port}:4200`, `http://${config.port}:8080`],
+    origin: [`http://${config.host}:4200`, `http://${config.host}:4002`],
     credentials: true,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }))
@@ -109,7 +109,8 @@ module.exports.initHelmetHeaders = function (app) {
 module.exports.initModulesClientRoutes = function (app) {
   // Setting the app router and static folder
   app.use('/', express.static(path.resolve('./public'), { maxAge: 86400000 }));
-  app.get(/^((?!(api)).)*$/, function(req, res){
+  app.get(/^((?!(api)).)*$/, function(req, res) {
+    console.log('??????')
     res.sendFile(path.resolve('./public/index.html'));
   });
 };
