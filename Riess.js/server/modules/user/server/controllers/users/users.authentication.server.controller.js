@@ -31,7 +31,7 @@ exports.signup = async function (req, res, next) {
     const payload = { id: _id, firstName, lastName, email, username }
     const token = jwt.sign(payload, config.jwt.secret)
     return res.status(200)
-      .cookie('TOKEN', token, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true, domain: 'localhost' })
+      .cookie('TOKEN', token, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true, domain: config.host })
       .json({ user: payload, tokenExpiresIn: (new Date(Date.now() + 60 * 60 * 24 * 1000)).getTime() })
   } catch(err) {
     return next(new ApiError(err.message))
@@ -46,7 +46,7 @@ exports.signin = async function (req, res) {
   const payload = { id, firstName, lastName, email, username };
   const token = jwt.sign(payload, configuration.jwt.secret);
   return res.status(200)
-  .cookie('TOKEN', token, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true, domain: 'localhost' })
+  .cookie('TOKEN', token, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true, domain: config.host })
     .json({ user: payload, tokenExpiresIn: (new Date(Date.now() + 60 * 60 * 24 * 1000)).getTime() });
 };
 
