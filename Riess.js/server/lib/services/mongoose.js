@@ -55,7 +55,7 @@ module.exports.connect = function() {
 
     // Requires as of 4.11.0 to opt-in to the new connect implementation
     // see: http://mongoosejs.com/docs/connections.html#use-mongo-client
-    const mongoOptions = { ...config.db.options, useMongoClient: true }
+    const mongoOptions = Object.assign(config.db.options, { useMongoClient: true });
 
     mongoose.connect(config.db.uri, mongoOptions)
       .then(function() {
