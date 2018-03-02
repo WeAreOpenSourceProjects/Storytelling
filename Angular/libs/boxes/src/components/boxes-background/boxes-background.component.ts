@@ -10,4 +10,5 @@ export class BoxesBackgroundComponent {
   public image : string;
   public color: string;
   private opacity : number = 1;
+  public imagePreview;
 }

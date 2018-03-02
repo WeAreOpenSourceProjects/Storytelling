@@ -75,7 +75,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   public options;
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId);
   private presentationId: any;
-  private backgroundImage: any;
+  public backgroundImage: any;
   private emptyCellContextMenu$ = new Subject();
   private subscriptions: Subscription;
 
