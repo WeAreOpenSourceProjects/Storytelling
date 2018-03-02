@@ -13,9 +13,10 @@ var path = require('path'),
   Promise = require('promise');
 
 exports.create = function (req, res) {
-  const slideP = Slide.create(req.body)
+  console.log('req', req.body);
+  const slideP = Slide.create(req.body);
+  console.log('req', slideP);
   const presentationP = Presentation.findOne({ _id: req.body.presentationId });
-
   Promise.all([slideP, presentationP])
   .then(function(result) {
     const slide = result[0];
@@ -61,11 +62,22 @@ exports.bulkUpdate = function(req, res, next) {
 exports.delete = function(req, res) {
   const slideId = req.params.slideId
   Slide.findById(slideId)
-  .populate({path:'boxIds', model:'Box', populate : {path : 'content.imageId', model: 'Image' }}).exec()
+  .populate([{
+      path : 'boxIds',
+      populate : {
+        path : 'content.imageId',
+        model: 'Image'
+      }
+    }, {
+      path : 'background.image',
+      model :'Image'
+    }]).exec()
   .then(function(slide) {
     var boxes = slide.boxIds;
     var boxIds = boxes.map(function(box) { return box._id })
     var images = [].concat.apply([], boxes.map(function(box) { return box.content.imageId || ''} ));
+    if(slide.background.image)
+      var background = slide.background.image._id;
     if(images.length){
       var imageIds = images.map(function(image) { return image._id });
     }
@@ -75,10 +87,12 @@ exports.delete = function(req, res) {
       Promise.resolve({
         presentation : presentation,
         boxIds: boxIds,
-        imageIds : imageIds
+        imageIds : imageIds,
+        background : background
       }),
       Box.remove({ _id: { $in: boxIds } }),
-      Image.remove({ _id: { $in: imageIds } })
+      Image.remove({ _id: { $in: imageIds } }),
+      Image.remove({ _id : background})
     ])
   })
    .then(function(result) {
@@ -142,17 +156,29 @@ exports.findOneById = function(req, res) {
   Slide.findById(slideId).populate({
     path: 'boxIds',
     populate : {path : 'content.imageId', model: 'Image'}
-   })
-   .exec()
-   .then(function(slide) {
-     return res.json(slide);
-   })
+  })
+  .populate ({path: 'background.image', model: 'Image'})
+  .exec()
+  .then(function(slide) {
+    return res.json(slide);
+  })
   .catch(function(err) {
     return res.status(404).send({
-      message: 'No slide with that identifier has been found'
+      message: 'No slide with that identifier has been found ' + err
     });
   });
 };
+
+exports.arrayBufferToBase64 = function(buffer) {
+  var binary = '';
+  /* eslint no-undef: 0 */
+  var bytes = new Uint8Array(buffer);
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+}
 
 exports.findOneByPresentationId = function(req, res) {
 

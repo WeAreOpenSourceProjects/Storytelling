@@ -13,7 +13,8 @@ import {
   MatToolbarModule,
   MatDialogModule,
   MatCheckboxModule,
-  MatStepperModule
+  MatStepperModule,
+  MatTabsModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
@@ -94,6 +95,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     MatChipsModule,
     MatToolbarModule,
     MatInputModule,
+    MatTabsModule,
     HttpModule,
     MatDialogModule,
     RouterModule,

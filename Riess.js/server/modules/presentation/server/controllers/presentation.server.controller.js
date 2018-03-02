@@ -122,34 +122,41 @@ exports.delete = function(req, res) {
   .findOne({ _id: req.params.presentationId, author: user.id })
   .populate({
     path: 'slideIds',
-      populate: {
-        path: 'boxIds',
-        populate : {
-          path : 'content.imageId',
-          model: 'Image'
-        }
+    populate: [{
+      path : 'boxIds',
+      populate : {
+        path : 'content.imageId',
+        model: 'Image'
       }
+    }, {
+      path : 'background.image',
+      model :'Image'
+    }]
   })
   .exec()
   .then(function(presentation) {
     var slides = [].concat.apply([], presentation.slideIds);
     var slideIds = slides.map(function(slide) { return slide._id })
+    var backgroundIds = [].concat.apply([], slides.map(function(slide) { return slide.background.image._id} ));
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     var boxIds = boxes.map(function(box) { return box._id })
     var images = [].concat.apply([], boxes.map(function(box) { return box.content.imageId || ''} ));
     if(images.length>0)
       var imageIds = images.map(function(image) { return image._id })
+
     return Promise.all([
       Promise.resolve({
         presentationId: presentation.id,
         slideIds: slideIds,
         boxIds: boxIds,
-        imageIds : imageIds
+        imageIds : imageIds,
+        backgroundIds : backgroundIds
       }),
       presentation.remove(),
       Slide.remove({ _id: { $in: slideIds } }),
       Box.remove({ _id: { $in: boxIds } }),
       Image.remove({ _id: { $in: imageIds } }),
+      Image.remove({ _id: { $in: backgroundIds } })
     ])
   })
   .then(function(result) {
@@ -170,36 +177,39 @@ exports.findOneById = function(req, res) {
       message: 'presentation is invalid'
     });
   }
-
   Presentation
   .findOne({ _id: presentationId })
   .populate({
     path: 'slideIds',
-    populate: { path: 'boxIds',
-    populate : {
-      path : 'content.imageId',
-      model: 'Image'
-    }
-   }
-  })
-  .populate({
-    path: 'author'
-  })
-  .exec()
-  .then(function(presentation) {
-    if (!presentation) {
-      return res.status(404).send({
-        message: 'No presentation with that identifier has been found'
+      populate: [{
+        path : 'boxIds',
+        populate : {
+          path : 'content.imageId',
+          model: 'Image'
+        }
+      }, {
+        path : 'background.image',
+        model :'Image'
+      }]
+    })
+    .populate({
+      path: 'author'
+    })
+    .exec()
+    .then(function(presentation) {
+      if (!presentation) {
+        return res.status(404).send({
+          message: 'No presentation with that identifier has been found'
+        });
+      }
+      return res.json(presentation);
+    })
+    .catch(function(err) {
+      return res.status(422).send({
+        message: err
       });
-    }
-    return res.json(presentation);
-  })
-  .catch(function(err) {
-    return res.status(422).send({
-      message: err
     });
-  });
-};
+  };
 
 exports.search = function(req, res) {
   var pageIndex = parseInt(req.query.pageIndex ,10);

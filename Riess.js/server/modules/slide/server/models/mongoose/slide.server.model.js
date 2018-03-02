@@ -9,8 +9,18 @@ var SlideSchema = new Schema({
     default: 0
   },
   background : {
-    type: String,
-    default :'#FFFFF'
+    type: Object,
+    image : {
+      type: Schema.Types.ObjectId,
+      ref: 'Image',
+    },
+    color : {
+      type : String
+    },
+    default: {
+      image : null,
+      color : 'rgba(255,255,255,0)'
+    }
   },
   boxIds: [{
     type: Schema.Types.ObjectId,

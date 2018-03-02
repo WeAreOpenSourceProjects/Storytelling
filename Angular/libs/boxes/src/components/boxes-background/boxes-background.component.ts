@@ -7,6 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./boxes-background.component.scss']
 })
 export class BoxesBackgroundComponent {
+  public image : string;
   public color: string;
-  public image: string;
+  private opacity : number = 1;
 }
