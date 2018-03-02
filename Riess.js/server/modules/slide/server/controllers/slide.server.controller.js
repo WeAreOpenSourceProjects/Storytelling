@@ -13,9 +13,10 @@ var path = require('path'),
   Promise = require('promise');
 
 exports.create = function (req, res) {
-  const slideP = Slide.create(req.body)
+  console.log('req', req.body);
+  const slideP = Slide.create(req.body);
+  console.log('req', slideP);
   const presentationP = Presentation.findOne({ _id: req.body.presentationId });
-
   Promise.all([slideP, presentationP])
   .then(function(result) {
     const slide = result[0];
@@ -61,11 +62,22 @@ exports.bulkUpdate = function(req, res, next) {
 exports.delete = function(req, res) {
   const slideId = req.params.slideId
   Slide.findById(slideId)
-  .populate({path:'boxIds', model:'Box', populate : {path : 'content.imageId', model: 'Image' }}).exec()
+  .populate([{
+      path : 'boxIds',
+      populate : {
+        path : 'content.imageId',
+        model: 'Image'
+      }
+    }, {
+      path : 'background.image',
+      model :'Image'
+    }]).exec()
   .then(function(slide) {
     var boxes = slide.boxIds;
     var boxIds = boxes.map(function(box) { return box._id })
     var images = [].concat.apply([], boxes.map(function(box) { return box.content.imageId || ''} ));
+    if(slide.background.image)
+      var background = slide.background.image._id;
     if(images.length){
       var imageIds = images.map(function(image) { return image._id });
     }
@@ -75,10 +87,12 @@ exports.delete = function(req, res) {
       Promise.resolve({
         presentation : presentation,
         boxIds: boxIds,
-        imageIds : imageIds
+        imageIds : imageIds,
+        background : background
       }),
       Box.remove({ _id: { $in: boxIds } }),
-      Image.remove({ _id: { $in: imageIds } })
+      Image.remove({ _id: { $in: imageIds } }),
+      Image.remove({ _id : background})
     ])
   })
    .then(function(result) {
@@ -139,7 +153,6 @@ exports.findOneById = function(req, res) {
       message: 'slide is invalid'
     });
   }
-  mongoose.set('debug', true);
   Slide.findById(slideId).populate({
     path: 'boxIds',
     populate : {path : 'content.imageId', model: 'Image'}

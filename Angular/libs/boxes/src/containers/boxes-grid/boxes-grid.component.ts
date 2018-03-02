@@ -65,7 +65,6 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
   public imageeditor: QueryList<ViewContainerRef>;
   @ViewChildren('grapheditor', { read: ViewContainerRef })
   public grapheditor: QueryList<ViewContainerRef>;
-
   public editMode = false;
   public editors;
   public slide: any;
@@ -108,7 +107,7 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
     if (!this.slide.boxIds) {
       this.slide.boxIds = [];
     }
-    if(this.slide.background.image)
+    if(this.slide.background && this.slide.background.image)
       this.backgroundImage = 'url(data:' + this.slide.background.image.contentType +
       ';base64,' +this.arrayBufferToBase64(this.slide.background.image.data.data) +')';
 
@@ -362,16 +361,14 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
 
     const backgroundBoxSubscription = backgroungType$
       .pipe(
-        map(() => this.dialog.open(BoxesBackgroundComponent)),
+        map(() => this.dialog.open(BoxesBackgroundComponent, {'width' : '50%'})),
         switchMap((dialog: MatDialogRef<BoxesBackgroundComponent>) => dialog.afterClosed())
       )
       .subscribe(background => {
         console.log(background);
         if(background){
-          console.log(background);
           if(background.imagePreview === 'deleteBackground') {
             this.backgroundImage ='';
-            this.slide.background.image = null;
           } else if(background.imagePreview){
               this.backgroundImage = 'url('+background.imagePreview+')';
               this.slide.background.image = background.backgroundImage;
@@ -423,7 +420,11 @@ export class BoxesGridComponent implements OnInit, AfterViewInit {
         this.boxesService.addBox(slide.boxIds[i]).subscribe();
       }
     }
-    this.boxesService.changeGridBackground({ background: slide.background, id: this.id }).subscribe();
+    if(this.backgroundImage != ''){
+      this.boxesService.changeGridBackground({ background: slide.background, id: this.id }).subscribe();
+    } else {
+        this.boxesService.deleteImage(this.slide.background.image._id).subscribe();
+    }
     this.router.navigate(['/', 'presentations', this.slide.presentationId, 'edit']);
   }
 

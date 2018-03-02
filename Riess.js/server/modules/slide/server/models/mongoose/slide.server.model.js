@@ -15,8 +15,11 @@ var SlideSchema = new Schema({
       ref: 'Image',
     },
     color : {
-      type : String ,
-      default : 'rgba(255,255,255,0)'
+      type : String
+    },
+    default: {
+      image : null,
+      color : 'rgba(255,255,255,0)'
     }
   },
   boxIds: [{

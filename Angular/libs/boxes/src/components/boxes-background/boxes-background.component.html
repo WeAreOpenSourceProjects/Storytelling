@@ -7,7 +7,7 @@
         </mat-form-field>
       </form>
     </mat-tab>
-    <mat-tab label="Background image">
+    <mat-tab  label="Background image">
       <form class="image-upload">
         <app-image-upload (getImageId)="image=$event" (getImageIdInBase64)="imagePreview= $event"></app-image-upload>
         <mat-checkbox name="button"  mat-raised-button (click)="imagePreview='deleteBackground'"> Delete the current background</mat-checkbox>

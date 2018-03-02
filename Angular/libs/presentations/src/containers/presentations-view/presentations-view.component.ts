@@ -98,7 +98,6 @@ export class PresentationsViewComponent implements OnInit {
       presentation => {
         this.slideTitle = presentation.title;
         this.slides = presentation.slideIds;
-        console.log(this.slides);
         this.slideNum = this.slides.length;
       },
       error => {}
@@ -194,7 +193,10 @@ export class PresentationsViewComponent implements OnInit {
     if (nextIndex >= 0 && nextIndex <= this.slideNum) {
       this.curSlideIndex = nextIndex;
       this.currentSlide = this.slides[this.curSlideIndex - 1];
-      console.log('slide current', this.currentSlide);
+      if(this.currentSlide && this.currentSlide.background && this.currentSlide.background.image && this.currentSlide.background.image.data){
+        this.currentSlide.background.image = 'url(data:' + this.currentSlide.background.image.contentType +
+        ';base64,' +this.arrayBufferToBase64(this.currentSlide.background.image.data.data) +')';
+      }
 
       this.direction = direction;
     }
@@ -233,5 +235,16 @@ export class PresentationsViewComponent implements OnInit {
 
   check() {
     return true;
+  }
+
+  arrayBufferToBase64(buffer) {
+    var binary = '';
+    /* eslint no-undef: 0 */
+    var bytes = new Uint8Array(buffer);
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
   }
 }
