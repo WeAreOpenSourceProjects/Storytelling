@@ -137,7 +137,7 @@ exports.delete = function(req, res) {
   .then(function(presentation) {
     var slides = [].concat.apply([], presentation.slideIds);
     var slideIds = slides.map(function(slide) { return slide._id })
-    var backgroundIds = [].concat.apply([], slides.map(function(slide) { return slide.background.image._id} ));
+    var backgroundIds = [].concat.apply([], slides.map(function(slide) { if (slide.background.image) return slide.background.image._id; } ));
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     var boxIds = boxes.map(function(box) { return box._id })
     var images = [].concat.apply([], boxes.map(function(box) { return box.content.imageId || ''} ));

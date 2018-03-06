@@ -110,7 +110,6 @@ module.exports.initModulesClientRoutes = function (app) {
   // Setting the app router and static folder
   app.use('/', express.static(path.resolve('./public'), { maxAge: 86400000 }));
   app.get(/^((?!(api)).)*$/, function(req, res) {
-    console.log('??????')
     res.sendFile(path.resolve('./public/index.html'));
   });
 };
