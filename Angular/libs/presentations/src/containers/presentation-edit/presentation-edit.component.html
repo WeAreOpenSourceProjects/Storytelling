@@ -3,7 +3,7 @@
     [settingsObserver$]="settingsObserver$"
     [settings]="currentPresentationSettings$ | async">
   </app-slides-setting>
-  <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+  <div fxLayout="row wrap" fxLayoutAlign="space-around">
     <div class="base dark">
       <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
         <button mat-raised-button type="button" color="primary" [disabled]="isInShuffle" (click)="update$.next()">UPDATE</button>

@@ -3,7 +3,7 @@
     <app-slides-search kind="advanced" [searchObserver]="searchObserver"></app-slides-search>
   </div>
 
-  <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around">
+  <div fxLayout="row wrap" fxLayoutAlign="space-around">
       <app-slides-card
         *ngFor="let presentation of presentations$ | async; trackBy:trackById"
         fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33"

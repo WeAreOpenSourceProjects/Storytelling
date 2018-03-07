@@ -12,7 +12,7 @@
   </div>
 
   <div *ngIf="(hide$ | async)"
-    fxLayout="row" fxLayoutWrap="wrap"
+    fxLayout="row wrap"
     fxLayoutAlign="space-around">
     <div
       *ngFor="let presentation of presentations$ | async; trackBy:trackById"
