@@ -35,6 +35,7 @@ export class GridComponent implements OnInit{
 @Input() editModeEditor$ : Observable<Boolean>;
 @Output () enableEditEvent : EventEmitter<any> = new EventEmitter<any>();
 @Output () removeItemEvent : EventEmitter<any> = new EventEmitter<any>();
+
 public options : GridsterConfig;
 
 @ViewChildren (TinyEditorComponent)
@@ -121,7 +122,8 @@ private dynamicBoxes = []
     //   this.dynamicComponent[i].setEditMode(false);
     // }
   }
-  removeItem ($event, i){
-    this.removeItemEvent.emit({$event, i})
+  removeItem ($event, item){
+    console.log(item);
+    this.removeItemEvent.emit({$event, item})
   }
 }

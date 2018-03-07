@@ -2,7 +2,7 @@
 
     <app-grid [boxes]="slide?.boxIds" [editMode]="true"
     [gridConfig]="gridConfig"
-    (enableEditEvent)="enableEdit($event)" ></app-grid>
+    (enableEditEvent)="enableEdit($event)" (removeItemEvent)="removeItem($event)"></app-grid>
 
     <!-- <gridster [options]="gridConfig" >
       <img *ngIf="slide.boxIds.length === 0 && !backgroundImage " class="background-mouse" src="assets/right-click.png"/>

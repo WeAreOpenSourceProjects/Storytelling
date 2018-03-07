@@ -333,20 +333,20 @@ export class BoxesGridComponent implements OnInit {
 
   static itemResize(item, itemComponent) {}
 
-  removeItem($event, item) {
+  removeItem(event) {
     const dialog = this.dialog.open(BoxDialogComponent);
     const dialogSubscription = dialog
       .afterClosed()
       .pipe(take(1))
       .subscribe(result => {
         if (result.delete) {
-          if (item._id) {
-            this.boxesService.delete(item._id).subscribe();
+          if (event.item._id) {
+            this.boxesService.delete(event.item._id).subscribe();
           }
-          if (item.content.imageId) {
-            this.boxesService.deleteImage(item.content.imageId).subscribe();
+          if (event.item.content.imageId) {
+            this.boxesService.deleteImage(event.item.content.imageId).subscribe();
           }
-          this.slide.boxIds.splice(this.slide.boxIds.indexOf(item), 1);
+          this.slide.boxIds.splice(this.slide.boxIds.indexOf(event.item), 1);
           this.cdr.detectChanges();
         }
       });
