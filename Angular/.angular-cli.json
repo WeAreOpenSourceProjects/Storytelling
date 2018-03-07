@@ -39,12 +39,12 @@
         "./stylesheets/styles.scss",
         "./stylesheets/theme.scss",
         "../../../node_modules/font-awesome/css/font-awesome.css",
-        "../../../node_modules/froala-editor/css/froala_editor.pkgd.min.css",
         "../../../node_modules/codemirror/lib/codemirror.css",
         "../../../node_modules/dragula/dist/dragula.min.css"
       ],
       "scripts": [
-        "../../../node_modules/jquery/dist/jquery.min.js"
+        "../../../node_modules/jquery/dist/jquery.min.js",
+        "../../../node_modules/tinymce/tinymce.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

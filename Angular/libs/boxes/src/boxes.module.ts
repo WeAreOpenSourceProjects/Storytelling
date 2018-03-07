@@ -46,10 +46,9 @@ import { CodemirrorModule } from 'ng4-codemirror/src';
 import { DndModule } from 'ng2-dnd';
 import { HotTableModule } from 'angular-handsontable';
 
-import '../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js';
+// import '../../../node_modules/froala-editor/js/froala_editor.pkgd.min.js';
 // import { SlidesSearchComponent } from './components/slides-list/slides-search/slides-search.component';
 
-import '../../../node_modules/tinymce/tinymce.js';
 import { TinyEditorComponent } from '@labdat/tiny-editor';
 import { ImageUploadComponent } from '@labdat/image-upload';
 
