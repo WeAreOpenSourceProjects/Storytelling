@@ -50,7 +50,7 @@
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
-    "angular-gridster2": "4.3.3",
+    "angular-gridster2": "4.7.1",
     "angular-handsontable": "^1.0.0-beta3",
     "angular2-froala-wysiwyg": "2.6.0",
     "angular2-grid": "2.1.0",

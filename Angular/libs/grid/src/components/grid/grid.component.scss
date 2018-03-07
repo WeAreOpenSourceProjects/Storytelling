@@ -1,0 +1,61 @@
+
+gridster, gridster-item {
+  width: 100%;
+  background: transparent;
+  height: 100%;
+  display: block !important;
+}
+
+gridster-item {
+  position: absolute;
+  overflow-x: initial !important;
+  overflow-y: visible !important;
+  word-wrap: break-word;
+  &:hover{
+    border : solid 1px !important;
+    .controls {
+      display: block;
+    }
+  }
+}
+
+:host {
+    width: 100%;
+    height: 100%;
+}
+
+
+.text {
+  flex-grow: 1 !important;
+  display: block;
+  min-height: 100%;
+  max-width: 100% !important;
+  padding: 10px;
+}
+
+/deep/ .fr-view {
+  font-family: "Times New Roman", Georgia, Serif;
+  font-size: 36px !important;
+}
+
+.gridster-class {
+  height: 100%;
+  width: 100%;
+}
+.controls {
+  display: none;
+  z-index: 10000;
+  mat-icon {
+    position: relative;
+    bottom: 13px;
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+}
+
+.box-header-btns {
+  top: 15px;
+  right: 10px;
+  cursor: pointer;
+  position: absolute;
+}

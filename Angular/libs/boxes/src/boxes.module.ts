@@ -71,7 +71,7 @@ import { CodeEditorComponent } from './components/code-editor';
 import { TinyEditorModule } from '@labdat/tiny-editor';
 import { ImageUploadModule } from '@labdat/image-upload';
 import { ColorPickerModule } from 'ngx-color-picker';
-
+import { GridModule } from '@labdat/grid'
 @NgModule({
   imports: [
     DragulaModule,
@@ -103,7 +103,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ChartsModule,
     TinyEditorModule,
     ImageUploadModule,
-    ColorPickerModule
+    ColorPickerModule,
+    GridModule
   ],
   declarations: [
     BoxesGridComponent,

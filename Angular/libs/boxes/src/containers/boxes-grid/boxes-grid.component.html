@@ -1,6 +1,10 @@
   <ng-template #menubar ></ng-template>
-  <div class="gridster-class" [style.background]="backgroundImage" [style.background-color]="slide.background?.color" >
-    <gridster [options]="gridConfig" >
+
+    <app-grid [boxes]="slide?.boxIds" [editMode]="true"
+    [gridConfig]="gridConfig"
+    (enableEditEvent)="enableEdit($event)" ></app-grid>
+
+    <!-- <gridster [options]="gridConfig" >
       <img *ngIf="slide.boxIds.length === 0 && !backgroundImage " class="background-mouse" src="assets/right-click.png"/>
       <gridster-item [style.background-color]="slide.background?.color" [style.opacity]="slide.background?.opacity"
         *ngFor="let box of slide?.boxIds; let i = index"
@@ -19,6 +23,5 @@
           <ng-container #imageeditor></ng-container>
         </div>
       </gridster-item>
-    </gridster>
-</div>
+    </gridster> -->
 <a class="fixed" mat-fab  type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>

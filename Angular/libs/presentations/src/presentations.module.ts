@@ -31,7 +31,7 @@ import { TitleSlideComponent } from './components/title-slide/title-slide.compon
 import { FroalaViewModule } from 'angular2-froala-wysiwyg';
 import { TinyEditorModule } from '@labdat/tiny-editor';
 import { ImageUploadModule } from '@labdat/image-upload';
-
+import { GridModule } from '@labdat/grid';
 import { GridsterModule } from 'angular-gridster2';
 import {
   BarChartComponent,
@@ -92,7 +92,8 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
     GaugeModule,
     ChartsModule,
     TinyEditorModule,
-    ImageUploadModule
+    ImageUploadModule,
+    GridModule
   ],
   entryComponents: [
     PresentationDialogComponent,

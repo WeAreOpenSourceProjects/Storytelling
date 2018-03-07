@@ -49,7 +49,6 @@ export class PresentationsViewComponent implements OnInit {
   showFullScreen: boolean = false;
   slideload$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   slideease$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-
   public init = {
     menubar: false,
     theme: 'inlite',
@@ -102,6 +101,7 @@ export class PresentationsViewComponent implements OnInit {
       },
       error => {}
     );
+
     window.scrollTo(0, 0); //scroll to top everytime open the slides
     this.gridConfig = {
       gridType: 'fit',

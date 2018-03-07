@@ -3,15 +3,8 @@
   <div [ngStyle]="slideHeight_style" class="slide" *ngIf="curSlideIndex === 0" id="slide-0">
     <app-title-slide [slideTitle]="slideTitle"> </app-title-slide>
   </div>
+ <app-grid [boxes]="currentSlide?.boxIds" [editMode]="false" [gridConfig]="gridConfig"></app-grid>
 
-  <gridster  [style.background]="currentSlide?.background?.image" [style.background-color]="currentSlide?.background?.color" *ngIf="curSlideIndex!==0" [options]="gridConfig">
-   <gridster-item [item]="box" *ngFor="let box of currentSlide?.boxIds; let i = index" [style.background-color]="currentSlide?.background?.color">
-      <app-tiny-editor class="text" *ngIf="box.content?.type ==='text'" [initialValue]="box.content?.text" [init]="init" [plugins]="plugins"></app-tiny-editor>
-      <app-graph [width]="box.width" [height]="box.height" *ngIf="box.content?.type==='chart'" [chart]="box.content?.chart"></app-graph>
-      <app-image-upload *ngIf="box.content?.type==='image'" [presentationMode]="true" [image]="box.content?.imageId" ></app-image-upload>
-
-    </gridster-item>
-  </gridster>
   <!--progress bar-->
   <div class="progress" style="display: block;">
     <span [style.width]="((curSlideIndex  * 100)/slideNum) + '%'"></span>

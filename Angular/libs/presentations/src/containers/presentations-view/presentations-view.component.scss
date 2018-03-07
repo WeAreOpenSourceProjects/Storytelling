@@ -171,39 +171,11 @@ svg {
     }
 }
 
-gridster, gridster-item {
-  width: 100%;
-  background: transparent;
-  height: 100%;
-  display: block;
-}
-
-gridster-item {
-  position: absolute;
-  display: flex !important;
-  overflow-x: initial !important;
-  overflow-y: visible !important;
-  word-wrap: break-word;
-}
-
 :host {
     width: 100%;
     height: 100%;
 }
 
-
-.text {
-  flex-grow: 1 !important;
-  display: block;
-  min-height: 100%;
-  max-width: 100% !important;
-  padding: 10px;
-}
-
-/deep/ .fr-view {
-  font-family: "Times New Roman", Georgia, Serif;
-  font-size: 36px !important;
-}
 
 .container {
   height: calc(100% - 64px);

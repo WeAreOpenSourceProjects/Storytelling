@@ -12,6 +12,7 @@ export class BoxesInitializationService {
   constructor(private store: Store<BoxesState>) {}
 
   public loadBoxes() {
+    console.log('??');
     this.store
       .select(selectIsLoggedIn)
       .pipe(first(), filter(isLoggedIn => isLoggedIn))
