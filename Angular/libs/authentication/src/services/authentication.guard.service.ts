@@ -17,7 +17,8 @@ export class AuthenticationGuardService implements CanActivate, CanLoad {
   constructor(private store: Store<AuthenticationState>) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    const currentUrl = route.url[0].path;
+    console.log(route.url);
+    const currentUrl = route.url[0] ? route.url[0].path : '';
     return this.hasPermission(currentUrl);
   }
 
@@ -37,7 +38,6 @@ export class AuthenticationGuardService implements CanActivate, CanLoad {
           }
           return true;
         } else {
-          console.log('???????', tokenExpiresIn, Date.now());
           if (tokenExpiresIn) {
             if (tokenExpiresIn < Date.now()) {
               if (path === 'auth') {

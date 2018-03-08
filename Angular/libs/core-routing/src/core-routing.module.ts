@@ -29,8 +29,8 @@ const coreRoutes: Routes = [
       },
       {
         path: 'presentations',
-        canActivate: [AuthenticationGuardService],
-        canLoad: [AuthenticationGuardService],
+        // canActivate: [AuthenticationGuardService],
+        // canLoad: [AuthenticationGuardService],
         loadChildren: '../../presentations/src/presentations.module#RootPresentationsModule'
       },
       {
