@@ -56,9 +56,6 @@ public grapheditor;
 @Output()
 public outsideClick = new EventEmitter();
 
-private dynamicComponent = [];
-private dynamicBoxes = []
-
   constructor(
     private dialog: MatDialog,
     private element: ElementRef,
@@ -133,9 +130,6 @@ private dynamicBoxes = []
       this.editors.toArray()[i].setEditMode(false);
     }
 
-    // for (var i in this.dynamicComponent) {
-    //   this.dynamicComponent[i].setEditMode(false);
-    // }
   }
   removeItem ($event, item){
     this.removeItemEvent.emit({$event, item})

@@ -20,7 +20,7 @@ export class MenuBarComponent implements OnInit {
   @Input() left: any;
 
   @Output() public isOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() public addBox: EventEmitter<string> = new EventEmitter<string>();
+  @Output() public addBox: EventEmitter<any> = new EventEmitter<any>();
 
   public isOpen$ = new Subject();
 
@@ -36,6 +36,6 @@ export class MenuBarComponent implements OnInit {
     this.isOpen.emit(false);
   }
   open(type) {
-    this.addBox.emit(type);
+    this.addBox.emit({type, ...this.top , ...this.left});
   }
 }

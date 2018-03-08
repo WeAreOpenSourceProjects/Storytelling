@@ -6,7 +6,6 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 
-// import { Slide } from '../../../../models/slide';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { BoxesApiService } from '../../../../boxes-state/src/services/boxes.api.service';
@@ -38,6 +37,8 @@ export class BoxesGridComponent implements OnInit {
   public editMode = false;
   public slide: any;
   public id: any;
+  public x = 0 ;
+  public y = 0;
   public gridConfig: any;
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId);
   private presentationId: any;
@@ -71,7 +72,7 @@ export class BoxesGridComponent implements OnInit {
     if (!this.slide.boxIds) {
       this.slide.boxIds = [];
     }
-    
+
     this.gridConfig = {
       draggable: {
         enabled: true,
@@ -106,14 +107,16 @@ export class BoxesGridComponent implements OnInit {
     }
   }
 
-  addBox(type){
-    switch (type) {
+  addBox(event){
+    switch (event.type) {
       case 'text' : {
         this.slide.boxIds.push({
+          x : this.x,
+          y : this.y,
           cols :16,
           rows : 3,
           content :{
-            type : type
+            type : event.type
           }
         });
         break;
@@ -124,12 +127,14 @@ export class BoxesGridComponent implements OnInit {
         .subscribe((chart)=>{
           if(chart){
             this.slide.boxIds.push({
+              x : this.x,
+              y : this.y,
               cols: 15,
               rows: 15,
               minItemRows: 15,
               minItemCols: 15,
               content : {
-                type: type,
+                type: event.type,
                 chart : chart
               }
             })
@@ -140,10 +145,12 @@ export class BoxesGridComponent implements OnInit {
       }
       case 'image' :{
         this.slide.boxIds.push({
+            x : this.x,
+            y : this.y,
             cols: 15,
             rows: 15,
             content : {
-              type: type
+              type: event.type
             }
           });
           break;
@@ -174,6 +181,7 @@ export class BoxesGridComponent implements OnInit {
 
 
   emptyCellContextMenu(event) {
+    console.log(event)
     setTimeout(() => {
       this.menu.open = false;
       this.cdr.detectChanges();
@@ -182,6 +190,10 @@ export class BoxesGridComponent implements OnInit {
         this.cdr.detectChanges();
       })
     })
+    console.log(event.item);
+    this.x = event.item.x;
+    this.y = event.item.y;
+
     this.menu.top = event.event.clientY - 50;
     this.menu.left = event.event.clientX - 50;
   }
