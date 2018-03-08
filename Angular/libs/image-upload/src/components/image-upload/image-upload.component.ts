@@ -35,7 +35,7 @@ export class ImageUploadComponent {
   endpoints: any;
   baseUrl: string;
   backendURL: string;
-  editMode: Boolean = true;
+  @Input() editMode: Boolean = true;
   idImage: string;
   constructor() {
     this.options = { concurrency: 1 };

@@ -19,5 +19,5 @@
   <app-graph [chart]="box?.chart"></app-graph>
 </ng-template>
 <ng-template #imageeditor let-box="data" let-i="index">
-  <app-image-upload [presentationMode]="presentationMode" (getImageId)="getImageId($event, i)" [image]="box?.imageId" ></app-image-upload>
+  <app-image-upload [presentationMode]="presentationMode" [editMode]="editMode" (getImageId)="getImageId($event, i)" [image]="box?.imageId" ></app-image-upload>
 </ng-template>
