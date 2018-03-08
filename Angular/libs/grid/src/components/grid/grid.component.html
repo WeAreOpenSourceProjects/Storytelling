@@ -1,7 +1,7 @@
 <gridster [options]="options" >
   <gridster-item
-    *ngFor="let box of boxes; let i = index" [item]="box">
-    <div *ngIf="!editMode" class="controls box-header-btns pull-right">
+    *ngFor="let box of boxes; let i = index" [item]="box" [ngClass]="{ 'edition-mode' : !presentationMode}" >
+    <div *ngIf="!editMode && !presentationMode" class="controls box-header-btns pull-right">
       <a title="Edit" (click)="enableEdit(box, i)"><mat-icon svgIcon="editor:ic_mode_edit_24px"></mat-icon></a>
       <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
     </div>
@@ -11,11 +11,11 @@
 </gridster>
 
 <ng-template #texteditor let-box="data">
-   <app-tiny-editor  [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }" class="text"  [initialValue]="box?.text"></app-tiny-editor>
+   <app-tiny-editor  [presentationMode]="presentationMode" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }" class="text"  [initialValue]="box?.text"></app-tiny-editor>
 </ng-template>
 <ng-template #grapheditor let-box="data">
   <app-graph [chart]="box?.chart"></app-graph>
 </ng-template>
 <ng-template #imageeditor let-box="data">
-  <app-image-upload [presentationMode]="!editMode" [image]="box?.imageId" ></app-image-upload>
+  <app-image-upload [presentationMode]="presentationMode" [image]="box?.imageId" ></app-image-upload>
 </ng-template>

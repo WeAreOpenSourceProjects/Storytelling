@@ -57,8 +57,6 @@ import { GridComponent } from '@labdat/grid';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxesGridComponent implements OnInit {
-  @ViewChild('menubar', { read: ViewContainerRef })
-  public menubar: ViewContainerRef;
   public editMode = false;
   public editors;
   public slide: any;
@@ -70,9 +68,12 @@ export class BoxesGridComponent implements OnInit {
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId);
   private presentationId: any;
   public backgroundImage: any;
-  private emptyCellContextMenu$ = new Subject();
   private subscriptions: Subscription;
-
+  public menu = {
+    open : false,
+    top : 0,
+    left : 0
+  }
   private dynamicComponent = [];
 
   constructor(
@@ -106,7 +107,6 @@ export class BoxesGridComponent implements OnInit {
       ';base64,' +this.arrayBufferToBase64(this.slide.background.image.data.data) +')';
 
     this.gridConfig = {
-      itemResizeCallback: BoxesGridComponent.itemResize,
       draggable: {
         enabled: true,
         ignoreContentClass: 'gridster-item-content',
@@ -129,12 +129,12 @@ export class BoxesGridComponent implements OnInit {
           nw: true
         }
       },
-      displayGrid: 'always'
+      displayGrid: 'always',
+      emptyCellContextMenuCallback : this.emptyCellContextMenu.bind(this)
     };
   }
 
   public enableEdit(event) {
-    console.log(event)
     this.editMode = true;
     if (event.box.content) {
       if (event.box.content.type === 'chart') {
@@ -155,183 +155,20 @@ export class BoxesGridComponent implements OnInit {
     }
   }
 
-  emptyCellContextMenu(event, item) {
-    this.emptyCellContextMenu$.next({ event, item });
-    this.editMode = false;
-    for (var i in this.dynamicComponent) {
-      this.dynamicComponent[i].setEditMode(false);
-    }
+  emptyCellContextMenu(event) {
+    setTimeout(()=>{
+      console.log('false')
+      this.menu.open = false;
+      setTimeout(()=>{
+        console.log('true');
+        this.menu.open = true;
+      },500)
+    },500)
+    console.log(this.menu.open);
+
+    this.menu.top = event.event.clientY - 50;
+    this.menu.left = event.event.clientX - 50;
   }
-
-  // ngAfterViewInit() {
-  //     let j = 0;
-  //     let k = 0;
-  //     let o = 0;
-  //     for (let i = 0; i < this.slide.boxIds.length; i++) {
-  //       if (this.slide.boxIds[i].content.type === 'text') {
-  //         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
-  //         const componentEditorRef = this.texteditor.toArray()[j].createComponent(componentEditorFactory);
-  //         j++;
-  //         componentEditorRef.instance.initialValue = this.slide.boxIds[i].content.text;
-  //         this.dynamicComponent.push(componentEditorRef.instance);
-  //         (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
-  //           this.slide.boxIds[i].content.text = text;
-  //         });
-  //       } else if (this.slide.boxIds[i].content.type === 'image') {
-  //         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(ImageUploadComponent);
-  //         const componentEditorRef = this.imageeditor.toArray()[k].createComponent(componentEditorFactory);
-  //         k++;
-  //         componentEditorRef.instance.image = this.slide.boxIds[i].content.imageId;
-  //         componentEditorRef.instance.editMode = this.editMode;
-  //         this.dynamicComponent.push(componentEditorRef.instance);
-  //         (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
-  //           this.slide.boxIds[i].content.imageId = id;
-  //         });
-  //       } else if (this.slide.boxIds[i].content.type === 'chart') {
-  //         const componentGraphFactory = this.componentFactoryResolver.resolveComponentFactory(GraphComponent);
-  //         const componentGraphRef = this.grapheditor.toArray()[o].createComponent(componentGraphFactory);
-  //         o++;
-  //         componentGraphRef.instance.chart = this.slide.boxIds[i].content.chart;
-  //         this.dynamicComponent.push(componentGraphRef.instance);
-  //       }
-  //     }
-  //
-  //     const addBox$ = this.emptyCellContextMenu$
-  //       .pipe(
-  //         map(({ event, item }) => {
-  //           this.editMode = false;
-  //           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MenuBarComponent);
-  //           if (this.menubar) {
-  //             this.menubar.clear();
-  //           }
-  //           const componentRef = this.menubar.createComponent(componentFactory);
-  //           (<MenuBarComponent>componentRef.instance).top = event.clientY - 50;
-  //           (<MenuBarComponent>componentRef.instance).left = event.clientX - 50;
-  //           return componentRef.instance;
-  //         }),
-  //         switchMap((componentRef: MenuBarComponent) => componentRef.isOpen$),
-  //         tap(() => this.menubar.clear())
-  //       )
-  //       .share();
-  //
-  //     const chartType$ = addBox$.pipe(filter(type => type === 'chart'));
-  //
-  //     const textType$ = addBox$.pipe(filter(type => type === 'text'));
-  //
-  //     const imageType$ = addBox$.pipe(filter(type => type === 'image'));
-  //
-  //     const backgroungType$ = addBox$.pipe(filter(type => type === 'background'));
-  //
-  //     const textBoxSubscription = textType$
-  //       .pipe(
-  //         withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
-  //         switchMap((item: any) => {
-  //           item.item.cols = 16;
-  //           item.item.rows = 3;
-  //           item.item.content = { type: 'text' };
-  //           this.slide.boxIds.push(item.item);
-  //           return zip(this.texteditor.changes, of(item));
-  //         })
-  //       )
-  //       .subscribe(([texteditor, item]: [any, any]) => {
-  //         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(TinyEditorComponent);
-  //         const componentEditorRef = this.texteditor.last.createComponent(componentEditorFactory);
-  //         (<TinyEditorComponent>componentEditorRef.instance).textToSave.subscribe(text => {
-  //           item.item.content.text = text;
-  //         });
-  //         this.dynamicComponent.push(componentEditorRef.instance);
-  //         this.editMode = true;
-  //       });
-  //     this.subscriptions.add(textBoxSubscription);
-  //
-  //     const chartBoxSubscription = chartType$
-  //       .pipe(
-  //         withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
-  //         switchMap((item: any) => {
-  //           item = {
-  //             cols: 15,
-  //             rows: 15,
-  //             minItemRows: 15,
-  //             minItemCols: 15
-  //           };
-  //           return of(item);
-  //         }),
-  //         delay(0),
-  //         map(() => this.dialog.open(ChartsBuilderComponent, { height: '95%', width: '90%' })),
-  //         switchMap((dialog: MatDialogRef<ChartsBuilderComponent>) => dialog.afterClosed()),
-  //         filter((chart: any) => !!chart),
-  //         switchMap(chart => {
-  //           this.slide.boxIds.push({
-  //             cols: 15,
-  //             rows: 15,
-  //             minItemRows: 15,
-  //             minItemCols: 15
-  //           });
-  //           this.slide.boxIds.slice(-1)[0].content = { type: 'chart' };
-  //           return zip(of(chart), this.grapheditor.changes)
-  //         }),
-  //         tap(([chart, x]: [any, any]) => {
-  //           const componentGraphFactory = this.componentFactoryResolver.resolveComponentFactory(GraphComponent);
-  //           const componentGraphRef = this.grapheditor.last.createComponent(componentGraphFactory);
-  //           (<GraphComponent>componentGraphRef.instance).chart = chart;
-  //           this.slide.boxIds[this.slide.boxIds.length - 1].content.chart = chart;
-  //           this.dynamicComponent.push(componentGraphRef.instance);
-  //           this.editMode = true;
-  //         })
-  //       )
-  //       .subscribe(() => this.cdr.detectChanges());
-  //     this.subscriptions.add(chartBoxSubscription);
-  //
-  //     const imageBoxSubscription = imageType$
-  //       .pipe(
-  //         withLatestFrom(this.emptyCellContextMenu$, (type, item) => item),
-  //         switchMap((item: any) => {
-  //           item.item.cols = 15;
-  //           item.item.rows = 15;
-  //           item.item.content = { type: 'image' };
-  //           this.slide.boxIds.push(item.item);
-  //           return zip(this.imageeditor.changes, of(item));
-  //         })
-  //       )
-  //       .subscribe(([imageeditor, item]) => {
-  //         const componentEditorFactory = this.componentFactoryResolver.resolveComponentFactory(ImageUploadComponent);
-  //         const componentEditorRef = this.imageeditor.last.createComponent(componentEditorFactory);
-  //         (<ImageUploadComponent>componentEditorRef.instance).getImageId.subscribe(id => {
-  //           item.item.content.imageId = id;
-  //         });
-  //         this.dynamicComponent.push(componentEditorRef.instance);
-  //         this.editMode = true;
-  //       });
-  //     this.subscriptions.add(imageBoxSubscription);
-  //
-  //     const backgroundBoxSubscription = backgroungType$
-  //       .pipe(
-  //         map(() => this.dialog.open(BoxesBackgroundComponent, {'width' : '50%'})),
-  //         switchMap((dialog: MatDialogRef<BoxesBackgroundComponent>) => dialog.afterClosed())
-  //       )
-  //       .subscribe(background => {
-  //         console.log(background);
-  //         if(background){
-  //           if(background.imagePreview === 'deleteBackground') {
-  //             this.backgroundImage ='';
-  //           } else if(background.imagePreview){
-  //               this.backgroundImage = 'url('+background.imagePreview+')';
-  //               this.slide.background.image = background.backgroundImage;
-  //             }
-  //           this.slide.background.color = background.background
-  //           this.cdr.detectChanges();
-  //         }
-  //       });
-  //     this.subscriptions.add(backgroundBoxSubscription);
-  //   }
-
-  changedOptions() {
-    if (this.gridConfig.api && this.gridConfig.api.optionsChanged) {
-      this.gridConfig.api.optionsChanged();
-    }
-  }
-
-  static itemResize(item, itemComponent) {}
 
   removeItem(event) {
     const dialog = this.dialog.open(BoxDialogComponent);

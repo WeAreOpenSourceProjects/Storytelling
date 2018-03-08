@@ -35,6 +35,7 @@ export class GridComponent implements OnInit{
 @Input() editModeEditor$ : Observable<Boolean>;
 @Output () enableEditEvent : EventEmitter<any> = new EventEmitter<any>();
 @Output () removeItemEvent : EventEmitter<any> = new EventEmitter<any>();
+@Output () emptyCellClickCallbackEvent : EventEmitter<any> = new EventEmitter<any>();
 
 public options : GridsterConfig;
 
@@ -65,6 +66,7 @@ private dynamicBoxes = []
       ...this.gridConfig,
       ...defaultConfig,
       emptyCellClickCallback : this.emptyCellClick.bind(this),
+      emptyCellContextMenuCallback : this.emptyCellContextMenu.bind(this)
 
     }
     this.options = options;
@@ -72,12 +74,11 @@ private dynamicBoxes = []
   }
 
   emptyCellContextMenu(event, item) {
-    // this.emptyCellContextMenu$.next({ event, item });
     this.editMode = false;
-    console.log("???");
-    // for (var i in this.dynamicComponent) {
-    //   this.dynamicComponent[i].setEditMode(false);
-    // }
+    for (var j=0; j<this.editors.toArray().length;j++) {
+        this.editors.toArray()[j].setEditMode(false);
+    }
+    this.emptyCellClickCallbackEvent.emit({event, item})
   }
   changedOptions() {
     if (this.gridConfig.api && this.gridConfig.api.optionsChanged) {

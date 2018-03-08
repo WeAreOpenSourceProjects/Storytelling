@@ -27,7 +27,7 @@ export class TinyEditorComponent {
   @ViewChild('editor') public editorComponent: ElementRef;
 
   @Input() public initialValue = '';
-
+  @Input() presentationMode : Boolean;
   @Output() public textToSave = new EventEmitter();
 
   public activeEditor: any;
@@ -56,14 +56,16 @@ export class TinyEditorComponent {
 
   public setEditMode(value) {
     if (value) {
-      console.log('value', value);
       this.activeEditor.setMode('design');
-    }
+    } else this.activeEditor.setMode('readonly');
   }
 
   ngAfterViewInit() {
     (this.editorComponent as any).registerOnChange(function() {});
     (this.editorComponent as any).registerOnTouched(function() {});
     this.activeEditor = getTinymce().activeEditor;
+    if(this.presentationMode){
+      this.activeEditor.setMode('readonly')
+    }
   }
 }
