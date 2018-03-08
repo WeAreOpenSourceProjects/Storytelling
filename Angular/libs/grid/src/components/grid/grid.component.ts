@@ -33,10 +33,12 @@ export class GridComponent implements OnInit{
 @Input () editMode: Boolean = false;
 @Input() presentationMode : Boolean = false;
 @Input() editModeEditor$ : Observable<Boolean>;
+@Input() background :any;
 @Output () enableEditEvent : EventEmitter<any> = new EventEmitter<any>();
 @Output () removeItemEvent : EventEmitter<any> = new EventEmitter<any>();
 @Output () emptyCellClickCallbackEvent : EventEmitter<any> = new EventEmitter<any>();
-
+@Output () textToSave : EventEmitter<any> = new EventEmitter<any>();
+@Output() saveImage : EventEmitter<any>= new EventEmitter<any>();
 public options : GridsterConfig;
 
 @ViewChildren (TinyEditorComponent)
@@ -73,7 +75,10 @@ private dynamicBoxes = []
 
     }
     this.options = options;
-    console.log(this.options);
+    if(this.background && this.background.image && !this.background.imagePreview){
+      this.background.imagePreview = 'data:' + this.background.image.contentType +
+      ';base64,' +this.arrayBufferToBase64(this.background.image.data.data);
+    }
   }
 
   emptyCellContextMenu(event, item) {
@@ -88,7 +93,10 @@ private dynamicBoxes = []
       this.gridConfig.api.optionsChanged();
     }
   }
+  saveText(text, index){
 
+    this.textToSave.emit({text, index});
+  }
   getTemplate(type){
     switch(type) {
       case 'text': return this.texteditor;
@@ -97,6 +105,9 @@ private dynamicBoxes = []
     }
   }
 
+  getImageId(image, index){
+    this.saveImage.emit({image, index});
+  }
 
   enableEdit (box, i){
     this.editMode = true;
@@ -110,7 +121,6 @@ private dynamicBoxes = []
       for (var j=0; j<this.editors.toArray().length;j++) {
         if(j !== acc)
           this.editors.toArray()[j].setEditMode(false);
-          console.log(this.editors.toArray())
       }
     } else {
       this.enableEditEvent.emit({box, i})
@@ -118,7 +128,6 @@ private dynamicBoxes = []
   }
   emptyCellClick(event, item) {
     this.editMode = false;
-    console.log('????')
     this.outsideClick.emit();
     for (var i=0; i<this.editors.toArray().length;i++) {
       this.editors.toArray()[i].setEditMode(false);
@@ -129,7 +138,17 @@ private dynamicBoxes = []
     // }
   }
   removeItem ($event, item){
-    console.log(item);
     this.removeItemEvent.emit({$event, item})
+  }
+
+  arrayBufferToBase64(buffer) {
+    var binary = '';
+    /* eslint no-undef: 0 */
+    var bytes = new Uint8Array(buffer);
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
   }
 }

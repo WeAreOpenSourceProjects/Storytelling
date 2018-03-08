@@ -10,11 +10,11 @@
     <mat-tab  label="Background image">
       <form class="image-upload">
         <app-image-upload (getImageId)="image=$event" (getImageIdInBase64)="imagePreview= $event"></app-image-upload>
-        <mat-checkbox name="button"  mat-raised-button (click)="imagePreview='deleteBackground'"> Delete the current background</mat-checkbox>
+        <mat-checkbox name="button"  mat-raised-button (click)="imagePreview=''"> Delete the current background</mat-checkbox>
       </form>
     </mat-tab>
   </mat-tab-group>
 <mat-dialog-actions align="end">
   <button  type="button" name="button"  mat-raised-button mat-dialog-close tabindex="-1"><mat-icon svgIcon="content:ic_clear_24px"></mat-icon></button>
-  <button  type="button" name="button" mat-raised-button [mat-dialog-close]="{'background': color, 'backgroundImage': image, 'imagePreview' :imagePreview }"><mat-icon svgIcon="action:ic_done_24px"></mat-icon></button>
+  <button  type="button" name="button" mat-raised-button [mat-dialog-close]="setImage()"><mat-icon svgIcon="action:ic_done_24px"></mat-icon></button>
 </mat-dialog-actions>

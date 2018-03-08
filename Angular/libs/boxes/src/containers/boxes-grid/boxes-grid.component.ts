@@ -60,7 +60,6 @@ export class BoxesGridComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickedOutside($event) {
-    console.log($event);
     // here you can hide your menu
     this.menu.open = false;
   }
@@ -110,32 +109,15 @@ export class BoxesGridComponent implements OnInit {
     if (!this.slide.boxIds) {
       this.slide.boxIds = [];
     }
-    if(this.slide.background && this.slide.background.image)
-      this.backgroundImage = 'url(data:' + this.slide.background.image.contentType +
-      ';base64,' +this.arrayBufferToBase64(this.slide.background.image.data.data) +')';
+
 
     this.gridConfig = {
       draggable: {
         enabled: true,
-        ignoreContentClass: 'gridster-item-content',
-        ignoreContent: false,
-        dragHandleClass: 'drag-handler',
-        stop: undefined
+        ignoreContentClass: 'gridster-item-content'
       },
       resizable: {
-        delayStart: 0,
-        enabled: true,
-        stop: undefined,
-        handles: {
-          s: true,
-          e: true,
-          n: true,
-          w: true,
-          se: true,
-          ne: true,
-          sw: true,
-          nw: true
-        }
+        enabled: true
       },
       displayGrid: 'always',
       emptyCellContextMenuCallback : this.emptyCellContextMenu.bind(this)
@@ -162,6 +144,72 @@ export class BoxesGridComponent implements OnInit {
       }
     }
   }
+  addBox(type){
+    switch (type) {
+      case 'text' : {
+        this.slide.boxIds.push({
+          cols :16,
+          rows : 3,
+          content :{
+            type : type
+          }
+        });
+        break;
+      }
+      case 'chart' : {
+        const dialog = this.dialog.open(ChartsBuilderComponent, { height: '95%', width: '90%' });
+        const chartBoxSubscription =  dialog.afterClosed()
+        .subscribe((chart)=>{
+          if(chart){
+            this.slide.boxIds.push({
+              cols: 15,
+              rows: 15,
+              minItemRows: 15,
+              minItemCols: 15,
+              content : {
+                type: type,
+                chart : chart
+              }
+            })
+          };
+        });
+        this.subscriptions.add(chartBoxSubscription);
+        break;
+      }
+      case 'image' :{
+        this.slide.boxIds.push({
+            cols: 15,
+            rows: 15,
+            content : {
+              type: type
+            }
+          });
+          break;
+      }
+      case 'background' : {
+        const dialog = this.dialog.open(BoxesBackgroundComponent, {'width' : '50%'});
+        const backgroundBoxSubscription = dialog.afterClosed().subscribe((background)=>{
+          if(background){
+            this.slide.background = background;
+            this.slide.background.color = background.background
+            this.cdr.detectChanges();
+          }
+        });
+        this.subscriptions.add(backgroundBoxSubscription);
+        break;
+      }
+    }
+  }
+
+
+  saveImage(event){
+    this.slide.boxIds[event.index].content.imageId = event.image;
+  }
+
+  saveText(event){
+    this.slide.boxIds[event.index].content.text = event.text;
+  }
+
 
   emptyCellContextMenu(event) {
     setTimeout(() => {
@@ -172,8 +220,6 @@ export class BoxesGridComponent implements OnInit {
         this.cdr.detectChanges();
       })
     })
-//    this.menu.open = true;
-
     this.menu.top = event.event.clientY - 50;
     this.menu.left = event.event.clientX - 50;
   }
@@ -223,14 +269,5 @@ export class BoxesGridComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
 
-  arrayBufferToBase64(buffer) {
-    var binary = '';
-    /* eslint no-undef: 0 */
-    var bytes = new Uint8Array(buffer);
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  }
+
 }

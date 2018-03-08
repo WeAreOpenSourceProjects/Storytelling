@@ -1,4 +1,4 @@
-<app-menu-bar *ngIf="menu.open" (isOpen)="menu.open = $event" [top]="menu.top" [left]="menu.left"></app-menu-bar>
+<app-menu-bar *ngIf="menu.open" (addBox)="addBox($event)" (isOpen)="menu.open = $event" [top]="menu.top" [left]="menu.left"></app-menu-bar>
 
 <app-grid [boxes]="slide?.boxIds" [editMode]="false"
     [gridConfig]="gridConfig"
@@ -7,5 +7,8 @@
     (removeItemEvent)="removeItem($event)"
     (emptyCellClickCallbackEvent)="emptyCellContextMenu($event)"
     (outsideClick)="menu.open=false"
+    (textToSave)="saveText($event)"
+    (saveImage)="saveImage($event)"
+    [background]="slide?.background"
     ></app-grid>
 <a class="fixed" mat-fab  type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>
