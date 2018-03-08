@@ -1,6 +1,6 @@
 <app-menu-bar *ngIf="menu.open" (addBox)="addBox($event)" (isOpen)="menu.open = $event" [top]="menu.top" [left]="menu.left"></app-menu-bar>
 
-<app-grid [boxes]="slide?.boxIds" [editMode]="false"
+<app-grid [boxes]="slide?.boxIds" [editMode]="editMode"
     [gridConfig]="gridConfig"
     [presentationMode] ="false"
     (enableEditEvent)="enableEdit($event)"

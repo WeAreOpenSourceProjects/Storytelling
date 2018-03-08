@@ -1,17 +1,9 @@
 import {
   Component,
-  ViewEncapsulation,
-  ViewChildren,
   OnInit,
-  AfterViewInit,
-  ViewChild,
   ChangeDetectorRef,
-  ElementRef,
-  QueryList,
   HostListener,
   ChangeDetectionStrategy,
-  ViewContainerRef,
-  ComponentFactoryResolver
 } from '@angular/core';
 
 // import { Slide } from '../../../../models/slide';
@@ -20,33 +12,13 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { BoxesApiService } from '../../../../boxes-state/src/services/boxes.api.service';
 import { ChartsBuilderComponent } from '../../components/charts-builder';
 import { BoxesBackgroundComponent } from '../../components/boxes-background/boxes-background.component';
-import { ImageUploadComponent } from '@labdat/image-upload';
-
-//import {TextTinyEditorComponent} from '../../components/text-editor/text-editor.component';
-import { TinyEditorComponent } from '@labdat/tiny-editor';
-import { Chart } from '@labdat/charts';
-
 import { ActivatedRoute, Router } from '@angular/router';
-import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component';
-import { GraphComponent } from '@labdat/charts';
 import { BoxDialogComponent } from '../../components/box-dialog/box-dialog.component';
 import { Store } from '@ngrx/store';
 import { selectCurrentPresentationId, PresentationsState } from '@labdat/presentations-state';
-import { fromRouter } from '@labdat/router-state';
-import { GridsterItemComponent } from 'angular-gridster2/dist/gridsterItem.component';
-import { Subject } from 'rxjs/Subject';
-import { map } from 'rxjs/operators/map';
-import { switchMap } from 'rxjs/operators/switchMap';
-import { filter } from 'rxjs/operators/filter';
-import { Observable } from 'rxjs/Observable';
-import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
-import { zip } from 'rxjs/observable/zip';
 import { take } from 'rxjs/operators/take';
-import { of } from 'rxjs/observable/of';
-import { tap } from 'rxjs/operators/tap';
 import { Subscription } from 'rxjs/Subscription';
-import { delay } from 'rxjs/operators/delay';
 import { GridComponent } from '@labdat/grid';
 
 @Component({
@@ -60,37 +32,27 @@ export class BoxesGridComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickedOutside($event) {
-    // here you can hide your menu
     this.menu.open = false;
   }
 
   public editMode = false;
-  public editors;
   public slide: any;
-  public isOpened = false;
   public id: any;
-  public idSlides: any;
   public gridConfig: any;
-  public options;
   private currentPresentationId$ = this.store.select(selectCurrentPresentationId);
   private presentationId: any;
-  public backgroundImage: any;
   private subscriptions: Subscription;
   public menu = {
     open : false,
     top : 0,
     left : 0
   }
-  private dynamicComponent = [];
 
   constructor(
     private dialog: MatDialog,
     private boxesService: BoxesApiService,
     private route: ActivatedRoute,
     private router: Router,
-    private element: ElementRef,
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
     private store: Store<PresentationsState>
   ) {}
@@ -109,8 +71,7 @@ export class BoxesGridComponent implements OnInit {
     if (!this.slide.boxIds) {
       this.slide.boxIds = [];
     }
-
-
+    
     this.gridConfig = {
       draggable: {
         enabled: true,
@@ -144,6 +105,7 @@ export class BoxesGridComponent implements OnInit {
       }
     }
   }
+
   addBox(type){
     switch (type) {
       case 'text' : {
@@ -256,7 +218,7 @@ export class BoxesGridComponent implements OnInit {
         this.boxesService.addBox(slide.boxIds[i]).subscribe();
       }
     }
-    if(this.backgroundImage != ''){
+    if(this.slide.background != ''){
       this.boxesService.changeGridBackground({ background: slide.background, id: this.id }).subscribe();
     } else {
         this.boxesService.deleteImage(this.slide.background.image._id).subscribe();
