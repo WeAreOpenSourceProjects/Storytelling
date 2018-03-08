@@ -51,6 +51,9 @@ public imageeditor;
 @ViewChild('grapheditor')
 public grapheditor;
 
+@Output()
+public outsideClick = new EventEmitter();
+
 private dynamicComponent = [];
 private dynamicBoxes = []
 
@@ -115,6 +118,8 @@ private dynamicBoxes = []
   }
   emptyCellClick(event, item) {
     this.editMode = false;
+    console.log('????')
+    this.outsideClick.emit();
     for (var i=0; i<this.editors.toArray().length;i++) {
       this.editors.toArray()[i].setEditMode(false);
     }

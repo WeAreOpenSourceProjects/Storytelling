@@ -57,6 +57,14 @@ import { GridComponent } from '@labdat/grid';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxesGridComponent implements OnInit {
+
+  @HostListener('document:click', ['$event'])
+  clickedOutside($event) {
+    console.log($event);
+    // here you can hide your menu
+    this.menu.open = false;
+  }
+
   public editMode = false;
   public editors;
   public slide: any;
@@ -156,15 +164,15 @@ export class BoxesGridComponent implements OnInit {
   }
 
   emptyCellContextMenu(event) {
-    setTimeout(()=>{
-      console.log('false')
+    setTimeout(() => {
       this.menu.open = false;
-      setTimeout(()=>{
-        console.log('true');
+      this.cdr.detectChanges();
+      setTimeout(() => {
         this.menu.open = true;
-      },500)
-    },500)
-    console.log(this.menu.open);
+        this.cdr.detectChanges();
+      })
+    })
+//    this.menu.open = true;
 
     this.menu.top = event.event.clientY - 50;
     this.menu.left = event.event.clientX - 50;

@@ -14,17 +14,12 @@ import { Subject } from 'rxjs/Subject';
   ]
 })
 export class MenuBarComponent implements OnInit {
-  @HostListener('document:click', ['$event'])
-  clickedOutside($event) {
-    // here you can hide your menu
-    this.isOpened = false;
-  }
-  isOpened: boolean = false;
+
   el: any;
   @Input() top: any;
   @Input() left: any;
 
-  @Output() public isOpen: EventEmitter<string> = new EventEmitter<string>();
+  @Output() public isOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public isOpen$ = new Subject();
 
@@ -33,12 +28,11 @@ export class MenuBarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isOpened = true;
     this.renderer.setStyle(this.el, 'left', this.left + 'px');
     this.renderer.setStyle(this.el, 'top', this.top + 'px');
   }
   closeMenu() {
-    this.isOpened = false;
+    this.isOpen.emit(false);
   }
   open(type) {
     this.isOpen.emit(type);

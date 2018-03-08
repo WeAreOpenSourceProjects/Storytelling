@@ -1,4 +1,4 @@
-<app-menu-bar [top]="menu.top" [left]="menu.left"></app-menu-bar>
+<app-menu-bar *ngIf="menu.open" (isOpen)="menu.open = $event" [top]="menu.top" [left]="menu.left"></app-menu-bar>
 
 <app-grid [boxes]="slide?.boxIds" [editMode]="false"
     [gridConfig]="gridConfig"
@@ -6,5 +6,6 @@
     (enableEditEvent)="enableEdit($event)"
     (removeItemEvent)="removeItem($event)"
     (emptyCellClickCallbackEvent)="emptyCellContextMenu($event)"
+    (outsideClick)="menu.open=false"
     ></app-grid>
 <a class="fixed" mat-fab  type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>
