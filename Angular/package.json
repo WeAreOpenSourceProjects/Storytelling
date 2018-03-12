@@ -18,7 +18,7 @@
     "client": "npm run storytelling",
     "set-env": "node set-env.js",
     "build": "ng build --prod --environment=prod --aot --output-path=../Riess.js/server/public",
-    "build:prod": "run-p set-env build "
+    "build:prod": "run-s set-env build "
   },
   "private": true,
   "dependencies": {
