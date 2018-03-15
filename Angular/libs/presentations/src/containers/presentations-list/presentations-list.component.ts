@@ -39,7 +39,7 @@ import { zip } from 'rxjs/operators/zip';
   styleUrls: ['./presentations-list.component.scss']
 })
 export class PresentationsListComponent implements OnInit, OnDestroy {
-  public nextPage$ = new Subject();
+//  public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
   public copy$ = new Subject();
@@ -71,13 +71,13 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions = this.searchObserver.pipe(withLatestFrom(this.user$)).subscribe(([formSearch, user]) => {
-      console.log("???",user);
+
       const search = {
         ...formSearch,
-        email: user.email,
+        userId: user.id,
         username: user.username
       };
-      console.log("???",search);
+
       this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 6, search }));
     });
     const countPresentationSubscription = this.presentationsCount$.subscribe(count => {
@@ -85,6 +85,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(countPresentationSubscription);
     this.subscriptions.add(countPresentationSubscription);
+/*
     const nextPageSubscription = this.nextPage$
       .pipe(withLatestFrom(this.searchObserver))
       .subscribe(([pageEvent, search]: [PageEvent, any]) => {
@@ -92,7 +93,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
         this.store.dispatch(new fromPresentations.Search({ pageIndex: pageEvent.pageIndex, pageSize: 6, search }));
       });
     this.subscriptions.add(nextPageSubscription);
-
+*/
     const togglePublishSubscription = this.togglePublish$.subscribe((presentation: Presentation) =>
       this.store.dispatch(
         new fromPresentations.Update({ id: presentation.id, changes: { isPublic: !presentation.isPublic } })
@@ -118,9 +119,11 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     this.subscriptions.add(editSubscription);
 
     const addSubscription = this.add$.subscribe(res => {
+/*
       this.nextPage$.next({
         pageIndex: (this.count + 1) / 6
       });
+*/
       const presentation = new Presentation();
       this.store.dispatch(new fromPresentations.Add(presentation));
     });

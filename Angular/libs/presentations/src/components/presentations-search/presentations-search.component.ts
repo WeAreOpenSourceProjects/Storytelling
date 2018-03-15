@@ -29,14 +29,14 @@ export class PresentationsSearchComponent implements OnDestroy {
   ngOnInit() {
     this.searchForm = this.formBuilder.group({
       title: this.formBuilder.control(''),
-      isFavorite: this.formBuilder.control('indeterminate'),
+//      isFavorite: this.formBuilder.control('indeterminate'),
       isPublic: this.formBuilder.control('indeterminate'),
       order: this.formBuilder.control('date')
     });
 
     this.searchObserver.next({
       title: '',
-      isFavorite: 'indeterminate',
+//      isFavorite: 'indeterminate',
       isPublic: 'indeterminate',
       order: 'date'
     });

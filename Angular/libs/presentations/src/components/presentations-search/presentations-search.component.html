@@ -13,12 +13,12 @@
     <input matInput formControlName="title">
   </mat-form-field>
   <div *ngIf="kind === 'advanced'" class="filter-container" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="40">
-    <mat-checkbox
+    <!--mat-checkbox
       #favorite
       name="isFavorite"
       formControlName="isFavorite"
       (click)="onClick(favorite)"
-      [indeterminate]="true">Favorite</mat-checkbox>
+      [indeterminate]="true">Favorite</mat-checkbox-->
     <mat-checkbox
       #public
       name="isPublic"

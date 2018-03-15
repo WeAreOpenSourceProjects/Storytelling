@@ -106,7 +106,7 @@ export class PresentationsApiService {
     const cleanSearch = {
       ...search
     };
-    console.log(cleanSearch);
+    console.log('cleanSearch', cleanSearch);
     if (cleanSearch.isFavorite === 'indeterminate') {
       delete cleanSearch.isFavorite;
     }

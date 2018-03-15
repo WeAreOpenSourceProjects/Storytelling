@@ -217,7 +217,7 @@ exports.search = function(req, res) {
   var regexS = new RegExp(req.query.title);
 
   var request = {
-    $and: []
+    $and: [{ $or: []}]
   }
 
   if ('title' in req.query) {
@@ -230,43 +230,56 @@ exports.search = function(req, res) {
     })
   }
 
-  if ('isPublic' in req.query) {
-    request.$and.push({
-      'isPublic': req.query.isPublic
+  if ('userId' in req.query) {
+    request.$and[0].$or.push({
+      'author': req.query.userId
     })
   }
 
+  if ('isPublic' in req.query && req.query.isPublic === 'true') {
+    console.log('here')
+    request.$and[0].$or.push({
+      'isPublic': true
+    })
+  }
+/*
   if ('isFavorite' in req.query) {
-    request.$and.push({
+    globalRequest.$and.push({
       'isFavorite': req.query.isFavorite
     })
   }
-
+*/
   var order = (req.query.order === 'date')
   ? '-createdAt'
   : { 'title': 1 };
+
+  if (request.$and[0].$or.length === 0) {
+    delete request.$and[0].$or;
+  }
 
   if (request.$and.length === 0) {
     delete request.$and;
   }
 
+  console.log('request', request)
+  console.log('request', request.$and[0])
+
   var presnetationsCount = Presentation.find(request).count();
   var presnetationsFind = Presentation.find(request);
 
-
-
- Promise.all([presnetationsCount,
-   presnetationsFind.populate({
-     path: 'slideIds'
-   })
-   .populate({
-     path: 'author'
-   })
-   .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
-   .limit(pageSize)
-   .sort(order)
-   .exec()])
-
+  Promise.all([
+    presnetationsCount,
+    presnetationsFind.populate({
+      path: 'slideIds'
+    })
+    .populate({
+      path: 'author'
+    })
+    .skip(pageIndex > 0 ? (pageIndex * pageSize) : 0)
+    .limit(pageSize)
+    .sort(order)
+    .exec()
+  ])
   .then(function([count, presentations]) {
     var slides = [].concat.apply([], presentations.map(function(presentation) { return presentation.slideIds }));
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));

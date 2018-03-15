@@ -7,7 +7,7 @@
       </div>
       <div class="banner-mask"><i class="fa fa-play-circle-o fa-5x" aria-hidden="true"></i></div>
       <div class="options">
-        <button
+        <!--button
           mat-icon-button
           *ngIf="loggedIn"
           (click)="toggleFavorite($event)"
@@ -16,7 +16,7 @@
           [matTooltip]="(presentation.isFavorite) ? 'Remove from favorite' : 'Add to favorite'">
           <mat-icon *ngIf="!presentation.isFavorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_border_24px"></mat-icon>
           <mat-icon *ngIf="presentation.isFavorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_24px"></mat-icon>
-        </button>
+        </button-->
         <div *ngIf="loggedIn && editable && presentation.author._id === user.id" class="btn-group">
           <button
             mat-icon-button
