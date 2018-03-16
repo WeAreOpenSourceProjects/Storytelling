@@ -3,6 +3,7 @@
     "node_modules/codelyzer",
     "node_modules/@nrwl/schematics/src/tslint"
   ],
+  "extends": "tslint-config-airbnb",
   "rules": {
     "arrow-return-shorthand": true,
     "callable-types": true,

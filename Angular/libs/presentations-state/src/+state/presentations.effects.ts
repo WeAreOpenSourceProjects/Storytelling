@@ -30,6 +30,7 @@ export class PresentationsEffects {
       const { pageIndex, pageSize, search } = action.payload;
       return this.presentationsApiService.search(pageIndex, pageSize, search).pipe(
         map(result => {
+          console.log('?????C??D?D?D?D??D?D', result)
           return new fromPresentations.SearchSuccess(result);
         })
       );

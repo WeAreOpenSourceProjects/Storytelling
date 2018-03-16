@@ -39,7 +39,7 @@ import { zip } from 'rxjs/operators/zip';
   styleUrls: ['./presentations-list.component.scss']
 })
 export class PresentationsListComponent implements OnInit, OnDestroy {
-//  public nextPage$ = new Subject();
+  public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
   public copy$ = new Subject();
@@ -85,15 +85,21 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(countPresentationSubscription);
     this.subscriptions.add(countPresentationSubscription);
-/*
+
     const nextPageSubscription = this.nextPage$
-      .pipe(withLatestFrom(this.searchObserver))
-      .subscribe(([pageEvent, search]: [PageEvent, any]) => {
-        console.log(pageEvent);
+      .pipe(withLatestFrom(this.searchObserver, this.user$, (pageEvent: PageEvent, formSearch: any, user: any) => {
+        const search = {
+          ...formSearch,
+          userId: user.id,
+          username: user.username
+        };
+        return [search, pageEvent]
+      }))
+      .subscribe(([search, pageEvent]) => {
         this.store.dispatch(new fromPresentations.Search({ pageIndex: pageEvent.pageIndex, pageSize: 6, search }));
       });
     this.subscriptions.add(nextPageSubscription);
-*/
+
     const togglePublishSubscription = this.togglePublish$.subscribe((presentation: Presentation) =>
       this.store.dispatch(
         new fromPresentations.Update({ id: presentation.id, changes: { isPublic: !presentation.isPublic } })

@@ -106,7 +106,7 @@ export class PresentationsApiService {
     const cleanSearch = {
       ...search
     };
-    console.log('cleanSearch', cleanSearch);
+
     if (cleanSearch.isFavorite === 'indeterminate') {
       delete cleanSearch.isFavorite;
     }
@@ -129,13 +129,11 @@ export class PresentationsApiService {
       })
       .pipe(
         map((result: any) => ({
-          presentations: result.presentations.presentaion.map(presentation => ({
+          presentations: result.presentations.map(presentation => ({
             ...presentation,
             id: presentation._id
           })),
-          presentationCount: result.presentations.count,
-          slides: result.slides.map(slide => ({ ...slide, id: slide._id })),
-          boxes: result.boxes.map(box => ({ ...box, id: box._id }))
+          count: result.count,
         }))
       );
   }

@@ -261,15 +261,12 @@ exports.search = function(req, res) {
     delete request.$and;
   }
 
-  console.log('request', request)
-  console.log('request', request.$and[0])
-
-  var presnetationsCount = Presentation.find(request).count();
-  var presnetationsFind = Presentation.find(request);
+  var presentationsCount = Presentation.find(request).count();
+  var presentationsFind = Presentation.find(request);
 
   Promise.all([
-    presnetationsCount,
-    presnetationsFind.populate({
+    presentationsCount,
+    presentationsFind.populate({
       path: 'slideIds'
     })
     .populate({
@@ -281,19 +278,17 @@ exports.search = function(req, res) {
     .exec()
   ])
   .then(function([count, presentations]) {
+    console.log('COUNT', count);
     var slides = [].concat.apply([], presentations.map(function(presentation) { return presentation.slideIds }));
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     res.json({
-      presentations: {
-          presentaion : presentations.map(function(presentation) {
-          presentation.slideIds = presentation.slideIds.map(function(slide) {
-            return slide._id
-          })
-          return presentation;
-        }),
-        count},
-      slides: slides,
-      boxes: boxes,
+      presentations: presentations.map(function(presentation) {
+        presentation.slideIds = presentation.slideIds.map(function(slide) {
+          return slide._id
+        })
+        return presentation;
+      }),
+      count
     });
   })
   .catch(function(err) {

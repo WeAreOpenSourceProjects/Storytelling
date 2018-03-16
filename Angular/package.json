@@ -112,6 +112,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
+    "tslint-config-airbnb": "^5.7.0",
     "typescript": ">=2.4.2 <2.5.0"
   }
 }
