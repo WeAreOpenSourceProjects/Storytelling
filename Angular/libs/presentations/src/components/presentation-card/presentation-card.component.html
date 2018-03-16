@@ -32,10 +32,10 @@
           <button mat-icon-button (click)="$event.preventDefault()" (click)="editPresentation($event)" matTooltip="Edit">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="image:ic_edit_24px"></mat-icon>
           </button>
-          <button mat-icon-button (click)="copyPresentation($event); false" matTooltip="Copy">
-            <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="content:ic_content_copy_24px"></mat-icon>
-          </button>
         </div>
+        <button *ngIf="showCopy" mat-icon-button (click)="copyPresentation($event); false" matTooltip="Copy">
+          <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="content:ic_content_copy_24px"></mat-icon>
+        </button>
       </div>
       <mat-chip-list class="tip-list">
         <mat-chip class="tip" *ngFor="let tag of presentation.tags">{{tag}}</mat-chip>

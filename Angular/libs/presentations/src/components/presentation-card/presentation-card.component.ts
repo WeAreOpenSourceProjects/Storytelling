@@ -23,6 +23,8 @@ export class PresentationCardComponent implements OnInit {
 
   @Input() public presentation: Presentation;
 
+  @Input() public showCopy = false;
+
   @Input() public editable: boolean; // whether the presentation can be edited;
 
   @Input() public loggedIn: boolean;

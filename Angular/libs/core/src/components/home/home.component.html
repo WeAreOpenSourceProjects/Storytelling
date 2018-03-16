@@ -17,7 +17,7 @@
     <div
       *ngFor="let presentation of presentations$ | async; trackBy:trackById"
       fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="33" fxFlex.xl="33">
-      <app-slides-card [presentation]="presentation" [editable]="false" [loggedIn]="false" (select)="select$.next(presentation.id)"></app-slides-card>
+      <app-slides-card [presentation]="presentation" [editable]="false" [loggedIn]="false" (select)="select$.next(presentation.id)" [showCopy]="false"></app-slides-card>
     </div>
   </div>
 

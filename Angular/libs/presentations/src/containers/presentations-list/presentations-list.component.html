@@ -16,7 +16,8 @@
         [presentation]="presentation"
         [loggedIn]="loggedIn$ | async"
         [user]="user$ | async"
-        [editable]="true">
+        [editable]="true"
+        [showCopy]="true">
       </app-slides-card>
   </div>
   <div class="error" [innerHTML]="message$ | async"></div>
