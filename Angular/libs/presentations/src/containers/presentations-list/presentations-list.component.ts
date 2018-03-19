@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Slides, SlidesSetting } from '../../models/index';
-import { PageEvent } from '@angular/material/paginator';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Presentation } from '@labdat/data-models';
 import { debounceTime } from 'rxjs/operators/debounceTime';
@@ -39,6 +39,8 @@ import { zip } from 'rxjs/operators/zip';
   styleUrls: ['./presentations-list.component.scss']
 })
 export class PresentationsListComponent implements OnInit, OnDestroy {
+  @ViewChild(MatPaginator)
+  public paginator;
   public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
@@ -71,13 +73,11 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions = this.searchObserver.pipe(withLatestFrom(this.user$)).subscribe(([formSearch, user]) => {
-
       const search = {
         ...formSearch,
         userId: user.id,
         username: user.username
       };
-
       this.store.dispatch(new fromPresentations.Search({ pageIndex: 0, pageSize: 6, search }));
     });
     const countPresentationSubscription = this.presentationsCount$.subscribe(count => {
@@ -141,13 +141,20 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
           this.dialog
             .open(PresentationDialogComponent, { height: '20%', width: '20%', data: { presentationId } })
             .afterClosed()
-        )
-      )
-      .subscribe(result => {
-        if (result.delete) {
-          this.store.dispatch(new fromPresentations.Delete(result.presentationId));
-        }
-      });
+        ),
+        tap(result => {
+          if (result.delete) {
+            this.store.dispatch(new fromPresentations.Delete(result.presentationId));
+          }
+        }),
+        withLatestFrom(this.searchObserver, this.user$,
+        (x: any, criterias: any, user: any) => ({
+          ...criterias,
+          userId: user.id,
+          username: user.username
+        })
+      ))
+      .subscribe(search => this.store.dispatch(new fromPresentations.Search({ pageIndex: this.paginator.pageIndex, pageSize: 7, search })));
     this.subscriptions.add(deleteSubscription);
 
     const selectSubscription = this.select$.subscribe(presentationId => {

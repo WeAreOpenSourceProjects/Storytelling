@@ -3,6 +3,7 @@
     <app-slides-search kind="advanced" [searchObserver]="searchObserver"></app-slides-search>
   </div>
   <mat-paginator
+    #paginator
     [length]="presentationsCount$ | async"
     [pageSize]="6"
     (page)="nextPage$.next($event)">
