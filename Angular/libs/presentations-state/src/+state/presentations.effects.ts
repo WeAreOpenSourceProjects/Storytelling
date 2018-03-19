@@ -20,6 +20,7 @@ import { tap } from 'rxjs/operators/tap';
 import { Presentation } from '@labdat/data-models';
 import { PresentationsSnackComponent } from '../components/presentations-snack/presentations-snack.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { fromRouter } from '@labdat/router-state';
 
 @Injectable()
 export class PresentationsEffects {
@@ -30,7 +31,6 @@ export class PresentationsEffects {
       const { pageIndex, pageSize, search } = action.payload;
       return this.presentationsApiService.search(pageIndex, pageSize, search).pipe(
         map(result => {
-          console.log('?????C??D?D?D?D??D?D', result)
           return new fromPresentations.SearchSuccess(result);
         })
       );
@@ -58,7 +58,10 @@ export class PresentationsEffects {
   add$ = this.actions.ofType(fromPresentations.ADD).pipe(
     map(toPayload),
     switchMap(presentation => this.presentationsApiService.add(presentation)),
-    map((response: Presentation) => new fromPresentations.AddSuccess(response)),
+    switchMap((response: Presentation) => from([
+      new fromPresentations.AddSuccess(response),
+      new fromRouter.Go({ path: [`/presentations/${response._id}/edit`] })
+    ])),
     tap(() =>
       this.snackBar.openFromComponent(PresentationsSnackComponent, {
         duration: 1000,

@@ -25,11 +25,6 @@
       </app-slides-card>
   </div>
   <div class="error" [innerHTML]="message$ | async"></div>
-  <mat-paginator
-    [length]="presentationsCount$ | async"
-    [pageSize]="6"
-    (page)="nextPage$.next($event)">
-  </mat-paginator>
 </div>
 
 <button

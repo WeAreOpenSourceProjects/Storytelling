@@ -28,7 +28,6 @@ export function presentationsReducer(
       return presentationsAdapter.removeAll({ ...state, error: action.payload.error, loading: false, loaded: false });
     }
     case fromPresentations.SEARCH_SUCCESS: {
-      console.log('XXCCXXXCCC',action.payload)
       return presentationsAdapter.addMany(action.payload.presentations, {
         ...state,
         count: action.payload.count,
