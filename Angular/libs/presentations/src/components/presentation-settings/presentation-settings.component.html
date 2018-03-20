@@ -2,35 +2,35 @@
   novalidate
   [formGroup]="settingsForm"
   xLayout="row wrap" fxLayoutAlign="space-around">
-  <div class="base" fxLayout="row">
-    <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-      <input matInput placeholder="Presentation name" formControlName="title" required>
-      <span class="error" *ngIf="settingsForm?.get('title').invalid">Slides Name is required</span>
-    </mat-form-field>
-    <div class="tag" formArrayName="tags" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-      <div class="tag-group">
-        <mat-chip-list>
-          <mat-chip *ngFor="let tag of settingsForm?.get('tags')['controls']; index as i">
-            <input [formControlName]="i" style="display: none">{{ tag.value }}
-            <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i>
-          </mat-chip>
-        </mat-chip-list>
-      </div>
-      <mat-form-field fxFlex.xs="100">
-        <input #tagInput matInput placeholder="Input Tag" (focusout)="addTag(tagInput.value)">
+  <div class="base" fxLayout="column">
+    <div class="input-group">
+      <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+        <input matInput placeholder="Presentation name" formControlName="title" required>
+        <span class="error" *ngIf="settingsForm?.get('title').invalid">Slides Name is required</span>
       </mat-form-field>
-    </div>
-    <!--a class="option-btn" (click)="publicStatusChange($event); false" [class.published]="settings.public" [class.unpublished]="!settings.public" [matTooltip]="(settings.public) ? 'Unpublish' : 'Publish'">
-      <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" class="published-icon" svgIcon="editor:ic_publish_24px"></mat-icon>
-    </a-->
-  </div>
 
-  <div class="base light" fxLayoutAlign="center center">
-    <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-      <textarea matInput matTextareaAutosize placeholder="Slides Description" formControlName="description"></textarea>
-    </mat-form-field>
+      <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+        <textarea matInput matTextareaAutosize placeholder="Slides Description" formControlName="description"></textarea>
+      </mat-form-field>
+
+      <div class="tag" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+        <mat-form-field>
+          <input #tagInput matInput placeholder="Input Tag" (focusout)="addTag(tagInput.value)">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="tag-group" formArrayName="tags">
+      <mat-chip-list>
+        <mat-chip *ngFor="let tag of settingsForm?.get('tags')['controls']; index as i">
+          <input [formControlName]="i" style="display: none">{{ tag.value }}
+          <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
     <!--app-image-upload  fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="base light" [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''" fxFlex="100"></app-image-upload-->
-    <div class="base light"
+    <div
       xFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxFlex="100"
       (uploadImage)="upload($event)">
       <label class="label">Choose Image for Banner</label>
@@ -39,6 +39,10 @@
       <br>
       <img #banner [attr.src]="settingsForm?.controls?.banner.value" class="image-display">
     </div>
+
+    <!--a class="option-btn" (click)="publicStatusChange($event); false" [class.published]="settings.public" [class.unpublished]="!settings.public" [matTooltip]="(settings.public) ? 'Unpublish' : 'Publish'">
+      <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" class="published-icon" svgIcon="editor:ic_publish_24px"></mat-icon>
+    </a-->
   </div>
 
 </form>

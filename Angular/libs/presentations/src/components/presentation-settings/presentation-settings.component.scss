@@ -5,24 +5,8 @@ mat-form-field {
 .tag {
   padding: 0 10px;
 
-  .tag-group {
-    display: inline-block;
-    mat-chip:first-child {
-      margin-left: 20px;
-    }
-    mat-chip:last-child {
-      margin-right: 10px;
-    }
-    .close-tag {
-      cursor: pointer;
-      &:hover {
-        color: white;
-      }
-    }
-
-    mat-form-field {
-      padding: 0;
-    }
+  mat-form-field {
+    width: 100%;
   }
 }
 
@@ -36,4 +20,27 @@ mat-form-field {
 .image-display {
   max-height: 200px;
   max-width: 100%;
+}
+
+.input-group {
+  min-height: 50px;
+}
+
+.base {
+  .tag-group {
+    display: inline-block;
+    min-height: 40px;
+
+    mat-chip:last-child {
+      margin-right: 10px;
+    }
+
+    .close-tag {
+      padding-left: 4px;
+      cursor: pointer;
+      &:hover {
+        color: white;
+      }
+    }
+  }
 }
