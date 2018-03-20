@@ -30,14 +30,14 @@
     </div>
 
     <!-- <app-image-upload fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="base light" [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''" fxFlex="100"></app-image-upload> -->
-    <div
-      xFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
-      (uploadImage)="upload($event)">
-      <label class="label">Choose Image for Banner</label>
-      <input type="file" id="banner" (change)="onChange($event)">
+    <div class="banner" xFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" (uploadImage)="upload($event)">
+      <div>
+        <img #banner [attr.src]="settingsForm?.controls?.banner.value" class="image-display">
+      </div>
+      <div>Choose your banner</div>
+      <button mat-raised-button type="button" color="primary" (click)="this.bannerbutton.click()">CHOOSE</button>
+      <input #bannerbutton type="file" id="banner" (change)="onChange($event)">
       <input formControlName="banner" type="hidden">
-      <br>
-      <img #banner [attr.src]="settingsForm?.controls?.banner.value" class="image-display">
     </div>
 
     <!--a class="option-btn" (click)="publicStatusChange($event); false" [class.published]="settings.public" [class.unpublished]="!settings.public" [matTooltip]="(settings.public) ? 'Unpublish' : 'Publish'">

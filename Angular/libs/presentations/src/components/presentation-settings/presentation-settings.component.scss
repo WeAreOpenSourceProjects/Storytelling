@@ -18,7 +18,7 @@ mat-form-field {
 }
 
 .image-display {
-  max-height: 200px;
+  max-height: 300px;
   max-width: 100%;
 }
 
@@ -42,6 +42,14 @@ mat-form-field {
       &:hover {
         color: white;
       }
+    }
+  }
+
+  .banner {
+    text-align: center;
+    
+    #banner {
+      display: none;
     }
   }
 }

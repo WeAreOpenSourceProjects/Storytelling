@@ -43,8 +43,10 @@ export class PresentationSettingsComponent {
   }
 
   addTag(tag) {
-    (this.settingsForm.get('tags') as FormArray).push(this.formBuilder.control(tag));
-    this.tagInput.nativeElement.value = '';
+    if (tag !== '') {
+      (this.settingsForm.get('tags') as FormArray).push(this.formBuilder.control(tag));
+      this.tagInput.nativeElement.value = '';
+    }
   }
 
   deleteTag(i) {
