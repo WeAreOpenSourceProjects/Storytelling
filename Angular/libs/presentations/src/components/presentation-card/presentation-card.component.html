@@ -18,6 +18,9 @@
           <mat-icon *ngIf="presentation.isFavorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_24px"></mat-icon>
         </button-->
         <div *ngIf="loggedIn && editable && presentation.author._id === user.id" class="btn-group">
+          <button mat-icon-button (click)="$event.preventDefault()" (click)="editPresentation($event)" matTooltip="Edit">
+            <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="image:ic_edit_24px"></mat-icon>
+          </button>
           <button
             mat-icon-button
             (click)="togglePublish($event)"
@@ -26,16 +29,13 @@
             [matTooltip]="(presentation.isPublic) ? 'Unpublish' : 'Publish'">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="editor:ic_publish_24px"></mat-icon>
           </button>
+          <button *ngIf="showCopy" mat-icon-button (click)="copyPresentation($event); false" matTooltip="Copy">
+              <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="content:ic_content_copy_24px"></mat-icon>
+            </button>
           <button mat-icon-button (click)="deletePresentation($event)" matTooltip="Delete">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_delete_24px"></mat-icon>
           </button>
-          <button mat-icon-button (click)="$event.preventDefault()" (click)="editPresentation($event)" matTooltip="Edit">
-            <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="image:ic_edit_24px"></mat-icon>
-          </button>
         </div>
-        <button *ngIf="showCopy" mat-icon-button (click)="copyPresentation($event); false" matTooltip="Copy">
-          <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="content:ic_content_copy_24px"></mat-icon>
-        </button>
       </div>
       <mat-chip-list class="tip-list">
         <mat-chip class="tip" *ngFor="let tag of presentation.tags">{{tag}}</mat-chip>
