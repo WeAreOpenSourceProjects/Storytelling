@@ -15,7 +15,7 @@
 
       <div class="tag" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
         <mat-form-field>
-          <input #tagInput matInput placeholder="Input Tag" (focusout)="addTag(tagInput.value)">
+          <input #tagInput matInput placeholder="Input Tag" (keyup.enter)="addTag(tagInput.value)">
         </mat-form-field>
       </div>
     </div>
@@ -31,7 +31,7 @@
 
     <!--app-image-upload  fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="base light" [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''" fxFlex="100"></app-image-upload-->
     <div
-      xFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxFlex="100"
+      xFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
       (uploadImage)="upload($event)">
       <label class="label">Choose Image for Banner</label>
       <input type="file" id="banner" (change)="onChange($event)">
