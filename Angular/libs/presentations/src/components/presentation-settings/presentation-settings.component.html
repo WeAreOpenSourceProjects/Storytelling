@@ -2,35 +2,35 @@
   novalidate
   [formGroup]="settingsForm"
   xLayout="row wrap" fxLayoutAlign="space-around">
-  <div class="base" fxLayout="column">
-    <div class="input-group">
-      <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+  <div class="base" fxLayout="row">
+    <div class="input-group" fxLayout="column" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+      <mat-form-field>
         <input matInput placeholder="Presentation name" formControlName="title" required>
         <span class="error" *ngIf="settingsForm?.get('title').invalid">Slides Name is required</span>
-      </mat-form-field>
-
-      <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-        <textarea matInput matTextareaAutosize placeholder="Slides Description" formControlName="description"></textarea>
       </mat-form-field>
 
       <div class="tag" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
         <mat-form-field>
           <input #tagInput matInput placeholder="Input Tag" (keyup.enter)="addTag(tagInput.value)">
         </mat-form-field>
-      </div>
-    </div>
 
-    <div class="tag-group" formArrayName="tags">
-      <mat-chip-list>
-        <mat-chip *ngFor="let tag of settingsForm?.get('tags')['controls']; index as i">
-          <input [formControlName]="i" style="display: none">{{ tag.value }}
-          <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i>
-        </mat-chip>
-      </mat-chip-list>
+        <!-- <div class="tag-group" formArrayName="tags">
+          <mat-chip-list>
+            <mat-chip *ngFor="let tag of settingsForm?.get('tags')['controls']; index as i">
+              <input [formControlName]="i" style="display: none">{{ tag.value }}
+              <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i>
+            </mat-chip>
+          </mat-chip-list>
+        </div> -->
+      </div>
+
+      <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+        <textarea matInput matTextareaAutosize placeholder="Slides Description" formControlName="description"></textarea>
+      </mat-form-field>
     </div>
 
     <!-- <app-image-upload fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="base light" [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''" fxFlex="100"></app-image-upload> -->
-    <div class="banner" xFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" (uploadImage)="upload($event)">
+    <div class="banner" xFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" (uploadImage)="upload($event)">
       <div>
         <img #banner [attr.src]="settingsForm?.controls?.banner.value" class="image-display">
       </div>
