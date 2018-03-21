@@ -37,10 +37,11 @@ mat-form-field {
   .banner {
     text-align: center;
     position: relative;
+    padding: 0 20px;
 
     .tag-group {
       position: absolute;
-      bottom: 30px;
+      bottom: 0;
       left: 30px;
       display: inline-block;
 
@@ -63,8 +64,22 @@ mat-form-field {
       }
     }
 
+    mat-icon {
+      position: absolute;
+      right: 50px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.7;
+      }
+
+
+        height: 36px !important;
+        width: 36px !important;
+
+    }
+
     img {
-      height: 280px;
+      height: 320px;
     }
 
     #banner {
