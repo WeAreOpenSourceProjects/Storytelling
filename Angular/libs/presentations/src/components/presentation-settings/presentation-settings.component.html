@@ -24,9 +24,11 @@
         </div> -->
       </div>
 
-      <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-        <textarea matInput matTextareaAutosize placeholder="Slides Description" formControlName="description"></textarea>
-      </mat-form-field>
+      <div class="description" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+        <mat-form-field >
+          <textarea matInput placeholder="Slides Description" formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
     </div>
 
     <!-- <app-image-upload fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="base light" [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''" fxFlex="100"></app-image-upload> -->

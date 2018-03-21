@@ -43,6 +43,13 @@ mat-form-field {
     }
   }
 
+  .description {
+    max-height: 100% !important;
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
   .banner {
     text-align: center;
     
