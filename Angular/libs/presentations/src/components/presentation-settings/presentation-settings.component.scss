@@ -25,23 +25,7 @@ mat-form-field {
 }
 
 .base {
-  .tag-group {
-    display: inline-block;
-    min-height: 40px;
-
-    mat-chip {
-      margin-bottom: 4px;
-    }
-
-    .close-tag {
-      padding-left: 4px;
-
-      cursor: pointer;
-      &:hover {
-        color: white;
-      }
-    }
-  }
+  height: 350px;
 
   .description {
     max-height: 100% !important;
@@ -52,7 +36,37 @@ mat-form-field {
 
   .banner {
     text-align: center;
-    
+    position: relative;
+
+    .tag-group {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      display: inline-block;
+
+      mat-chip {
+        background: rgba(36, 39, 45, 0.7);
+        border-radius: 10px;
+        color: #dedede;
+        font-size: 75%;
+        padding: 4px 8px;
+        margin: 0 8px 4px 0;
+      }
+
+      .close-tag {
+        padding-left: 4px;
+  
+        cursor: pointer;
+        &:hover {
+          color: white;
+        }
+      }
+    }
+
+    img {
+      height: 280px;
+    }
+
     #banner {
       display: none;
     }

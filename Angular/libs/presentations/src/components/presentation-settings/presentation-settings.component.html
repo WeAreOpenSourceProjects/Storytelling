@@ -14,14 +14,6 @@
           <input #tagInput matInput placeholder="Input Tag" (keyup.enter)="addTag(tagInput.value)">
         </mat-form-field>
 
-        <!-- <div class="tag-group" formArrayName="tags">
-          <mat-chip-list>
-            <mat-chip *ngFor="let tag of settingsForm?.get('tags')['controls']; index as i">
-              <input [formControlName]="i" style="display: none">{{ tag.value }}
-              <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i>
-            </mat-chip>
-          </mat-chip-list>
-        </div> -->
       </div>
 
       <div class="description" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -32,14 +24,20 @@
     </div>
 
     <!-- <app-image-upload fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="base light" [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''" fxFlex="100"></app-image-upload> -->
-    <div class="banner" xFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" (uploadImage)="upload($event)">
+    <div class="banner" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" (uploadImage)="upload($event)">
       <div>
         <img #banner [attr.src]="settingsForm?.controls?.banner.value" class="image-display">
+        <div class="tag-group" formArrayName="tags">
+          <mat-chip-list>
+            <mat-chip *ngFor="let tag of settingsForm?.get('tags')['controls']; index as i">
+              <input [formControlName]="i" style="display: none">{{ tag.value }}
+              <i class="fa fa-times close-tag" (click)="deleteTag(i)"></i>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
       </div>
-      <div>Choose your banner</div>
-      <button mat-raised-button type="button" color="primary" (click)="this.bannerbutton.click()">CHOOSE</button>
+      <button mat-raised-button class="banner-button" type="button" color="primary" (click)="this.bannerbutton.click()">CHOOSE</button>
       <input #bannerbutton type="file" id="banner" (change)="onChange($event)">
-      <input formControlName="banner" type="hidden">
     </div>
 
     <!--a class="option-btn" (click)="publicStatusChange($event); false" [class.published]="settings.public" [class.unpublished]="!settings.public" [matTooltip]="(settings.public) ? 'Unpublish' : 'Publish'">
