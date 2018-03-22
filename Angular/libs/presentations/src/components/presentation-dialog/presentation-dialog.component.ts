@@ -3,7 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-dialog',
-  templateUrl: './presentation-dialog.component.html'
+  templateUrl: './presentation-dialog.component.html',
+  styleUrls: ['./presentation-dialog.component.scss']
 })
 export class PresentationDialogComponent implements OnInit {
   constructor(
