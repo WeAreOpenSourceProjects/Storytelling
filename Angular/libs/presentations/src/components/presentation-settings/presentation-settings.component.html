@@ -25,7 +25,9 @@
 
     <!-- <app-image-upload fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="base light" [label]="'Choose Image for Banner'" (uploadImage)="upload($event)" [imagePath]="setting?(setting.banner?setting.banner:''):''" fxFlex="100"></app-image-upload> -->
     <div class="banner" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" (uploadImage)="upload($event)">
-      <mat-icon svgIcon="file:ic_file_download_24px" (click)="this.bannerbutton.click()"></mat-icon>
+      <button mat-mini-fab (click)="this.bannerbutton.click()">
+        <mat-icon aria-label="Download Banner">file_download</mat-icon>
+      </button>
       <input #bannerbutton type="file" id="banner" (change)="onChange($event)">
       <div>
         <img #banner [attr.src]="settingsForm?.controls?.banner.value" class="image-display">
