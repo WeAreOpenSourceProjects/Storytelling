@@ -204,7 +204,7 @@ export class BoxesGridComponent implements OnInit {
       .afterClosed()
       .pipe(take(1))
       .subscribe(result => {
-        if (result.delete) {
+        if (result && result.delete) {
           if (event.item._id) {
             this.boxesService.delete(event.item._id).subscribe();
           }

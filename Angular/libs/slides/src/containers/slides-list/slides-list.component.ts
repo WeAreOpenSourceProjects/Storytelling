@@ -123,7 +123,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe(result => {
-        if (result.delete) {
+        if (result && result.delete) {
           this.store.dispatch(new fromSlides.Delete({ slideId: result.slideId }));
         }
       });

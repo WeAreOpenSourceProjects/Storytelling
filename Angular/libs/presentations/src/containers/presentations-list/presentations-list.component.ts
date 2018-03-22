@@ -143,8 +143,9 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
             .afterClosed()
         ),
         tap(result => {
-          if (result.delete) {
+          if (result && result.delete) {
             this.store.dispatch(new fromPresentations.Delete(result.presentationId));
+            // TODO do not refresh data if result is not defined
           }
         }),
         withLatestFrom(this.searchObserver, this.user$,
