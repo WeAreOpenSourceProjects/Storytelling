@@ -1,0 +1,19 @@
+.content-dialog {
+  padding: 20px 30px;
+}
+
+.action-dialog {
+  button {
+    flex: 1 1 0;
+
+    &.delete {
+      background-color:#ed796e;
+      color: white;
+    }
+
+    &.cancel {
+      background-color: #b7becc;
+      color: white;
+    }
+  }
+}
