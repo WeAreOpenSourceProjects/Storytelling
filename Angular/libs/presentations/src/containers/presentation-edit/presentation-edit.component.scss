@@ -8,6 +8,18 @@
     }
   }
 }
-.error{
+.error {
   padding: 0px;
+}
+
+.action-button {
+  z-index: 1;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  #exit {
+    margin-left: 2px;
+    background-color: #e53935;
+  }
 }

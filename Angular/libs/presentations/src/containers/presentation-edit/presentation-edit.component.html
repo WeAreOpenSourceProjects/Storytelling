@@ -5,12 +5,22 @@
   </app-slides-setting>
   <div fxLayout="row wrap" fxLayoutAlign="space-around">
     <div class="base dark">
-      <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+      <!-- <mat-card-actions class="action-button" fxLayout="row" fxLayoutAlign="center center">
         <button mat-raised-button type="button" color="primary" [disabled]="isInShuffle" (click)="update$.next()">UPDATE</button>
         <button mat-raised-button type="button" class="secondery" (click)="cancel()">BACK</button>
-      </mat-card-actions>
+      </mat-card-actions> -->
       <p *ngFor="let msg of errorMsg" class="error">*{{msg.msg}}</p>
     </div>
   </div>
   <app-slides-list></app-slides-list>
 </mat-card-content>
+
+<div class="action-button">
+  <a id="save" mat-fab [disabled]="isInShuffle" (click)="update$.next()" matTooltip="Save the presentation" >
+    <mat-icon svgIcon="navigation:ic_check_24px"></mat-icon>
+  </a>
+
+  <a id="exit" mat-fab (click)="cancel()" matTooltip="Exit and back to presentations" >
+    <mat-icon svgIcon="content:ic_clear_24px"></mat-icon>
+  </a>
+</div>
