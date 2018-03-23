@@ -5,10 +5,6 @@
   </app-slides-setting>
   <div fxLayout="row wrap" fxLayoutAlign="space-around">
     <div class="base dark">
-      <!-- <mat-card-actions class="action-button" fxLayout="row" fxLayoutAlign="center center">
-        <button mat-raised-button type="button" color="primary" [disabled]="isInShuffle" (click)="update$.next()">UPDATE</button>
-        <button mat-raised-button type="button" class="secondery" (click)="cancel()">BACK</button>
-      </mat-card-actions> -->
       <p *ngFor="let msg of errorMsg" class="error">*{{msg.msg}}</p>
     </div>
   </div>
