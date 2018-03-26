@@ -111,9 +111,17 @@ export class PresentationsApiService {
       delete cleanSearch.isFavorite;
     }
 
-    if (cleanSearch.isPublic === 'indeterminate') {
-      delete cleanSearch.isPublic;
+    // if (cleanSearch.isPublic === 'indeterminate') {
+    //   delete cleanSearch.isPublic;
+    // } 
+
+    if (cleanSearch.status === 'published') {
+      cleanSearch.isPublic = true;
+    } else if (cleanSearch.status === 'unpublished') {
+      cleanSearch.isPublic = false;
     }
+
+    delete cleanSearch.status;
 
     if (cleanSearch.title.length === 0) {
       delete cleanSearch.title;

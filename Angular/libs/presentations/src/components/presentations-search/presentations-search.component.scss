@@ -3,13 +3,18 @@
     display: flex;
     align-content: center;
     align-items: center;
-    mat-checkbox{
+    mat-checkbox {
       margin-right: 10px;
-    }
-    mat-checkbox :last-child{
-      margin-right: 0px;
+
+      &:last-child {
+        margin-right: 0px;
+      }
     }
   .sorted-by{
     float: right;
+  }
+
+  mat-form-field {
+    margin-right: 15px;
   }
 }

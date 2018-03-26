@@ -25,17 +25,29 @@
       formControlName="isPublic"
       (click)="onClick(public)"
       [indeterminate]="true">Public</mat-checkbox-->
-    <mat-checkbox
+    <!-- <mat-checkbox
       #public
       name="isPublic"
-      formControlName="isPublic">Public</mat-checkbox>
+      formControlName="isPublic">Public</mat-checkbox> -->
+
+      <mat-form-field>
+        <mat-select
+        #status
+        formControlName="status"
+        placeholder="Status"
+        (change)="onStatusChange(status)">
+          <mat-option value="all">All</mat-option>
+          <mat-option value="published">Public</mat-option>
+          <mat-option value="unpublished">Private</mat-option>
+        </mat-select>
+      </mat-form-field>
 
       <mat-form-field>
         <mat-select
         #order
         formControlName="order"
         placeholder="Sorted"
-        (change)="onChange(order)">
+        (change)="onOrderChange(order)">
           <mat-option value="date">by date</mat-option>
           <mat-option value="alphabetically">alphabetically</mat-option>
         </mat-select>
