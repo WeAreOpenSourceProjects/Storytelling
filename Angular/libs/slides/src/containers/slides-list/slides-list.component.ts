@@ -119,11 +119,11 @@ export class SlidesListComponent implements OnInit, OnDestroy {
     const deleteSubscription = this.delete$
       .pipe(
         switchMap(slideId =>
-          this.dialog.open(SlideDialogComponent, { height: '20%', width: '20%', data: { slideId } }).afterClosed()
+          this.dialog.open(SlideDialogComponent, { height: '160px', width: '350px', data: { slideId } }).afterClosed()
         )
       )
       .subscribe(result => {
-        if (result.delete) {
+        if (result && result.delete) {
           this.store.dispatch(new fromSlides.Delete({ slideId: result.slideId }));
         }
       });

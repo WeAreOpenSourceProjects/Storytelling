@@ -31,16 +31,14 @@ export class PresentationsSearchComponent implements OnDestroy {
     this.searchForm = this.formBuilder.group({
       title: this.formBuilder.control(''),
 //      isFavorite: this.formBuilder.control('indeterminate'),
-//  isPublic: this.formBuilder.control(false),
-      isPublic: this.formBuilder.control(false),
+      status: this.formBuilder.control('all'),
       order: this.formBuilder.control('date')
     });
 
     this.searchObserver.next({
       title: '',
 //      isFavorite: 'indeterminate',
-//      isPublic: 'indeterminate',
-      isPublic: false,
+      status: 'all',
       order: 'date'
     });
 
@@ -62,8 +60,12 @@ export class PresentationsSearchComponent implements OnDestroy {
   }
 */
 
-  onChange(select: MatSelect) {
+  onOrderChange(select: MatSelect) {
     this.searchForm.get('order').setValue(select.value);
+  }
+
+  onStatusChange(select: MatSelect) {
+    this.searchForm.get('status').setValue(select.value);
   }
 
   ngOnDestroy() {

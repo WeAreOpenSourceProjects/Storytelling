@@ -3,26 +3,8 @@ mat-form-field {
 }
 
 .tag {
-  padding: 0 10px;
-
-  .tag-group {
-    display: inline-block;
-    mat-chip:first-child {
-      margin-left: 20px;
-    }
-    mat-chip:last-child {
-      margin-right: 10px;
-    }
-    .close-tag {
-      cursor: pointer;
-      &:hover {
-        color: white;
-      }
-    }
-
-    mat-form-field {
-      padding: 0;
-    }
+  mat-form-field {
+    width: 100%;
   }
 }
 
@@ -34,6 +16,66 @@ mat-form-field {
 }
 
 .image-display {
-  max-height: 200px;
+  max-height: 300px;
   max-width: 100%;
+}
+
+.input-group {
+  min-height: 50px;
+}
+
+.base {
+  height: 350px;
+
+  .description {
+    max-height: 100% !important;
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .banner {
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+
+    .tag-group {
+      position: absolute;
+      bottom: 0;
+      left: 30px;
+      display: inline-block;
+
+      mat-chip {
+        background: rgba(36, 39, 45, 0.7);
+        border-radius: 10px;
+        color: #dedede;
+        font-size: 75%;
+        padding: 4px 8px;
+        margin: 0 8px 4px 0;
+      }
+
+      .close-tag {
+        padding-left: 4px;
+  
+        cursor: pointer;
+        &:hover {
+          color: white;
+        }
+      }
+    }
+
+    button {
+      position: absolute;
+      right: 30px;
+      cursor: pointer;
+    }
+
+    img {
+      height: 320px;
+    }
+
+    #banner {
+      display: none;
+    }
+  }
 }

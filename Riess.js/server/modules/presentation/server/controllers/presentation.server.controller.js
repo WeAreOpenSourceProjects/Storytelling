@@ -236,12 +236,20 @@ exports.search = function(req, res) {
     })
   }
 
-  if ('isPublic' in req.query && req.query.isPublic === 'true') {
-    console.log('here')
-    request.$and[0].$or.push({
-      'isPublic': true
-    })
+  if ('isPublic' in req.query) {
+    if (req.query.isPublic === 'true') {
+      request.$and.push({
+        'isPublic': true
+      });
+    }
+
+    if (req.query.isPublic === 'false') {
+      request.$and.push({
+        'isPublic': false
+      });
+    }
   }
+
 /*
   if ('isFavorite' in req.query) {
     globalRequest.$and.push({

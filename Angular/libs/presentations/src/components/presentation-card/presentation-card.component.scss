@@ -104,6 +104,14 @@
 
                 .btn-group {
                     display: inline-block;
+
+                    .published {
+                        color: green;
+                    }
+
+                    .unpublished {
+                        color: red;
+                    }
                 }
 
                 .option-btn {

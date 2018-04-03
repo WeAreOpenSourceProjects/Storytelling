@@ -3,7 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'slide-delete-dialog',
-  templateUrl: './slide-dialog.component.html'
+  templateUrl: './slide-dialog.component.html',
+  styleUrls: ['./slide-dialog.component.scss']
 })
 export class SlideDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<SlideDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}

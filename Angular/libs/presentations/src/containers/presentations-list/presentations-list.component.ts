@@ -139,11 +139,11 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(presentationId =>
           this.dialog
-            .open(PresentationDialogComponent, { height: '20%', width: '20%', data: { presentationId } })
+            .open(PresentationDialogComponent, { height: '180px', width: '350px', data: { presentationId } })
             .afterClosed()
         ),
         tap(result => {
-          if (result.delete) {
+          if (result && result.delete) {
             this.store.dispatch(new fromPresentations.Delete(result.presentationId));
           }
         }),

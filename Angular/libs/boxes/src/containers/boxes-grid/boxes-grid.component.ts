@@ -199,12 +199,12 @@ export class BoxesGridComponent implements OnInit {
   }
 
   removeItem(event) {
-    const dialog = this.dialog.open(BoxDialogComponent);
+    const dialog = this.dialog.open(BoxDialogComponent, { height: '180px', width: '350px'});
     const dialogSubscription = dialog
       .afterClosed()
       .pipe(take(1))
       .subscribe(result => {
-        if (result.delete) {
+        if (result && result.delete) {
           if (event.item._id) {
             this.boxesService.delete(event.item._id).subscribe();
           }
