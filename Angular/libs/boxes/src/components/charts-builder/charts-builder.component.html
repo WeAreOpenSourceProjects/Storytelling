@@ -15,12 +15,19 @@
             Try our samples
           </a>
         </li>
+        <li class="data-load-action" (click)="inputFile.click()">
+          <a class="a-data-load">
+            <input #inputFile type="file" class="upload" (change)="importCsv($event.target.files)" class="upload-csv">
+            <mat-icon  class="past-icon" svgIcon="file:ic_file_download_24px"></mat-icon>
+            Import CSV
+          </a>
+        </li>
       </ul>
 
       <div fxFlex="5"></div>
       <div class="data-container"  fxFlex="85">
         <i class="format fa fa-align-left breath-left" [class.checked]="!formatTable" matTooltip="View as Text" matTooltipPosition="above" (click)="formatTable = false"></i>
-        <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formTable()"></i>
+        <i class="format fa fa-table breath-left" [class.checked]="formatTable" matTooltip="View as Table" matTooltipPosition="above" (click)="formTable(dataText)"></i>
         <codemirror *ngIf="!formatTable" [(ngModel)]="dataText" [config]="editorConfig">
         </codemirror>
         <app-data-table *ngIf="formatTable" [data]="rawData" [columns]="headerValuesForTable" (updatedData)="editData($event)"></app-data-table>
