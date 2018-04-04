@@ -1,23 +1,29 @@
-.data-load-actions{
+.data-load-actions {
   display: flex;
   flex-direction: column;
 }
-.data-load-action{
+
+.data-load-action {
   display: inline-flex;
   cursor: pointer;
   &:hover {
     background: #f5f5f5;
-    border-radius :5px;
+    border-radius: 5px;
   }
   &.active {
     background: red
   }
+  .upload-csv {
+    display: none;
+  }
 }
+
 .a-data-load {
   display: inline-flex;
   min-height: 40px;
-  margin-top:10%;
+  margin-top: 10%;
 }
+
 // .data-load-action{
 //   margin: 2px;
 //   display: inline-grid;
@@ -26,35 +32,37 @@
 // }
 .flex-container {
   height: 100%;
-
 }
 
 .data-container {
   border: solid 1px #e8dada;
   overflow: hidden;
 }
+
 .samples {
   cursor: pointer;
   height: 10%;
-  margin : 2px;
+  margin: 2px;
   justify-content: center;
-  display : flex;
+  display: flex;
 }
+
 .align-name {
   align-items: center;
   display: flex;
-  }
-  
-/deep/ app-chart-builder{
+}
+
+/deep/ app-chart-builder {
   height: 100%;
-  .mat-stepper-horizontal, .mat-stepper-vertical {
+  .mat-stepper-horizontal,
+  .mat-stepper-vertical {
     height: 75%;
   }
   .mat-horizontal-content-container {
     height: 100%;
     overflow-y: scroll;
   }
-  .mat-horizontal-stepper-content{
+  .mat-horizontal-stepper-content {
     height: 100%;
     overflow-y: auto;
   }
@@ -67,13 +75,12 @@
   .warnMsg {
     margin-left: 20px;
     font-size: 14px;
-    font-weight:normal;
+    font-weight: normal;
   }
 }
 
 mat-card {
   padding: 0;
-
   mat-card-content {
     padding: 15px;
   }
@@ -95,10 +102,9 @@ mat-card {
       margin-bottom: 4px;
     }
   }
-
   ul li {
     background-color: #0dc4a3;
-    border-bottom: 1px solid rgba(0,0,0,.1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -116,20 +122,16 @@ mat-card {
     -o-transition: background .1s ease-in-out;
     transition: background .1s ease-in-out;
     width: 100%;
-
   }
-
   .pull-right {
     float: right;
     margin-left: 1%
   }
 }
 
-
 .ng-section {
   display: block;
   margin-bottom: 2em;
-
   .section-header {
     background: #313847;
     color: #cfcfcf;
@@ -140,9 +142,6 @@ mat-card {
     position: relative;
     width: auto;
   }
-
-
-
   .section-content {
     margin-top: 20px;
   }
@@ -152,98 +151,81 @@ mat-card {
 }
 
 .card-sub-header {
-    display: block;
-    height: 30px;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 30px;
-    padding: 0 10px;
-    position: relative;
-    width: auto;
+  display: block;
+  height: 30px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 30px;
+  padding: 0 10px;
+  position: relative;
+  width: auto;
 }
+
 /**************************/
 
 :host {
-
-/**
+  /**
   * Backgrounds
   */
-$color-bg-darkest: #13141b;
-$color-bg-darker: #1b1e27;
-$color-bg-dark: #232837;
-$color-bg-med: #2f3646;
-$color-bg-light: #455066;
-$color-bg-lighter: #5b6882;
-
-/**
+  $color-bg-darkest: #13141b;
+  $color-bg-darker: #1b1e27;
+  $color-bg-dark: #232837;
+  $color-bg-med: #2f3646;
+  $color-bg-light: #455066;
+  $color-bg-lighter: #5b6882;
+  /**
   * Text
   */
-$color-text-dark: #72809b;
-$color-text-med-dark: #919db5;
-$color-text-med: #a8b2c7;
-$color-text-med-light: #d9dce1;
-$color-text-light: #f0f1f6;
-$color-text-lighter: #fff;
-
-
+  $color-text-dark: #72809b;
+  $color-text-med-dark: #919db5;
+  $color-text-med: #a8b2c7;
+  $color-text-med-light: #d9dce1;
+  $color-text-light: #f0f1f6;
+  $color-text-lighter: #fff;
   .main {
     justify-content: center;
-
     .CodeMirror {
       height: 100% !important;
     }
-
   }
-
-
   .light {
     background: #fff;
   }
-
   .dark {
     background: $color-bg-darker;
-
     .ngx-charts {
-
       text {
         fill: $color-text-med;
       }
-
       .tooltip-anchor {
-        fill: rgb(255,255,255);
+        fill: rgb(255, 255, 255);
       }
-
       .gridline-path {
         stroke: $color-bg-med;
       }
-
       .grid-panel {
         &.odd {
           rect {
-            fill: rgba(255,255,255,0.05);
+            fill: rgba(255, 255, 255, 0.05);
           }
         }
       }
-
       .force-directed-graph {
         .edge {
           stroke: $color-bg-light;
         }
       }
-
       .number-card {
         p {
           color: $color-text-light;
         }
       }
-
       .gauge {
-        .background-arc{
+        .background-arc {
           path {
             fill: $color-bg-med;
           }
         }
-
         .gauge-tick {
           path {
             stroke: $color-text-med;
@@ -253,24 +235,20 @@ $color-text-lighter: #fff;
           }
         }
       }
-
       .linear-gauge {
         .background-bar {
           path {
             fill: $color-bg-med;
           }
         }
-
         .units {
           fill: $color-text-dark;
         }
       }
-
       .timeline {
         .brush-background {
-          fill: rgba(255,255,255,0.05);
+          fill: rgba(255, 255, 255, 0.05);
         }
-
         .brush {
           .selection {
             fill: rgba(255, 255, 255, 0.1);
@@ -278,59 +256,47 @@ $color-text-lighter: #fff;
           }
         }
       }
-
       .polar-chart .polar-chart-background {
         fill: rgb(30, 34, 46);
       }
-
     }
-
     .chart-legend {
       .legend-labels {
-        background: rgba(255,255,255,0.05) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
       }
-
       .legend-item {
         &:hover {
           color: #fff;
         }
       }
-
       .legend-label {
         &:hover {
           color: #fff !important;
         }
-
         .active {
           .legend-label-text {
             color: #fff !important;
           }
         }
       }
-
       .scale-legend-label {
         color: $color-text-med;
       }
     }
-
     .advanced-pie-legend {
       color: $color-text-med;
-
       .legend-item {
         &:hover {
           color: #fff !important;
         }
       }
     }
-
     .number-card .number-card-label {
       font-size: 0.8em;
       color: $color-text-med;
     }
   }
-
   $color-text-dark: #72809b;
-
   /**
   * Header
   */
@@ -342,7 +308,6 @@ $color-text-lighter: #fff;
     padding-bottom: 5px;
     margin: 20px 0;
     font-weight: 600;
-
     &:after {
       content: "";
       width: 25px;
@@ -353,7 +318,6 @@ $color-text-lighter: #fff;
       left: 0;
     }
   }
-
   .viz-container {
     position: relative;
     display: flow-root;
@@ -361,42 +325,44 @@ $color-text-lighter: #fff;
     height: 100%;
     width: 100%
   }
-
   svg.ngx-charts {
     float: left;
     overflow: visible;
   }
-
   .ngx-charts-outer {
     width: 900px !important;
     display: flow-root;
     position: relative;
   }
-
 }
 
 :host /deep/ .visible {
-    overflow-y: auto;
-    max-height: 400px;
+  overflow-y: auto;
+  max-height: 400px;
 }
-.space{
-  margin : 1%;
+
+.space {
+  margin: 1%;
 }
-.card-view{
+
+.card-view {
   order: 1;
   flex: 2;
 }
-.container-fluid{
+
+.container-fluid {
   background: #fafafa;
   display: flex;
   width: 100%;
 }
+
 .content {
   display: flex;
-  flex-direction : row;
-  flex-wrap : wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   max-height: 80%;
 }
+
 mat-chip {
   background: rgb(36, 39, 45);
   background: rgba(36, 39, 45, .7);
@@ -404,7 +370,8 @@ mat-chip {
   color: #dedede;
   font-size: 75%;
 }
-.layout-check{
+
+.layout-check {
   display: none;
   position: absolute;
   top: 0;
@@ -417,42 +384,45 @@ mat-chip {
   opacity: .9;
   line-height: 85px;
 }
+
 .selected .layout-check {
   display: flex;
   position: absolute;
   z-index: 1000;
   opacity: .9;
 }
+
 .selected {
-  background-color:  #00acc1;
+  background-color: #00acc1;
   display: flex;
-  justify-content:center;
+  justify-content: center;
   position: absolute;
   z-index: 0;
   opacity: .7;
 }
+
 .layout {
   position: relative;
   z-index: 0;
   cursor: pointer;
 }
-.check-icon{
-  margin-top : 50%;
+
+.check-icon {
+  margin-top: 50%;
 }
+
 .card-header .mat-card-image {
-  margin : 0 -10px 0 -24px;
+  margin: 0 -10px 0 -24px;
 }
 
 .chart-card {
   background: #fff;
   box-shadow: none !important;
   color: #333;
-  font-family: 'SF Pro Display','SF Pro Icons','Helvetica Neue','Helvetica','Arial',sans-serif !important;
+  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !important;
   padding: 30px;
   width: 20%;
-  height:20%;
-
-
+  height: 20%;
   h2 {
     height: auto;
     line-height: 50px;
@@ -461,20 +431,16 @@ mat-chip {
     text-align: center;
     width: 100% !important;
   }
-
   .mat-card-header-text {
     margin: 10px auto;
     width: 100%;
   }
-
-.mat-card-image {
-  height: auto;
-  width: 100%;
-  display: flex;
-  margin: 0 auto;
-
-}
-
+  .mat-card-image {
+    height: auto;
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+  }
   .image-selected {
     width: 90% !important;
     margin: 0 auto;
@@ -483,53 +449,50 @@ mat-chip {
     margin: 0;
     .categorie {
       text-align: justify;
-      white-space : pre-wrap;
+      white-space: pre-wrap;
     }
-
-
   }
 }
 
 .format.checked {
-    color: #3F403F;
+  color: #3F403F;
 }
 
 .format {
-    color: #999;
-    cursor: pointer;
+  color: #999;
+  cursor: pointer;
 }
 
 .breath-left {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
-
 /*title bar for each step*/
+
 .sub-title-bar {
   width: 100%;
   font-weight: bold;
   font-size: 20px;
   height: 50px;
   padding-bottom: 20px;
-
   .pull-right {
     float: right;
   }
-
   .fa {
     color: grey;
   }
 }
 
 .dimensions-container {
-    padding: 0px;
-    margin-bottom: 0px;
+  padding: 0px;
+  margin-bottom: 0px;
 }
 
 .list-unstyled {
-    padding-left: 0;
-    list-style: none;
+  padding-left: 0;
+  list-style: none;
 }
+
 .next-button {
   position: fixed;
   bottom: 10%;
@@ -540,22 +503,23 @@ mat-chip {
   bottom: 10%;
   position: fixed;
   right: 10%;
-  z-index : 10000;
+  z-index: 10000;
 }
-.fixed-left{
+
+.fixed-left {
   bottom: 10%;
   position: fixed;
   right: 10%;
   margin-right: 90px;
-  z-index : 10000;
+  z-index: 10000;
 }
-.fixed-close{
+
+.fixed-close {
   bottom: 10%;
   position: fixed;
   right: 10%;
   margin-right: -90px;
-  z-index : 10000;
-
+  z-index: 10000;
 }
 
 /deep/ codemirror {
@@ -563,7 +527,8 @@ mat-chip {
     height: 100% !important
   }
 }
+
 app-data-table {
   height: 100%;
-  width :100%
+  width: 100%
 }

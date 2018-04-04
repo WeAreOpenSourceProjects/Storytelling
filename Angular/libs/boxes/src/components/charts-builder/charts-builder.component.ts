@@ -60,7 +60,7 @@ export class ChartsBuilderComponent implements OnInit {
     theme: 'dracula',
     mode: 'htmlmixed'
   };
-  constructor(public dialogRef: MatDialogRef<ChartsBuilderComponent>, private changeDetector: ChangeDetectorRef) {}
+  constructor(public dialogRef: MatDialogRef<ChartsBuilderComponent>, private changeDetector: ChangeDetectorRef) { }
 
   useOurSamples = false;
   formatTable: boolean = false;
@@ -182,9 +182,11 @@ export class ChartsBuilderComponent implements OnInit {
     this.rawData = updatedData;
     this.processData();
   }
+
   changeFormat() {
     this.formatTable = !this.formatTable;
   }
+  
   loadData() {
     if (this.inputOptions) {
       this.headerValues = this.inputOptions.headerValues;
@@ -195,8 +197,21 @@ export class ChartsBuilderComponent implements OnInit {
       this.chartOptions = this.inputOptions;
       this._dataText = babyparse.unparse(this.inputData);
       this.chartType = this.chartTypes.find(chart => chart.name === this.inputOptions.chartType.name);
-
       this.processData();
+    }
+  }
+
+  importCsv(files: FileList) {
+    if (files && files.length > 0) {
+      let file: File = files.item(0);
+      let reader: FileReader = new FileReader();
+      reader.readAsText(file)
+      reader.onload = (e) => {
+        this.clear();
+        let csv: string = reader.result;
+        console.log(csv);
+        this.dataText = csv.trim();
+      }
     }
   }
 
@@ -217,6 +232,7 @@ export class ChartsBuilderComponent implements OnInit {
     console.log('use Exemple', this.dataDims);
     this.processData();
   }
+
   clear() {
     this.headerValues = [];
     this.rawData = [];
@@ -234,7 +250,6 @@ export class ChartsBuilderComponent implements OnInit {
 
   choseChartType(chart) {
     this.chartType = chart;
-
     this.dataDims = [];
     this.processData();
   }
@@ -243,6 +258,7 @@ export class ChartsBuilderComponent implements OnInit {
     if (!this.hasValidBuilder) {
       return;
     }
+
     this.data = this.chartType.convertData(this.dataDims, this.rawData);
     this.configGraph.emit({
       data: this.rawData,
@@ -260,7 +276,7 @@ export class ChartsBuilderComponent implements OnInit {
     return this.data;
   }
 
-  formTable() {
+  formTable(data) {
     this.headerValuesForTable = this.headerValues.map(key => ({
       data: key.data,
       title: key.title,
