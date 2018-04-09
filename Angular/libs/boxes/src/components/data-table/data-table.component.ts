@@ -21,12 +21,9 @@ export class DataTableComponent implements OnInit {
     this.settings = {
       stretchH: 'all'
     };
-    //this.colHeaders = this.columns.map((col: any) =>  col.name );
-    console.log('----  data  ---->', this.data);
-    console.log('---- columns ---->', this.columns);
   }
   afterChange(e: any) {
-    // tslint:disable-next-line:no-console
+    //tslint:disable-next-line:no-console
     this.updatedData.emit(this.data);
   }
 }

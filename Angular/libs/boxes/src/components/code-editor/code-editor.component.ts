@@ -48,14 +48,17 @@ const CODEMIRROR_VALUE_ACCESSOR = {
 })
 export class CodeEditorComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
   @Input() config: any = {};
-  @Input() theme: string = 'dracula';
+  @Input() theme: string = 'white';
   @Input() readOnly: any = false;
-  @Input() mode: any;
+  @Input() mode: any = {
+    name: 'json'
+  };
   @Input() autofocus: boolean = false;
   @Input() lint: any;
   @Input() allowDropFileTypes: any[] = [];
-  @Input() lineNumbers: any;
+  @Input() lineNumbers: any = true;
   @Input() gutters: any[] = [];
+
 
   set value(val: string) {
     if (val !== this._value) {
@@ -64,7 +67,6 @@ export class CodeEditorComponent implements OnInit, AfterViewInit, OnDestroy, Co
       this.change.emit(this._value);
     }
   }
-
   get value(): string {
     return this._value;
   }
@@ -91,10 +93,12 @@ export class CodeEditorComponent implements OnInit, AfterViewInit, OnDestroy, Co
         lint: this.lint,
         allowDropFileTypes: this.allowDropFileTypes,
         lineNumbers: this.lineNumbers,
-        gutters: this.gutters
+        gutters: this.gutters,
+        htmlMode: true
       },
       this.config
     );
+    console.log(this.config);
   }
 
   ngAfterViewInit(): void {

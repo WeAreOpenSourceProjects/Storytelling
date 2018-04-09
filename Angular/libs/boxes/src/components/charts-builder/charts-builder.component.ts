@@ -17,28 +17,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { chartTypes } from './chartTypes';
 import { gapminder } from './data';
 import { GraphComponent } from '@labdat/charts';
-const defaultOptions = {
-  view: null,
-  colorScheme: colorSets.find(s => s.name === 'cool'),
-  schemeType: 'ordinal',
-  showLegend: true,
-  legendTitle: 'Legend',
-  gradient: false,
-  showXAxis: true,
-  showYAxis: true,
-  showXAxisLabel: true,
-  showYAxisLabel: true,
-  yAxisLabel: '',
-  xAxisLabel: '',
-  autoScale: true,
-  showGridLines: true,
-  rangeFillOpacity: 0.5,
-  roundDomains: false,
-  tooltipDisabled: false,
-  showSeriesOnHover: true,
-  curve: shape.curveLinear,
-  curveClosed: shape.curveCardinalClosed
-};
 
 @Component({
   selector: 'app-chart-builder',
@@ -48,18 +26,8 @@ const defaultOptions = {
 export class ChartsBuilderComponent implements OnInit {
   @Input() inputData: any[];
   @Input() inputOptions: any;
-  @Output() validSlide = new EventEmitter();
-  @Output() validForm = new EventEmitter();
-  @ViewChild('viz', { read: ViewContainerRef })
-  viz: ViewContainerRef;
 
   chartTypes = chartTypes;
-
-  config = {
-    lineNumbers: true,
-    theme: 'dracula',
-    mode: 'htmlmixed'
-  };
   constructor(public dialogRef: MatDialogRef<ChartsBuilderComponent>, private changeDetector: ChangeDetectorRef) { }
 
   useOurSamples = false;
@@ -78,8 +46,6 @@ export class ChartsBuilderComponent implements OnInit {
   width: number;
   height: number;
 
-  @Output() configGraph = new EventEmitter();
-  warnMsg: string; //to tell the user which part isn't validated
   _dataText: string;
   get dataText() {
     return this._dataText || ' ';
@@ -105,13 +71,6 @@ export class ChartsBuilderComponent implements OnInit {
     );
   }
   get isValidSlide() {
-    if (!this.hasValidData) {
-      this.warnMsg = 'the input data is not validated';
-    } else if (!this.hasChartSelected) {
-      this.warnMsg = 'please select chart type';
-    } else if (!this.hasValidBuilder) {
-      this.warnMsg = 'unvalid dimensions';
-    }
     return (
       (this.hasValidBuilder == undefined ? false : this.hasValidBuilder) &&
       (this.hasChartSelected == undefined ? false : this.hasChartSelected) &&
@@ -130,14 +89,7 @@ export class ChartsBuilderComponent implements OnInit {
     return valid;
   }
 
-  editorConfig = {
-    lineNumbers: true,
-    theme: 'white',
-    mode: {
-      name: 'json'
-    },
-    htmlMode: true
-  };
+
   allowDropFunction(size: number, dimIndex: number): any {
     return (dragData: any) => this.dataDims[dimIndex] == null || this.dataDims[dimIndex].length < size;
   }
@@ -155,7 +107,6 @@ export class ChartsBuilderComponent implements OnInit {
     } else {
       this.dataDims[dimIndex].push('err' + ' ' + $event.dragData);
     }
-    console.log('dragDatadim', this.dataDims);
   }
 
   removeItem(dimIndex: number, item: string) {
@@ -165,18 +116,13 @@ export class ChartsBuilderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.warnMsg = '';
     if (this.inputData != null) {
       this.loadData();
     } else {
       this.clearAll();
     }
   }
-
-  ngOnChanges() {
-    console.log('change');
-  }
-
+  
   editData(updatedData) {
     this._dataText = babyparse.unparse(updatedData);
     this.rawData = updatedData;
@@ -190,7 +136,6 @@ export class ChartsBuilderComponent implements OnInit {
   loadData() {
     if (this.inputOptions) {
       this.headerValues = this.inputOptions.headerValues;
-      console.log(this.headerValues);
       this.dataDims = this.inputOptions.dataDims;
       this.rawData = this.inputData;
       this.errors = [];
@@ -209,7 +154,6 @@ export class ChartsBuilderComponent implements OnInit {
       reader.onload = (e) => {
         this.clear();
         let csv: string = reader.result;
-        console.log(csv);
         this.dataText = csv.trim();
       }
     }
@@ -229,7 +173,6 @@ export class ChartsBuilderComponent implements OnInit {
 
   useExampleDimension() {
     this.dataDims = this.chartType.dimExemple;
-    console.log('use Exemple', this.dataDims);
     this.processData();
   }
 
@@ -245,7 +188,6 @@ export class ChartsBuilderComponent implements OnInit {
     this.dataText = '';
     this.chartType = null;
     this.theme = 'light';
-    this.chartOptions = { ...defaultOptions };
   }
 
   choseChartType(chart) {
@@ -260,19 +202,6 @@ export class ChartsBuilderComponent implements OnInit {
     }
 
     this.data = this.chartType.convertData(this.dataDims, this.rawData);
-    this.configGraph.emit({
-      data: this.rawData,
-      chartOptions: {
-        chartType: this.chartType,
-        headerValues: this.headerValues,
-        dataDims: this.dataDims,
-        ...this.chartOptions
-      }
-    });
-
-    if (this.isValidSlide) {
-      this.validSlide.emit('this slid is valid');
-    }
     return this.data;
   }
 

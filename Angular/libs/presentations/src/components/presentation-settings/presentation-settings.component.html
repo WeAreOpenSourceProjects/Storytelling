@@ -30,6 +30,7 @@
       </button>
       <input #bannerbutton type="file" id="banner" (change)="onChange($event)">
       <div>
+        <img #banner *ngIf="!settingsForm?.controls?.banner.value" class="image-display" src="assets/logo_full_banner.png">
         <img #banner [attr.src]="settingsForm?.controls?.banner.value" class="image-display">
         <div class="tag-group" formArrayName="tags">
           <mat-chip-list>
