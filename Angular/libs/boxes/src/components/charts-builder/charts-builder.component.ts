@@ -17,6 +17,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { chartTypes } from './chartTypes';
 import { gapminder } from './data';
 import { GraphComponent } from '@labdat/charts';
+import * as XLSX from 'ts-xlsx';
 
 @Component({
   selector: 'app-chart-builder',
@@ -147,21 +148,31 @@ export class ChartsBuilderComponent implements OnInit {
   }
 
   importCsv(files: FileList) {
+    console.log("ici")
     if (files && files.length > 0) {
+      console.log("ici ????")
       let file: File = files.item(0);
       let reader: FileReader = new FileReader();
-      reader.readAsText(file)
+      reader.readAsArrayBuffer(file);
       reader.onload = (e) => {
         this.clear();
-        let csv: string = reader.result;
-        this.dataText = csv.trim();
+        var arrayBuffer = reader.result;
+        var data = new Uint8Array(arrayBuffer);
+        var arr = new Array();
+        for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+        var bstr = arr.join("");
+        var workbook = XLSX.read(bstr, {type:"binary"});
+        var first_sheet_name = workbook.SheetNames[0];
+        var worksheet = workbook.Sheets[first_sheet_name];
+        //this.dataText = XLSX.utils.sheet_to_csv(worksheet).trim();
+        this.updateData(XLSX.utils.sheet_to_csv(worksheet).trim())
       }
     }
   }
 
   trySamples() {
     this.clear();
-    this.dataText = gapminder;
+    this.updateData(gapminder)
   }
 
   usePast() {

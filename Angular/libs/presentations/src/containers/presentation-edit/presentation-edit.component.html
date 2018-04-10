@@ -3,6 +3,8 @@
     [settingsObserver$]="settingsObserver$"
     [settings]="currentPresentationSettings$ | async">
   </app-slides-setting>
+  --------------{{update$.next() |async}}
+
   <div fxLayout="row wrap" fxLayoutAlign="space-around">
     <div class="base dark">
       <p *ngFor="let msg of errorMsg" class="error">*{{msg.msg}}</p>
@@ -10,11 +12,10 @@
   </div>
   <app-slides-list></app-slides-list>
 </mat-card-content>
-
 <div class="action-button">
-  <a id="save" mat-fab [disabled]="isInShuffle" (click)="update$.next()" matTooltip="Save the presentation" >
+  <button id="save"  mat-fab [disabled]="isInShuffle || !update$ |async" (click)="update$.next()" matTooltip="Save the presentation" >
     <mat-icon svgIcon="navigation:ic_check_24px"></mat-icon>
-  </a>
+  </button>
 
   <a id="exit" mat-fab (click)="cancel()" matTooltip="Exit and back to presentations" >
     <mat-icon svgIcon="content:ic_clear_24px"></mat-icon>

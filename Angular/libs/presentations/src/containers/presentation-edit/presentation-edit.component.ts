@@ -76,6 +76,7 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
   public cancel() {
     this.store.dispatch(new fromRouter.Go({ path: ['presentations'] }));
   }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
