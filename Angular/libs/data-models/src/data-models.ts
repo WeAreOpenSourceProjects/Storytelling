@@ -24,15 +24,21 @@ export interface MenuItem {
 }
 
 export interface Box {
+  slideId?: string;
   _id?: string;
   id?: string;
-  width: Number;
-  height: Number;
-  top: Number;
-  left: Number;
-  mime: String;
-  content: any;
-  slideId: String;
+  width?: Number;
+  height?: Number;
+  top?: Number;
+  left?: Number;
+  mime?: String;
+  content?: any;
+  x?: Number;
+  y?: Number;
+  cols? :Number;
+  rows?: Number;
+  minItemCols?: Number;
+  minItemRows?: Number
 }
 
 export interface IPresentation {
@@ -75,6 +81,7 @@ export interface ISlide {
     color : string,
     image : string
   };
+  screenShot?:any;
 }
 
 export class Slide implements ISlide {
@@ -83,6 +90,7 @@ export class Slide implements ISlide {
     public id?: string,
     public index?: number,
     public presentationId?: string,
-    public boxIds?: Box[]
+    public boxIds?: Box[],
+    public screenShot?: any
   ) {}
 }

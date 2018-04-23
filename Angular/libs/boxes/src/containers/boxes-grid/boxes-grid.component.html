@@ -1,5 +1,5 @@
 <app-menu-bar *ngIf="menu.open" (addBox)="addBox($event)" (isOpen)="menu.open = $event" [top]="menu.top" [left]="menu.left"></app-menu-bar>
-<app-grid [boxes]="slide?.boxIds" [editMode]="editMode"
+<app-grid #gridChild [boxes]="(boxes$ | async)" [editMode]="editMode"
     [gridConfig]="gridConfig"
     [presentationMode] ="false"
     (enableEditEvent)="enableEdit($event)"
@@ -8,6 +8,6 @@
     (outsideClick)="menu.open=false"
     (textToSave)="saveText($event)"
     (saveImage)="saveImage($event)"
-    [background]="slide?.background"
+    [background]="(slide$ | async)?.background"
     ></app-grid>
-<a class="fixed" mat-fab  type="button" name="button" (click)="confirmSlide(slide)"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>
+<a class="fixed"  mat-fab  type="button" name="button" (click)="confirmSlide()"><mat-icon class="check-icon" svgIcon="action:ic_done_24px"></mat-icon></a>

@@ -27,7 +27,6 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   upload(req,res,function(err) {
-    console.log(req.file)
       if(err) {
           return res.end("Error uploading file.");
       }
@@ -45,7 +44,6 @@ exports.create = function(req, res) {
  */
 exports.update = function(req, res) {
   upload(req,res,function(err) {
-    console.log(req.file, req.params)
     if(err) {
         return res.end("Error uploading file.");
     }

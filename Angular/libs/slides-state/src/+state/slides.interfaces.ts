@@ -13,5 +13,7 @@ export function sortByIndex(a: Slide, b: Slide): number {
 }
 
 export const slidesAdapter: EntityAdapter<Slide> = createEntityAdapter<Slide>({
-  sortComparer: sortByIndex
+  sortComparer: sortByIndex,
+  selectId: (slide: Slide) => slide._id
 });
+

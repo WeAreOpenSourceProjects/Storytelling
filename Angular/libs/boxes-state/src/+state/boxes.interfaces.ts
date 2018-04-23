@@ -6,4 +6,6 @@ export interface BoxesState extends EntityState<Box> {
   loaded: boolean;
   loading: boolean;
 }
-export const boxesAdapter: EntityAdapter<Box> = createEntityAdapter<Box>();
+export const boxesAdapter: EntityAdapter<Box> = createEntityAdapter<Box>(
+  {  selectId: (box: Box) => box._id}
+);

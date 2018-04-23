@@ -35,6 +35,13 @@ export class SlidesEffects {
   });
 
   @Effect()
+  loadOne = this.actions.ofType(fromSlides.LOAD_ONE).pipe(
+    map(toPayload),
+    switchMap(payload => this.slidesApiService.getOneSlide(payload.slideId)),
+    map((response: any) => new fromSlides.LoadOneSuccess({slide : response}))
+  );
+
+  @Effect()
   add = this.actions.ofType(fromSlides.ADD).pipe(
     map(toPayload),
     switchMap(payload => this.slidesApiService.add(payload)),
@@ -69,6 +76,22 @@ export class SlidesEffects {
       return new fromSlides.BulkUpdateFailure(error);
     }
   });
+
+  @Effect()
+  update = this.actions.ofType(fromSlides.UPDATE).pipe(
+    map(toPayload),
+    switchMap(payload => this.slidesApiService.update(payload.slide)),
+    tap(() =>
+      this.snackBar.openFromComponent(SlidesSnackComponent, {
+        duration: 1000,
+        data: 'Slide Update Success',
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      })
+    ),
+    map((response: any) => new fromSlides.UpdateSuccess({slide : response})),
+    catchError(error => of(new fromSlides.AddFailure(error)))
+  );
 
   @Effect()
   delete$ = this.actions.ofType(fromSlides.DELETE).pipe(

@@ -13,7 +13,7 @@ export class BoxesBackgroundComponent {
   public imagePreview;
   setImage(){
     return {
-      'background': this.color,
+      'color': this.color,
       'image': this.image,
       'imagePreview' :this.imagePreview? this.imagePreview :''
     }

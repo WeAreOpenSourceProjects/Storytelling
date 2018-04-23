@@ -9,6 +9,7 @@ import { Slide } from '@labdat/data-models';
 })
 export class SlideCardComponent {
   @Input() public index: number;
+  @Input() public slide: Slide;
 
   @Output() delete = new EventEmitter<string>();
 
@@ -24,5 +25,9 @@ export class SlideCardComponent {
 
   public onClick() {
     this.select.emit();
+  }
+
+  public getImage(){
+    return this.slide.screenShot? 'url('+this.slide.screenShot+')':"url('assets/logo_full_banner.png')";
   }
 }

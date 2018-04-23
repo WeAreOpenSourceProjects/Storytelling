@@ -43,10 +43,10 @@ exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
   // If an slide is being processed and the current user created it then allow any manipulation
 
-// !!!
+  // !!!
   //  if (req.slide && req.user && req.slide.user && req.slide.user.id === req.user.id) {
-    return next();
-//  }
+  return next();
+  //  }
 
   // Check for user roles
   acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {

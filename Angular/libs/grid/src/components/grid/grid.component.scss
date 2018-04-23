@@ -59,3 +59,8 @@ gridster, gridster-item {
   cursor: pointer;
   position: absolute;
 }
+gridster-item {
+  background-color: white;
+  border : none !important;
+  padding-top: 9px;
+}

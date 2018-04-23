@@ -70,7 +70,7 @@ export class SlidesListComponent implements OnInit, OnDestroy {
       if (this.slides.length === slides.length) {
         return slides.forEach(slide => {
           const index = this.slides.findIndex(s => s.id === slide.id);
-          if (index !== undefined) {
+          if (index !== -1) {
             this.slides[index].index = slide.index;
           }
         });
@@ -133,6 +133,10 @@ export class SlidesListComponent implements OnInit, OnDestroy {
       this.store.dispatch(new fromRouter.Go({ path: ['slides', slideId] }));
     });
     this.subscriptions.add(selectSubscription);
+  }
+
+  public trackById(slide) {
+    return slide._id;
   }
 
   ngOnDestroy() {

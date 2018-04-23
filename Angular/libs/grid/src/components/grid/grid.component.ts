@@ -69,7 +69,6 @@ public outsideClick = new EventEmitter();
       ...defaultConfig,
       emptyCellClickCallback : this.emptyCellClick.bind(this),
       emptyCellContextMenuCallback : this.emptyCellContextMenu.bind(this)
-
     }
     this.options = options;
     if(this.background && this.background.image && !this.background.imagePreview){
@@ -102,8 +101,9 @@ public outsideClick = new EventEmitter();
     }
   }
 
-  getImageId(image, index){
-    this.saveImage.emit({image, index});
+  getImageId(event, index){
+    console.log(event, index);
+    this.saveImage.emit({id: event, index});
   }
 
   enableEdit (box, i){
@@ -144,5 +144,9 @@ public outsideClick = new EventEmitter();
       binary += String.fromCharCode(bytes[i]);
     }
     return window.btoa(binary);
+  }
+
+  trackById(i, box){
+     return box._id; 
   }
 }
