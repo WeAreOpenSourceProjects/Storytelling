@@ -6,21 +6,25 @@
 var boxPolicy = require('../policies/box.server.policy'),
   box = require('../controllers/box.server.controller');
 
-module.exports = function(app) {
+module.exports = function (app) {
   // users-list all box
   app.route('/api/boxes').all(boxPolicy.isAllowed)
-  .get(box.list)
-  .post(box.create);
+    .get(box.list)
+    .post(box.create)
+    .patch(box.updateAll);
 
   // Single box routes
   app.route('/api/boxes/:boxId')
-  //.all(boxPolicy.isAllowed)
-  .get(box.findOneById)
+    .get(box.findOneById)
     .patch(box.update)
     .delete(box.delete);
 
-    app.route('/api/boxes/:boxId')
-//    .all(boxPolicy.isAllowed)
-    app.route('/api/boxes/background').all(boxPolicy.isAllowed)
-    .post(box.updateBackground)
+  app.route('/api/boxes/:boxId');
+  //    .all(boxPolicy.isAllowed)
+
+  app.route('/api/boxes/background').all(boxPolicy.isAllowed)
+    .post(box.updateBackground);
+
+  app.route('/api/:slideId/boxes')
+    .get(box.listBySlide);
 };

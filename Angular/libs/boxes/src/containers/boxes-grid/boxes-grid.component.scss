@@ -34,17 +34,7 @@
   }
 }
 
-gridster-item {
-  background-color: white;
-  border : none !important;
-  padding-top: 9px;
-  &:hover{
-    border : solid 1px !important;
-    .controls {
-      display: block;
-    }
-  }
-}
+
 
 ul li {
   margin-bottom: 5%;

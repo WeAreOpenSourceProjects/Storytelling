@@ -8,18 +8,18 @@ var SlideSchema = new Schema({
     type: Number,
     default: 0
   },
-  background : {
+  background: {
     type: Object,
-    image : {
+    image: {
       type: Schema.Types.ObjectId,
-      ref: 'Image',
+      ref: 'Image'
     },
-    color : {
-      type : String
+    color: {
+      type: String
     },
     default: {
-      image : null,
-      color : 'rgba(255,255,255,0)'
+      image: null,
+      color: 'rgba(255,255,255,0)'
     }
   },
   boxIds: [{
@@ -31,6 +31,10 @@ var SlideSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Presentation',
     required: false
+  },
+  screenShot: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true
@@ -38,6 +42,6 @@ var SlideSchema = new Schema({
 mongoose.model('Slide', SlideSchema);
 
 SlideSchema.post('remove', function (slide) {
-  Boxes.remove(slide.boxes)
+  Boxes.remove(slide.boxes);
   next();
 });

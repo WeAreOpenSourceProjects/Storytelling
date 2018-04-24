@@ -51,11 +51,11 @@ var BoxSchema = new Schema({
   },
   content: {
     type: Object,
-    chart : {
-      type :Object
+    chart: {
+      type: Object
     },
     text: {
-      type : String
+      type: String
     },
     imageId: {
       type: {

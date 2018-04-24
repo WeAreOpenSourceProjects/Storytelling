@@ -31,6 +31,11 @@ export class SlidesApiService {
     return this.http.get(backendURL).pipe(map((slides: Slide[]) => slides.map(slide => ({ ...slide, id: slide._id }))));
   }
 
+  getOneSlide(slideId): Observable<any> {
+    const backendURL = `${this.baseUrl}/slides/${slideId}`;
+    return this.http.get(backendURL);;
+  } 
+
   add(slide: Slide): Observable<any> {
     const backendURL = `${this.baseUrl}/slides`;
     return this.http.post(backendURL, slide).pipe(map((slide: Slide) => ({ ...slide, id: slide._id })));
@@ -42,17 +47,23 @@ export class SlidesApiService {
   }
 
   bulkUpdate(payload): Observable<any> {
+    console.log(payload);
     const backendURL = `${this.baseUrl}/${this.endpoints.slides}`;
     return this.http.patch(backendURL, payload);
   }
 
   delete(slideId: string): Observable<any> {
     const backendURL = `${this.baseUrl}/slides/${slideId}`;
-    return this.http.delete(backendURL).pipe(map((slide: Slide) => ({ ...slide, id: slide._id })));
+    return this.http.delete(backendURL).pipe(map((slide: Slide) => ({ ...slide })));
   }
   getAllBoxes(id): Observable<any> {
     const params: URLSearchParams = new URLSearchParams();
     const backendURL = `${this.baseUrl}/slides/${id}`;
     return this.http.get(backendURL);
+  }
+  update(slide): Observable<any> {
+    console.log("sli ?????", slide)
+    const backendURL = `${this.baseUrl}/slides/${slide._id}`;
+    return this.http.patch(backendURL, slide);
   }
 }

@@ -148,9 +148,7 @@ export class ChartsBuilderComponent implements OnInit {
   }
 
   importCsv(files: FileList) {
-    console.log("ici")
     if (files && files.length > 0) {
-      console.log("ici ????")
       let file: File = files.item(0);
       let reader: FileReader = new FileReader();
       reader.readAsArrayBuffer(file);

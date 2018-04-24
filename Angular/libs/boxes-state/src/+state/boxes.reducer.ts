@@ -23,8 +23,17 @@ export function boxesReducer(
     case fromBoxes.LOAD_SUCCESS: {
       return boxesAdapter.addAll(action.payload.boxes, { ...state, loaded: true, loading: false });
     }
+    case fromBoxes.ADD_SUCCESS: {
+      return boxesAdapter.addOne(action.payload.box, state);
+    } 
+    case fromBoxes.UPDATE_SUCCESS: {
+      return boxesAdapter.updateOne(action.payload.box, state);
+    }
+    case fromBoxes.UPDATE_ALL_SUCCESS: {
+      return boxesAdapter.updateMany(action.payload.boxes, state);
+    }
     case fromBoxes.DELETE_SUCCESS: {
-      return boxesAdapter.removeMany(action.payload.boxIds, state);
+      return boxesAdapter.removeOne(action.payload.boxId, state);
     }
     default: {
       return state;

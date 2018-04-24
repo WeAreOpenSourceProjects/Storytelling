@@ -13,7 +13,7 @@ export const {
 } = boxesAdapter.getSelectors(selectBoxesState);
 
 export const selectIsLoading = createSelector(selectBoxesState, (state: BoxesState) => state.loading);
-export const selectIsLoaded = createSelector(selectBoxesState, (state: BoxesState) => state.loaded);
+export const selectBoxesLoaded = createSelector(selectBoxesState, (state: BoxesState) => state.loaded);
 export const selectCurrentBoxId = createSelector(selectBoxesState, (state: BoxesState) => state.currentBoxId);
 export const selectCurrentBox = createSelector(
   selectBoxesEntities,

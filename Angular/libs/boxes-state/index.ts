@@ -7,7 +7,7 @@ export {
   selectAllBoxes,
   selectBoxesTotal,
   selectIsLoading,
-  selectIsLoaded,
+  selectBoxesLoaded,
   selectCurrentBoxId,
   selectCurrentBox,
   selectCurrentBoxGrid,

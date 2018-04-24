@@ -15,118 +15,153 @@ var path = require('path'),
   ObjectId = mongoose.Schema.ObjectId,
   Promise = require('promise');
 
-  exports.list = function(req, res) {
-    Box.find()
+exports.list = function (req, res) {
+  Box.find()
     .sort('-created')
     .populate({
       path: 'content.imageId',
-      model: 'Image'})
+      model: 'Image'
+    })
     .exec()
-    .then(function(boxes) {
+    .then(function (boxes) {
       return res.json(boxes);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     });
-  };
+};
 
 /**
  * Create an box
  */
-exports.create = function(req, res) {
-  const boxP = Box.create(req.body)
-  const slideP = Slide.findOne({ _id: req.body.slideId });
-  console.log(req.body);
+exports.create = function (req, res) {
+  const boxP = Box.create(req.body);
+  const slideP = Slide.findOne({
+    _id: req.body.slideId
+  });
   Promise.all([boxP, slideP])
-  .then(function(result) {
-    const box = result[0];
-    const slide = result[1];
-    Box.find({"slideId": mongoose.Types.ObjectId(req.body.slideId)}).exec().then(function(boxes){
-      console.log(boxes)
-        for (var item in boxes){
-          if(slide.boxIds.indexOf(boxes[item]._id)===-1)
-            slide.boxIds.push(boxes[item]._id)
+    .then(function (result) {
+      const box = result[0];
+      const slide = result[1];
+      Box.find({
+        'slideId': mongoose.Types.ObjectId(req.body.slideId)
+      }).exec().then(function (boxes) {
+        for (var item in boxes) {
+          if (slide.boxIds.indexOf(boxes[item]._id) === -1)
+            slide.boxIds.push(boxes[item]._id);
         }
         return Slide.findByIdAndUpdate(req.body.slideId, slide);
       });
     })
-    .then(function(slide) {
-      console.log('slide', slide);
+    .then(function (slide) {
       return boxP;
     })
-    .then(function(box) {
+    .then(function (box) {
       return res.json(box);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
-        })
+        });
       }
     });
 };
 
 
-exports.update = function(req, res) {
-  console.log(req.params, req.body);
+exports.update = function (req, res) {
   Box.findByIdAndUpdate(req.params.boxId, req.body)
-  .exec()
-  .then(function(box) {
-    return res.json(box);
-  })
-  .catch(function(err) {
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage(err)
+    .exec()
+    .then(function (box) {
+      return res.json(box);
+    })
+    .catch(function (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
     });
-  });
+};
+exports.updateAll = function (req, res) {
+  const boxes = req.body;
+  const boxP = [];
+  for (var box in boxes) {
+    if (boxes[box].content && (boxes[box].content.text || boxes[box].content.chart || boxes[box].content.imageId)) {
+      boxP.push(Box.findByIdAndUpdate(boxes[box]._id, boxes[box]));
+    } else if (!boxes[box].content.text && !boxes[box].content.chart && !boxes[box].content.imageId) {
+      boxP.push(Box.findByIdAndRemove(boxes[box]._id));
+    }
+  }
+  Promise.all(boxP)
+    .then(function (result) {
+      res.json(result);
+    });
 };
 
 /**
  * Delete a box
  */
-exports.delete = function(req, res) {
+exports.delete = function (req, res) {
   Box.findByIdAndRemove(req.params.boxId)
-  .populate({path:'content.imageId', model :'Image'})
-  .exec()
-  .then(function(box) {
-    Image.findByIdAndRemove(box.content.imageId._id).exec();
-    return res.json(box);
-  })
-  .catch(function(err) {
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage(err)
+    .populate({
+      path: 'content.imageId',
+      model: 'Image'
+    })
+    .exec()
+    .then(function (box) {
+      if (box.content.imageId) {
+        Image.findByIdAndRemove(box.content.imageId._id).exec();
+      }
+      return res.json(box._id);
+    })
+    .catch(function (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
     });
-  });
 };
 
-exports.findOneById = function(id) {
-  Box.findById(id)
-  .exec()
-  .then(function(box) {
-    if (!box) {
-      return res.status(404).send({
-        message: 'No box with that identifier has been found'
-      });
-    }
-    req.box = box;
-    next();
-  })
-  .catch(function(err) {
-    return next(err);
-  });
-}
+exports.findOneById = function (req, res, next) {
+  Box.findById(req.params.id)
+    .exec()
+    .then(function (box) {
+      if (!box) {
+        return res.status(404).send({
+          message: 'No box with that identifier has been found'
+        });
+      }
+      req.box = box;
+      next();
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+};
 
-exports.updateBackground = function (req, res){
-  console.log(req.body);
+exports.updateBackground = function (req, res) {
   var slide = {
-    background : req.body.background
-  }
+    background: req.body.background
+  };
   Slide.findByIdAndUpdate(req.body.id, slide).exec()
-  .then(function(slide){
-     res.json('OK');
-  });
+    .then(function (slide) {
+      res.json('OK');
+    });
   res.json('ok');
+};
 
-}
+exports.listBySlide = function (req, res) {
+  Slide.findById(req.params.slideId)
+    .populate({
+      path: 'boxIds',
+      model: 'Box',
+      populate: {
+        path: 'content.imageId',
+        model: 'Image'
+      }
+    })
+    .exec()
+    .then(function (slide) {
+      res.json(slide.boxIds);
+    });
+};

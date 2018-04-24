@@ -13,31 +13,33 @@ import { toPayload } from '@ngrx/effects';
 import { BoxesApiService } from '../services/boxes.api.service';
 import { fromAuthentication } from '@labdat/authentication-state';
 import { mapTo } from 'rxjs/operators/mapTo';
+import { tap } from 'rxjs/operators';
+import { fromSlides } from '@labdat/slides-state';
 
 @Injectable()
 export class BoxesEffects {
-  @Effect() loginSuccess$ = this.actions.ofType(fromAuthentication.LOGIN_SUCCESS).pipe(mapTo(new fromBoxes.Load()));
 
-  // @Effect()
-  // load = this.dataPersistence.fetch(fromBoxes.LOAD, {
-  //   run: (action: fromBoxes.Load, state: BoxesState) => {
-  //     return this.boxesApiService.getAll(0, 10)
-  //       .map(boxes => boxes.map(boxe => ({ ...boxe, id: boxe._id })))
-  //       .map(boxes => new fromBoxes.LoadSuccess({ boxes }))
-  //   },
-  //   onError: (action: fromBoxes.Load, error) => {
-  //     console.error('Error', error);
-  //     return new fromBoxes.LoadFailure(error);
-  //   }
-  // });
-
+  @Effect()
+  load = this.dataPersistence.fetch(fromBoxes.LOAD, {
+    run: (action: fromBoxes.Load, state: BoxesState) => {
+      return this.boxesApiService.getAll(action.payload.slideId)
+        .map(boxes => boxes.map(boxe => ({ ...boxe, id: boxe._id })))
+        .map(boxes => new fromBoxes.LoadSuccess({ boxes }))
+    },
+    onError: (action: fromBoxes.Load, error) => {
+      console.error('Error', error);
+      return new fromBoxes.LoadFailure(error);
+    }
+  });
+ 
   @Effect()
   add = this.actions
     .ofType(fromBoxes.ADD)
     .pipe(
       map(toPayload),
-      switchMap(payload => this.boxesApiService.addBox(payload.boxes)),
-      map((response: any) => new fromBoxes.AddSuccess({ boxe: response })),
+      switchMap(payload => this.boxesApiService.addBox(payload.box)),
+      tap(console.log),
+      map((response: any) => new fromBoxes.AddSuccess({ box: response })),
       catchError(error => of(new fromBoxes.AddFailure(error)))
     );
 
@@ -53,15 +55,34 @@ export class BoxesEffects {
   });
 
   @Effect()
+  updateAll = this.actions
+  .ofType(fromBoxes.UPDATE_ALL)
+  .pipe(
+    map(toPayload),
+    switchMap(payload => this.boxesApiService.updateAll(payload)),
+    map((response: any) => new fromBoxes.UpdateAllSuccess({ boxes: response })),
+    catchError(error => of(new fromBoxes.UpdateAllFailure(error)))
+  );
+
+  @Effect()
   delete$ = this.actions
     .ofType(fromBoxes.DELETE)
     .pipe(
       map(toPayload),
-      switchMap(payload => this.boxesApiService.delete(payload.boxeId)),
-      map((response: any) => new fromBoxes.DeleteSuccess({ boxIds: [response.id] })),
+      switchMap(payload => this.boxesApiService.delete(payload.boxId)),
+      map((response: any) => new fromBoxes.DeleteSuccess({ boxId: response })),
       catchError(error => of(new fromBoxes.DeleteFailure(error)))
     );
 
+    @Effect()
+    deleteImage$ = this.actions
+      .ofType(fromBoxes.DELETE_IMAGE)
+      .pipe(
+        map(toPayload),
+        switchMap(payload => this.boxesApiService.deleteImage(payload.imageId)),
+        map((response: any) => new fromBoxes.DeleteImageSuccess({ imageId: response })),
+        catchError(error => of(new fromBoxes.DeleteImageFailure(error)))
+      );
   constructor(
     private actions: Actions,
     private dataPersistence: DataPersistence<BoxesState>,

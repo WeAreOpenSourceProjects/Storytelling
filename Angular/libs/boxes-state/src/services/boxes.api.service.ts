@@ -31,7 +31,7 @@ export class BoxesApiService {
   }
   getAll(slideId): Observable<any> {
     const params: URLSearchParams = new URLSearchParams();
-    const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
+    const backendURL = `${this.baseUrl}/${slideId}/${this.endpoints.boxes}`;
     return this.http.get(backendURL);
   }
 
@@ -49,11 +49,22 @@ export class BoxesApiService {
     return this.http.post(backendURL, background);
   }
   delete(id): Observable<any> {
+    console.log(id);
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.boxes}/${id}`;
     return this.http.delete(backendURL);
   }
   deleteImage(id): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.images}/${id}`;
     return this.http.delete(backendURL);
+  }
+
+  updateBox(box) {
+    const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/${box.id}`;
+    return this.http.patch(backendURL,  {changes: box.changes});
+  }
+
+  updateAll(boxes) {
+    const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
+    return this.http.patch(backendURL,  boxes);
   }
 }

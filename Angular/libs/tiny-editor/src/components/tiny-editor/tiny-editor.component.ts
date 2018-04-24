@@ -32,6 +32,8 @@ export class TinyEditorComponent {
 
   public activeEditor: any;
 
+  constructor(private elementRef: ElementRef){}
+
   @Input()
   public init = {
     menubar: false,
@@ -44,6 +46,7 @@ export class TinyEditorComponent {
       editor.on('blur', e => {
         editor.setMode('readonly');
         this.textToSave.emit(editor.getContent());
+        
       });
     },
     content_style:

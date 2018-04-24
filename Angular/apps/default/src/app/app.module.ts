@@ -24,7 +24,7 @@ import { PresentationsStateModule } from '@labdat/presentations-state';
 import { BoxesStateModule } from '@labdat/boxes-state';
 import { PresentationsRoutingModule } from '@labdat/presentations-routing';
 import { SlidesRoutingModule } from '@labdat/slides-routing';
-
+import { BoxesRoutingModule } from '@labdat/boxes-routing'
 @NgModule({
   imports: [
     NxModule.forRoot(),
@@ -48,9 +48,11 @@ import { SlidesRoutingModule } from '@labdat/slides-routing';
 
     PresentationsStateModule.forRoot(),
     SlidesStateModule.forRoot(),
+    BoxesStateModule.forRoot(),
 
     PresentationsRoutingModule.forRoot(),
-    SlidesRoutingModule.forRoot()
+    SlidesRoutingModule.forRoot(),
+    BoxesRoutingModule.forRoot()
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]

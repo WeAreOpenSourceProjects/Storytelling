@@ -8,6 +8,7 @@ import { SlidesState } from './slides.interfaces';
 import * as fromSlides from './slides.actions';
 import { map } from 'rxjs/operators/map';
 import { switchMap } from 'rxjs/operators/switchMap';
+import { mergeMap } from 'rxjs/operators/mergeMap';
 import { catchError } from 'rxjs/operators/catchError';
 import { toPayload } from '@ngrx/effects';
 import { SlidesApiService } from '../services/slides.api.service';
@@ -18,6 +19,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SlidesSnackComponent } from '../components/slides-snack/slides-snack.component';
 import { tap } from 'rxjs/operators/tap';
 import { from } from 'rxjs/observable/from';
+import { flatMap } from 'rxjs/operators';
+import { fromBoxes } from '@labdat/boxes-state';
+import { fromRouter } from '@labdat/router-state';
+import { zip } from 'rxjs/observable/zip';
 
 @Injectable()
 export class SlidesEffects {
@@ -33,6 +38,13 @@ export class SlidesEffects {
       return new fromSlides.LoadFailure(error);
     }
   });
+
+  @Effect()
+  loadOne = this.actions.ofType(fromSlides.LOAD_ONE).pipe(
+    map(toPayload),
+    switchMap(payload => this.slidesApiService.getOneSlide(payload.slideId)),
+    map((response: any) => new fromSlides.LoadOneSuccess({slide : response}))
+  );
 
   @Effect()
   add = this.actions.ofType(fromSlides.ADD).pipe(
@@ -69,6 +81,28 @@ export class SlidesEffects {
       return new fromSlides.BulkUpdateFailure(error);
     }
   });
+  @Effect()
+  confirm = this.actions.ofType(fromSlides.CONFIRM_STATE).pipe(
+    map(toPayload),
+    switchMap((payload)=> 
+      from([new fromBoxes.UpdateAll(payload.boxes), new fromSlides.UpdateSlide({slide: payload.slide})])
+  ))
+  
+  @Effect()
+  update = this.actions.ofType(fromSlides.UPDATE).pipe(
+    map(toPayload),
+    switchMap(payload => this.slidesApiService.update(payload.slide)),
+    tap(() =>
+      this.snackBar.openFromComponent(SlidesSnackComponent, {
+        duration: 1000,
+        data: 'Slide Update Success',
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      })
+    ),
+    map((response: any) => new fromSlides.UpdateSuccess({slide : response})),
+    catchError(error => of(new fromSlides.AddFailure(error)))
+  );
 
   @Effect()
   delete$ = this.actions.ofType(fromSlides.DELETE).pipe(

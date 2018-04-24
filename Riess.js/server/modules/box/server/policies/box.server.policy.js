@@ -20,10 +20,10 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/box/:boxId',
       permissions: '*'
-    },{
-      resources :'/api/boxes/background',
+    }, {
+      resources: '/api/boxes/background',
       permissions: '*'
-    } ]
+    }]
   }, {
     roles: ['user'],
     allows: [{
@@ -33,9 +33,9 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/box/:boxId',
       permissions: ['*']
     }, {
-      resources :'/api/boxes/background',
+      resources: '/api/boxes/background',
       permissions: '*'
-    } ]
+    }]
   }, {
     roles: ['guest'],
     allows: [{
@@ -45,9 +45,9 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/box/:boxId',
       permissions: ['*']
     }, {
-      resources :'/api/boxes/background',
+      resources: '/api/boxes/background',
       permissions: '*'
-    } ]
+    }]
   }]);
 };
 
@@ -59,10 +59,10 @@ exports.isAllowed = function (req, res, next) {
   // If a box is being processed and the current user created it then allow any manipulation
 
 
-// !!!
-//  if (req.box && req.user && req.box.user && req.box.user.id === req.user.id) {
-    return next();
-//  }
+  // !!!
+  //  if (req.box && req.user && req.box.user && req.box.user.id === req.user.id) {
+  return next();
+  //  }
 
   // Check for user roles
   acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
