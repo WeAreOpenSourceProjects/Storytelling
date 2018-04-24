@@ -54,14 +54,12 @@ export class BoxesEffects {
     }
   });
 
-  @Effect({dispatch:false})
+  @Effect()
   updateAll = this.actions
   .ofType(fromBoxes.UPDATE_ALL)
   .pipe(
-    tap(console.log),
     map(toPayload),
     switchMap(payload => this.boxesApiService.updateAll(payload)),
-    tap(console.log),
     map((response: any) => new fromBoxes.UpdateAllSuccess({ boxes: response })),
     catchError(error => of(new fromBoxes.UpdateAllFailure(error)))
   );

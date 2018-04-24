@@ -21,7 +21,6 @@ export function boxesReducer(
       return { ...state, loading: true };
     }
     case fromBoxes.LOAD_SUCCESS: {
-      console.log('???????')
       return boxesAdapter.addAll(action.payload.boxes, { ...state, loaded: true, loading: false });
     }
     case fromBoxes.ADD_SUCCESS: {
@@ -34,7 +33,6 @@ export function boxesReducer(
       return boxesAdapter.updateMany(action.payload.boxes, state);
     }
     case fromBoxes.DELETE_SUCCESS: {
-      console.log(action.payload);
       return boxesAdapter.removeOne(action.payload.boxId, state);
     }
     default: {

@@ -19,6 +19,9 @@ export const DELETE_SUCCESS = '[Slides] Delete Success';
 export const DELETE_FAILURE = '[Slides] Delete Failure';
 export const UPDATE_ON_DELETE = '[Slides] Update On Delete';
 export const UPDATE_STATE = '[Slide] Update State';
+export const CONFIRM_STATE = '[Slide] Confirm State';
+export const CONFIRM_STATE_SUCCESS = '[Slide] Confirm State Success';
+export const CONFIRM_STATE_FAILURE = '[Slide] Confirm State Failure';
 export const LOAD_ONE = '[Slide] Load one';
 export const LOAD_ONE_SUCCESS = '[Slide] Load one Success';
 
@@ -43,7 +46,9 @@ export type Actions =
   | DeleteFailure
   | UpdateOnDelete
   | LoadOne
-  | LoadOneSuccess;
+  | LoadOneSuccess
+  | ConfirmState
+  | ConfirmStateSuccess;
 
 export class Load implements Action {
   readonly type = LOAD;
@@ -121,6 +126,11 @@ export class UpdateState implements Action {
   constructor(public payload: { slide: { id: number; changes: any } }) {}
 }
 
+export class ConfirmState implements Action {
+  readonly type = CONFIRM_STATE;
+  constructor(public payload: { slide, boxes }) {}
+}
+
 export class Delete implements Action {
   readonly type = DELETE;
   constructor(public payload: { slideId: string }) {}
@@ -131,12 +141,20 @@ export class DeleteSuccess implements Action {
   constructor(public payload: { slide: Slide }) {}
 }
 
+export class DeleteFailure implements Action {
+  readonly type = DELETE_FAILURE;
+  constructor(public payload: { error: any }) {}
+}
+
+
 export class UpdateOnDelete implements Action {
   readonly type = UPDATE_ON_DELETE;
   constructor(public payload: { slide: Slide }) {}
 }
 
-export class DeleteFailure implements Action {
-  readonly type = DELETE_FAILURE;
-  constructor(public payload: { error: any }) {}
+
+
+export class ConfirmStateSuccess implements Action {
+  readonly type = CONFIRM_STATE_SUCCESS;
+  constructor(public payload: { slide: any }) {}
 }

@@ -33,17 +33,7 @@ export function slidesReducer(
       console.log(updates);
       return slidesAdapter.updateMany(updates, state);
     }
-    case fromBoxes.ADD_SUCCESS: {
-      return slidesAdapter.updateOne({
-        id: action.payload.box.slideId,
-        changes: Object.assign(
-          {},
-          state.entities[action.payload.box.slideId],
-          { boxIds: state.entities[action.payload.box.slideId].boxIds.concat([ action.payload.box ]) }
-        )
-      },
-      state)
-    }
+
 
     case fromSlides.UPDATE_STATE: {
       return slidesAdapter.updateOne({
@@ -55,6 +45,19 @@ export function slidesReducer(
     case fromSlides.ADD_SUCCESS: {
       return slidesAdapter.addOne(action.payload, state);
     }
+
+    case fromBoxes.ADD_SUCCESS: {
+      return slidesAdapter.updateOne({
+        id: action.payload.box.slideId,
+        changes: Object.assign(
+          {},
+          state.entities[action.payload.box.slideId],
+          { boxIds: state.entities[action.payload.box.slideId].boxIds.concat([ action.payload.box ]) }
+        )
+      },
+      state)
+    }
+    
     case fromSlides.LOAD: {
       return slidesAdapter.removeAll({ ...state, loaded: false, loading: true });
     }

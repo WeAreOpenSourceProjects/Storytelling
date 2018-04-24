@@ -31,6 +31,14 @@ import { tap, map } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
 import { slidesAdapter } from '@labdat/slides-state/src/+state/slides.interfaces';
 
+
+
+function delay(t, v) {
+  return new Promise(function(resolve) { 
+      setTimeout(resolve.bind(null, v), t)
+  });
+}
+
 @Component({
   selector: 'app-boxes-grid',
   templateUrl: './boxes-grid.component.html',
@@ -263,11 +271,12 @@ export class BoxesGridComponent implements OnInit {
   }
 
   confirmSlide() {
-    domtoimage.toPng(this.gridChild.nativeElement.querySelector('gridster')).then(function (dataUrl) {
+    domtoimage.toPng(this.gridChild.nativeElement.querySelector('div'))
+    .then(function (dataUrl) {
         return dataUrl;
-      }).then((dataUrl) => {
-        this.store.dispatch(new fromSlides.UpdateSlide({ slide: {...this.slide, screenShot : dataUrl} }));
-        this.store.dispatch(new fromBoxes.UpdateAll(this.boxes));
+      })
+      .then((dataUrl) => {
+        this.store.dispatch(new fromSlides.ConfirmState({ slide: {...this.slide, screenShot : dataUrl}, boxes : this.boxes  }));
         this.router.navigate(['/', 'presentations', this.slide.presentationId, 'edit']);
       });
   }
