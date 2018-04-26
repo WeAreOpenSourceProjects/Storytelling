@@ -1,8 +1,8 @@
-<div class="gridster-class" [ngStyle]="{'background' : 'url('+background?.imagePreview+')' || ''}" [style.background]="'url(' + background?.imagePreview +')' || ''" [style.background-color]="background?.color" >
+<div class="gridster-class" [ngStyle]="{'background': getBackround()}" [style.background-color]="background?.color" >
   <gridster [options]="options" >
     <gridster-item [style.background-color]="background?.color"
       *ngFor="let box of boxes; let i = index; trackBy: trackById" [item]="box" [ngClass]="{ 'edition-mode' : !presentationMode}" >
-      <div *ngIf="!editMode && !presentationMode" class="controls box-header-btns pull-right">
+      <div *ngIf="(!box.editMode &&  !presentationMode) || editMode" class="controls box-header-btns pull-right">
         <a title="Edit" (click)="enableEdit(box, i)"><mat-icon svgIcon="editor:ic_mode_edit_24px"></mat-icon></a>
         <a title="Remove" (click)="removeItem($event, box)"><mat-icon svgIcon="action:ic_delete_24px"></mat-icon></a>
       </div>
@@ -13,11 +13,11 @@
 </div>
 
 <ng-template #texteditor let-box="data" let-i="index">
-   <app-tiny-editor (textToSave)="saveText($event, box?._id)" [presentationMode]="presentationMode" [ngClass]="{ 'gridster-item-content' : editMode, 'text-editor': true }" class="text"  [initialValue]="box?.content.text"></app-tiny-editor>
+   <app-tiny-editor (textToSave)="saveText($event, box?._id)" [presentationMode]="presentationMode" [ngClass]="{ 'gridster-item-content' : box?.editMode, 'text-editor': true }" class="text"  [initialValue]="box?.content.text"></app-tiny-editor>
 </ng-template>
 <ng-template #grapheditor let-box="data">
   <app-graph [chart]="box?.content?.chart"></app-graph>
 </ng-template>
 <ng-template #imageeditor let-box="data" let-i="index">
-  <app-image-upload [presentationMode]="presentationMode" [editMode]="editMode" (getImageId)="getImageId($event, box?._id)" [image]="box?.content?.imageId" ></app-image-upload>
+  <app-image-upload [presentationMode]="presentationMode" [editMode]="box?.editMode || editMode" (getImageId)="getImageId($event, box?._id)" [image]="box?.content?.imageId || box?.content?.previewImage" ></app-image-upload>
 </ng-template>
