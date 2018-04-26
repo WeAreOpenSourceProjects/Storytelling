@@ -39,7 +39,7 @@ export class BoxesEffects {
       map(toPayload),
       switchMap(payload => this.boxesApiService.addBox(payload.box)),
       tap(console.log),
-      map((response: any) => new fromBoxes.AddSuccess({ box: response })),
+      map((response: any) => new fromBoxes.AddSuccess({ box: {...response, editMode: true} })),
       catchError(error => of(new fromBoxes.AddFailure(error)))
     );
 

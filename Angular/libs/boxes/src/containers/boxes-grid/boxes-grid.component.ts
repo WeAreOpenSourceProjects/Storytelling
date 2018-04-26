@@ -34,8 +34,8 @@ import { slidesAdapter } from '@labdat/slides-state/src/+state/slides.interfaces
 
 
 function delay(t, v) {
-  return new Promise(function(resolve) { 
-      setTimeout(resolve.bind(null, v), t)
+  return new Promise(function (resolve) {
+    setTimeout(resolve.bind(null, v), t)
   });
 }
 
@@ -60,7 +60,6 @@ export class BoxesGridComponent implements OnInit {
   public slide$ = this.store.select(selectCurrentSlide).pipe(map(slide => cloneDeep(slide)));
   public boxes$ = this.store.select(selectAllBoxes).pipe(map(boxes => cloneDeep(boxes)));
 
-  public editMode = false;
   public slide: any;
   public id: any;
   public x = 0;
@@ -117,7 +116,6 @@ export class BoxesGridComponent implements OnInit {
   }
 
   public enableEdit(event) {
-    this.editMode = true;
     if (event.box.content) {
       if (event.box.content.type === 'chart') {
         const dialog = this.dialog.open(ChartsBuilderComponent, { height: '95%', width: '90%' });
@@ -130,7 +128,6 @@ export class BoxesGridComponent implements OnInit {
             event.box.width = event.box.cols * 25;
             event.box.height = event.box.cols * 25;
           }
-          this.editMode = false;
         });
         this.subscriptions.add(dialogSubscription);
       }
@@ -214,7 +211,7 @@ export class BoxesGridComponent implements OnInit {
         changes: {
           content: {
             type: 'image',
-            imageId: event.id
+            imageId: event._id
           }
         }
       }
@@ -260,10 +257,10 @@ export class BoxesGridComponent implements OnInit {
       .subscribe(result => {
         if (result && result.delete) {
           if (event.item._id) {
-            this.store.dispatch(new fromBoxes.Delete({boxId: event.item._id}));
+            this.store.dispatch(new fromBoxes.Delete({ boxId: event.item._id }));
           }
           if (event.item.content.imageId) {
-           this.store.dispatch(new fromBoxes.DeleteImage({imageId: event.item.content.imageId}));
+            this.store.dispatch(new fromBoxes.DeleteImage({ imageId: event.item.content.imageId }));
           }
         }
       });
@@ -272,11 +269,11 @@ export class BoxesGridComponent implements OnInit {
 
   confirmSlide() {
     domtoimage.toPng(this.gridChild.nativeElement.querySelector('div'))
-    .then(function (dataUrl) {
+      .then(function (dataUrl) {
         return dataUrl;
       })
       .then((dataUrl) => {
-        this.store.dispatch(new fromSlides.ConfirmState({ slide: {...this.slide, screenShot : dataUrl}, boxes : this.boxes  }));
+        this.store.dispatch(new fromSlides.ConfirmState({ slide: { ...this.slide, screenShot: dataUrl }, boxes: this.boxes }));
         this.router.navigate(['/', 'presentations', this.slide.presentationId, 'edit']);
       });
   }

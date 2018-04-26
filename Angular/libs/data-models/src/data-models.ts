@@ -38,7 +38,8 @@ export interface Box {
   cols? :Number;
   rows?: Number;
   minItemCols?: Number;
-  minItemRows?: Number
+  minItemRows?: Number;
+  editMode?:Boolean
 }
 
 export interface IPresentation {

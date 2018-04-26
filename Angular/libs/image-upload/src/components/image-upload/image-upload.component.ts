@@ -50,8 +50,8 @@ export class ImageUploadComponent {
     if (this.image) {
       this.previewData = 'data:' + this.image.contentType + ';base64,' + this.arrayBufferToBase64(this.image.data.data);
       this.idImage = this.image._id;
-      console.error(this.image)
       this.getImageId.emit(this.image._id);
+      this.getImageIdInBase64.emit(this.previewData);
     }
   }
   onUploadOutput(output: UploadOutput): void {
@@ -94,7 +94,6 @@ export class ImageUploadComponent {
         output.file.response.contentType +
         ';base64,' +
       this.arrayBufferToBase64(output.file.response.data.data);
-      console.error(output.file.response._id)
       this.getImageIdInBase64.emit(this.previewData)
       this.getImageId.emit(output.file.response._id);
       this.idImage = output.file.response._id;

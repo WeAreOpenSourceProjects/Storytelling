@@ -17,7 +17,6 @@ export class AuthenticationGuardService implements CanActivate, CanLoad {
   constructor(private store: Store<AuthenticationState>) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    console.log(route.url);
     const currentUrl = route.url[0] ? route.url[0].path : '';
     return this.hasPermission(currentUrl);
   }

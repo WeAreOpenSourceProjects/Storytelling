@@ -30,7 +30,9 @@ export class BoxesGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.currentSlideId$.pipe(
+      tap(console.log),
       tap(slideId => this.store.dispatch(new fromBoxes.Load({ slideId }))),
+    
       switchMap(() => this.boxesLoaded$),
       filter(loaded => loaded)
     );

@@ -30,8 +30,8 @@ export class GridComponent implements OnInit{
 
 @Input() boxes : any;
 @Input() gridConfig : GridsterConfig;
-@Input () editMode: Boolean = false;
 @Input() presentationMode : Boolean = false;
+@Input() editMode : Boolean = false;
 @Input() editModeEditor$ : Observable<Boolean>;
 @Input() background :any;
 @Output () enableEditEvent : EventEmitter<any> = new EventEmitter<any>();
@@ -79,6 +79,9 @@ public outsideClick = new EventEmitter();
 
   emptyCellContextMenu(event, item) {
     this.editMode = false;
+    this.boxes.forEach(box => {
+      box.editMode = false;      
+    });
     for (var j=0; j<this.editors.toArray().length;j++) {
         this.editors.toArray()[j].setEditMode(false);
     }
@@ -107,7 +110,8 @@ public outsideClick = new EventEmitter();
   }
 
   enableEdit (box, i){
-    this.editMode = true;
+    box.editMode = true;
+    console.log(box)
     if(box.content.type==='text'){
       let acc = 0;
       for(let j=0; j<i ; j++){
@@ -125,6 +129,9 @@ public outsideClick = new EventEmitter();
   }
   emptyCellClick(event, item) {
     this.editMode = false;
+    this.boxes.forEach(box => {
+      box.editMode = false;      
+    });
     this.outsideClick.emit();
     for (var i=0; i<this.editors.toArray().length;i++) {
       this.editors.toArray()[i].setEditMode(false);
@@ -148,5 +155,9 @@ public outsideClick = new EventEmitter();
 
   trackById(i, box){
      return box._id; 
+  }
+
+  getBackround(){
+    return (this.background && this.background.imagePreview)?'url('+this.background.imagePreview +')': '';
   }
 }
