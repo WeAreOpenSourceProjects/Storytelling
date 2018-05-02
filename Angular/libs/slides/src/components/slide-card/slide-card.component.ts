@@ -27,7 +27,7 @@ export class SlideCardComponent {
     this.select.emit();
   }
 
-  public getImage(){
-    return this.slide.screenShot? 'url('+this.slide.screenShot+')':"url('assets/logo_full_banner.png')";
+  public getImage() {
+    return this.slide.screenShot ? 'url(' + this.slide.screenShot + ')' : "url('assets/logo_full_banner.png')";
   }
 }

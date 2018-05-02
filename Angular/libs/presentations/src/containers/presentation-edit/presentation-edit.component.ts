@@ -65,12 +65,10 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.subscriptions = this.update$
       .pipe(withLatestFrom(this.settingsObserver$, this.currentPresentation$))
-      .subscribe(([click, settings, presentation]: [Event, any, Presentation]) =>
-        {
-          this.store.dispatch(new fromPresentations.Update({ id: presentation.id, changes: settings }));
-          this.store.dispatch(new fromRouter.Go({ path: ['presentations'] }));
-        }
-      );
+      .subscribe(([click, settings, presentation]: [Event, any, Presentation]) => {
+        this.store.dispatch(new fromPresentations.Update({ id: presentation.id, changes: settings }));
+        this.store.dispatch(new fromRouter.Go({ path: ['presentations'] }));
+      });
   }
 
   public cancel() {
@@ -80,5 +78,4 @@ export class PresentationEditComponent implements OnInit, AfterViewChecked {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
-
 }

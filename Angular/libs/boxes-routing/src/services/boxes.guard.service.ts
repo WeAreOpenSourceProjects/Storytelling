@@ -12,7 +12,7 @@ import {
 } from '@labdat/authentication-state';
 import { fromRouter } from '@labdat/router-state';
 import { selectBoxesLoaded, fromBoxes } from '@labdat/boxes-state';
-import { selectCurrentSlideId } from '@labdat/slides-state'
+import { selectCurrentSlideId } from '@labdat/slides-state';
 import { filter } from 'rxjs/operators/filter';
 import { zip } from 'rxjs/operators/zip';
 import { of } from 'rxjs/observable/of';
@@ -32,7 +32,7 @@ export class BoxesGuardService implements CanActivate {
     return this.currentSlideId$.pipe(
       tap(console.log),
       tap(slideId => this.store.dispatch(new fromBoxes.Load({ slideId }))),
-    
+
       switchMap(() => this.boxesLoaded$),
       filter(loaded => loaded)
     );

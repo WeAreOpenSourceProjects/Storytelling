@@ -10,11 +10,11 @@ export const REGISTER_FAILURE = '[Auth] Register Failure';
 export const LOGOUT = '[Auth] Logout';
 export const LOAD_USER = '[Auth] Load User';
 export const FORGET_PASSWORD = '[Auth] forget password';
-export const FORGET_PASSWORD_SUCCESS = '[Auth] forget password Success'
-export const FORGET_PASSWORD_FAILURE = '[Auth] forget password Failure'
+export const FORGET_PASSWORD_SUCCESS = '[Auth] forget password Success';
+export const FORGET_PASSWORD_FAILURE = '[Auth] forget password Failure';
 export const RESET_PASSWORD = '[Auth] reset password';
-export const RESET_PASSWORD_SUCCESS = '[Auth] reset password Success'
-export const RESET_PASSWORD_FAILURE = '[Auth] reset password Failure'
+export const RESET_PASSWORD_SUCCESS = '[Auth] reset password Success';
+export const RESET_PASSWORD_FAILURE = '[Auth] reset password Failure';
 
 export type Actions =
   | Login
@@ -74,11 +74,11 @@ export class LoadUser implements Action {
 
 export class ForgetPassword implements Action {
   readonly type = FORGET_PASSWORD;
-  constructor(public payload?:any) {}
+  constructor(public payload?: any) {}
 }
 export class ForgetPasswordSuccess implements Action {
   readonly type = FORGET_PASSWORD_SUCCESS;
-  constructor(public payload?:any) {}
+  constructor(public payload?: any) {}
 }
 export class ForgetPasswordFailure implements Action {
   readonly type = FORGET_PASSWORD_FAILURE;
@@ -86,7 +86,7 @@ export class ForgetPasswordFailure implements Action {
 }
 export class ResetPassword implements Action {
   readonly type = RESET_PASSWORD;
-  constructor(public payload?:any) {}
+  constructor(public payload?: any) {}
 }
 export class ResetPasswordSuccess implements Action {
   readonly type = RESET_PASSWORD_SUCCESS;

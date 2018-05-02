@@ -31,11 +31,9 @@ import { tap, map } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
 import { slidesAdapter } from '@labdat/slides-state/src/+state/slides.interfaces';
 
-
-
 function delay(t, v) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve.bind(null, v), t)
+  return new Promise(function(resolve) {
+    setTimeout(resolve.bind(null, v), t);
   });
 }
 
@@ -47,15 +45,13 @@ function delay(t, v) {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxesGridComponent implements OnInit {
-
-
-
   @HostListener('document:click', ['$event'])
   clickedOutside($event) {
     this.menu.open = false;
   }
 
-  @ViewChild('gridChild', { read: ElementRef }) private gridChild: ElementRef;
+  @ViewChild('gridChild', { read: ElementRef })
+  private gridChild: ElementRef;
 
   public slide$ = this.store.select(selectCurrentSlide).pipe(map(slide => cloneDeep(slide)));
   public boxes$ = this.store.select(selectAllBoxes).pipe(map(boxes => cloneDeep(boxes)));
@@ -73,7 +69,7 @@ export class BoxesGridComponent implements OnInit {
     open: false,
     top: 0,
     left: 0
-  }
+  };
 
   constructor(
     private dialog: MatDialog,
@@ -82,7 +78,7 @@ export class BoxesGridComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private store: Store<PresentationsState>
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.subscriptions = this.currentPresentationId$.subscribe(presentationId => {
@@ -105,13 +101,13 @@ export class BoxesGridComponent implements OnInit {
       displayGrid: 'always',
       emptyCellContextMenuCallback: this.emptyCellContextMenu.bind(this)
     };
-    const boxesSubscription = this.boxes$.subscribe((boxes) => {
+    const boxesSubscription = this.boxes$.subscribe(boxes => {
       this.boxes = boxes;
-    })
+    });
     this.subscriptions.add(boxesSubscription);
-    const slidesSubscription = this.slide$.subscribe((slide) => {
+    const slidesSubscription = this.slide$.subscribe(slide => {
       this.slide = slide;
-    })
+    });
     this.subscriptions.add(slidesSubscription);
   }
 
@@ -137,26 +133,28 @@ export class BoxesGridComponent implements OnInit {
   addBox(event) {
     switch (event.type) {
       case 'text': {
-        this.store.dispatch(new fromBoxes.Add({
-          box: {
-            slideId: this.id,
-            x: this.x,
-            y: this.y,
-            cols: 16,
-            rows: 3,
-            content: {
-              type: event.type
+        this.store.dispatch(
+          new fromBoxes.Add({
+            box: {
+              slideId: this.id,
+              x: this.x,
+              y: this.y,
+              cols: 16,
+              rows: 3,
+              content: {
+                type: event.type
+              }
             }
-          }
-        }))
+          })
+        );
         break;
       }
       case 'chart': {
         const dialog = this.dialog.open(ChartsBuilderComponent, { height: '95%', width: '90%' });
-        const chartBoxSubscription = dialog.afterClosed()
-          .subscribe((chart) => {
-            if (chart) {
-              this.store.dispatch(new fromBoxes.Add({
+        const chartBoxSubscription = dialog.afterClosed().subscribe(chart => {
+          if (chart) {
+            this.store.dispatch(
+              new fromBoxes.Add({
                 box: {
                   slideId: this.id,
                   x: this.x,
@@ -170,30 +168,35 @@ export class BoxesGridComponent implements OnInit {
                     chart: chart
                   }
                 }
-              }))
-            }
-          });
+              })
+            );
+          }
+        });
         this.subscriptions.add(chartBoxSubscription);
         break;
       }
       case 'image': {
-        this.store.dispatch(new fromBoxes.Add({
-          box: {
-            slideId: this.id,
-            x: this.x,
-            y: this.y,
-            content: {
-              type: event.type
+        this.store.dispatch(
+          new fromBoxes.Add({
+            box: {
+              slideId: this.id,
+              x: this.x,
+              y: this.y,
+              content: {
+                type: event.type
+              }
             }
-          }
-        }))
+          })
+        );
         break;
       }
       case 'background': {
-        const dialog = this.dialog.open(BoxesBackgroundComponent, { 'width': '50%' });
-        const backgroundBoxSubscription = dialog.afterClosed().subscribe((background) => {
+        const dialog = this.dialog.open(BoxesBackgroundComponent, { width: '50%' });
+        const backgroundBoxSubscription = dialog.afterClosed().subscribe(background => {
           if (background) {
-            this.store.dispatch(new fromSlides.UpdateState({ slide: { id: this.slide._id, changes: { background: background } } }));
+            this.store.dispatch(
+              new fromSlides.UpdateState({ slide: { id: this.slide._id, changes: { background: background } } })
+            );
             this.cdr.detectChanges();
           }
         });
@@ -203,35 +206,37 @@ export class BoxesGridComponent implements OnInit {
     }
   }
 
-
   saveImage(event) {
-    this.store.dispatch(new fromBoxes.Update({
-      box: {
-        id: event.index,
-        changes: {
-          content: {
-            type: 'image',
-            imageId: event._id
+    this.store.dispatch(
+      new fromBoxes.Update({
+        box: {
+          id: event.index,
+          changes: {
+            content: {
+              type: 'image',
+              imageId: event._id
+            }
           }
         }
-      }
-    }))
+      })
+    );
   }
 
   saveText(event) {
-    this.store.dispatch(new fromBoxes.Update({
-      box: {
-        id: event.index,
-        changes: {
-          content: {
-            type: 'text',
-            text: event.text
+    this.store.dispatch(
+      new fromBoxes.Update({
+        box: {
+          id: event.index,
+          changes: {
+            content: {
+              type: 'text',
+              text: event.text
+            }
           }
         }
-      }
-    }))
+      })
+    );
   }
-
 
   emptyCellContextMenu(event) {
     setTimeout(() => {
@@ -240,13 +245,13 @@ export class BoxesGridComponent implements OnInit {
       setTimeout(() => {
         this.menu.open = true;
         this.cdr.detectChanges();
-      })
-    })
+      });
+    });
     this.x = event.item.x;
     this.y = event.item.y;
 
-    this.menu.top = event.event.clientY - 50;
-    this.menu.left = event.event.clientX - 50;
+    this.menu.top = event.event.clientY - 90;
+    this.menu.left = event.event.clientX - 70;
   }
 
   removeItem(event) {
@@ -268,12 +273,15 @@ export class BoxesGridComponent implements OnInit {
   }
 
   confirmSlide() {
-    domtoimage.toPng(this.gridChild.nativeElement.querySelector('div'))
-      .then(function (dataUrl) {
+    domtoimage
+      .toPng(this.gridChild.nativeElement.querySelector('div'))
+      .then(function(dataUrl) {
         return dataUrl;
       })
-      .then((dataUrl) => {
-        this.store.dispatch(new fromSlides.ConfirmState({ slide: { ...this.slide, screenShot: dataUrl }, boxes: this.boxes }));
+      .then(dataUrl => {
+        this.store.dispatch(
+          new fromSlides.ConfirmState({ slide: { ...this.slide, screenShot: dataUrl }, boxes: this.boxes })
+        );
         this.router.navigate(['/', 'presentations', this.slide.presentationId, 'edit']);
       });
   }

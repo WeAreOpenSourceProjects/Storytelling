@@ -25,7 +25,7 @@ export function boxesReducer(
     }
     case fromBoxes.ADD_SUCCESS: {
       return boxesAdapter.addOne(action.payload.box, state);
-    } 
+    }
     case fromBoxes.UPDATE_SUCCESS: {
       return boxesAdapter.updateOne(action.payload.box, state);
     }

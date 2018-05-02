@@ -5,25 +5,15 @@ import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-menu-bar',
   templateUrl: './menu-bar.component.html',
-  styleUrls: ['./menu-bar.component.css'],
-  animations: [
-    trigger('flyInOut', [
-      transition('void => *', [style({ opacity: 0 }), animate(200, style({ opacity: 1 }))]),
-      transition('* => void', [animate(200, style({ opacity: 0 }))])
-    ])
-  ]
+  styleUrls: ['./menu-bar.component.scss'],
 })
 export class MenuBarComponent implements OnInit {
-
   el: any;
   @Input() top: any;
   @Input() left: any;
-
   @Output() public isOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public addBox: EventEmitter<any> = new EventEmitter<any>();
-
   public isOpen$ = new Subject();
-
   constructor(el: ElementRef, public renderer: Renderer2) {
     this.el = el.nativeElement;
   }
@@ -32,10 +22,11 @@ export class MenuBarComponent implements OnInit {
     this.renderer.setStyle(this.el, 'left', this.left + 'px');
     this.renderer.setStyle(this.el, 'top', this.top + 'px');
   }
+
   closeMenu() {
     this.isOpen.emit(false);
   }
   open(type) {
-    this.addBox.emit({type, ...this.top , ...this.left});
+    this.addBox.emit({ type, ...this.top, ...this.left });
   }
 }

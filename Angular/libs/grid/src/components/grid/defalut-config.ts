@@ -1,4 +1,4 @@
-import { GridType} from 'angular-gridster2';
+import { GridType } from 'angular-gridster2';
 
 export default {
   gridType: <GridType>'fit',
@@ -37,5 +37,5 @@ export default {
   disableWindowResize: false,
   disableWarnings: false,
   scrollToNewItems: false,
-  pushItems : true
+  pushItems: true
 };

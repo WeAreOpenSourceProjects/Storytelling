@@ -35,11 +35,11 @@ export interface Box {
   content?: any;
   x?: Number;
   y?: Number;
-  cols? :Number;
+  cols?: Number;
   rows?: Number;
   minItemCols?: Number;
   minItemRows?: Number;
-  editMode?:Boolean
+  editMode?: Boolean;
 }
 
 export interface IPresentation {
@@ -79,10 +79,10 @@ export interface ISlide {
   presentationId?: string;
   boxIds?: Box[];
   background?: {
-    color : string,
-    image : string
+    color: string;
+    image: string;
   };
-  screenShot?:any;
+  screenShot?: any;
 }
 
 export class Slide implements ISlide {

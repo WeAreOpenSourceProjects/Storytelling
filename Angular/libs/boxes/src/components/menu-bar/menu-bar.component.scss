@@ -3,13 +3,12 @@
   z-index: 10000;
 }
 
-ul{
-
-}
-
-li{
-  display: inline;
-}
 .close {
+  cursor: pointer;
+}
+
+a { color: inherit; }
+
+.menu-item {
   cursor: pointer;
 }

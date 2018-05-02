@@ -21,8 +21,14 @@ import { LogoutDirective } from './directives/logout/logout.directive';
 import { AuthenticationInterceptorService } from './services/authentication.interceptor.service';
 import { AuthenticationGuardService } from './services/authentication.guard.service';
 import { ForgetPasswordComponent } from './components/forget-password';
-import { ResetPasswordComponent} from './components/reset-password/reset-password.component';
-const COMPONENTS = [AuthenticationComponent, LoginComponent, RegisterComponent, ForgetPasswordComponent, ResetPasswordComponent];
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+const COMPONENTS = [
+  AuthenticationComponent,
+  LoginComponent,
+  RegisterComponent,
+  ForgetPasswordComponent,
+  ResetPasswordComponent
+];
 
 const DIRECTIVES = [LogoutDirective];
 

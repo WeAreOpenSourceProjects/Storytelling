@@ -19,127 +19,124 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import defaultConfig from './defalut-config';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { GraphComponent } from  '@labdat/charts';
-import { TinyEditorComponent } from '@labdat/tiny-editor'
+import { GraphComponent } from '@labdat/charts';
+import { TinyEditorComponent } from '@labdat/tiny-editor';
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.scss']
 })
-export class GridComponent implements OnInit{
+export class GridComponent implements OnInit {
+  @Input() boxes: any;
+  @Input() gridConfig: GridsterConfig;
+  @Input() presentationMode: Boolean = false;
+  @Input() editMode: Boolean = false;
+  @Input() editModeEditor$: Observable<Boolean>;
+  @Input() background: any;
+  @Output() enableEditEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() removeItemEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() emptyCellClickCallbackEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() textToSave: EventEmitter<any> = new EventEmitter<any>();
+  @Output() saveImage: EventEmitter<any> = new EventEmitter<any>();
+  public options: GridsterConfig;
 
-@Input() boxes : any;
-@Input() gridConfig : GridsterConfig;
-@Input() presentationMode : Boolean = false;
-@Input() editMode : Boolean = false;
-@Input() editModeEditor$ : Observable<Boolean>;
-@Input() background :any;
-@Output () enableEditEvent : EventEmitter<any> = new EventEmitter<any>();
-@Output () removeItemEvent : EventEmitter<any> = new EventEmitter<any>();
-@Output () emptyCellClickCallbackEvent : EventEmitter<any> = new EventEmitter<any>();
-@Output () textToSave : EventEmitter<any> = new EventEmitter<any>();
-@Output() saveImage : EventEmitter<any>= new EventEmitter<any>();
-public options : GridsterConfig;
+  @ViewChildren(TinyEditorComponent) public editors;
 
-@ViewChildren (TinyEditorComponent)
-public editors;
+  @ViewChild('texteditor') public texteditor;
 
-@ViewChild('texteditor')
-public texteditor;
+  @ViewChild('imageeditor') public imageeditor;
 
-@ViewChild('imageeditor')
-public imageeditor;
+  @ViewChild('grapheditor') public grapheditor;
 
-@ViewChild('grapheditor')
-public grapheditor;
-
-@Output()
-public outsideClick = new EventEmitter();
+  @Output() public outsideClick = new EventEmitter();
 
   constructor(
     private dialog: MatDialog,
     private element: ElementRef,
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private cdr: ChangeDetectorRef){}
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     const options = {
       ...this.gridConfig,
       ...defaultConfig,
-      emptyCellClickCallback : this.emptyCellClick.bind(this),
-      emptyCellContextMenuCallback : this.emptyCellContextMenu.bind(this)
-    }
+      emptyCellClickCallback: this.emptyCellClick.bind(this),
+      emptyCellContextMenuCallback: this.emptyCellContextMenu.bind(this)
+    };
     this.options = options;
-    if(this.background && this.background.image && !this.background.imagePreview){
-      this.background.imagePreview = 'data:' + this.background.image.contentType +
-      ';base64,' +this.arrayBufferToBase64(this.background.image.data.data);
+    if (this.background && this.background.image && !this.background.imagePreview) {
+      this.background.imagePreview =
+        'data:' +
+        this.background.image.contentType +
+        ';base64,' +
+        this.arrayBufferToBase64(this.background.image.data.data);
     }
   }
 
   emptyCellContextMenu(event, item) {
     this.editMode = false;
     this.boxes.forEach(box => {
-      box.editMode = false;      
+      box.editMode = false;
     });
-    for (var j=0; j<this.editors.toArray().length;j++) {
-        this.editors.toArray()[j].setEditMode(false);
+    for (var j = 0; j < this.editors.toArray().length; j++) {
+      this.editors.toArray()[j].setEditMode(false);
     }
-    this.emptyCellClickCallbackEvent.emit({event, item})
+    this.emptyCellClickCallbackEvent.emit({ event, item });
   }
   changedOptions() {
     if (this.gridConfig.api && this.gridConfig.api.optionsChanged) {
       this.gridConfig.api.optionsChanged();
     }
   }
-  saveText(text, index){
-
-    this.textToSave.emit({text, index});
+  saveText(text, index) {
+    this.textToSave.emit({ text, index });
   }
-  getTemplate(type){
-    switch(type) {
-      case 'text': return this.texteditor;
-      case 'chart': return this.grapheditor;
-      case 'image': return this.imageeditor;
+  getTemplate(type) {
+    switch (type) {
+      case 'text':
+        return this.texteditor;
+      case 'chart':
+        return this.grapheditor;
+      case 'image':
+        return this.imageeditor;
     }
   }
 
-  getImageId(event, index){
+  getImageId(event, index) {
     console.log(event, index);
-    this.saveImage.emit({id: event, index});
+    this.saveImage.emit({ id: event, index });
   }
 
-  enableEdit (box, i){
+  enableEdit(box, i) {
     box.editMode = true;
-    console.log(box)
-    if(box.content.type==='text'){
+    console.log(box);
+    if (box.content.type === 'text') {
       let acc = 0;
-      for(let j=0; j<i ; j++){
-        if(this.boxes[j].content.type === 'text')
-          acc++;
+      for (let j = 0; j < i; j++) {
+        if (this.boxes[j].content.type === 'text') acc++;
       }
       this.editors.toArray()[acc].setEditMode(true);
-      for (var j=0; j<this.editors.toArray().length;j++) {
-        if(j !== acc)
-          this.editors.toArray()[j].setEditMode(false);
+      for (var j = 0; j < this.editors.toArray().length; j++) {
+        if (j !== acc) this.editors.toArray()[j].setEditMode(false);
       }
     } else {
-      this.enableEditEvent.emit({box, i})
+      this.enableEditEvent.emit({ box, i });
     }
   }
   emptyCellClick(event, item) {
     this.editMode = false;
     this.boxes.forEach(box => {
-      box.editMode = false;      
+      box.editMode = false;
     });
     this.outsideClick.emit();
-    for (var i=0; i<this.editors.toArray().length;i++) {
+    for (var i = 0; i < this.editors.toArray().length; i++) {
       this.editors.toArray()[i].setEditMode(false);
     }
-
   }
-  removeItem ($event, item){
-    this.removeItemEvent.emit({$event, item})
+  removeItem($event, item) {
+    this.removeItemEvent.emit({ $event, item });
   }
 
   arrayBufferToBase64(buffer) {
@@ -153,11 +150,11 @@ public outsideClick = new EventEmitter();
     return window.btoa(binary);
   }
 
-  trackById(i, box){
-     return box._id; 
+  trackById(i, box) {
+    return box._id;
   }
 
-  getBackround(){
-    return (this.background && this.background.imagePreview)?'url('+this.background.imagePreview +')': '';
+  getBackround() {
+    return this.background && this.background.imagePreview ? 'url(' + this.background.imagePreview + ')' : '';
   }
 }

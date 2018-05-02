@@ -58,10 +58,12 @@ export class PresentationsEffects {
   add$ = this.actions.ofType(fromPresentations.ADD).pipe(
     map(toPayload),
     switchMap(presentation => this.presentationsApiService.add(presentation)),
-    switchMap((response: Presentation) => from([
-      new fromPresentations.AddSuccess(response),
-      new fromRouter.Go({ path: [`/presentations/${response._id}/edit`] })
-    ])),
+    switchMap((response: Presentation) =>
+      from([
+        new fromPresentations.AddSuccess(response),
+        new fromRouter.Go({ path: [`/presentations/${response._id}/edit`] })
+      ])
+    ),
     tap(() =>
       this.snackBar.openFromComponent(PresentationsSnackComponent, {
         duration: 1000,

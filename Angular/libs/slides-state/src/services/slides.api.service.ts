@@ -33,8 +33,8 @@ export class SlidesApiService {
 
   getOneSlide(slideId): Observable<any> {
     const backendURL = `${this.baseUrl}/slides/${slideId}`;
-    return this.http.get(backendURL);;
-  } 
+    return this.http.get(backendURL);
+  }
 
   add(slide: Slide): Observable<any> {
     const backendURL = `${this.baseUrl}/slides`;
@@ -62,7 +62,7 @@ export class SlidesApiService {
     return this.http.get(backendURL);
   }
   update(slide): Observable<any> {
-    console.log("sli ?????", slide)
+    console.log('sli ?????', slide);
     const backendURL = `${this.baseUrl}/slides/${slide._id}`;
     return this.http.patch(backendURL, slide);
   }

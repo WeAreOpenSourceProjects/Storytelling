@@ -60,11 +60,11 @@ export class BoxesApiService {
 
   updateBox(box) {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}/${box.id}`;
-    return this.http.patch(backendURL,  {changes: box.changes});
+    return this.http.patch(backendURL, { changes: box.changes });
   }
 
   updateAll(boxes) {
     const backendURL = `${this.baseUrl}/${this.endpoints.boxes}`;
-    return this.http.patch(backendURL,  boxes);
+    return this.http.patch(backendURL, boxes);
   }
 }

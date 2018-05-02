@@ -50,7 +50,8 @@ export class CodeEditorComponent implements OnInit, AfterViewInit, OnDestroy, Co
   @Input() config: any = {};
   @Input() theme: string = 'white';
   @Input() readOnly: any = false;
-  @Input() mode: any = {
+  @Input()
+  mode: any = {
     name: 'json'
   };
   @Input() autofocus: boolean = false;
@@ -58,7 +59,6 @@ export class CodeEditorComponent implements OnInit, AfterViewInit, OnDestroy, Co
   @Input() allowDropFileTypes: any[] = [];
   @Input() lineNumbers: any = true;
   @Input() gutters: any[] = [];
-
 
   set value(val: string) {
     if (val !== this._value) {

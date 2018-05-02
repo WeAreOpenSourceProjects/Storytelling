@@ -60,7 +60,7 @@ export class Add implements Action {
 
 export class AddSuccess implements Action {
   readonly type = ADD_SUCCESS;
-  constructor(public payload: {box: Box }) {}
+  constructor(public payload: { box: Box }) {}
 }
 
 export class AddFailure implements Action {
@@ -85,7 +85,7 @@ export class UpdateFailure implements Action {
 
 export class UpdateAll implements Action {
   readonly type = UPDATE_ALL;
-  constructor(public payload: {boxes :  any }) {}
+  constructor(public payload: { boxes: any }) {}
 }
 
 export class UpdateAllSuccess implements Action {

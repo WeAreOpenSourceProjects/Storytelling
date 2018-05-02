@@ -193,9 +193,18 @@ export class PresentationsViewComponent implements OnInit {
     if (nextIndex >= 0 && nextIndex <= this.slideNum) {
       this.curSlideIndex = nextIndex;
       this.currentSlide = this.slides[this.curSlideIndex - 1];
-      if(this.currentSlide && this.currentSlide.background && this.currentSlide.background.image && this.currentSlide.background.image.data){
-        this.currentSlide.background.image = 'url(data:' + this.currentSlide.background.image.contentType +
-        ';base64,' +this.arrayBufferToBase64(this.currentSlide.background.image.data.data) +')';
+      if (
+        this.currentSlide &&
+        this.currentSlide.background &&
+        this.currentSlide.background.image &&
+        this.currentSlide.background.image.data
+      ) {
+        this.currentSlide.background.image =
+          'url(data:' +
+          this.currentSlide.background.image.contentType +
+          ';base64,' +
+          this.arrayBufferToBase64(this.currentSlide.background.image.data.data) +
+          ')';
       }
 
       this.direction = direction;

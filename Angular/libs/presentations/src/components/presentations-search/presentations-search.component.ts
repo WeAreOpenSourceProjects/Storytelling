@@ -8,7 +8,9 @@ import { PartialObserver } from 'rxjs/Observer';
 @Component({
   selector: 'app-slides-search',
   templateUrl: './presentations-search.component.html',
-  styleUrls: ['./presentations-search.component.scss']/*,
+  styleUrls: [
+    './presentations-search.component.scss'
+  ] /*,
   providers: [
     {
       provide: MAT_CHECKBOX_CLICK_ACTION,
@@ -30,21 +32,21 @@ export class PresentationsSearchComponent implements OnDestroy {
   ngOnInit() {
     this.searchForm = this.formBuilder.group({
       title: this.formBuilder.control(''),
-//      isFavorite: this.formBuilder.control('indeterminate'),
+      //      isFavorite: this.formBuilder.control('indeterminate'),
       status: this.formBuilder.control('all'),
       order: this.formBuilder.control('date')
     });
 
     this.searchObserver.next({
       title: '',
-//      isFavorite: 'indeterminate',
+      //      isFavorite: 'indeterminate',
       status: 'all',
       order: 'date'
     });
 
     this.subscriptions = this.searchForm.valueChanges.subscribe(this.searchObserver);
   }
-/*
+  /*
   onClick(checkbox: MatCheckbox) {
     const name = checkbox.name;
     if (checkbox.indeterminate) {

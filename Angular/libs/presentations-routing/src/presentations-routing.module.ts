@@ -8,7 +8,7 @@ export { PresentationsGuardService };
 import { PresentationGuardService } from './services/presentation.guard.service';
 import { SlidesGuardService } from '@labdat/slides-routing/src/services/slides.guard.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthenticationGuardService } from '@labdat/authentication'
+import { AuthenticationGuardService } from '@labdat/authentication';
 export { PresentationGuardService };
 
 const prenstationsRoutes: Routes = [

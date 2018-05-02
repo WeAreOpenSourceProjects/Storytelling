@@ -28,11 +28,11 @@ export class AuthenticationApiService {
     //      .do(token => this.setAuthorizationHeader(token));
   }
   forgetPassword(email: any) {
-    const backendURL = `${this.baseUrl}/auth/forgot` ;
+    const backendURL = `${this.baseUrl}/auth/forgot`;
     return this.http.post(backendURL, email);
   }
   resetPassword(auth) {
-    const backendURL = `${this.baseUrl}/auth/reset/${auth.token}` ;
+    const backendURL = `${this.baseUrl}/auth/reset/${auth.token}`;
     return this.http.post(backendURL, auth.password);
   }
 }

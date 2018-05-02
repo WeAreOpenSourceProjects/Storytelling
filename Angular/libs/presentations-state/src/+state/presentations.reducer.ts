@@ -27,7 +27,7 @@ export function presentationsReducer(
     case fromPresentations.SEARCH_FAILURE: {
       return presentationsAdapter.removeAll({ ...state, error: action.payload.error, loading: false, loaded: false });
     }
-    
+
     case fromPresentations.SEARCH_SUCCESS: {
       return presentationsAdapter.addMany(action.payload.presentations, {
         ...state,
@@ -55,7 +55,7 @@ export function presentationsReducer(
       return presentationsAdapter.updateOne(action.payload, state);
     }
     case fromSlides.ADD_SUCCESS: {
-      console.log("action payload", action.payload);
+      console.log('action payload', action.payload);
       const presentationId = action.payload.presentationId;
       const slideIds = state.entities[presentationId].slideIds.slice();
       return presentationsAdapter.updateOne(

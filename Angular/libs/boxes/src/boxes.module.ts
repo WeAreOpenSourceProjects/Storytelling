@@ -55,6 +55,7 @@ import { ImageUploadComponent } from '@labdat/image-upload';
 import { ChartsBuilderComponent } from './components/charts-builder/charts-builder.component';
 import { BoxesBackgroundComponent } from './components/boxes-background/boxes-background.component';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
+import { MenuItemComponent } from './components/menu-bar/menu-item/menu-item.component';
 import { GridsterModule } from 'angular-gridster2';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -110,6 +111,7 @@ import { GridModule } from '@labdat/grid';
   declarations: [
     BoxesGridComponent,
     MenuBarComponent,
+    MenuItemComponent,
     BoxDialogComponent,
     ChartsBuilderComponent,
     DataTableComponent,

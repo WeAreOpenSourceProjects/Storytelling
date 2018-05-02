@@ -113,7 +113,7 @@ export class PresentationsApiService {
 
     // if (cleanSearch.isPublic === 'indeterminate') {
     //   delete cleanSearch.isPublic;
-    // } 
+    // }
 
     if (cleanSearch.status === 'published') {
       cleanSearch.isPublic = true;
@@ -141,7 +141,7 @@ export class PresentationsApiService {
             ...presentation,
             id: presentation._id
           })),
-          count: result.count,
+          count: result.count
         }))
       );
   }

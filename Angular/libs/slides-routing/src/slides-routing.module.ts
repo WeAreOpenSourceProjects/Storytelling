@@ -4,14 +4,14 @@ import { BoxesGridComponent } from '@labdat/boxes/src/containers/boxes-grid/boxe
 import { BoxesModule } from '@labdat/boxes/src/boxes.module';
 import { BoxesGuardService } from '@labdat/boxes-routing/src/services/boxes.guard.service';
 import { BoxesResolve } from './services/boxes.resolve';
-import { SlidesGuardService } from './services/slides.guard.service'
-import { SlideGuardService } from './services/slide.guard.service'
+import { SlidesGuardService } from './services/slides.guard.service';
+import { SlideGuardService } from './services/slide.guard.service';
 
 const slidesRoutes: Routes = [
   {
     path: ':id',
     component: BoxesGridComponent,
-    canActivate: [ BoxesGuardService, SlideGuardService ],
+    canActivate: [BoxesGuardService, SlideGuardService],
     data: {
       roles: ['user', 'admin'],
       title: 'Slide Detail'

@@ -22,7 +22,7 @@ export class LoginComponent {
   @Input() public errorMessage: string | null;
 
   @Output() public submitted = new EventEmitter<Authenticate>();
-  @Output() public forgetPassword =  new EventEmitter<string>();
+  @Output() public forgetPassword = new EventEmitter<string>();
   public hide = true;
   public form = this.formBuilder.group({
     email: this.formBuilder.control('', [Validators.required, Validators.email]),

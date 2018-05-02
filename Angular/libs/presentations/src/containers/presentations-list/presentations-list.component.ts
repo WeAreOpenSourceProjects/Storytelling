@@ -39,8 +39,7 @@ import { zip } from 'rxjs/operators/zip';
   styleUrls: ['./presentations-list.component.scss']
 })
 export class PresentationsListComponent implements OnInit, OnDestroy {
-  @ViewChild(MatPaginator)
-  public paginator;
+  @ViewChild(MatPaginator) public paginator;
   public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
@@ -87,14 +86,16 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     this.subscriptions.add(countPresentationSubscription);
 
     const nextPageSubscription = this.nextPage$
-      .pipe(withLatestFrom(this.searchObserver, this.user$, (pageEvent: PageEvent, formSearch: any, user: any) => {
-        const search = {
-          ...formSearch,
-          userId: user.id,
-          username: user.username
-        };
-        return [search, pageEvent]
-      }))
+      .pipe(
+        withLatestFrom(this.searchObserver, this.user$, (pageEvent: PageEvent, formSearch: any, user: any) => {
+          const search = {
+            ...formSearch,
+            userId: user.id,
+            username: user.username
+          };
+          return [search, pageEvent];
+        })
+      )
       .subscribe(([search, pageEvent]) => {
         this.store.dispatch(new fromPresentations.Search({ pageIndex: pageEvent.pageIndex, pageSize: 6, search }));
       });
@@ -125,7 +126,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
     this.subscriptions.add(editSubscription);
 
     const addSubscription = this.add$.subscribe(res => {
-/*
+      /*
       this.nextPage$.next({
         pageIndex: (this.count + 1) / 6
       });
@@ -147,14 +148,15 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
             this.store.dispatch(new fromPresentations.Delete(result.presentationId));
           }
         }),
-        withLatestFrom(this.searchObserver, this.user$,
-        (x: any, criterias: any, user: any) => ({
+        withLatestFrom(this.searchObserver, this.user$, (x: any, criterias: any, user: any) => ({
           ...criterias,
           userId: user.id,
           username: user.username
-        })
-      ))
-      .subscribe(search => this.store.dispatch(new fromPresentations.Search({ pageIndex: this.paginator.pageIndex, pageSize: 7, search })));
+        }))
+      )
+      .subscribe(search =>
+        this.store.dispatch(new fromPresentations.Search({ pageIndex: this.paginator.pageIndex, pageSize: 7, search }))
+      );
     this.subscriptions.add(deleteSubscription);
 
     const selectSubscription = this.select$.subscribe(presentationId => {

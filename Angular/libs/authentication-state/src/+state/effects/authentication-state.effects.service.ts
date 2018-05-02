@@ -100,7 +100,6 @@ export class AuthenticationEffectsService {
     map(payload => new fromAuthentication.RegisterSuccess({ ...payload }))
   );
 
-
   @Effect()
   registerSuccess$ = this.actions$.ofType(fromAuthentication.REGISTER_SUCCESS).pipe(
     map(() => {
@@ -131,15 +130,13 @@ export class AuthenticationEffectsService {
   forgetPassword$ = this.actions$.ofType(fromAuthentication.FORGET_PASSWORD).pipe(
     map(toPayload),
     exhaustMap(email =>
-      this.authenticationApiService
-        .forgetPassword({ email : email})
-        .pipe(
-          catchError(error => {
-            console.log(error);
-            this.store.dispatch(new fromAuthentication.ForgetPasswordFailure());
-            return empty();
-          })
-        )
+      this.authenticationApiService.forgetPassword({ email: email }).pipe(
+        catchError(error => {
+          console.log(error);
+          this.store.dispatch(new fromAuthentication.ForgetPasswordFailure());
+          return empty();
+        })
+      )
     ),
     map((payload: any) => new fromAuthentication.ForgetPasswordSuccess({ ...payload }))
   );
@@ -147,59 +144,10 @@ export class AuthenticationEffectsService {
   @Effect({ dispatch: false })
   forgetPasswordSuccess$ = this.actions$.ofType(fromAuthentication.FORGET_PASSWORD_SUCCESS).pipe(
     map(toPayload),
-    tap((payload) => {
+    tap(payload => {
       this.snackBar.openFromComponent(LoginSnackComponent, {
         duration: 1000,
         data: payload.message,
-        horizontalPosition: 'right',
-        verticalPosition: 'top'
-      });
-    }),
-      mapTo(new fromRouter.Go({ path: ['/', 'home'] }))
-  );
-
-  @Effect({ dispatch: false })
-  forgetPasswordFailure$ = this.actions$.ofType(fromAuthentication.FORGET_PASSWORD_FAILURE).pipe(
-    map(toPayload),
-    tap((message) =>{
-      console.log('payload', message)
-      this.snackBar.openFromComponent(LoginSnackComponent, {
-        duration: 1000,
-        data: message,
-        horizontalPosition: 'right',
-        verticalPosition: 'top'
-      })
-    })
-  );
-
-  @Effect()
-  resetPassword$ = this.actions$.ofType(fromAuthentication.RESET_PASSWORD).pipe(
-    map(toPayload),
-    exhaustMap((auth) =>
-      this.authenticationApiService
-        .resetPassword({ ...auth, roles: ['user', 'admin'] })
-        .pipe(
-          catchError(error => {
-            this.store.dispatch(new fromAuthentication.ResetPasswordFailure());
-            return empty();
-          })
-        )
-    ),
-    tap((payload: any) => {
-      console.log('payload', payload);
-      sessionStorage.setItem('user', JSON.stringify(payload.user));
-      sessionStorage.setItem('tokenExpiresIn', payload.tokenExpiresIn);
-    }),
-    map((payload :any) => new fromAuthentication.ResetPasswordSuccess({ ...payload }))
-  );
-  @Effect()
-    resetPasswordSuccess$ = this.actions$.ofType(fromAuthentication.RESET_PASSWORD_SUCCESS).pipe(
-    map(toPayload),
-    tap((message) => {
-      console.log('user',message)
-      this.snackBar.openFromComponent(LoginSnackComponent, {
-        duration: 1000,
-        data:'password changed successfully',
         horizontalPosition: 'right',
         verticalPosition: 'top'
       });
@@ -208,15 +156,62 @@ export class AuthenticationEffectsService {
   );
 
   @Effect({ dispatch: false })
-    resetPasswordFailure$ = this.actions$.ofType(fromAuthentication.RESET_PASSWORD_FAILURE).pipe(
+  forgetPasswordFailure$ = this.actions$.ofType(fromAuthentication.FORGET_PASSWORD_FAILURE).pipe(
     map(toPayload),
-    tap((message) =>{
+    tap(message => {
+      console.log('payload', message);
+      this.snackBar.openFromComponent(LoginSnackComponent, {
+        duration: 1000,
+        data: message,
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
+    })
+  );
+
+  @Effect()
+  resetPassword$ = this.actions$.ofType(fromAuthentication.RESET_PASSWORD).pipe(
+    map(toPayload),
+    exhaustMap(auth =>
+      this.authenticationApiService.resetPassword({ ...auth, roles: ['user', 'admin'] }).pipe(
+        catchError(error => {
+          this.store.dispatch(new fromAuthentication.ResetPasswordFailure());
+          return empty();
+        })
+      )
+    ),
+    tap((payload: any) => {
+      console.log('payload', payload);
+      sessionStorage.setItem('user', JSON.stringify(payload.user));
+      sessionStorage.setItem('tokenExpiresIn', payload.tokenExpiresIn);
+    }),
+    map((payload: any) => new fromAuthentication.ResetPasswordSuccess({ ...payload }))
+  );
+  @Effect()
+  resetPasswordSuccess$ = this.actions$.ofType(fromAuthentication.RESET_PASSWORD_SUCCESS).pipe(
+    map(toPayload),
+    tap(message => {
+      console.log('user', message);
+      this.snackBar.openFromComponent(LoginSnackComponent, {
+        duration: 1000,
+        data: 'password changed successfully',
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
+    }),
+    mapTo(new fromRouter.Go({ path: ['/', 'home'] }))
+  );
+
+  @Effect({ dispatch: false })
+  resetPasswordFailure$ = this.actions$.ofType(fromAuthentication.RESET_PASSWORD_FAILURE).pipe(
+    map(toPayload),
+    tap(message => {
       this.snackBar.openFromComponent(LoginSnackComponent, {
         duration: 1000,
         data: 'Invalid link',
         horizontalPosition: 'right',
         verticalPosition: 'top'
-      })
+      });
     })
   );
   constructor(

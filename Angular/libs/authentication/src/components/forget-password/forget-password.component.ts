@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -7,20 +7,18 @@ import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms'
   styleUrls: ['./forget-password.component.scss']
 })
 export class ForgetPasswordComponent implements OnInit {
-   message : string;
-   error : string;
-   show : boolean;
+  message: string;
+  error: string;
+  show: boolean;
 
-   @Output() public submitted = new EventEmitter<string>();
+  @Output() public submitted = new EventEmitter<string>();
 
-   public form = this.formBuilder.group({
-     email: this.formBuilder.control(''),
-   });
-   constructor(private formBuilder: FormBuilder) { }
-   ngOnInit() {
-   }
-   askForPasswordReset(email) {
-     this.submitted.emit(this.form.value);
-
-   }
+  public form = this.formBuilder.group({
+    email: this.formBuilder.control('')
+  });
+  constructor(private formBuilder: FormBuilder) {}
+  ngOnInit() {}
+  askForPasswordReset(email) {
+    this.submitted.emit(this.form.value);
+  }
 }

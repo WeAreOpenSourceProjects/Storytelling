@@ -40,11 +40,13 @@ export class SlidesEffects {
   });
 
   @Effect()
-  loadOne = this.actions.ofType(fromSlides.LOAD_ONE).pipe(
-    map(toPayload),
-    switchMap(payload => this.slidesApiService.getOneSlide(payload.slideId)),
-    map((response: any) => new fromSlides.LoadOneSuccess({slide : response}))
-  );
+  loadOne = this.actions
+    .ofType(fromSlides.LOAD_ONE)
+    .pipe(
+      map(toPayload),
+      switchMap(payload => this.slidesApiService.getOneSlide(payload.slideId)),
+      map((response: any) => new fromSlides.LoadOneSuccess({ slide: response }))
+    );
 
   @Effect()
   add = this.actions.ofType(fromSlides.ADD).pipe(
@@ -82,12 +84,15 @@ export class SlidesEffects {
     }
   });
   @Effect()
-  confirm = this.actions.ofType(fromSlides.CONFIRM_STATE).pipe(
-    map(toPayload),
-    switchMap((payload)=> 
-      from([new fromBoxes.UpdateAll(payload.boxes), new fromSlides.UpdateSlide({slide: payload.slide})])
-  ))
-  
+  confirm = this.actions
+    .ofType(fromSlides.CONFIRM_STATE)
+    .pipe(
+      map(toPayload),
+      switchMap(payload =>
+        from([new fromBoxes.UpdateAll(payload.boxes), new fromSlides.UpdateSlide({ slide: payload.slide })])
+      )
+    );
+
   @Effect()
   update = this.actions.ofType(fromSlides.UPDATE).pipe(
     map(toPayload),
@@ -100,7 +105,7 @@ export class SlidesEffects {
         verticalPosition: 'top'
       })
     ),
-    map((response: any) => new fromSlides.UpdateSuccess({slide : response})),
+    map((response: any) => new fromSlides.UpdateSuccess({ slide: response })),
     catchError(error => of(new fromSlides.AddFailure(error)))
   );
 

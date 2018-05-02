@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {Router, ActivatedRoute, Params} from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Authenticate } from '../../models/user.model';
-import {
-  fromAuthentication,
-  AuthenticationState
-} from '@labdat/authentication-state';
+import { fromAuthentication, AuthenticationState } from '@labdat/authentication-state';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -14,9 +11,12 @@ import {
 })
 export class ResetPasswordComponent implements OnInit {
   form: FormGroup;
-  token ='';
-  constructor(private router: Router,
-              private activatedRoute: ActivatedRoute, private store: Store<AuthenticationState>) {
+  token = '';
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AuthenticationState>
+  ) {
     this.form = this._buildForm();
   }
 
@@ -33,6 +33,6 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
   changePasword(newPassword) {
-    this.store.dispatch(new fromAuthentication.ResetPassword({password : newPassword, token : this.token}));
+    this.store.dispatch(new fromAuthentication.ResetPassword({ password: newPassword, token: this.token }));
   }
 }

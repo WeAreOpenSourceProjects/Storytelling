@@ -16,4 +16,3 @@ export const slidesAdapter: EntityAdapter<Slide> = createEntityAdapter<Slide>({
   sortComparer: sortByIndex,
   selectId: (slide: Slide) => slide._id
 });
-

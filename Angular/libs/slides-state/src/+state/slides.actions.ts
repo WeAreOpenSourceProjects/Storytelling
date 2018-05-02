@@ -74,7 +74,6 @@ export class LoadOneSuccess implements Action {
   constructor(public payload: { slide: Slide }) {}
 }
 
-
 export class Add implements Action {
   readonly type = ADD;
   constructor(public payload: Slide) {}
@@ -120,7 +119,6 @@ export class UpdateFailure implements Action {
   constructor(public payload: { error: any }) {}
 }
 
-
 export class UpdateState implements Action {
   readonly type = UPDATE_STATE;
   constructor(public payload: { slide: { id: number; changes: any } }) {}
@@ -128,7 +126,7 @@ export class UpdateState implements Action {
 
 export class ConfirmState implements Action {
   readonly type = CONFIRM_STATE;
-  constructor(public payload: { slide, boxes }) {}
+  constructor(public payload: { slide; boxes }) {}
 }
 
 export class Delete implements Action {
@@ -146,13 +144,10 @@ export class DeleteFailure implements Action {
   constructor(public payload: { error: any }) {}
 }
 
-
 export class UpdateOnDelete implements Action {
   readonly type = UPDATE_ON_DELETE;
   constructor(public payload: { slide: Slide }) {}
 }
-
-
 
 export class ConfirmStateSuccess implements Action {
   readonly type = CONFIRM_STATE_SUCCESS;

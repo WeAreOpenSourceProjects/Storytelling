@@ -93,8 +93,8 @@ export class ImageUploadComponent {
         'data:' +
         output.file.response.contentType +
         ';base64,' +
-      this.arrayBufferToBase64(output.file.response.data.data);
-      this.getImageIdInBase64.emit(this.previewData)
+        this.arrayBufferToBase64(output.file.response.data.data);
+      this.getImageIdInBase64.emit(this.previewData);
       this.getImageId.emit(output.file.response._id);
       this.idImage = output.file.response._id;
       this.editMode = false;

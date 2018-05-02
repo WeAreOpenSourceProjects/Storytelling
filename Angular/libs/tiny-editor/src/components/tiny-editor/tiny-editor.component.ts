@@ -27,12 +27,12 @@ export class TinyEditorComponent {
   @ViewChild('editor') public editorComponent: ElementRef;
 
   @Input() public initialValue = '';
-  @Input() presentationMode : Boolean;
+  @Input() presentationMode: Boolean;
   @Output() public textToSave = new EventEmitter();
 
   public activeEditor: any;
 
-  constructor(private elementRef: ElementRef){}
+  constructor(private elementRef: ElementRef) {}
 
   @Input()
   public init = {
@@ -46,7 +46,6 @@ export class TinyEditorComponent {
       editor.on('blur', e => {
         editor.setMode('readonly');
         this.textToSave.emit(editor.getContent());
-        
       });
     },
     content_style:
@@ -67,8 +66,8 @@ export class TinyEditorComponent {
     (this.editorComponent as any).registerOnChange(function() {});
     (this.editorComponent as any).registerOnTouched(function() {});
     this.activeEditor = getTinymce().activeEditor;
-    if(this.presentationMode){
-      this.activeEditor.setMode('readonly')
+    if (this.presentationMode) {
+      this.activeEditor.setMode('readonly');
     }
   }
 }
