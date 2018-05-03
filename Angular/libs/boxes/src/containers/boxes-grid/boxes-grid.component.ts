@@ -45,11 +45,7 @@ function delay(t, v) {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxesGridComponent implements OnInit {
-  @HostListener('document:click', ['$event'])
-  clickedOutside($event) {
-    this.menu.open = false;
-  }
-
+ 
   @ViewChild('gridChild', { read: ElementRef })
   private gridChild: ElementRef;
 
@@ -119,10 +115,21 @@ export class BoxesGridComponent implements OnInit {
         dialog.componentInstance.inputData = event.box.content.chart.data;
         const dialogSubscription = dialog.afterClosed().subscribe(result => {
           if (result && result !== 'CANCEL') {
-            event.box.content.type = 'chart';
-            event.box.content.chart = result;
-            event.box.width = event.box.cols * 25;
-            event.box.height = event.box.cols * 25;
+            this.store.dispatch(
+              new fromBoxes.Update({
+                box: { 
+                  id: event.box._id,
+                  changes: {                    
+                    width: event.box.cols * 25,
+                    height: event.box.cols * 25,
+                    content: {
+                      type: 'chart',
+                      chart: result
+                    }
+                  } 
+                }
+              })
+            );
           }
         });
         this.subscriptions.add(dialogSubscription);
@@ -207,6 +214,7 @@ export class BoxesGridComponent implements OnInit {
   }
 
   saveImage(event) {
+    console.log(event);
     this.store.dispatch(
       new fromBoxes.Update({
         box: {
@@ -214,7 +222,8 @@ export class BoxesGridComponent implements OnInit {
           changes: {
             content: {
               type: 'image',
-              imageId: event._id
+              imageId: event.id, 
+              previewData : event.previewData
             }
           }
         }

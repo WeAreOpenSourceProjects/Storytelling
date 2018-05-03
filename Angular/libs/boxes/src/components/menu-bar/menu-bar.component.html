@@ -1,14 +1,4 @@
 
 <nav class="menu" #menuBar>
-  <label class="menu-open-button" for="menu-open"> 
-    <span class="lines line-1"></span> 
-    <span class="lines line-2"></span> 
-    <span class="lines line-3"></span> 
-  </label>
-  <app-menu-item class="menu-item" [currentState]="'normal'" [icon]="'navigation:ic_close_24px'" (click)="closeMenu()"></app-menu-item>
-  <app-menu-item class="menu-item" [currentState]="'animatedTop'" [icon]="'editor:ic_multiline_chart_24px'" (click)="open('chart')"></app-menu-item>
-  <app-menu-item class="menu-item" [currentState]="'animatedLeft'" [icon]="'image:ic_collections_24px'" (click)="open('image')"></app-menu-item>
-  <app-menu-item class="menu-item" [currentState]="'animatedRight'" [icon]="'image:ic_filter_hdr_24px'" (click)="open('background')"></app-menu-item>
-  <app-menu-item class="menu-item" [currentState]="'animatedBottom'" [icon]="'content:ic_font_download_24px'" (click)="open('text')"></app-menu-item>
-
+  <app-menu-item class="menu-item" *ngFor="let state of states" [currentState]="state.currentState" [icon]="state.icon" (click)="open(state.type)"></app-menu-item>
 </nav>

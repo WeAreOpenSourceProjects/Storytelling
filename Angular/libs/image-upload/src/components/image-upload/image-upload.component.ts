@@ -24,14 +24,14 @@ import { environment } from '../../../../../apps/default/src/environments/enviro
 })
 export class ImageUploadComponent {
   @Input() image: any;
-  @Output() getImageId: EventEmitter<String> = new EventEmitter();
+  @Input() previewData: any;
+  @Output() getImage: EventEmitter<Object> = new EventEmitter();
   @Input() presentationMode: Boolean = false;
   @Output() getImageIdInBase64: EventEmitter<String> = new EventEmitter();
   files: UploadFile[];
   uploadInput: EventEmitter<UploadInput>;
   dragOver: boolean;
   options: UploaderOptions;
-  previewData: any;
   endpoints: any;
   baseUrl: string;
   backendURL: string;
@@ -47,12 +47,11 @@ export class ImageUploadComponent {
     this.backendURL = `${this.baseUrl}/${this.endpoints.images}`;
   }
   ngOnInit() {
-    if (this.image) {
+    if (this.image && this.image.data) {
       this.previewData = 'data:' + this.image.contentType + ';base64,' + this.arrayBufferToBase64(this.image.data.data);
       this.idImage = this.image._id;
-      this.getImageId.emit(this.image._id);
-      this.getImageIdInBase64.emit(this.previewData);
-    }
+      this.getImage.emit({id : this.image._id, previewData :this.previewData});
+    } 
   }
   onUploadOutput(output: UploadOutput): void {
     let event: UploadInput;
@@ -95,7 +94,7 @@ export class ImageUploadComponent {
         ';base64,' +
         this.arrayBufferToBase64(output.file.response.data.data);
       this.getImageIdInBase64.emit(this.previewData);
-      this.getImageId.emit(output.file.response._id);
+      this.getImage.emit({id: output.file.response._id, previewData: this.previewData});
       this.idImage = output.file.response._id;
       this.editMode = false;
     }

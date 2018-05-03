@@ -34,8 +34,14 @@ import {
         backgroundColor: '#00acc1',
         transform: 'translateY(-150%)'
       })),
+      state('close', style({
+        backgroundColor: '#00acc1',
+        transform: 'translate(0%)',
+        display : 'none'
+      })),
       transition('*=>normal', animate('800ms')),
       transition('*=>*', animate('200ms')),
+      transition('*=>close', animate('500ms'))
     ])
   ]
 })

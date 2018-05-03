@@ -104,11 +104,10 @@ export class GridComponent implements OnInit {
     }
   }
 
-  getImageId(event, index) {
-    console.log(event, index);
-    this.saveImage.emit({ id: event, index });
+  getImage(event, index) {
+    this.saveImage.emit({ id: event.id, index, previewData : event.previewData });
   }
-
+  
   enableEdit(box, i) {
     box.editMode = true;
     console.log(box);
