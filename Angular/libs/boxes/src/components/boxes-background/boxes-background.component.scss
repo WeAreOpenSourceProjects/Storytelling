@@ -1,3 +1,14 @@
 .image-upload {
   overflow: hidden;
 }
+
+.color-form{
+ height: 70% !important;
+}
+::ng-deep .mat-tab-body-wrapper {
+  height: 100%;
+  display: block !important;
+  overflow-x: initial !important;
+  overflow-y: visible !important;
+
+}

@@ -198,7 +198,7 @@ export class BoxesGridComponent implements OnInit {
         break;
       }
       case 'background': {
-        const dialog = this.dialog.open(BoxesBackgroundComponent, { width: '50%' });
+        const dialog = this.dialog.open(BoxesBackgroundComponent, { width: '50%', height:'50%'});
         const backgroundBoxSubscription = dialog.afterClosed().subscribe(background => {
           if (background) {
             this.store.dispatch(

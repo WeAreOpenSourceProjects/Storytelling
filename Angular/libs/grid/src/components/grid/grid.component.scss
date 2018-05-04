@@ -4,12 +4,12 @@ gridster, gridster-item {
   background: transparent;
   height: 100%;
   display: block !important;
+  overflow-x: initial !important;
+  overflow-y: visible !important;
 }
 
 .edition-mode {
   position: absolute;
-  overflow-x: initial !important;
-  overflow-y: visible !important;
   word-wrap: break-word;
   &:hover{
     border : solid 1px !important;

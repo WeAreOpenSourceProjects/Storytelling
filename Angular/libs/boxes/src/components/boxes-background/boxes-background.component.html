@@ -1,7 +1,7 @@
 <div mat-dialog-title > Choose background</div>
-  <mat-tab-group>
-    <mat-tab label="Background color">
-      <form>
+  <mat-tab-group class="color-form">
+    <mat-tab class="color-form" label="Background color">
+      <form class="color-form">
         <mat-form-field>
           <input matInput placeholder="Color" [cpOutputFormat]="'rgba'" [(colorPicker)]="color" [style.background]="color" />
         </mat-form-field>
