@@ -47,18 +47,8 @@ export class GaugeChartComponent extends Chart implements OnInit {
       name: 'gauge',
       selectable: true,
       group: 'Ordinal',
-      domain: [
-        '#a8385d',
-        '#7aa3e5',
-        '#a27ea8',
-        '#aae3f5',
-        '#adcded',
-        '#a95963',
-        '#8796c0',
-        '#7ed3ed',
-        '#50abcc',
-        '#ad6886'
-      ]
+      domain: ['#3498db', '#74b9ff', '#f39c12', '#fed330', '#27ae60', '#a3cb38', '#ee5a24', '#fa8231',
+      '#8e44ad', '#9c88ff', '#079992', '#7bc8a4', '#b71540', '#eb4d4b', '#34495e', '#487eb0', '#7f8c8d', '#bdc3c7']
     };
 
     // Set data

@@ -18,7 +18,8 @@ export class BubbleChartComponent extends Chart implements OnInit {
   private height: number;
   private radius: number;
   private _current: any; // for animation
-  private bubbleColor = d3.scaleOrdinal(d3.schemeCategory20);
+  // private bubbleColor = d3.scaleOrdinal(['#3498db', '#74b9ff', '#f39c12', '#fed330', '#27ae60', '#a3cb38', '#ee5a24', '#fa8231',
+  //  '#8e44ad', '#9c88ff', '#079992', '#7bc8a4', '#b71540', '#eb4d4b', '#34495e', '#487eb0', '#7f8c8d', '#bdc3c7']);
   private margin: any = { top: 20, bottom: 20, left: 20, right: 20 };
   private id;
   private curtain: any;
@@ -66,7 +67,10 @@ export class BubbleChartComponent extends Chart implements OnInit {
 
     let format = d3.format(',d');
 
-    let scaleColor = d3.scaleOrdinal(d3.schemeCategory20);
+
+    let colorDomain = ['#3498db', '#74b9ff', '#f39c12', '#fed330', '#27ae60', '#a3cb38', '#ee5a24', '#fa8231',
+    '#8e44ad', '#9c88ff', '#079992', '#7bc8a4', '#b71540', '#eb4d4b', '#34495e', '#487eb0', '#7f8c8d', '#bdc3c7'];
+    let scaleColor = d3.scaleOrdinal(colorDomain);
 
     // use pack to calculate radius of the circle
     let pack = d3

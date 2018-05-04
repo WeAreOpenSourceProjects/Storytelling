@@ -259,7 +259,9 @@ export class LineChartComponent extends Chart {
       .text('yAxis');
 
     //draw line for line chart
-    let colors: any = d3.scaleOrdinal(d3.schemeCategory20);
+    let colorDomain = ['#3498db', '#74b9ff', '#f39c12', '#fed330', '#27ae60', '#a3cb38', '#ee5a24', '#fa8231',
+    '#8e44ad', '#9c88ff', '#079992', '#7bc8a4', '#b71540', '#eb4d4b', '#34495e', '#487eb0', '#7f8c8d', '#bdc3c7'];
+    let colors: any = d3.scaleOrdinal(colorDomain);
     let pathContainer = focus
       .append('svg')
       .attr('class', 'pathContainer')
