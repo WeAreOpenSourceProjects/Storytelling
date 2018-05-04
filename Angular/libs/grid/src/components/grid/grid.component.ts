@@ -38,6 +38,8 @@ export class GridComponent implements OnInit {
   @Output() emptyCellClickCallbackEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() textToSave: EventEmitter<any> = new EventEmitter<any>();
   @Output() saveImage: EventEmitter<any> = new EventEmitter<any>();
+  @Output() itemChanged: EventEmitter<any> = new EventEmitter<any>();
+
   public options: GridsterConfig;
 
   @ViewChildren(TinyEditorComponent) public editors;
@@ -56,14 +58,16 @@ export class GridComponent implements OnInit {
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     const options = {
       ...this.gridConfig,
       ...defaultConfig,
       emptyCellClickCallback: this.emptyCellClick.bind(this),
-      emptyCellContextMenuCallback: this.emptyCellContextMenu.bind(this)
+      emptyCellContextMenuCallback: this.emptyCellContextMenu.bind(this),
+      itemChangeCallback: this.itemChange.bind(this),
+      itemResizeCallback: this.itemResize.bind(this)
     };
     this.options = options;
     if (this.background && this.background.image && !this.background.imagePreview) {
@@ -75,6 +79,25 @@ export class GridComponent implements OnInit {
     }
   }
 
+  itemChange(item, itemComponent) {
+    this.itemChanged.emit({
+      id: item._id,
+      cols: item.cols, 
+      rows: item.rows,
+      x:item.x, 
+      y: item.y 
+    });
+  }
+
+  itemResize(item, itemComponent) {
+    this.itemChanged.emit({
+      id: item._id,
+      cols : item.cols, 
+      rows: item.rows,
+      x:item.x, 
+      y: item.y 
+    });
+  }
   emptyCellContextMenu(event, item) {
     this.editMode = false;
     this.boxes.forEach(box => {
@@ -105,9 +128,9 @@ export class GridComponent implements OnInit {
   }
 
   getImage(event, index) {
-    this.saveImage.emit({ id: event.id, index, previewData : event.previewData });
+    this.saveImage.emit({ id: event.id, index, previewData: event.previewData });
   }
-  
+
   enableEdit(box, i) {
     box.editMode = true;
     console.log(box);

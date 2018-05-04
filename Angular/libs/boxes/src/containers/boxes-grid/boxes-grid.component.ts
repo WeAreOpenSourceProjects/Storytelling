@@ -295,6 +295,22 @@ export class BoxesGridComponent implements OnInit {
       });
   }
 
+  itemChanged(event){
+    this.store.dispatch(new fromBoxes.Update({
+      box: {
+        id: event.id,
+        changes: {
+          cols : event.cols, 
+          rows: event.rows,
+          x: event.x, 
+          y: event.y 
+        }
+      }
+    }) 
+  )
+    
+
+  }
   ngOnDestroy() {
     console.log('unsubscribe');
     this.subscriptions.unsubscribe();

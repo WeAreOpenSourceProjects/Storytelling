@@ -72,7 +72,8 @@ exports.create = function (req, res) {
 
 
 exports.update = function (req, res) {
-  Box.findByIdAndUpdate(req.params.boxId, req.body)
+  var box = new Box(req.body);
+  Box.findByIdAndUpdate(req.params.boxId, box)
     .exec()
     .then(function (box) {
       return res.json(box);
