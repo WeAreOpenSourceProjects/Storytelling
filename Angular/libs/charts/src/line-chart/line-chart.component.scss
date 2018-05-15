@@ -25,9 +25,9 @@ $axisColor: #4c4c4c;
      /deep/ .pathContainer, /deep/ .dotContainer {
         overflow: hidden;
     }
-    /deep/ .dots {
-        //clip-path: url("#clip2");
-    }
+    // /deep/ .dots {
+    //     clip-path: url("#clip2");
+    // }
 
     /deep/ .zoom {
         cursor: move;

@@ -238,16 +238,28 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
     this.simulation.force('link').links(links);
 
     //*********legend
-    let legendBox = d3
+    let legendFrame = d3
       .select(legendEle)
-      .append('svg')
+      .attr('id', 'ForceDirectedGraphComponentLegendFrame')
+
+    legendFrame.append('div')
+      .attr('text-anchor', 'start')
+      .classed('legend-label', true)
+      .style('font-weight', 'bold')
+      .style('font-size', '14px')
+      .style('color', 'black')
+      .style('padding-left', '10px')
+      .style('padding-top', '5px')
+      .text(() => 'Legend');
+
+    let legendBox =
+    legendFrame.append('svg')
       .attr('id', 'ForceDirectedGraphComponentLegend')
       .attr('class', 'legends')
-      //.attr("transform", "translate(40,20)")
       .attr('overflow', 'scroll');
 
     let legendRectSize = 12;
-    let legendSpacing = 24;
+    let legendSpacing = 15;
     let legends = legendBox
       .selectAll('.legend')
       .data(color.domain())
@@ -258,7 +270,7 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
         var height = legendRectSize + legendSpacing;
         var offset = height * color.domain().length / 2;
         var vert = i * height + 20;
-        return 'translate(' + 26 + ',' + vert + ')';
+        return 'translate(' + 20 + ',' + vert + ')';
       });
 
     legends
@@ -269,9 +281,8 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
 
     legends
       .append('text')
-      .attr('x', legendRectSize + legendSpacing)
-      .attr('y', legendRectSize - legendSpacing / 2)
-      // .attr("transform", "translate(0,5)")
+      .attr('x', 1.5 * legendRectSize)
+      .attr('y', legendRectSize / 2)
       .text(d => {
         return d.split('.')[this.maxDepth - 1];
       });
@@ -287,7 +298,7 @@ export class ForceDirectedGraphComponent extends Chart implements OnInit {
     }
 
     legendBox
-      .attr('width', maxWL + 26 + 'px')
+      .attr('width', maxWL + 20 + 'px')
       .attr('height', document.getElementsByClassName('legend').length * (legendRectSize + legendSpacing) + 20 + 'px');
 
     this.load();

@@ -58,6 +58,7 @@ export class NgGraphComponent extends Chart implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.chartOptions = { ...defaultOptions, ...this.configInput };
+    console.log(this.chartOptions.chartType.name);
     if (this.chartOptions.chartType.name === 'heat-map') {
       this.chartOptions.colorScheme.domain = ['#487eb0', '#74b9ff', '#079992', '#27ae60', '#a3cb38', 
       '#fed330', '#f39c12', '#fa8231', '#eb4d4b','#b71540'];

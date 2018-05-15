@@ -1,11 +1,11 @@
-.arc text {
+:host .arc text {
 	font: 10px sans-serif;
 	text-anchor: middle;
 }
 
 $axisColor:#4c4c4c;
 
-.arc path {
+:host .arc path {
 	stroke: #fff;
 }
 
@@ -39,7 +39,7 @@ $axisColor:#4c4c4c;
 				}
  		}
 }
-svg {
+:host svg {
 	width: 100%;
  	height: 100%;
 }
