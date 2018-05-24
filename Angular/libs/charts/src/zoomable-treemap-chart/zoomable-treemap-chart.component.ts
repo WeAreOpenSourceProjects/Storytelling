@@ -118,17 +118,8 @@ export class ZoomableTreemapChartComponent extends Chart {
     this.yScale = d3.scaleLinear().range([0, this.height]);
 
     // Color definition
-    let colorDomain = [
-      '#FF8A8A',
-      '#C58AFF',
-      '#FF8AC5',
-      '#FFC875',
-      '#F8FF86',
-      '#86FF6a',
-      '#7DF5FF',
-      '#8AFFC5',
-      '#BED2ED'
-    ];
+    let colorDomain = ['#3498db', '#74b9ff', '#f39c12', '#fed330', '#27ae60', '#a3cb38', '#ee5a24', '#fa8231',
+    '#8e44ad', '#9c88ff', '#079992', '#7bc8a4', '#b71540', '#eb4d4b', '#34495e', '#487eb0', '#7f8c8d', '#bdc3c7'];
     let color = d3.scaleOrdinal(colorDomain);
 
     let format = d3.format(',d');

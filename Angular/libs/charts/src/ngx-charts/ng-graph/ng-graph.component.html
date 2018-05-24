@@ -1,7 +1,7 @@
 <div class="d3-chart" #chart>
   <ngx-charts-bar-vertical-2d fxFlex
 
-    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-2d' "
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'vertical-grouped-bar-chart' "
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -24,7 +24,7 @@
   </ngx-charts-bar-vertical-2d>
   <ngx-charts-bar-horizontal-2d fxFlex
 
-    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-2d'"
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'horizontal-grouped-bar-chart' "
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -45,7 +45,7 @@
   </ngx-charts-bar-horizontal-2d>
   <ngx-charts-bar-vertical-stacked fxFlex
 
-    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-stacked'"
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'stacked-bar-chart'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -85,7 +85,7 @@
   </ngx-charts-bar-horizontal-stacked>
   <ngx-charts-bar-vertical-normalized fxFlex
 
-    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-vertical-normalized'"
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'vertical-normalized-bar-chart'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"
@@ -106,7 +106,7 @@
   </ngx-charts-bar-vertical-normalized>
   <ngx-charts-bar-horizontal-normalized fxFlex
 
-    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'bar-horizontal-normalized'"
+    *ngIf=" activated &&chartOptions.chartType&&chartOptions.chartType.name === 'horizontal-normalized-bar-chart'"
     class="chart-container"
     [scheme]="chartOptions.colorScheme"
     [schemeType]="chartOptions.schemeType"

@@ -44,7 +44,8 @@ export class SunburstChartComponent extends Chart {
   private formatNumber: any;
   private chartOptions: any;
   private coloralternative: number;
-  private colorsPanel = ['#4CC3D9', '#FFC65D', '#7BC8A4', '#93648D', '#404040', '#F16745', '#F33CA8'];
+  private colorDomain = ['#3498db', '#f39c12', '#27ae60', '#fa8231', '#9c88ff','#487eb0', '#079992', '#eb4d4b',
+  '#7bc8a4', '#7f8c8d', '#ee5a24', '#74b9ff', '#a3cb38', '#b71540', '#fed330', '#8e44ad', '#34495e', '#bdc3c7'];
 
   constructor() {
     super();
@@ -443,7 +444,7 @@ export class SunburstChartComponent extends Chart {
       }
 
       case 1: {
-        color = this.colorsPanel[this.coloralternative % this.colorsPanel.length];
+        color = this.colorDomain[this.coloralternative % this.colorDomain.length];
         d._color = color;
         this.coloralternative++;
         break;

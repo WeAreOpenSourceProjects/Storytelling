@@ -35,29 +35,31 @@
     cursor: pointer;
 }
 
-:host /deep/ .legend-title {
-    font-size: 20px;
-}
-
 :host /deep/ text {
     fill: #999;
 }
-/* Scrollbar styles */
-::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+
+/* Legend */
+:host #ForceDirectedGraphComponentLegendFrame {
+    background-color: rgba(227, 227, 227, 0.5);
+    border-radius: 5px;
 }
 
-::-webkit-scrollbar-track {
+:host ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+:host ::-webkit-scrollbar-track {
     //border: 1px solid grey;
-    border-radius: 10px;
+    border-radius: 9px;
 }
-
-::-webkit-scrollbar-thumb {
-    background: grey;
-    border-radius: 10px;
+:host ::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 9px;
 }
-
-::-webkit-scrollbar-thumb:hover {
-    background: #88ba1c;
+:host ::-webkit-scrollbar-thumb:hover {
+    background: #9dc3e7;
+}
+:host ::-webkit-scrollbar-corner {
+    background: rgba(227, 227, 227, 0);
 }

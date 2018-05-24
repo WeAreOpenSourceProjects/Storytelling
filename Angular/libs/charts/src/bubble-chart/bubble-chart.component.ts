@@ -18,7 +18,6 @@ export class BubbleChartComponent extends Chart implements OnInit {
   private height: number;
   private radius: number;
   private _current: any; // for animation
-  private bubbleColor = d3.scaleOrdinal(d3.schemeCategory20);
   private margin: any = { top: 20, bottom: 20, left: 20, right: 20 };
   private id;
   private curtain: any;
@@ -57,6 +56,7 @@ export class BubbleChartComponent extends Chart implements OnInit {
       .attr('id', 'BubbleChartComponent')
       .attr('width', '100%')
       .attr('height', '100%')
+      .style('font-family', 'sans-serif')
       .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
 
     let centerX = width * 0.5;
@@ -66,7 +66,10 @@ export class BubbleChartComponent extends Chart implements OnInit {
 
     let format = d3.format(',d');
 
-    let scaleColor = d3.scaleOrdinal(d3.schemeCategory20);
+
+    let colorDomain = ['#3498db', '#74b9ff', '#f39c12', '#fed330', '#27ae60', '#a3cb38', '#ee5a24', '#fa8231',
+    '#8e44ad', '#9c88ff', '#079992', '#7bc8a4', '#b71540', '#eb4d4b', '#34495e', '#487eb0', '#7f8c8d', '#bdc3c7'];
+    let scaleColor = d3.scaleOrdinal(colorDomain);
 
     // use pack to calculate radius of the circle
     let pack = d3
@@ -175,7 +178,7 @@ export class BubbleChartComponent extends Chart implements OnInit {
     node
       .append('text')
       .classed('node-icon', true)
-      .attr('clip-path', d => `url(#clip-${d.id})`)
+      // .attr('clip-path', d => `url(#clip-${d.id})`) // show only the portion of the text that is inside the circle.
       .selectAll('tspan')
       .data(d => [d.name, undefined])
       .enter()
@@ -200,6 +203,7 @@ export class BubbleChartComponent extends Chart implements OnInit {
 
     let legendOrdinal = legendColor()
       .shape('circle')
+      .shapePadding(6)
       .scale(scaleColor);
 
     // legend 1
@@ -210,26 +214,14 @@ export class BubbleChartComponent extends Chart implements OnInit {
       .attr('transform', 'translate(20,40)')
       .style('font-size', '12px');
 
-    /*
-           legends.append('text')
-                    .attr('text-anchor', 'start')
-          .attr('transform', 'translate(0,-20)')
-          .style('font-size', '14px')
-          .classed('legend-color', true)
-                .append('h3')
-                  .attr('transform', 'translate(0,-20)')
-                .attr('class', 'subtitle right')
-                .html('April 1854 - March 1855');
-            */
-
     legends
       .append('text')
       .attr('text-anchor', 'start')
       .classed('legend-label', true)
       .attr('transform', 'translate(0,-20)')
-      .style('font-family', 'Merriweather-Regular')
+      .style('font-weight', 'bold')
       .style('font-size', '14px')
-      .text(() => 'Catégorie :');
+      .text(() => 'Legend');
 
     legends.call(legendOrdinal);
 

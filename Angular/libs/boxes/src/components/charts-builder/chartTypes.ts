@@ -33,20 +33,6 @@ function createChartType({ title, ...obj }) {
 
 export const chartTypes = [
   createChartType({
-    title: 'Number Cards',
-    simpleData: true,
-    cmpName: 'numberCard',
-    convertData: NumberCardComponent.convertData,
-    dimLabels: [
-      { column: 'Card Name', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Card Value', maxSize: 1, dataType: ['string', 'number'] }
-    ],
-    description: '',
-    dimExemple: [['country'], ['pop']],
-    categorie: 'Comparison',
-    image: 'assets/img-graph/numberCards.png'
-  }),
-  createChartType({
     title: 'Bar Chart',
     simpleData: true,
     cmpName: 'barChart',
@@ -55,11 +41,10 @@ export const chartTypes = [
       { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
       { column: 'Value', maxSize: 1, dataType: ['number'] }
     ],
-    description:
-      'A bar chart or bar graph is a chart or graph that presents grouped data with rectangular bars with heights proportional to the values that they represent.',
+    description: 'A chart that presents grouped data with rectangular bars, with heights proportional to the values that they represent.',
     categorie: 'Comparison',
     dimExemple: [['country'], ['pop']],
-    image: 'assets/img-graph/barChart.jpg'
+    image: 'assets/img-graph/barChart.png'
   }),
   createChartType({
     title: 'Pie Chart',
@@ -70,27 +55,25 @@ export const chartTypes = [
       { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
       { column: 'Value', maxSize: 1, dataType: ['number'] }
     ],
-    description:
-      'A pie chart (or a circle chart) is a circular statistical graphic which is divided into slices to illustrate numerical proportion.',
+    description: 'A circular statistical graphic which is divided into slices to illustrate numerical proportion.',
     categorie: 'Comparison',
     dimExemple: [['country'], ['pop']],
     image: 'assets/img-graph/pieChart.png'
   }),
-  // createChartType({
-  //   title: 'Word Cloud Chart',
-  //   simpleData: true,
-  //   cmpName: 'wordCloud',
-  //   convertData: WordCloudComponent.convertData,
-  //   dimLabels: [
-  //     { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
-  //     { column: 'Value', maxSize: 1, dataType: ['number'] }
-  //   ],
-  //   description:
-  //     'A word cloud chart is a visual representation of text data, typically used to depict keyword metadata (tags) on websites, or to visualize free form text.',
-  //   categorie: 'Comparison',
-  //   dimExemple:  [['country'], ['pop']],
-  //   image: 'assets/img-graph/wordCloud-chart.jpg'
-  // }),
+  createChartType({
+    title: 'Number Cards',
+    simpleData: true,
+    cmpName: 'numberCard',
+    convertData: NumberCardComponent.convertData,
+    dimLabels: [
+      { column: 'Card Name', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Card Value', maxSize: 1, dataType: ['string', 'number'] }
+    ],
+    description: 'A chart that displays values in aligned squares.',
+    dimExemple: [['country'], ['pop']],
+    categorie: 'Comparison',
+    image: 'assets/img-graph/numberCards.png'
+  }),
   createChartType({
     title: 'Dendogram',
     simpleData: true,
@@ -100,28 +83,10 @@ export const chartTypes = [
       { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
       { column: 'Value', maxSize: 1, dataType: ['number'] }
     ],
-    description:
-      'Dendrograms are tree-like diagrams used to represent the distribution of a hierarchical clustering.' +
-      ' The different depth levels represented by each node are visualized on the horizontal axes and it is useful to visualize a non-weighted hierarchy.',
+    description: 'A tree-like diagram used to represent the distribution of a non-weighted hierarchical clustering.',
     categorie: 'Hierarchy',
     dimExemple: [['continent', 'country'], ['pop']],
-
-    image: 'assets/img-graph/dendogram.jpg'
-  }),
-  createChartType({
-    title: 'Zoomable Treemap',
-    simpleData: true,
-    cmpName: 'zoomableTreemapChart',
-    convertData: ZoomableTreemapChartComponent.convertData,
-    dimLabels: [
-      { column: 'Hierarchy', maxSize: 10, dataType: ['string', 'number'] },
-      { column: 'Value', maxSize: 1, dataType: ['number'] }
-    ],
-    description:
-      'Treemaps for visualizing hierarchical data. Click to zoom to the next level. Click on the top orange band to zoom out.',
-    categorie: 'Hierarchy',
-    dimExemple: [['continent', 'country'], ['pop']],
-    image: 'assets/img-graph/zoomableTreemap.gif'
+    image: 'assets/img-graph/dendogram.png'
   }),
   createChartType({
     title: 'Sunburst',
@@ -132,14 +97,13 @@ export const chartTypes = [
       { column: 'Hierarchy', maxSize: 10, dataType: ['string', 'number'] },
       { column: 'Value', maxSize: 1, dataType: ['number'] }
     ],
-    description:
-      'Sunburst for visualizing hierarchical data. Click to zoom to the next level. Click on the center to zoom out.',
+    description: 'A chart used to visualize hierarchical data. Click to zoom to the next level. Click on the center to zoom out.',
     categorie: 'Hierarchy',
     dimExemple: [['continent', 'country', 'year', 'lifeExp'], ['pop']],
     image: 'assets/img-graph/sunburst.gif'
   }),
   createChartType({
-    title: 'Pie Grid Chart',
+    title: 'Circular Charts Grid',
     simpleData: true,
     cmpName: 'pieGridChart',
     convertData: PieGridChartComponent.convertData,
@@ -147,10 +111,12 @@ export const chartTypes = [
       { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
       { column: 'Value', maxSize: 1, dataType: ['number'] }
     ],
-    description: '',
+    description:
+      'A data representation that displays a grid of circular progress charts, ' +
+      'where each value is represented by the progress percentage of its chart.',
     categorie: 'Comparison',
     dimExemple: [['country'], ['pop']],
-    image: 'assets/img-graph/pieGridChart.jpg'
+    image: 'assets/img-graph/circularChartGrid.png'
   }),
   createChartType({
     title: 'Force Layout Bubble',
@@ -163,10 +129,10 @@ export const chartTypes = [
       { column: 'Value', maxSize: 1, dataType: ['number'] },
       { column: 'Description', maxSize: 1, dataType: ['string', 'number'] }
     ],
-    description: '',
+    description: 'A chart where the value is represented by the size of the bubbles, and the category by their color.',
     categorie: 'Dispersion',
     dimExemple: [['continent'], ['country'], ['pop'], ['year']],
-    image: 'assets/img-graph/ForceLayoutBubble.jpg'
+    image: 'assets/img-graph/forceLayoutBubble.png'
   }),
   createChartType({
     title: 'Force Directed Graph',
@@ -178,112 +144,115 @@ export const chartTypes = [
       { column: 'Value', maxSize: 1, dataType: ['number'] }
     ],
     description:
-      'Nested circles allow to represent hierarchies and compare values.' +
-      ' This visualization is particularly effective to show the proportion between elements through their areas and their position inside a hierarchical structure. ',
+      'A tree of bubbles where the value is represented by the size of the points. Each node is the sum of its leaves. ' +
+      'It is used to represent hierarchies, and to compare values by showing proportion between elements.',
     categorie: 'Hierarchy',
     dimExemple: [['country', 'year'], ['pop']],
-    image: 'assets/img-graph/ForceDirectedGraph.jpg'
+    image: 'assets/img-graph/forceDirectedGraph.png'
   }),
   createChartType({
-    title: 'Bar Vertical 2D',
-    convertData: NgGraphComponent.convertData,
-    cmpName: 'ngGraph',
+    title: 'Treemap',
+    simpleData: true,
+    cmpName: 'treemapChart',
+    convertData: TreemapChartComponent.convertData,
     dimLabels: [
       { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
-      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
       { column: 'Value', maxSize: 1, dataType: ['number'] }
     ],
-    description: 'Bar Vertical 2D is a bar chart with vertical representation of data',
-    categorie: 'Dispersion',
-    dimExemple: [['continent'], ['year'], ['pop']],
-    image: 'assets/img-graph/barVertical2D.jpg'
+    description: 'A space filling visualization of data hierarchies and proportion between elements.',
+    categorie: 'Hierarchy',
+    dimExemple: [['country'], ['pop']],
+    image: 'assets/img-graph/treemap.png'
   }),
   createChartType({
-    title: 'Bar Horizontal 2D',
-    convertData: NgGraphComponent.convertData,
-    cmpName: 'ngGraph',
+    title: 'Zoomable Treemap',
+    simpleData: true,
+    cmpName: 'zoomableTreemapChart',
+    convertData: ZoomableTreemapChartComponent.convertData,
     dimLabels: [
-      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
-      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Hierarchy', maxSize: 10, dataType: ['string', 'number'] },
       { column: 'Value', maxSize: 1, dataType: ['number'] }
-    ],
-    description: 'Bar Horizontal 2D is a bar chart with horizontal representation of data',
-    categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
-    image: 'assets/img-graph/barHorizontal2D.jpg'
-  }),
-  createChartType({
-    title: 'Bar Vertical Stacked',
-    convertData: NgGraphComponent.convertData,
-    cmpName: 'ngGraph',
-    dimLabels: [
-      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
-      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Value', maxSize: 1, dataType: ['number'] }
-    ],
-    description: '',
-    categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
-    image: 'assets/img-graph/barverticalStacked.jpg'
-  }),
-  createChartType({
-    title: 'Bar Vertical Normalized',
-    convertData: NgGraphComponent.convertData,
-    cmpName: 'ngGraph',
-    dimLabels: [
-      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
-      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Value', maxSize: 1, dataType: ['number'] }
-    ],
-    description: '',
-    categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
-    image: 'assets/img-graph/barVerticalNormalized.jpg'
-  }),
-  createChartType({
-    title: 'Bar Horizontal Normalized',
-    convertData: NgGraphComponent.convertData,
-    cmpName: 'ngGraph',
-    dimLabels: [
-      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
-      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Value', maxSize: 1, dataType: ['number'] }
-    ],
-    description: '',
-    categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
-    image: 'assets/img-graph/BarHorizontalNormalize.jpg'
-  }),
-  createChartType({
-    title: 'Polar Chart',
-    cmpName: 'ngGraph',
-    convertData: NgGraphComponent.convertData,
-    dimLabels: [
-      { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Angle Values', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'Radius Values', maxSize: 1, dataType: ['number'] }
-    ],
-    description: '',
-    categorie: 'Comparison',
-    dimExemple: [['continent'], ['year'], ['pop']],
-    image: 'assets/img-graph/polarChart.jpg'
-  }),
-  createChartType({
-    title: 'Line Chart',
-    cmpName: 'ngGraph',
-    convertData: NgGraphComponent.convertData,
-    dimLabels: [
-      { column: 'GroupBy', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'x-Values', maxSize: 1, dataType: ['string', 'number'] },
-      { column: 'y-Values', maxSize: 1, dataType: ['string', 'number'] }
     ],
     description:
-      'Is an interactive line chart that can be configured for multiple axes. ' +
-      'The multi-axis line chart is a special type of chart that allows multiple y-axes to be rendered in the same chart. ' +
-      'The advantage of using a multi-axis line chart is that you can plot multiple data sets with different types of units and different scale ranges  on the same chart.',
+      'A zoomable space filling visualization of data hierarchies and proportion between elements. ' + 
+      'Click on a rectangle to zoom in and zoom out.',
+    categorie: 'Hierarchy',
+    dimExemple: [['continent', 'country'], ['pop']],
+    image: 'assets/img-graph/treemapZoomable.gif'
+  }),
+  createChartType({
+    title: 'Vertical Grouped Bar Chart',
+    convertData: NgGraphComponent.convertData,
+    cmpName: 'ngGraph',
+    dimLabels: [
+      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
+      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Value', maxSize: 1, dataType: ['number'] }
+    ],
+    description: 'A vertical bar chart where the bars are color-coded to represent a particular grouping.',
+    categorie: 'Dispersion',
+    dimExemple: [['continent'], ['year'], ['pop']],
+    image: 'assets/img-graph/barGroupedVertical.png'
+  }),
+  createChartType({
+    title: 'Horizontal Grouped Bar Chart',
+    convertData: NgGraphComponent.convertData,
+    cmpName: 'ngGraph',
+    dimLabels: [
+      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
+      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Value', maxSize: 1, dataType: ['number'] }
+    ],
+    description: 'A horizontal bar chart where the bars are color-coded to represent a particular grouping.',
     categorie: 'Comparison',
     dimExemple: [['continent'], ['year'], ['pop']],
-    image: 'assets/img-graph/line-chart.jpg'
+    image: 'assets/img-graph/barGroupedHorizontal.png'
+  }),
+  createChartType({
+    title: 'Stacked Bar Chart',
+    convertData: NgGraphComponent.convertData,
+    cmpName: 'ngGraph',
+    dimLabels: [
+      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
+      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Value', maxSize: 1, dataType: ['number'] }
+    ],
+    description: 'A bar chart where the bars that correspond to a same group are stacked on top of each other. The height of the resulting bar shows the combined result of the group.',
+    categorie: 'Comparison',
+    dimExemple: [['country'], ['year'], ['pop']],
+    image: 'assets/img-graph/barStackedVertical.png'
+  }),
+  createChartType({
+    title: 'Vertical Normalized Bar Chart',
+    convertData: NgGraphComponent.convertData,
+    cmpName: 'ngGraph',
+    dimLabels: [
+      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
+      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Value', maxSize: 1, dataType: ['number'] }
+    ],
+    description:
+      'A vertical bar chart where the bars that correspond to a same group are stacked on top of each other. ' +
+      'The heights of the resulting bars are normalized, to visualize the proportion of each bar in its group and enable comparaisons between groups.',
+    categorie: 'Comparison',
+    dimExemple: [['continent'], ['year'], ['pop']],
+    image: 'assets/img-graph/barNormalizedVertical.png'
+  }),
+  createChartType({
+    title: 'Horizontal Normalized Bar Chart',
+    convertData: NgGraphComponent.convertData,
+    cmpName: 'ngGraph',
+    dimLabels: [
+      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
+      { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Value', maxSize: 1, dataType: ['number'] }
+    ],
+    description:
+      'A horizontal bar chart where the bars that correspond to a same group are stacked on top of each other. ' +
+      'The heights of the resulting bars are normalized, to visualize the proportion of each bar in its group and enable comparaisons between groups.',
+    categorie: 'Comparison',
+    dimExemple: [['continent'], ['year'], ['pop']],
+    image: 'assets/img-graph/barNormalizedHorizontal.png'
   }),
   createChartType({
     title: 'Heat Map',
@@ -294,10 +263,10 @@ export const chartTypes = [
       { column: 'y-Category', maxSize: 1, dataType: ['number'] },
       { column: 'Color', maxSize: 1, dataType: ['string', 'number'] }
     ],
-    description: '',
+    description: 'A graphical representation of data where the individual values contained in a matrix are represented as colors.',
     categorie: 'Comparison',
     dimExemple: [['continent'], ['year'], ['pop']],
-    image: 'assets/img-graph/heatMap.jpg'
+    image: 'assets/img-graph/heatMap.png'
   }),
   createChartType({
     title: 'Bubble Chart',
@@ -309,59 +278,67 @@ export const chartTypes = [
       { column: 'y-Values', maxSize: 1, dataType: ['number'] },
       { column: 'Radius', maxSize: 1, dataType: ['string', 'number'] }
     ],
-    description: '',
+    description: 'A two-dimensional scatterplot where a third variable is represented by the size of the points, that can be configured for multiple axes.',
     categorie: 'Dispersion',
     dimExemple: [['continent'], ['pop'], ['year'], ['gdpPercap']],
-    image: 'assets/img-graph/bubbleChart.jpg'
+    image: 'assets/img-graph/bubbleChart.png'
   }),
+  // createChartType({
+  //   title: 'Word Cloud Chart',
+  //   simpleData: true,
+  //   cmpName: 'wordCloud',
+  //   convertData: WordCloudComponent.convertData,
+  //   dimLabels: [
+  //     { column: 'Name', maxSize: 1, dataType: ['string', 'number'] },
+  //     { column: 'Value', maxSize: 1, dataType: ['number'] }
+  //   ],
+  //   description: 'A visual representation of text data, typically used to depict keyword metadata (tags) on websites, or to visualize free form text.',
+  //   categorie: 'Comparison',
+  //   dimExemple:  [['country'], ['pop']],
+  //   image: 'assets/img-graph/wordCloudChart.png'
+  // }),
   createChartType({
-    title: 'Treemap',
+    title: 'Advanced Pie Chart',
     simpleData: true,
-    cmpName: 'treemapChart',
-    convertData: TreemapChartComponent.convertData,
+    cmpName: 'AdvancedPieChart',
+    convertData: AdvancedPieChartComponent.convertData,
     dimLabels: [
-      { column: 'Group by', maxSize: 10, dataType: ['string', 'number'] },
+      { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
       { column: 'Value', maxSize: 1, dataType: ['number'] }
     ],
-    description:
-      'A space filling visualization of data hierarchies and proportion between elements.' +
-      "The different hierarchical levels create visual clusters through the subdivision into rectangles proportionally to each element's value." +
-      ' Treemaps are useful to represent the different proportion of nested hierarchical data structures.',
-    categorie: 'Hierarchy',
-    dimExemple: [['country'], ['pop']],
-    image: 'assets/img-graph/treemap.jpg'
+    description: 'A pie chart with additional information displayed on the right.',
+    categorie: 'Comparison',
+    dimExemple:  [['country'], ['pop']],
+    image: 'assets/img-graph/advancedPieChart.png'
   }),
-  // createChartType({
-  //   title: 'Advanced Pie Chart',
-  //   simpleData: true,
-  //   cmpName: 'AdvancedPieChart',
-  //   convertData: AdvancedPieChartComponent.convertData,
-  //   dimLabels: [
-  //     { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
-  //     { column: 'Value', maxSize: 1, dataType: ['number'] }
-  //   ],
-  //   description: 'Adevenced pie chart is similar to the pie chart, with more details showing on the right of the pie',
-  //   categorie: 'Comparison',
-  //   dimExemple:  [['country'], ['pop']],
-  //   image: 'assets/img-graph/advencedPie-chart.jpg'
-  // }),
-  // createChartType({
-  //   title: 'Gauge Chart',
-  //   simpleData: true,
-  //   cmpName: 'GaugeChart',
-  //   convertData: GaugeChartComponent.convertData,
-  //   dimLabels: [
-  //     { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
-  //     { column: 'Value', maxSize: 1, dataType: ['number'] }
-  //   ],
-  //   description:
-  //     'Gauge charts, also known as dial charts or speedometer charts, use needles to show information as a reading on a dial.' +
-  //     'This chart type is often used in executive dashboard reports to show key business indicators.' +
-  //     'Gauge charts are useful for comparing values between a small number of variables either by using multiple needles on the same gauge or by using multiple gauges.',
-  //   categorie: 'Comparison',
-  //   dimExemple:  [['country'], ['pop']],
-  //   image: 'assets/img-graph/gauge-chart.jpg'
-  // }),
+  createChartType({
+    title: 'Gauge Chart',
+    simpleData: true,
+    cmpName: 'GaugeChart',
+    convertData: GaugeChartComponent.convertData,
+    dimLabels: [
+      { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Value', maxSize: 1, dataType: ['number'] }
+    ],
+    description: 'A chart where information is displayed as overlayed readings on a dial.',
+    categorie: 'Comparison',
+    dimExemple:  [['country'], ['pop']],
+    image: 'assets/img-graph/gaugeChart.png'
+  }),
+  createChartType({
+    title: 'Polar Chart',
+    cmpName: 'ngGraph',
+    convertData: NgGraphComponent.convertData,
+    dimLabels: [
+      { column: 'Group by', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Angle Values', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'Radius Values', maxSize: 1, dataType: ['number'] }
+    ],
+    description: 'A two-dimensional chart where values are represented by the polar coordinates (angle and radius) of the point.',
+    categorie: 'Comparison',
+    dimExemple: [['continent'], ['year'], ['pop']],
+    image: 'assets/img-graph/polarChart.png'
+  }),
   createChartType({
     title: 'Area Chart',
     simpleData: true,
@@ -373,13 +350,28 @@ export const chartTypes = [
       { column: 'y-Values', maxSize: 1, dataType: ['number'] }
     ],
     description:
-      'A small multiple is a series of small similar graphics or charts, allowing them to be easily compared',
+      'A chart based on the line chart, where the area between axis and line is emphasized with colors. ' +
+      'It is commonly used to compare cumulated totals over time.',
     categorie: 'Comparison',
     dimExemple: [['year'], ['country'], ['pop']],
-    image: 'assets/img-graph/areaChart.jpg'
+    image: 'assets/img-graph/areaChart.png'
   }),
   createChartType({
-    title: 'Line Chart d3',
+    title: 'Line Chart',
+    cmpName: 'ngGraph',
+    convertData: NgGraphComponent.convertData,
+    dimLabels: [
+      { column: 'GroupBy', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'x-Values', maxSize: 1, dataType: ['string', 'number'] },
+      { column: 'y-Values', maxSize: 1, dataType: ['string', 'number'] }
+    ],
+    description: 'A chart which displays information as a series of data points connected by straight line segments, that can be configured for multiple axes',
+    categorie: 'Comparison',
+    dimExemple: [['continent'], ['year'], ['pop']],
+    image: 'assets/img-graph/lineChart.png'
+  }),
+  createChartType({
+    title: 'Zoomable Line Chart',
     simpleData: true,
     cmpName: 'lineChart',
     convertData: LineChartComponent.convertData,
@@ -388,10 +380,9 @@ export const chartTypes = [
       { column: 'xAxis', maxSize: 1, dataType: ['string', 'number'] },
       { column: 'yAxis', maxSize: 1, dataType: ['number'] }
     ],
-    description:
-      'A line chart or line graph is a type of chart which displays information as a series of data points called "markers" connected by straight line segments.',
+    description: 'A chart which displays information as a series of data points connected by straight line segments, that can be dynamically zoomed.',
     categorie: 'Comparison',
     dimExemple: [['year'], ['country'], ['pop']],
-    image: 'assets/img-graph/lineChartD3.png'
+    image: 'assets/img-graph/lineChartZoomable.png'
   })
 ];

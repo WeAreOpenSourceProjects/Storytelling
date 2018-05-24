@@ -17,7 +17,8 @@ export class PieChartComponent extends Chart implements OnInit, OnChanges {
   private height: number;
   private radius: number;
   private _current: any; // for animation
-  private pieColor = d3.scaleOrdinal(d3.schemeCategory20);
+  private pieColor = d3.scaleOrdinal(['#3498db', '#74b9ff', '#f39c12', '#fed330', '#27ae60', '#a3cb38', '#ee5a24', '#fa8231',
+  '#8e44ad', '#9c88ff', '#079992', '#7bc8a4', '#b71540', '#eb4d4b', '#34495e', '#487eb0', '#7f8c8d', '#bdc3c7']);
   private id;
   private curtain: any;
   private chartOptions: any;

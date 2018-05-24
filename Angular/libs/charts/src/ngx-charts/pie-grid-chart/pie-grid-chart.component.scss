@@ -6,11 +6,11 @@
     height: 100%;
   }
 }
-/deep/.ngx-charts-outer.ng-trigger.ng-trigger-animationState{
+:host /deep/.ngx-charts-outer.ng-trigger.ng-trigger-animationState{
   width: 98% !important;
   height: 100% !important;
 }
-/deep/ svg {
+:host /deep/ svg {
   height: 100%;
   width: 100%;
 }

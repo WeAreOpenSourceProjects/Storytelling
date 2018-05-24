@@ -25,7 +25,7 @@
     stroke-width: 2px;
   }
 }
-/deep/ svg{
+:host /deep/ svg{
   height: 100%;
   width: 100%;
 }

@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import * as _ from 'lodash';
 import { nest } from 'd3-collection';
 import { Chart } from '../chart.class';
+import { legendColor } from 'd3-svg-legend';
 
 @Component({
   selector: 'app-line-chart',
@@ -13,6 +14,7 @@ export class LineChartComponent extends Chart {
   @ViewChild('chart') private chartContainer: ElementRef;
   private data: Array<any> = [];
   private width: number;
+  private widthLegend: number;
   private height: number;
   private heightTB: number; //height of thumbnail
   private curtain: any; //for animation
@@ -66,7 +68,7 @@ export class LineChartComponent extends Chart {
     let parseDate = d3.timeParse('%b %Y');
 
     this.data = data;
-
+    
     if (parseDate(this.data[0][0].xAxis) != null) this.dateMode = true;
     this.data.forEach(d => {
       d.forEach(d => {
@@ -128,6 +130,7 @@ export class LineChartComponent extends Chart {
       this.data = LineChartComponent.convertData(this.chartOptions.dataDims, this.dataInput);
     else this.data = this.dataInput;
     this.dateMode = false;
+    this.widthLegend = 120;
     this.heightTB = 60; //set height of thumbnail
     this.setData(this.data);
     if (this.data === undefined) return;
@@ -136,9 +139,9 @@ export class LineChartComponent extends Chart {
   }
   drawChart() {
     let element = this.chartContainer.nativeElement;
-    let margin = { top: 0, right: 50, bottom: 0, left: 50 };
-    this.width = element.offsetWidth - margin.left - margin.right;
-    this.height = element.offsetHeight - margin.top - margin.bottom - this.heightTB - 60;
+    let margin = { top: 20, right: 60, bottom: 60, left: 70 };
+    this.width = element.offsetWidth - margin.left - margin.right - this.widthLegend;
+    this.height = element.offsetHeight - margin.top - margin.bottom - this.heightTB;
 
     // Define the div for the tooltip
     var div = d3
@@ -259,7 +262,9 @@ export class LineChartComponent extends Chart {
       .text('yAxis');
 
     //draw line for line chart
-    let colors: any = d3.scaleOrdinal(d3.schemeCategory20);
+    let colorDomain = ['#3498db', '#74b9ff', '#f39c12', '#fed330', '#27ae60', '#a3cb38', '#ee5a24', '#fa8231',
+    '#8e44ad', '#9c88ff', '#079992', '#7bc8a4', '#b71540', '#eb4d4b', '#34495e', '#487eb0', '#7f8c8d', '#bdc3c7'];
+    let colors: any = d3.scaleOrdinal(colorDomain);
     let pathContainer = focus
       .append('svg')
       .attr('class', 'pathContainer')
@@ -274,7 +279,7 @@ export class LineChartComponent extends Chart {
       .append('path')
       .attr('class', 'line')
       .attr('fill', 'none')
-      .attr('stroke', (d, i) => colors(i))
+      .attr('stroke', (d, i) => colors(d[0].series) )
       .attr('d', d => line(d));
 
     //*thumbnail*//
@@ -323,7 +328,7 @@ export class LineChartComponent extends Chart {
       .append('path')
       .attr('class', 'lineTB')
       .attr('fill', 'none')
-      .attr('stroke', (d, i) => colors(i))
+      .attr('stroke', (d, i) => colors(d[0].series))
       .attr('d', d => lineTB(d));
 
     let brush = d3
@@ -384,7 +389,7 @@ export class LineChartComponent extends Chart {
         .attr('class', 'dot')
         .attr('opacity', 0)
         .attr('r', 7)
-        .attr('fill', colors(i))
+        .attr('fill', colors(this.data[i][0].series) )
         .attr('cx', d => x(d['xAxis']))
         .attr('cy', d => y(d['yAxis']))
         .on('mouseover', function(d) {
@@ -428,7 +433,35 @@ export class LineChartComponent extends Chart {
       .attr('width', 0)
       .attr('class', 'curtain')
       .attr('transform', 'rotate(180) translate(' + (0 - margin.left) + ',' + margin.top + ')')
-      .style('fill', '#f2f2f2');
+      .style('fill', '#fff');
+  // }
+
+  // drawLegend() {
+
+    let legendOrdinal = legendColor()
+      .shape('circle')
+      .shapePadding(6)
+      .scale(colors);
+
+    // legend
+    let legends = svg
+      .append('g')
+      .classed('legend-color', true)
+      .attr('text-anchor', 'start')
+      .attr('transform', 'translate(' + (this.width + margin.left + margin.right) + ', 40)')
+      .style('font-size', '12px');
+
+    legends
+      .append('text')
+      .attr('text-anchor', 'start')
+      .classed('legend-label', true)
+      .attr('transform', 'translate(0,-20)')
+      .style('font-weight', 'bold')
+      .style('font-size', '14px')
+      .text(() => 'Legend');
+
+    legends.call(legendOrdinal);
+
   }
 
   load() {
