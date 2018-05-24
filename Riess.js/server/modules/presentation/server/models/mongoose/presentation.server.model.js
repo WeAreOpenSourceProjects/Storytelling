@@ -4,6 +4,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
+  Slides = mongoose.Slides,
   Schema = mongoose.Schema;
 
 /**
@@ -55,5 +56,5 @@ var PresentationSchema = new Schema({
 mongoose.model('Presentation', PresentationSchema);
 
 PresentationSchema.post('remove', function(presentation) {
-  Slides.remove(presentation.slides)
+  Slides.remove(presentation.slides);
 });

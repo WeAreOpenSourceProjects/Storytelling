@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+  Boxes = mongoose.Boxes,
   Schema = mongoose.Schema;
 
 var SlideSchema = new Schema({
@@ -19,7 +20,7 @@ var SlideSchema = new Schema({
     },
     default: {
       image: null,
-      color: 'rgba(255,255,255,0)'
+      color: 'rgb(255,255,255)'
     }
   },
   boxIds: [{
@@ -43,5 +44,4 @@ mongoose.model('Slide', SlideSchema);
 
 SlideSchema.post('remove', function (slide) {
   Boxes.remove(slide.boxes);
-  next();
 });
