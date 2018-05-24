@@ -199,6 +199,9 @@ export class BoxesGridComponent implements OnInit {
       }
       case 'background': {
         const dialog = this.dialog.open(BoxesBackgroundComponent, { width: '50%', height:'50%'});
+        dialog.componentInstance.color = this.slide.background.color;
+        dialog.componentInstance.imagePreview = this.slide.background.imagePreview;
+        
         const backgroundBoxSubscription = dialog.afterClosed().subscribe(background => {
           if (background) {
             this.store.dispatch(

@@ -28,7 +28,7 @@ import { BoxesRoutingModule } from '@labdat/boxes-routing';
 @NgModule({
   imports: [
     NxModule.forRoot(),
-    //    RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    //RouterModule.forRoot([], { initialNavigation: 'enabled' }),
     BrowserModule,
     RouterModule,
     BrowserAnimationsModule,
