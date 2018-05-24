@@ -157,7 +157,7 @@ export class BoxesGridComponent implements OnInit {
         break;
       }
       case 'chart': {
-        const dialog = this.dialog.open(ChartsBuilderComponent, { height: '95%', width: '90%' });
+        const dialog = this.dialog.open(ChartsBuilderComponent, { height: '100%', width: '100%' });
         const chartBoxSubscription = dialog.afterClosed().subscribe(chart => {
           if (chart) {
             this.store.dispatch(
