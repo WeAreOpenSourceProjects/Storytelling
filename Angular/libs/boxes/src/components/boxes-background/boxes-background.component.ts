@@ -8,9 +8,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class BoxesBackgroundComponent {
   public image: string;
-  public color: string;
+  @Input() color: string ='rgb(255,255,255)';
   private opacity: number = 1;
-  public imagePreview;
+  @Input() imagePreview;
+
   setImage() {
     return {
       color: this.color,

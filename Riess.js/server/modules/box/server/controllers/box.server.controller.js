@@ -89,7 +89,7 @@ exports.updateAll = function (req, res) {
   const boxP = [];
   for (var box in boxes) {
     if (boxes[box].content && (boxes[box].content.text || boxes[box].content.chart || boxes[box].content.imageId)) {
-      boxP.push(Box.findByIdAndUpdate(boxes[box]._id, boxes[box]));
+      boxP.push(Box.findByIdAndUpdate(boxes[box]._id, new Box(boxes[box])));
     } else if (!boxes[box].content.text && !boxes[box].content.chart && !boxes[box].content.imageId) {
       boxP.push(Box.findByIdAndRemove(boxes[box]._id));
     }

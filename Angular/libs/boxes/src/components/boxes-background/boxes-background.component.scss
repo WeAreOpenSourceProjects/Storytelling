@@ -1,5 +1,10 @@
 .image-upload {
   overflow: hidden;
+  flex :80;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .color-form{
@@ -11,4 +16,12 @@
   overflow-x: initial !important;
   overflow-y: visible !important;
 
+}
+.background-box {
+  display: flex;
+  flex-direction: row;
+}
+.close-icon {
+  align-self: flex-start;
+  cursor: pointer;
 }
