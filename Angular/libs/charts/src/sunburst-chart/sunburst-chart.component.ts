@@ -28,13 +28,13 @@ export class SunburstChartComponent extends Chart {
   private height: number;
   private totalSize: number = 0; // Total size of all segments; we set this later, after loading the data.
   private colorScale: any;
-  private explanationHeight: number;
-  private explanationWidth: number;
+  private depth: number;
   private b = {
     w: 55,
     h: 30,
     s: 3,
-    t: 10 // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
+    t: 10, // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
+    suppLineNb: 0 // Supplementary line breaks for breakcrumb sequence
   };
   private stringsLength: Array<number>; // Array of the strings size inside the trail
   private arc: any;
@@ -69,7 +69,7 @@ export class SunburstChartComponent extends Chart {
     const hierarchy$ = depth => d => d[dataDims[0][depth]];
     const value$ = d => d[dataDims[1]];
     const depthDim = dataDims[0].length;
-
+    
     const root = { name: _.head(dataDims[0]), children: [] };
 
     const level0 = _.chain(rawData)
@@ -113,6 +113,7 @@ export class SunburstChartComponent extends Chart {
     } else {
       this.data = this.dataInput;
     }
+    this.depth = this.chartOptions.dataDims[0].length;
     this.drawChart();
     this.load();
   }
@@ -129,8 +130,10 @@ export class SunburstChartComponent extends Chart {
 
     this.formatNumber = d3.format(',d');
     this.radius =
-      Math.min(this.width - this.margin.left - this.margin.right, this.height - this.margin.top - this.margin.bottom) /
-      2;
+      Math.min(
+        this.width - this.margin.left - this.margin.right,
+        this.height - this.margin.top - this.margin.bottom - (this.b.suppLineNb * 30)
+      ) /2;
     this.xScale = d3.scaleLinear().range([0, 2 * Math.PI]);
     this.yScale = d3.scaleSqrt().range([0, this.radius]);
     d3
@@ -139,14 +142,11 @@ export class SunburstChartComponent extends Chart {
       .select('svg')
       .style('opacity', 0);
 
-    // Position of the Explanation label in the center of the sunburst
-    let explanationElmnt = d3
-      .select(element)
-      .select('#explanation')
-      .node() as HTMLElement;
-    this.explanationWidth = explanationElmnt.offsetWidth;
-    this.explanationHeight = explanationElmnt.offsetHeight;
-
+    this.b.suppLineNb = Math.floor(
+      (this.chartOptions.dataDims[0].length * 2 * (this.b.w + this.b.t))
+      / (0.75 * this.width - this.margin.left - this.margin.right)
+    )
+  
     let partition = d3.partition();
 
     this.arc = d3
@@ -165,7 +165,7 @@ export class SunburstChartComponent extends Chart {
       });
 
     // Basic setup of page elements
-    this.initializeBreadcrumbTrail(element, this.radius);
+    this.initializeBreadcrumbTrail(element, this.radius, this.margin, this.b.suppLineNb);
 
     this.chart = d3
       .select(element)
@@ -223,26 +223,32 @@ export class SunburstChartComponent extends Chart {
     /* Add 'curtain' rectangle to hide entire graph */
     this.curtain = this.chart.style('opacity', 0);
   }
-
+  
   // Basic setup of page elements.
-  private initializeBreadcrumbTrail(element, radius) {
+  private initializeBreadcrumbTrail(element, radius, margin, suppSequenceLineNbr) {
     d3.select('#trail').remove();
     // Add the svg area.
     d3
       .select(element)
       .select('#sequence')
       .append('svg')
-      .attr('viewBox', '-100 0 1000 100')
-      .attr('height', '100%')
-      .attr('id', 'trail')
-      .style('width', '100%');
+      .style('height', 60 + suppSequenceLineNbr * 30 + 'px')
+      .attr('width', '100%')
+      .attr('id', 'trail');
 
-    // Place the breadcrumb trail lower
+       // Place the breadcrumb trail lower
+    d3
+    .select(element)
+    .select('#sequence')
+    .select('svg')
+    .attr('transform', d => 'translate(' + (this.width - this.margin.left - this.margin.right) / 4 + ',' + margin.top + ')');
+
     d3
       .select(element)
-      .select('#sequence')
-      .select('svg')
-      .attr('transform', d => 'translate(0,' + this.explanationHeight / 2 + ')');
+      .select('#explanation')
+      .style('height', '90px')
+      .style('width', '100%' )
+      .attr('transform', d => 'translate(' + margin.left + ',' + (margin.top + 60 + (suppSequenceLineNbr * 30)) + ')');
   }
 
   // Fade all but the current sequence, and show it in the breadcrumb trail.
@@ -259,7 +265,8 @@ export class SunburstChartComponent extends Chart {
     d3
       .select(element)
       .select('#percentage')
-      .text(percentageString);
+      .text(percentageString)
+      .attr('top', '0');
 
     // Update of the percentage of the explanation
     d3
@@ -341,34 +348,25 @@ export class SunburstChartComponent extends Chart {
     // Merge enter and update selections; set position for all nodes and we calculate the size of the sequence
     let translation = 0; // Translation of each polygon
     let SequenceTotalSize = 0; // Total size of the trail
+    let line = 0; // Line breaks
     entering.merge(trail).attr('transform', (d, i) => {
-      translation += i == 0 ? 0 : thisClass.b.w + thisClass.b.s + thisClass.stringsLength[i - 1];
-      SequenceTotalSize += thisClass.b.w + thisClass.stringsLength[i] + thisClass.b.t;
-
-      return 'translate(' + translation + ', 0)';
+      if (i == 0) {
+        translation = 0;
+        SequenceTotalSize = thisClass.b.w + thisClass.stringsLength[0] + thisClass.b.t;
+        return 'translate(' + translation + ', 0)';
+      } else {
+        if ((SequenceTotalSize + thisClass.b.w + thisClass.stringsLength[i]) > (0.9 * this.width - this.margin.left - this.margin.right)) {
+          line ++;
+          translation = 20;
+          SequenceTotalSize = 20 + thisClass.b.w + thisClass.stringsLength[i] + thisClass.b.t;
+          return 'translate(' + translation + ', ' + line * (thisClass.b.h + 5) + ')';
+        } else {
+          translation += i == 0 ? 0 : thisClass.b.w + thisClass.b.s + thisClass.stringsLength[i - 1];
+          SequenceTotalSize += thisClass.b.w + thisClass.stringsLength[i] + thisClass.b.t;
+          return 'translate(' + translation + ', ' + line * (thisClass.b.h + 5) + ')';
+        }
+      }
     });
-
-    // Position of the sequence
-    d3
-      .select(element)
-      .select('#sequence')
-      .select('svg')
-      .attr(
-        'transform',
-        d =>
-          'translate(' +
-          (thisClass.width + SequenceTotalSize - thisClass.explanationWidth) / 2 +
-          ',' +
-          (thisClass.height / 2 - thisClass.radius + thisClass.margin.top) +
-          ')'
-      );
-
-    // Position of the explanation
-    d3
-      .select(element)
-      .select('#explanation')
-      .style('top', thisClass.height / 2 - thisClass.radius - 50 - thisClass.explanationHeight / 4 + 'px')
-      .style('left', (thisClass.width + SequenceTotalSize - thisClass.explanationWidth) / 2 + 'px');
 
     // Make the breadcrumb trail visible, if it's hidden.
     d3
