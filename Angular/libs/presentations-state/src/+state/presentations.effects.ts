@@ -113,6 +113,27 @@ export class PresentationsEffects {
   });
 
   @Effect()
+  updateWithShare$ = this.dataPersistence.optimisticUpdate(fromPresentations.UPDATE_WITH_SHARE, {
+    run: (action: fromPresentations.UpdateWithShare, state: PresentationsState) => {
+      return this.presentationsApiService.updateWithShare(action.payload).pipe(
+        tap(() =>
+          this.snackBar.openFromComponent(PresentationsSnackComponent, {
+            duration: 1000,
+            data: 'Presentation shared Success',
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          })
+        ),
+        map(() => new fromPresentations.UpdateWithShareSuccess(action.payload))
+      );
+    },
+    undoAction: (action: fromPresentations.UpdateWithShare, error) => {
+      console.error('Error', error);
+      return new fromPresentations.UpdateWithShareFailure(error);
+    }
+  });
+
+  @Effect()
   delete$ = this.actions.ofType(fromPresentations.DELETE).pipe(
     map(toPayload),
     switchMap(presentationId => this.presentationsApiService.delete(presentationId)),

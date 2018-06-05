@@ -95,6 +95,11 @@ export class PresentationsApiService {
     return this.http.patch(backendURL, changes);
   }
 
+  updateWithShare({ id, changes }): Observable<any> {
+    const backendURL = `${this.baseUrl}/${this.endpoints.presentations}/${id}/share`;
+    return this.http.patch(backendURL, changes);
+  }
+  
   delete(presentationId): Observable<any> {
     const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}/${presentationId}`;
     return this.http.delete(backendURL);

@@ -24,7 +24,7 @@ export class AppComponent {
   }
 
   constructor(private mdIconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
-    ['file', 'editor', 'action', 'navigation', 'av', 'image', 'content', 'hardware'].forEach(iconSet =>
+    ['file', 'editor', 'action', 'navigation', 'av', 'image', 'content', 'hardware','social'].forEach(iconSet =>
       mdIconRegistry.addSvgIconSetInNamespace(
         iconSet,
         sanitizer.bypassSecurityTrustResourceUrl(`assets/svg-sprite-${iconSet}.svg`)

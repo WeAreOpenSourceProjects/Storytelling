@@ -20,6 +20,10 @@ module.exports = function(app) {
   .patch(passport.authenticate('jwt'), presentation.update)
   .delete(passport.authenticate('jwt'), presentation.delete);
 
+  app.route('/api/presentations/:presentationId/share')
+  //  .all(presentationPolicy.isAllowed)
+    .get(presentation.findOneById)
+    .patch(passport.authenticate('jwt'), presentation.updateWithShare);
   app.route('/api/presentations')
   //  .all(presentationPolicy.isAllowed)
   .post(passport.authenticate('jwt'), presentation.create);

@@ -17,7 +17,7 @@
           <mat-icon *ngIf="!presentation.isFavorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_border_24px"></mat-icon>
           <mat-icon *ngIf="presentation.isFavorite" mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="action:ic_favorite_24px"></mat-icon>
         </button-->
-        <div *ngIf="loggedIn && editable && presentation.author._id === user.id" class="btn-group">
+        <div *ngIf="loggedIn && editable && presentation.author._id === user.id " class="btn-group">
           <button mat-icon-button (click)="$event.preventDefault()" (click)="editPresentation($event)" matTooltip="Edit">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="image:ic_edit_24px"></mat-icon>
           </button>
@@ -28,6 +28,9 @@
             [class.unpublished]="!presentation.isPublic"
             [matTooltip]="(presentation.isPublic) ? 'Unpublish' : 'Publish'">
             <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="editor:ic_publish_24px"></mat-icon>
+          </button>
+          <button mat-icon-button (click)="sharePresentation($event)" matTooltip="Share">
+            <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="social:ic_share_24px"></mat-icon>
           </button>
           <button *ngIf="showCopy" mat-icon-button (click)="copyPresentation($event); false" matTooltip="Copy">
               <mat-icon mat-ripple matRippleCentered="true" matRippleUnbounded="true" svgIcon="content:ic_content_copy_24px"></mat-icon>

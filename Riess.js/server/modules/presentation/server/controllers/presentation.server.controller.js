@@ -7,6 +7,7 @@ var path = require('path'),
   Presentation = mongoose.model('Presentation'),
   Slide = mongoose.model('Slide'),
   Box = mongoose.model('Box'),
+  User = mongoose.model('User'),
   Image = mongoose.model('Image'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   ObjectId = mongoose.Schema.ObjectId,
@@ -33,7 +34,6 @@ exports.create = function(req, res) {
 exports.copy = async function(req, res) {
   const presentationId = req.body.presentationId;
   const user = req.user;
-  console.log(req.user)
 
   var presentation = await Presentation.findOne({ _id: presentationId }).exec();
   var newPresentation = _.cloneDeep(presentation.toObject())
@@ -101,20 +101,42 @@ exports.update = function(req, res, next) {
         message: errorHandler.getErrorMessage(err)
     })
   })
-
-
-//console.log({ ...presentation, ...req.presentation })
-/*
-  presentation.save(function(err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(presentation);
-    }
-  });*/
 };
+
+exports.updateWithShare = function(req, res, next) {
+  const user = req.user;
+  const presentationId = req.params.presentationId;
+  const usersQ = req.body.users;
+  var query =[];
+
+  for(var us in usersQ){
+    query.push(User.find({ email: usersQ[us].toLowerCase()}));
+  };
+  query.push(Presentation
+    .findOne({ _id: presentationId, author: user.id }));
+
+  Promise.all(query)
+  .then(function(result){
+    result = _.flatten(result, true);
+    var usersR = _.initial(result);
+    var presentation = _.last(result);
+    for(var userR in usersR){
+      if(usersR[userR]._id !== user._id)
+        presentation.users.push(usersR[userR]._id)
+    }
+    presentation.users = _.uniqWith(presentation.users, _.isEqual);
+    presentation.save(function(err) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+          res.json(presentation);
+      }
+    });
+  })   
+};
+
 
 exports.delete = function(req, res) {
   const user = req.user;
@@ -217,7 +239,7 @@ exports.search = function(req, res) {
   var regexS = new RegExp(req.query.title);
 
   var request = {
-    $and: [{ $or: []}]
+    $and: [{ $or: [] }]   
   }
 
   if ('title' in req.query) {
@@ -231,9 +253,15 @@ exports.search = function(req, res) {
   }
 
   if ('userId' in req.query) {
+    var us = mongoose.Types.ObjectId(req.query.userId);
+    request.$and[0].$or.push({
+      'users' : { $in : [us]}
+    })
+
     request.$and[0].$or.push({
       'author': req.query.userId
-    })
+    });
+    
   }
 
   if ('isPublic' in req.query) {
@@ -249,6 +277,7 @@ exports.search = function(req, res) {
       });
     }
   }
+  
 
 /*
   if ('isFavorite' in req.query) {
@@ -271,7 +300,7 @@ exports.search = function(req, res) {
 
   var presentationsCount = Presentation.find(request).count();
   var presentationsFind = Presentation.find(request);
-
+  mongoose.set('debug', true);
   Promise.all([
     presentationsCount,
     presentationsFind.populate({
@@ -286,7 +315,6 @@ exports.search = function(req, res) {
     .exec()
   ])
   .then(function([count, presentations]) {
-    console.log('COUNT', count);
     var slides = [].concat.apply([], presentations.map(function(presentation) { return presentation.slideIds }));
     var boxes = [].concat.apply([], slides.map(function(slide) { return slide.boxIds} ));
     res.json({

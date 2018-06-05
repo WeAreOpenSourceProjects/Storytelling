@@ -53,6 +53,7 @@ export interface IPresentation {
   author?: User;
   banner?: any;
   slideIds?: string[];
+  users?:string[];
 }
 
 export class Presentation {
@@ -66,7 +67,8 @@ export class Presentation {
     public tags?: string[],
     public author?: User,
     public banner?: any,
-    public slideIds?: string[]
+    public slideIds?: string[],
+    public users?:string[]
   ) {
     this.title = 'New Presentation';
   }

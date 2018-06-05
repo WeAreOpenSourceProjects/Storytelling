@@ -12,7 +12,7 @@ import { isEmpty } from 'lodash';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { PresentationsApiService } from '@labdat/presentations-state';
 import { User } from '@labdat/data-models';
-
+import { PublishDialogComponent } from './publish-dialog/publish-dialog.component';
 @Component({
   selector: 'app-slides-card',
   templateUrl: './presentation-card.component.html',
@@ -40,6 +40,8 @@ export class PresentationCardComponent implements OnInit {
   @Output() public isFavoriteChange = new EventEmitter();
 
   @Output() public copy = new EventEmitter();
+
+  @Output() public shareOptionChange = new EventEmitter();
 
   public loggedIn$: Observable<boolean> = this.store.select(selectIsLoggedIn);
   public userName$ = this.store
@@ -75,6 +77,15 @@ export class PresentationCardComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.isPublishChange.emit(this.presentation);
+  }
+  public sharePresentation(){
+    event.preventDefault();
+    event.stopPropagation();
+    const dialog = this.dialog.open(PublishDialogComponent, { height: '30%', width: '30%' });
+    const dialogSubscription = dialog.afterClosed().subscribe(users => {
+      console.log(users);
+      this.shareOptionChange.emit({id: this.presentation.id, users :users});
+    });
   }
   /*set like/dislike presentation*/
   public toggleFavorite(event) {

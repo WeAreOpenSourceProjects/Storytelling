@@ -39,6 +39,13 @@ var PresentationSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  users: {
+    type: [{
+      type: Schema.ObjectId,
+      ref: 'User'
+    }],
+    default: []
+  },
   banner: {
     type: String,
     defalut: '',

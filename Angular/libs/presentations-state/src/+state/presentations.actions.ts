@@ -19,7 +19,9 @@ export const UPDATE_FAILURE = '[Presentations] Update Failure';
 export const DELETE = '[Presentations] Delete';
 export const DELETE_SUCCESS = '[Presentations] Delete Success';
 export const DELETE_FAILURE = '[Presentations] Delete Failure';
-
+export const UPDATE_WITH_SHARE = '[Presentations] Update with share';
+export const UPDATE_WITH_SHARE_SUCCESS = '[Presentations] Update with share Success';
+export const UPDATE_WITH_SHARE_FAILURE = '[Presentations] Update with share Failure';
 export type Actions =
   | Search
   | SearchSuccess
@@ -38,7 +40,8 @@ export type Actions =
   | UpdateFailure
   | Delete
   | DeleteSuccess
-  | DeleteFailure;
+  | DeleteFailure
+  | UpdateWithShare;
 
 export class Search implements Action {
   readonly type = SEARCH;
@@ -97,6 +100,20 @@ export class UpdateSuccess implements Action {
 
 export class UpdateFailure implements Action {
   readonly type = UPDATE_FAILURE;
+  constructor(public payload: { error: any }) {}
+}
+export class UpdateWithShare implements Action {
+  readonly type = UPDATE_WITH_SHARE;
+  constructor(public payload: { id: string; changes: any }) {}
+}
+
+export class UpdateWithShareSuccess implements Action {
+  readonly type = UPDATE_WITH_SHARE_SUCCESS;
+  constructor(public payload: { id: string; changes: any }) {}
+}
+
+export class UpdateWithShareFailure implements Action {
+  readonly type = UPDATE_WITH_SHARE_FAILURE;
   constructor(public payload: { error: any }) {}
 }
 

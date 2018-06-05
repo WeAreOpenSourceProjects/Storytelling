@@ -7,6 +7,7 @@ export class SlidesListItem {
   public: boolean = false;
   favorite: boolean = false;
   author: String = '';
+  users: Array<string> = [];
   constructor(slides?) {
     this.id = (slides && slides._id) || '';
     this.title = (slides && slides.title) || '';

@@ -43,6 +43,7 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
   public nextPage$ = new Subject();
   public togglePublish$ = new Subject();
   public toggleFavorite$ = new Subject();
+  public shareOption$  = new Subject();
   public copy$ = new Subject();
   public delete$ = new Subject();
   public add$ = new Subject();
@@ -113,7 +114,15 @@ export class PresentationsListComponent implements OnInit, OnDestroy {
         new fromPresentations.Update({ id: presentation.id, changes: { isFavorite: !presentation.isFavorite } })
       )
     );
+
     this.subscriptions.add(toggleFavoriteSubscription);
+
+    const shareOptionSubscription = this.shareOption$.subscribe((presentation: Presentation) =>
+      this.store.dispatch(
+        new fromPresentations.UpdateWithShare({ id: presentation.id, changes: { users: presentation.users } })
+      )
+    );
+    this.subscriptions.add(shareOptionSubscription);
 
     const copySubscription = this.copy$.subscribe((presentationId: string) =>
       this.store.dispatch(new fromPresentations.Copy(presentationId))

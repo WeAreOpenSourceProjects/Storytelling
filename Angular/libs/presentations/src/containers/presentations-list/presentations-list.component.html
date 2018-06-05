@@ -18,6 +18,7 @@
         (edit)="edit$.next($event)"
         (isPublishChange)="togglePublish$.next($event)"
         (isFavoriteChange)="toggleFavorite$.next($event)"
+        (shareOptionChange)="shareOption$.next($event)"
         [presentation]="presentation"
         [loggedIn]="loggedIn$ | async"
         [user]="user$ | async"

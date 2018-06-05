@@ -54,6 +54,7 @@ export function presentationsReducer(
     case fromPresentations.UPDATE_SUCCESS: {
       return presentationsAdapter.updateOne(action.payload, state);
     }
+   
     case fromSlides.ADD_SUCCESS: {
       console.log('action payload', action.payload);
       const presentationId = action.payload.presentationId;

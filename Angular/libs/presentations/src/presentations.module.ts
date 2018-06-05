@@ -13,7 +13,8 @@ import {
   MatToolbarModule,
   MatDialogModule,
   MatCheckboxModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatRadioModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -66,7 +67,7 @@ import { environment } from '../../../apps/default/src/environments/environment'
 import { SlidesStateModule } from '@labdat/slides-state';
 import { PresentationsStateModule } from '@labdat/presentations-state';
 import { ChartsService } from '@labdat/charts/src/services/charts.service';
-
+import { PublishDialogComponent } from '@labdat/presentations/src/components/presentation-card/publish-dialog/publish-dialog.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -84,6 +85,7 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
     MatInputModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatRadioModule,
     RouterModule,
     SlidesModule,
     GridsterModule,
@@ -113,7 +115,8 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
     BubbleChartComponent,
     WordCloudComponent,
     SunburstChartComponent,
-    AreaChartComponent
+    AreaChartComponent,
+    PublishDialogComponent
   ],
   declarations: [
     PresentationsListComponent,
@@ -123,7 +126,8 @@ import { ChartsService } from '@labdat/charts/src/services/charts.service';
     PresentationSettingsComponent,
     PresentationsSearchComponent,
     PresentationsViewComponent,
-    TitleSlideComponent
+    TitleSlideComponent,
+    PublishDialogComponent
   ],
   exports: [
     PresentationsListComponent,
