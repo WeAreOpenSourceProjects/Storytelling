@@ -21,7 +21,7 @@ import { Chart } from '../chart.class';
 export class BarChartComponent extends Chart implements OnInit {
   @ViewChild('chart') private chartContainer: ElementRef;
   private data: Array<any> = [];
-  private margin: any = { top: 20, right: 20, bottom: 20, left: 20 };
+  private margin: any = { top: 20, right: 20, bottom: 90, left: 90 };
   private chart: any;
   private width: number;
   private height: number;
@@ -89,7 +89,14 @@ export class BarChartComponent extends Chart implements OnInit {
       const element = this.chartContainer.nativeElement;
       this.width = element.offsetWidth - this.margin.left - this.margin.right;
       this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
-
+      
+      // Define the div for the tooltip
+      var div = d3
+        .select(element)
+        .append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
+   
       const svg = d3
         .select(element)
         .append('svg')
@@ -97,6 +104,9 @@ export class BarChartComponent extends Chart implements OnInit {
         .attr('width', '100%')
         .attr('height', '100%')
         .attr('viewBox', '0 0 ' + element.offsetWidth + ' ' + element.offsetHeight);
+
+      var gridlines = svg.append('g')         
+        .attr('class', 'gridline')
 
       // chart plot area
       this.chart = svg
@@ -129,20 +139,36 @@ export class BarChartComponent extends Chart implements OnInit {
       this.xAxis = svg
         .append('g')
         .attr('class', 'axis axis-x')
-        .attr('transform', `translate(${this.margin.left}, ${this.height + this.margin.bottom})`)
-        .call(d3.axisBottom(this.xScale));
+        .attr('transform', `translate(${this.margin.left}, ${this.height + this.margin.top})`)
+        .call(d3.axisBottom(this.xScale))
+        .selectAll('text')	
+        .style('font-size', '0.75rem')
+        .style('text-anchor', 'end')
+        .attr('dx', '-.8em')
+        .attr('dy', '.15em')
+        .attr('transform', 'rotate(-50)');
       this.yAxis = svg
         .append('g')
-        .attr('class', 'axis axis-y')
-        .attr('transform', `translate(0, ${this.width})`)
-        .call(d3.axisLeft(this.yScale));
+        .attr('class', 'axis axis-y')	
+        .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
+        .call(d3.axisLeft(this.yScale))
+        .selectAll('text')
+        .style('font-size', '0.75rem');
 
       // update scales & axis
       this.xScale.domain(this.data.map(d => d.index));
       this.yScale.domain([0, d3.max(this.data, d => d.value)]);
-      // this.colors.domain([0, this.data.length]);
       this.xAxis.transition().call(d3.axisBottom(this.xScale));
       this.yAxis.transition().call(d3.axisLeft(this.yScale));
+
+      
+      // Gridlines
+      gridlines
+        .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
+        .call(d3.axisLeft(this.yScale)
+            .tickSize(-this.width, 0, 0)
+            .tickFormat('')
+        )
 
       const bars = this.chart.selectAll('.bar');
 
@@ -151,7 +177,7 @@ export class BarChartComponent extends Chart implements OnInit {
         .attr('x', d => this.xScale(d.index))
         .attr('y', d => this.yScale(d.value))
         .attr('width', d => this.xScale.bandwidth())
-        .attr('height', d => this.height - this.yScale(d.value))
+        .attr('height', d => (this.height - this.yScale(d.value) > 0) ? this.height - this.yScale(d.value) : 0)
         .style('fill', (d, i) => this.colors(i));
 
       bars
@@ -159,13 +185,21 @@ export class BarChartComponent extends Chart implements OnInit {
         .enter()
         .append('g')
         .attr('class', 'bar-block')
-        .on('mouseover', _ => {
-          d3.select(d3.event.srcElement).attr('opacity', 1);
-          d3.select(d3.event.target.nextElementSibling).attr('font-size', '24px');
+        .on('mouseover', d => {
+          d3.select(d3.event.srcElement).attr('opacity', 0.8);
+          div
+            .html('<p>' + d.name + '</p><b>' + d.value + '</b>')
+            .style('left', d3.event.layerX - 5 + 'px')
+            .style('top', d3.event.layerY + 25 + 'px');
+          div.transition().duration(200).style('opacity', 0.9);
         })
         .on('mouseout', _ => {
-          d3.select(d3.event.srcElement).attr('opacity', 0.8);
-          d3.select(d3.event.target.nextElementSibling).attr('font-size', '14px');
+          d3.select(d3.event.srcElement).attr('opacity', 1);
+          div.transition().duration(500).style('opacity', 0);
+        })
+        .on('mousemove', _ => {
+          div.style('left', d3.event.layerX - 5 + 'px')
+            .style('top', d3.event.layerY + 25 + 'px');
         });
 
       this.chart
@@ -176,27 +210,15 @@ export class BarChartComponent extends Chart implements OnInit {
         .attr('y', d => this.yScale(0))
         .attr('width', this.xScale.bandwidth())
         .attr('height', 0)
-        .attr('opacity', 0.8)
-        .style('fill', (d, i) => this.colors(i));
-
-      this.chart
-        .selectAll('.bar-block')
-        .append('text')
-        .attr('class', 'value-text')
-        .attr('font-weight', 600)
-        .attr('x', d => this.xScale(d.index) + this.xScale.bandwidth() / 2)
-        .attr('y', d => this.yScale(d.value) - 5)
-        .attr('text-anchor', 'middle')
-        .attr('fill', (d, i) => this.colors(i))
         .attr('opacity', 1)
-        .text(d => d.value);
+        .style('fill', (d, i) => this.colors(i));
 
       this.chart
         .selectAll('.bar')
         .transition()
-        // .delay((d, i) => i * 100 + 400)
+        //.delay((d, i) => i * 100 + 400)
         .attr('y', d => this.yScale(d.value))
-        .attr('height', d => this.height - this.yScale(d.value));
+        .attr('height', d => (this.height - this.yScale(d.value) > 0) ? this.height - this.yScale(d.value) : 0);
     }, 500);
   }
 
@@ -205,22 +227,14 @@ export class BarChartComponent extends Chart implements OnInit {
     this.chart
       .selectAll('.bar')
       .attr('y', d => this.yScale(0))
-      .attr('height', d => this.height - this.yScale(0));
-
-    this.chart.selectAll('.value-text').attr('opacity', 0);
+      .attr('height', d => (this.height - this.yScale(0) > 0) ? this.height - this.yScale(0) : 0);
 
     this.chart
       .selectAll('.bar')
       .transition()
       .duration(1500)
       .attr('y', d => this.yScale(d.value))
-      .attr('height', d => this.height - this.yScale(d.value));
-    this.chart
-      .selectAll('.value-text')
-      .transition()
-      .delay(1300)
-      .duration(200)
-      .attr('opacity', 1);
+      .attr('height', d => (this.height - this.yScale(d.value) > 0) ? this.height - this.yScale(d.value) : 0);
   }
 
   // FIXME
@@ -232,11 +246,6 @@ export class BarChartComponent extends Chart implements OnInit {
       .delay((d, i) => i * 100)
       .attr('y', d => this.yScale(0))
       .attr('height', d => this.height - this.yScale(0));
-    this.chart
-      .selectAll('.value-text')
-      .transition()
-      .duration(200)
-      .attr('opacity', 0);
     const waitingTime = this.chart.selectAll('.bar')._groups[0].length * 100;
   }
 }

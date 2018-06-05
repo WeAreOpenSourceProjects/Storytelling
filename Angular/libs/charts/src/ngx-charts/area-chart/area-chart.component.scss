@@ -3,9 +3,9 @@
   width: 100%;
 
   .d3-chart {
-    width: 90%;
+    width: 70%;
     height: 100%;
-    margin-left: 5%;
+    margin-left: 20%;
   }
 }
 :host /deep/ svg {
@@ -17,6 +17,11 @@
   height: 100% !important;
 }
 :host /deep/ngx-charts-legend.chart-legend {
-  width: 15% !important;
-  height: 100%
+  max-width: 15% !important;
+  height: 100%;
+  /* tmp: otherwise, the legend is outside the box, below the graph... */
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  
 }
