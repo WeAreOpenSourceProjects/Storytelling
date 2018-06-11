@@ -1,0 +1,24 @@
+.shared-choice{
+  display: flex;
+  flex-direction: column;
+}
+
+.content-dialog {
+  padding: 20px 30px;
+}
+
+.action-dialog {
+  button {
+    flex: 1 1 0;
+
+    &.confirm {
+      background-color:#6eed79;
+      color: white;
+    }
+
+    &.cancel {
+      background-color: #b7becc;
+      color: white;
+    }
+  }
+}

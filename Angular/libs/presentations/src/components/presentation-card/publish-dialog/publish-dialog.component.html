@@ -1,0 +1,22 @@
+<div mat-dialog-content class="content-dialog">Sharing presentation </div>
+<div class="shared-choice" name="shared-choice">
+  <mat-form-field class="demo-chip-list">
+    <mat-chip-list #chipList>
+      <mat-chip *ngFor="let user of users" [selectable]="selectable"
+               [removable]="removable" (removed)="remove(user)">
+        {{user}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Enter username or email of the user(s)"
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="add($event)" />
+    </mat-chip-list>
+  </mat-form-field>
+  
+  </div>
+<div mat-dialog-actions class="action-dialog">
+  <button mat-button class="confirm" (click)="confirm(users)">OK</button>
+  <button mat-button class="cancel" (click)="cancel()">CANCEL</button>
+</div>
