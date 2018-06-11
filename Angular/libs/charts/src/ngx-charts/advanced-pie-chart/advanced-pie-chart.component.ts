@@ -54,6 +54,7 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
         );
       this.init();
       this.activated = true;
+      this.lol();
     });
   }
 
@@ -91,5 +92,32 @@ export class AdvancedPieChartComponent extends Chart implements OnInit, OnDestro
 
   ngOnDestroy() {
     clearTimeout(this._setIntervalHandler);
+  }
+
+  lol() {
+    let element = this.chartContainer.nativeElement;
+    let svg = d3.select(element);
+      console.log(element)
+    // // Merge enter and update selections; set position for all nodes and we calculate the size of the sequence
+    // let translation = 0; // Translation of each polygon
+    // let SequenceTotalSize = 0; // Total size of the trail
+    // let line = 0; // Line breaks
+    // entering.merge(trail).attr('transform', (d, i) => {
+    //   if (i == 0) {
+    //     translation = 0;
+    //     SequenceTotalSize = thisClass.b.w + thisClass.stringsLength[0] + thisClass.b.t;
+    //     return 'translate(' + translation + ', 0)';
+    //   } else {
+    //     if ((SequenceTotalSize + thisClass.b.w + thisClass.stringsLength[i]) > (0.9 * this.width - this.margin.left - this.margin.right)) {
+    //       line ++;
+    //       translation = 20;
+    //       SequenceTotalSize = 20 + thisClass.b.w + thisClass.stringsLength[i] + thisClass.b.t;
+    //       return 'translate(' + translation + ', ' + line * (thisClass.b.h + 5) + ')';
+    //     } else {
+    //       translation += i == 0 ? 0 : thisClass.b.w + thisClass.b.s + thisClass.stringsLength[i - 1];
+    //       SequenceTotalSize += thisClass.b.w + thisClass.stringsLength[i] + thisClass.b.t;
+    //       return 'translate(' + translation + ', ' + line * (thisClass.b.h + 5) + ')';
+    //     }
+    //   }
   }
 }
