@@ -55,7 +55,7 @@
     <ng-template matStepLabel>Choose a chart</ng-template>
     <div class="content">
       <mat-card class="chart-card" (click)="choseChartType(chart)" *ngFor="let chart of chartTypes">
-        <h2>{{chart.title}}</h2>
+        <h2 style="line-height: 1.3em;">{{chart.title}}</h2>
         <img mat-card-image [src]="chart.image">
         <mat-card-content>
           <mat-chip class="categorie">{{chart.categorie}}</mat-chip>

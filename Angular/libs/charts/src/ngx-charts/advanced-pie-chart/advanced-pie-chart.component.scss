@@ -16,7 +16,35 @@
   width: 98% !important;
   height: 100% !important;
 }
-:host /deep/ngx-charts-legend.chart-legend {
-  width: 15% !important;
-  height: 100%
+:host /deep/ ngx-charts-advanced-legend .advanced-pie-legend {
+  height: fit-content;
+  max-height: 85% !important;
+  overflow: auto;
+  width: 60% !important;
+}
+
+:host /deep/ .legend-items {
+  white-space: normal !important;
+}
+
+:host /deep/ .legend-item {
+  margin: 10px;
+}
+
+:host /deep/ .total-value, :host /deep/ .total-label {
+  line-height: 110%;
+  padding-left: 10px;
+}
+
+:host /deep/ .item-color {
+  min-height: 60px;
+}
+
+:host /deep/ .item-value, :host /deep/ .item-label {
+  line-height: 100%;
+  padding-top: 5px;
+}
+
+:host /deep/ .item-percent {
+  line-height: 100%;
 }
