@@ -2,11 +2,17 @@ import { Component, HostListener, HostBinding } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 
+// Just to close the MS login popup on redirect
+declare const Msal;
+(() => new Msal.UserAgentApplication())();
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
+
 export class AppComponent {
   @HostBinding('class.mat-typography')
   matTypo() {
@@ -23,13 +29,19 @@ export class AppComponent {
     event.preventDefault();
   }
 
-  constructor(private mdIconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
+  constructor(private _mdIconRegistry: MatIconRegistry, private _sanitizer: DomSanitizer) {
     ['file', 'editor', 'action', 'navigation', 'av', 'image', 'content', 'hardware','social'].forEach(iconSet =>
-      mdIconRegistry.addSvgIconSetInNamespace(
+      this._mdIconRegistry.addSvgIconSetInNamespace(
         iconSet,
-        sanitizer.bypassSecurityTrustResourceUrl(`assets/svg-sprite-${iconSet}.svg`)
+        this._sanitizer.bypassSecurityTrustResourceUrl(`assets/svg-sprite-${iconSet}.svg`)
       )
     );
-    mdIconRegistry.addSvgIcon('file-image', sanitizer.bypassSecurityTrustResourceUrl(`assets/file.svg`));
+    this._mdIconRegistry.addSvgIcon('file-image', this._sanitizer.bypassSecurityTrustResourceUrl(`assets/file.svg`));
+    this._mdIconRegistry.addSvgIcon('file-image', this._sanitizer.bypassSecurityTrustResourceUrl('assets/file.svg'));
+    this._mdIconRegistry.addSvgIcon('google', this._sanitizer.bypassSecurityTrustResourceUrl('assets/google.svg'));
+    this._mdIconRegistry.addSvgIcon('twitter', this._sanitizer.bypassSecurityTrustResourceUrl('assets/twitter.svg'));
+    this._mdIconRegistry.addSvgIcon('facebook', this._sanitizer.bypassSecurityTrustResourceUrl('assets/facebook.svg'));
+    this._mdIconRegistry.addSvgIcon('github', this._sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg'));
+    this._mdIconRegistry.addSvgIcon('windows', this._sanitizer.bypassSecurityTrustResourceUrl('assets/windows.svg'));
   }
 }
