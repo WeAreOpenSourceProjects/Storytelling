@@ -300,7 +300,6 @@ exports.search = function(req, res) {
 
   var presentationsCount = Presentation.find(request).count();
   var presentationsFind = Presentation.find(request);
-  mongoose.set('debug', true);
   Promise.all([
     presentationsCount,
     presentationsFind.populate({

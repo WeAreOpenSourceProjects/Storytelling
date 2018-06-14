@@ -7,7 +7,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
 import { Presentation } from '@labdat/data-models';
-import { selectUser, AuthenticationState } from '@labdat/authentication-state';
+import { selectUser, AuthenticationState } from '@labdat/authentication';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators/filter';
@@ -43,9 +43,9 @@ export class PresentationsApiService {
       };
     });
 
-    const { protocol, host, port, endpoints } = environment.backend;
+    const { protocol, host, port, endpoints } = environment.api;
     this.endpoints = endpoints;
-    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
+    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basepath}`;
   }
 
   me(): Observable<any> {
@@ -54,7 +54,7 @@ export class PresentationsApiService {
   }
 
   add(presentation: Presentation): Observable<any> {
-    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}`;
+    const backendURL = `${this.baseUrl}/${environment.api.endpoints.presentations}`;
     //console.log(presentation)
     return this.http.post(backendURL, presentation).pipe(
       map((presentation: Presentation) => {
@@ -64,7 +64,7 @@ export class PresentationsApiService {
   }
 
   copy(presentationId: number): Observable<any> {
-    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}/copy`;
+    const backendURL = `${this.baseUrl}/${environment.api.endpoints.presentations}/copy`;
     return this.http
       .post(backendURL, { presentationId })
       .pipe(map((presentation: any) => ({ ...presentation, id: presentation._id })));
@@ -101,7 +101,7 @@ export class PresentationsApiService {
   }
   
   delete(presentationId): Observable<any> {
-    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.presentations}/${presentationId}`;
+    const backendURL = `${this.baseUrl}/${environment.api.endpoints.presentations}/${presentationId}`;
     return this.http.delete(backendURL);
   }
 

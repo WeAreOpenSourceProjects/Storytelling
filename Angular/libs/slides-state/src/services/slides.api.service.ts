@@ -7,7 +7,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
 import { Slide } from '@labdat/data-models';
-import { selectUser, AuthenticationState } from '@labdat/authentication-state';
+import { selectUser, AuthenticationState } from '@labdat/authentication';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators/filter';
@@ -21,9 +21,9 @@ export class SlidesApiService {
   private endpoints: any;
 
   constructor(private http: HttpClient, private store: Store<AuthenticationState>) {
-    const { protocol, host, port, endpoints } = environment.backend;
+    const { protocol, host, port, endpoints } = environment.api;
     this.endpoints = endpoints;
-    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
+    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basepath}`;
   }
 
   getPresentationSlides(presentationId): Observable<any> {

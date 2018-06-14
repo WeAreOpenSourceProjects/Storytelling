@@ -6,55 +6,56 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material';
 import { SharedModule } from '@labdat/shared';
-import { AuthenticationModule } from '@labdat/authentication';
-import { CoreModule } from '@labdat/core';
+import {
+  AuthenticationRoutingModule,
+  AuthenticationStateModule
+} from '@labdat/authentication';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { CoreStateModule } from '@labdat/core-state';
-import { AuthenticationStateModule } from '@labdat/authentication-state';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { coreConfiguration, CoreStateModule, CoreViewModule } from '@labdat/core';
+
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { metaReducers } from './+state/app.reducer';
-import { coreConfiguration } from '@labdat/core';
 import { presentationsConfiguration, PresentationsModule } from '@labdat/presentations';
 import { environment } from '../environments/environment';
-import { RouterStateModule } from '@labdat/router-state';
+import { RouterStateModule } from '@labdat/common/router-state';
 import { SlidesStateModule } from '@labdat/slides-state';
 import { PresentationsStateModule } from '@labdat/presentations-state';
 import { BoxesStateModule } from '@labdat/boxes-state';
 import { PresentationsRoutingModule } from '@labdat/presentations-routing';
 import { SlidesRoutingModule } from '@labdat/slides-routing';
 import { BoxesRoutingModule } from '@labdat/boxes-routing';
+import { UserDetailDialogComponent, UserRoutingModule, UserStateModule } from '@labdat/user';
+
 @NgModule({
   imports: [
     NxModule.forRoot(),
-    //RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    RouterModule.forRoot([], { initialNavigation: 'enabled' }),
     BrowserModule,
-    RouterModule,
     BrowserAnimationsModule,
     MatIconModule,
-
     StoreModule.forRoot({}, { metaReducers }),
     EffectsModule.forRoot([]),
     RouterModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-
     SharedModule.forRoot(),
-    AuthenticationModule.forRoot(),
-    CoreModule.forRoot(),
+    AuthenticationRoutingModule.forRoot(),
+    CoreViewModule,
     RouterStateModule.forRoot(),
     AuthenticationStateModule.forRoot(),
-    CoreStateModule.forRoot([...coreConfiguration.self, ...presentationsConfiguration.core]),
-
+    CoreStateModule.forRoot([coreConfiguration.self, ...presentationsConfiguration.core]),
     PresentationsStateModule.forRoot(),
     SlidesStateModule.forRoot(),
     BoxesStateModule.forRoot(),
-
     PresentationsRoutingModule.forRoot(),
     SlidesRoutingModule.forRoot(),
-    BoxesRoutingModule.forRoot()
+    BoxesRoutingModule.forRoot(),
+    UserStateModule.forRoot(),
+    UserRoutingModule.forRoot()
+
   ],
   declarations: [AppComponent],
+  // entryComponents: [UserDetailDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

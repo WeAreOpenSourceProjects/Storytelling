@@ -60,32 +60,20 @@
       "appRoot": ""
     },
     {
-      "name": "authentication-state",
-      "root": "libs/authentication-state/src",
+      "name": "router-state",
+      "root": "libs/common/router-state/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    },
+    {
+      "name": "environments",
+      "root": "libs/common/environments/src",
       "test": "../../../test.js",
       "appRoot": ""
     },
     {
       "name": "core",
       "root": "libs/core/src",
-      "test": "../../../test.js",
-      "appRoot": ""
-    },
-    {
-      "name": "core-state",
-      "root": "libs/core-state/src",
-      "test": "../../../test.js",
-      "appRoot": ""
-    },
-    {
-      "name": "core-routing",
-      "root": "libs/core-routing/src",
-      "test": "../../../test.js",
-      "appRoot": ""
-    },
-    {
-      "name": "router-state",
-      "root": "libs/router-state/src",
       "test": "../../../test.js",
       "appRoot": ""
     },
@@ -146,6 +134,12 @@
     {
       "name": "tiny-editor",
       "root": "libs/tiny-editor/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    },
+    {
+      "name": "user",
+      "root": "libs/user/src",
       "test": "../../../test.js",
       "appRoot": ""
     }

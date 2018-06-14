@@ -41,9 +41,9 @@ export class ImageUploadComponent {
     this.options = { concurrency: 1 };
     this.files = [];
     this.uploadInput = new EventEmitter<UploadInput>();
-    const { protocol, host, port, endpoints } = environment.backend;
+    const { protocol, host, port, endpoints } = environment.api;
     this.endpoints = endpoints;
-    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
+    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basepath}`;
     this.backendURL = `${this.baseUrl}/${this.endpoints.images}`;
   }
   ngOnInit() {

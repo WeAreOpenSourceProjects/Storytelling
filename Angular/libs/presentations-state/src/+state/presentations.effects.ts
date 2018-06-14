@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { catchError } from 'rxjs/operators/catchError';
 import { toPayload } from '@ngrx/effects';
 import { PresentationsApiService } from '../services/presentations.api.service';
-import { fromAuthentication } from '@labdat/authentication-state';
+import { fromAuthentication } from '@labdat/authentication';
 import { fromSlides } from '@labdat/slides-state';
 import { fromBoxes } from '@labdat/boxes-state';
 import { mapTo } from 'rxjs/operators/mapTo';
@@ -20,7 +20,7 @@ import { tap } from 'rxjs/operators/tap';
 import { Presentation } from '@labdat/data-models';
 import { PresentationsSnackComponent } from '../components/presentations-snack/presentations-snack.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { fromRouter } from '@labdat/router-state';
+import { fromRouter } from '@labdat/common/router-state';
 
 @Injectable()
 export class PresentationsEffects {

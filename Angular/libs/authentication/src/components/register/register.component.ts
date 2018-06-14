@@ -1,46 +1,113 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { Authenticate } from '../../models/user.model';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Credentials } from '../../models/authenticate.model';
+import { ConfirmValidParentMatcher, CustomValidators } from './password-match.validator';
+import { first, keys } from 'lodash';
 
 @Component({
-  selector: 'app-register',
+  selector: 'auth-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  public confirmValidParentMatcher = new ConfirmValidParentMatcher();
   public hide = true;
-  public form = this.formBuilder.group({
-    //    gender: this.formBuilder.control(''),
-    firstName: this.formBuilder.control(''),
-    lastName: this.formBuilder.control(''),
-    email: this.formBuilder.control('', [Validators.required, Validators.email]),
-    password: this.formBuilder.control('')
+  public registerForm = this.formBuilder.group({
+    firstName: this.formBuilder.control('', [Validators.required]),
+    lastName: this.formBuilder.control('', [Validators.required]),
+    emailGroup: this.formBuilder.group({
+      email: this.formBuilder.control('', [Validators.required, Validators.email]),
+      confirmEmail: this.formBuilder.control('', Validators.required)
+    }, { validator: CustomValidators.childrenEqual }),
+    passwordGroup: this.formBuilder.group({
+      password: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
+      confirmPassword: this.formBuilder.control('', Validators.required)
+    }, { validator: CustomValidators.childrenEqual })
   });
 
-  @Output() public submitted = new EventEmitter<Authenticate>();
+  @Output()
+  public register = new EventEmitter<Credentials>();
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) { }
 
-  get visibility() {
+  get visibility(): string {
     return this.hide ? 'action:ic_visibility_off_24px' : 'action:ic_visibility_24px';
   }
 
-  get emailErrorMessage() {
-    let errorMessage = '';
-    if (this.form.controls.email.hasError('required')) {
-      errorMessage = 'You must enter a value';
-    } else if (this.form.controls.email.hasError('email')) {
-      errorMessage = 'Not a valid email';
-    }
-    return errorMessage;
+  get firstNameError(): string {
+    return first(
+      keys(
+        this.registerForm.get('firstName').errors
+      )
+    ) || '';
   }
 
-  ngOnInit() {
-    this.form.valueChanges.subscribe(() => ({}));
+  get lastNameError(): string {
+    return first(
+      keys(
+        this.registerForm.get('lastName').errors
+      )
+    ) || '';
   }
 
-  onSubmit() {
-    const { firstName, lastName, email, password } = this.form.value;
-    this.submitted.emit(this.form.value);
+  get emailError(): string {
+    return first(
+      keys(
+        this.registerForm
+        .get('emailGroup')
+        .get('email').errors
+      )
+    ) || '';
+  }
+
+  get confirmEmailError(): string {
+    return first(
+      keys(
+        this.registerForm
+        .get('emailGroup').errors
+      )
+    ) || '';
+  }
+
+  get passwordError(): string {
+    return first(
+      keys(
+        this.registerForm
+        .get('passwordGroup')
+        .get('password').errors
+      )
+    ) || '';
+  }
+
+  get confirmPasswordError(): string {
+    return first(
+      keys(
+        this.registerForm
+        .get('passwordGroup').errors
+      )
+    ) || '';
+  }
+
+  ngOnInit(): void {
+    this.registerForm.valueChanges.subscribe(() => ({}));
+  }
+
+  onSubmit(): void {
+    const {
+      firstName,
+      lastName, userName,
+      emailGroup,
+      passwordGroup
+    } = this.registerForm.value;
+
+    const userInfos = {
+      firstName,
+      lastName,
+      userName,
+      email: emailGroup.email,
+      password: passwordGroup.password
+    };
+
+    this.register.emit(userInfos);
   }
 }

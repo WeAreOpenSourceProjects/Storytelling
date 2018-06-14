@@ -6,7 +6,7 @@ import { filter } from 'rxjs/operators/filter';
 import { Presentation } from '@labdat/data-models';
 import { MatDialog } from '@angular/material/dialog';
 //import { NotifBarService } from 'app/core';
-import { selectUser, selectIsLoggedIn, AuthenticationState } from '@labdat/authentication-state';
+import { selectUser, selectIsLoggedIn, AuthenticationState } from '@labdat/authentication';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { combineLatest } from 'rxjs/observable/combineLatest';

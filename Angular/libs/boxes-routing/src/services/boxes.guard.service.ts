@@ -6,11 +6,9 @@ import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/take';
 import {
   AuthenticationState,
-  selectIsLoggedIn,
-  selectTokenExpiresIn,
   fromAuthentication
-} from '@labdat/authentication-state';
-import { fromRouter } from '@labdat/router-state';
+} from '@labdat/authentication';
+import { fromRouter } from '@labdat/common/router-state';
 import { selectBoxesLoaded, fromBoxes } from '@labdat/boxes-state';
 import { selectCurrentSlideId } from '@labdat/slides-state';
 import { filter } from 'rxjs/operators/filter';

@@ -11,7 +11,6 @@ const slidesRoutes: Routes = [
   {
     path: ':id',
     component: BoxesGridComponent,
-    canActivate: [BoxesGuardService, SlideGuardService],
     data: {
       roles: ['user', 'admin'],
       title: 'Slide Detail'

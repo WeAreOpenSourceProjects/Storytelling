@@ -1,7 +1,7 @@
 import { PresentationsState, presentationsAdapter } from './presentations.interfaces';
 import * as fromPresentations from './presentations.actions';
-import { fromAuthentication } from '@labdat/authentication-state';
-import { fromRouter } from '@labdat/router-state';
+import { fromAuthentication } from '@labdat/authentication';
+import { fromRouter } from '@labdat/common/router-state';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { fromSlides } from '@labdat/slides-state';
 

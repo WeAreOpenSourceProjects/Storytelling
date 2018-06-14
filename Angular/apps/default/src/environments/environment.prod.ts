@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  backend: {
+  api: {
     protocol: 'http',
     host: 'dbmdlx03.dns21.socgen',
     port: 4002,

@@ -5,7 +5,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
-import { selectUser, AuthenticationState } from '@labdat/authentication-state';
+import { AuthenticationState } from '@labdat/authentication';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators/filter';
@@ -20,9 +20,9 @@ export class BoxesApiService {
   private endpoints: any;
 
   constructor(private http: HttpClient) {
-    const { protocol, host, port, endpoints } = environment.backend;
+    const { protocol, host, port, endpoints } = environment.api;
     this.endpoints = endpoints;
-    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
+    this.baseUrl = `${protocol}://${host}:${port}/${endpoints.basepath}`;
   }
 
   addBox(box: Box): Observable<any> {
@@ -50,11 +50,11 @@ export class BoxesApiService {
   }
   delete(id): Observable<any> {
     console.log(id);
-    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.boxes}/${id}`;
+    const backendURL = `${this.baseUrl}/${environment.api.endpoints.boxes}/${id}`;
     return this.http.delete(backendURL);
   }
   deleteImage(id): Observable<any> {
-    const backendURL = `${this.baseUrl}/${environment.backend.endpoints.images}/${id}`;
+    const backendURL = `${this.baseUrl}/${environment.api.endpoints.images}/${id}`;
     return this.http.delete(backendURL);
   }
 

@@ -14,7 +14,7 @@ import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { tap } from 'rxjs/operators/tap';
 import { filter } from 'rxjs/operators/filter';
 import { isEmpty } from 'lodash';
-import { fromRouter } from '@labdat/router-state';
+import { fromRouter } from '@labdat/common/router-state';
 
 @Component({
   selector: 'app-slides-editor-form',

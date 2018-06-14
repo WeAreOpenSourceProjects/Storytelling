@@ -5,12 +5,24 @@
 
 export const environment = {
   production: false,
-  backend: {
+  authentication: {
+    providers: {
+      google: {
+        clientid: '307800239261-ha4hmdkrhsq8ftac7uoo66gbt3fmcetv.apps.googleusercontent.com'
+      },
+      microsoft: {
+        clientid: '5707a45e-3a3b-40fc-9827-f51c697e6fdd',
+        redirecturi: 'http://localhost:4200/',
+        scopes: 'https://graph.microsoft.com/user.read'
+      }
+    }
+  },
+  api: {
     protocol: 'http',
     host: 'localhost',
     port: '3000',
     endpoints: {
-      basePath: 'api',
+      basepath: 'api',
       signup: 'auth/signup',
       signin: 'auth/signin',
       boxes: 'boxes',
@@ -19,7 +31,8 @@ export const environment = {
       slides: 'slides',
       images: 'images',
       search: 'search/slides',
-      banner: 'banner'
+      banner: 'banner',
+      auth: 'auth',
     }
   }
 };

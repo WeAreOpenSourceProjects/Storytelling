@@ -1,16 +1,22 @@
-import { MenuItem } from '@labdat/data-models';
+import { MenuItem } from './models/menu-item.model';
 
 interface CoreConfiguration {
-  self: MenuItem[];
+  self: {
+    title: string;
+    logo: string;
+    sidenav: Array<MenuItem>;
+  };
 }
 
 export const coreConfiguration: CoreConfiguration = {
-  self: [
-    {
+  self: {
+    logo: '/assets/rominet-logo.svg',
+    title: 'Storytelling',
+    sidenav: [{
       order: 1,
-      link: '/home',
+      link: 'home',
       name: 'Home',
       icon: 'action:ic_home_24px'
-    }
-  ]
+    }]
+  }
 };

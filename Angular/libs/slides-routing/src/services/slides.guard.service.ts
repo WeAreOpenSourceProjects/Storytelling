@@ -7,10 +7,9 @@ import 'rxjs/add/operator/take';
 import {
   AuthenticationState,
   selectIsLoggedIn,
-  selectTokenExpiresIn,
   fromAuthentication
-} from '@labdat/authentication-state';
-import { fromRouter } from '@labdat/router-state';
+} from '@labdat/authentication';
+import { fromRouter } from '@labdat/common/router-state';
 import { selectCurrentPresentationId, selectSlidesLoaded, fromSlides } from '@labdat/slides-state';
 import { filter } from 'rxjs/operators/filter';
 import { zip } from 'rxjs/operators/zip';

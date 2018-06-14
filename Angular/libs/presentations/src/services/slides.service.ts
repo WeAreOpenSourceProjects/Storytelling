@@ -7,7 +7,7 @@ import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../apps/default/src/environments/environment';
 import { Slides } from '../models/index';
-import { selectUser, AuthenticationState } from '@labdat/authentication-state';
+import { selectUser, AuthenticationState } from '@labdat/authentication';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import { filter } from 'rxjs/operators';
@@ -28,8 +28,8 @@ export class SlidesService {
     this.progress$ = Observable.create(observer => {
       this.progressObserver = observer;
     }).share();
-    const { protocol, host, port, endpoints } = environment.backend;
-    this._baseUrl = `${protocol}://${host}:${port}/${endpoints.basePath}`;
+    const { protocol, host, port, endpoints } = environment.api;
+    this._baseUrl = `${protocol}://${host}:${port}/${endpoints.basepath}`;
     this.user$.subscribe((user: User) => {
       this.user = {
         username: user.firstName + user.lastName,
@@ -41,13 +41,13 @@ export class SlidesService {
     });
   }
   me(): Observable<any> {
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.users}/me`;
+    const backendURL = `${this._baseUrl}/${environment.api.endpoints.users}/me`;
     return this.http.get(backendURL).map((response: Response) => response.json());
   }
 
   submitSlides(slides: Slides): Observable<any> {
     slides.slidesSetting.author = this.user.username;
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.slides}`;
+    const backendURL = `${this._baseUrl}/${environment.api.endpoints.slides}`;
     return this.http.post(backendURL, slides).map((response: Response) => response.json());
   }
   getSlidesList(pageIndex, pageSize): Observable<any> {
@@ -56,23 +56,23 @@ export class SlidesService {
     params.set('pageIndex', pageIndex);
     params.set('pageSize', pageSize);
 
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.search}`;
+    const backendURL = `${this._baseUrl}/${environment.api.endpoints.search}`;
     return this.http
       .get(backendURL, { search: params })
       .map((response: Response) => response.json())
       .take(1);
   }
   getSlides(id): Observable<any> {
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.slides}/${id}`;
+    const backendURL = `${this._baseUrl}/${environment.api.endpoints.slides}/${id}`;
     return this.http.get(backendURL).map((response: Response) => response.json());
   }
 
   updateSlide(slide, id): Observable<any> {
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.slides}/${id}`;
+    const backendURL = `${this._baseUrl}/${environment.api.endpoints.slides}/${id}`;
     return this.http.put(backendURL, slide).map((response: Response) => response.json());
   }
   deleteSlides(id): Observable<any> {
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.slides}/${id}`;
+    const backendURL = `${this._baseUrl}/${environment.api.endpoints.slides}/${id}`;
     return this.http.delete(backendURL).map((response: Response) => response.json());
   }
   getSlideToSearch(textToSearch, pageIndex, pageSize): Observable<any> {
@@ -85,7 +85,7 @@ export class SlidesService {
     params.set('pageIndex', pageIndex);
     params.set('pageSize', pageSize);
     params.set('order', textToSearch.order);
-    const backendURL = `${this._baseUrl}/${environment.backend.endpoints.search}`;
+    const backendURL = `${this._baseUrl}/${environment.api.endpoints.search}`;
     return this.http.get(backendURL, { params: params }).map((response: Response) => response.json());
   }
 }

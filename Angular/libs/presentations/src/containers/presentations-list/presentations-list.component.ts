@@ -8,7 +8,7 @@ import { debounceTime } from 'rxjs/operators/debounceTime';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { tap } from 'rxjs/operators/tap';
 import { Store } from '@ngrx/store';
-import { selectIsLoggedIn, selectUser } from '@labdat/authentication-state';
+import { selectIsLoggedIn, selectUser } from '@labdat/authentication';
 import {
   selectAllPresentations,
   selectPresentationsError,
@@ -20,7 +20,7 @@ import {
   selectShowEmptyMessage,
   selectPresentationsCount
 } from '@labdat/presentations-state';
-import { fromRouter } from '@labdat/router-state';
+import { fromRouter } from '@labdat/common/router-state';
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom';
 import { Subject } from 'rxjs/Subject';
 import { combineLatest } from 'rxjs/operators/combineLatest';

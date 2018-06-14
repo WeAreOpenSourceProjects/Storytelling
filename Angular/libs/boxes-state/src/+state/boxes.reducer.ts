@@ -1,6 +1,6 @@
 import { BoxesState, boxesAdapter } from './boxes.interfaces';
 import * as fromBoxes from './boxes.actions';
-import { fromAuthentication } from '@labdat/authentication-state';
+import { fromAuthentication } from '@labdat/authentication';
 import * as fromPresentations from '@labdat/presentations-state/src/+state/presentations.actions';
 
 export const boxesInitialState: BoxesState = boxesAdapter.getInitialState({

@@ -1,10 +1,9 @@
 import { SlidesState, slidesAdapter } from './slides.interfaces';
 import * as fromSlides from './slides.actions';
-import { fromAuthentication } from '@labdat/authentication-state';
-import { fromRouter } from '@labdat/router-state';
+import { fromAuthentication } from '@labdat/authentication';
+import { fromRouter } from '@labdat/common/router-state';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import * as fromPresentations from '@labdat/presentations-state/src/+state/presentations.actions';
-import { deepClone } from 'lodash';
 import { fromBoxes } from '@labdat/boxes-state';
 
 export const slidesInitialState: SlidesState = slidesAdapter.getInitialState({
@@ -53,6 +52,7 @@ export function slidesReducer(
     }
 
     case fromBoxes.ADD_SUCCESS: {
+      console.log(state.entities, action.payload.box.slideId, state.entities[action.payload.box.slideId]);
       return slidesAdapter.updateOne(
         {
           id: action.payload.box.slideId,

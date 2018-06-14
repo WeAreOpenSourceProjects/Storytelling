@@ -11,7 +11,7 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { catchError } from 'rxjs/operators/catchError';
 import { toPayload } from '@ngrx/effects';
 import { BoxesApiService } from '../services/boxes.api.service';
-import { fromAuthentication } from '@labdat/authentication-state';
+import { fromAuthentication } from '@labdat/authentication';
 import { mapTo } from 'rxjs/operators/mapTo';
 import { tap } from 'rxjs/operators';
 import { fromSlides } from '@labdat/slides-state';
@@ -35,6 +35,7 @@ export class BoxesEffects {
   @Effect()
   add = this.actions
     .ofType(fromBoxes.ADD)
+    
     .pipe(
       map(toPayload),
       switchMap(payload => this.boxesApiService.addBox(payload.box)),

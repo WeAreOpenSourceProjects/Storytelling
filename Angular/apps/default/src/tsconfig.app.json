@@ -7,8 +7,9 @@
   "include": [
     "**/*.ts",
     "../../../libs/slides/index.ts",
-    "../../../node_modules/ng4-codemirror/src/index.ts",
-    "../../../libs/authentication"
+    "../../../node_modules/ng4-codemirror",
+    "../../../libs/authentication",
+    "../../../libs/user"
   ],
   "exclude": [
     "**/*.spec.ts"

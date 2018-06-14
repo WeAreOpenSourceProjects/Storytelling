@@ -12,7 +12,7 @@ import { mergeMap } from 'rxjs/operators/mergeMap';
 import { catchError } from 'rxjs/operators/catchError';
 import { toPayload } from '@ngrx/effects';
 import { SlidesApiService } from '../services/slides.api.service';
-import { fromAuthentication } from '@labdat/authentication-state';
+import { fromAuthentication } from '@labdat/authentication';
 import { mapTo } from 'rxjs/operators/mapTo';
 import { Slide } from '@labdat/data-models';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,7 +21,7 @@ import { tap } from 'rxjs/operators/tap';
 import { from } from 'rxjs/observable/from';
 import { flatMap } from 'rxjs/operators';
 import { fromBoxes } from '@labdat/boxes-state';
-import { fromRouter } from '@labdat/router-state';
+import { fromRouter } from '@labdat/common/router-state';
 import { zip } from 'rxjs/observable/zip';
 
 @Injectable()

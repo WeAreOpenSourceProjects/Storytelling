@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  backend: {
+  api: {
     protocol: 'http',
     host: 'localhost',
     port: '3000',

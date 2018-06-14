@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { AuthenticationState, selectIsLoggedIn } from '@labdat/authentication-state';
+import { AuthenticationState, selectIsLoggedIn } from '@labdat/authentication';
 
 import { PresentationsApiService, selectShowEmptyMessage } from '@labdat/presentations-state';
 import { PageEvent } from '@angular/material';
@@ -38,10 +38,10 @@ import { take } from 'rxjs/operators/take';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import { tap } from 'rxjs/operators/tap';
 import { zip } from 'rxjs/operators/zip';
-import { fromRouter } from '@labdat/router-state';
+import { fromRouter } from '@labdat/common/router-state';
 
 @Component({
-  selector: 'app-home',
+  selector: 'core-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
